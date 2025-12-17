@@ -12,46 +12,45 @@ import argparse
 
 def fix_yaml_separator(filepath: Path, dry_run: bool = False) -> bool:
     """
-    Repara el separador YAML --- que quedó pegado al final de una línea
-    o sin salto de línea antes del contenido.
+    Repara el separador YAML de cierre cuando está pegado al contenido
+    o cuando no hay línea en blanco después del bloque YAML.
+    NO modifica el --- de apertura.
     """
     try:
         with open(filepath, 'r', encoding='utf-8') as f:
             content = f.read()
 
-        # Patrón 1: --- pegado al final de una línea (ej: false---\n## Título)
-        pattern1 = r'([^\n])---\s*\n'
-        
-        # Patrón 2: --- sin línea en blanco después (ej: ---\n## Título)
-        pattern2 = r'^---\s*\n(?![\r\n])'  # después de --- no hay línea en blanco
-        
-        # Patrón 3: Contenido pegado inmediatamente después del --- (raro, pero por si acaso)
-        pattern3 = r'---([^\s\n])'
+        original_content = content
+        changed = False
 
-        if re.search(pattern1, content, re.MULTILINE) or \
-           re.search(pattern2, content, re.MULTILINE | re.DOTALL) or \
-           re.search(pattern3, content):
+        # 1. Caso principal: --- pegado al final de una línea (ej: comentario---\n## Título)
+        if re.search(r'([^\n])---\s*\n', content, re.MULTILINE):
+            content = re.sub(r'([^\n])---\s*\n', r'\1\n---\n', content, flags=re.MULTILINE)
+            changed = True
 
+        # 2. Asegurar línea en blanco DESPUÉS del --- de cierre (pero NO antes del primero)
+        # Buscamos el bloque YAML completo: desde primer --- hasta segundo ---
+        yaml_block_match = re.search(r'^---\s*\n(.*?)\n---', content, re.DOTALL)
+        if yaml_block_match:
+            end_pos = yaml_block_match.end()
+            after_yaml = content[end_pos:]
+
+            # Si después del --- de cierre no hay al menos una línea en blanco antes del contenido real
+            if not re.match(r'\s*\n\s*\n', after_yaml):  # no hay \n\n o equivalente
+                # Insertamos una línea en blanco justo después del --- de cierre
+                content = content[:end_pos] + '\n' + content[end_pos:]
+                changed = True
+
+        # 3. Caso raro: contenido pegado directamente sin salto (---Titulo)
+        if re.search(r'---([^\s\n])', content):
+            content = re.sub(r'---([^\s\n])', r'---\n\1', content)
+            changed = True
+
+        if changed:
             print(f"🔧 Reparando separador YAML en: {filepath}")
-
-            # Corrección 1: si --- está pegado al final de línea → ponerlo en línea nueva
-            fixed_content = re.sub(pattern1, r'\1\n---\n', content, flags=re.MULTILINE)
-
-            # Corrección 2: asegurar al menos una línea en blanco después del ---
-            # Buscamos el cierre --- y nos aseguramos de que le siga \n\n o agregamos
-            fixed_content = re.sub(
-                r'(^---\s*$\n?)(?![\r\n])',
-                r'\1\n',
-                fixed_content,
-                flags=re.MULTILINE
-            )
-
-            # Corrección 3: si hay contenido pegado directamente
-            fixed_content = re.sub(pattern3, r'---\n\1', fixed_content)
-
             if not dry_run:
                 with open(filepath, 'w', encoding='utf-8') as f:
-                    f.write(fixed_content)
+                    f.write(content)
                 print(f" ✅ Archivo reparado: {filepath}")
             else:
                 print(f" 🔍 [DRY RUN] Se repararía: {filepath}")
@@ -59,11 +58,10 @@ def fix_yaml_separator(filepath: Path, dry_run: bool = False) -> bool:
         else:
             print(f"✓ OK (separador correcto): {filepath}")
             return False
-            
+
     except Exception as e:
         print(f"❌ Error procesando {filepath}: {e}")
         return False
-
 
 def remove_unwanted_tags(filepath: Path, dry_run: bool = False) -> bool:
     """
