@@ -12,37 +12,52 @@ import argparse
 
 def fix_yaml_separator(filepath: Path, dry_run: bool = False) -> bool:
     """
-    Repara el separador YAML --- que quedó pegado al contenido
+    Repara el separador YAML --- que quedó pegado al final de una línea
+    o sin salto de línea antes del contenido.
     """
     try:
         with open(filepath, 'r', encoding='utf-8') as f:
             content = f.read()
+
+        # Patrón 1: --- pegado al final de una línea (ej: false---\n## Título)
+        pattern1 = r'([^\n])---\s*\n'
         
-        # Buscar el patrón problemático: ---seguido inmediatamente por contenido sin salto de línea
-        # Patrón: ---## o ---# o ---[letra] etc.
-        pattern = r'^(---\s*\n.*?\n)---([^\n])'
+        # Patrón 2: --- sin línea en blanco después (ej: ---\n## Título)
+        pattern2 = r'^---\s*\n(?![\r\n])'  # después de --- no hay línea en blanco
         
-        if re.search(pattern, content, re.MULTILINE | re.DOTALL):
-            print(f"🔧 Reparando: {filepath}")
-            
-            # Reemplazar agregando salto de línea después de ---
+        # Patrón 3: Contenido pegado inmediatamente después del --- (raro, pero por si acaso)
+        pattern3 = r'---([^\s\n])'
+
+        if re.search(pattern1, content, re.MULTILINE) or \
+           re.search(pattern2, content, re.MULTILINE | re.DOTALL) or \
+           re.search(pattern3, content):
+
+            print(f"🔧 Reparando separador YAML en: {filepath}")
+
+            # Corrección 1: si --- está pegado al final de línea → ponerlo en línea nueva
+            fixed_content = re.sub(pattern1, r'\1\n---\n', content, flags=re.MULTILINE)
+
+            # Corrección 2: asegurar al menos una línea en blanco después del ---
+            # Buscamos el cierre --- y nos aseguramos de que le siga \n\n o agregamos
             fixed_content = re.sub(
-                pattern,
-                r'\1---\n\2',
-                content,
-                flags=re.MULTILINE | re.DOTALL
+                r'(^---\s*$\n?)(?![\r\n])',
+                r'\1\n',
+                fixed_content,
+                flags=re.MULTILINE
             )
-            
+
+            # Corrección 3: si hay contenido pegado directamente
+            fixed_content = re.sub(pattern3, r'---\n\1', fixed_content)
+
             if not dry_run:
                 with open(filepath, 'w', encoding='utf-8') as f:
                     f.write(fixed_content)
-                print(f"   ✅ Archivo reparado")
+                print(f" ✅ Archivo reparado: {filepath}")
             else:
-                print(f"   🔍 [DRY RUN] Se repararía este archivo")
-            
+                print(f" 🔍 [DRY RUN] Se repararía: {filepath}")
             return True
         else:
-            print(f"✓ OK: {filepath}")
+            print(f"✓ OK (separador correcto): {filepath}")
             return False
             
     except Exception as e:
