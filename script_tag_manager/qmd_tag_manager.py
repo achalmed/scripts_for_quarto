@@ -156,9 +156,15 @@ class QMDTagManager:
             # Extraer tags actuales
             current_tags, yaml_dict = self.parse_tags_from_yaml(yaml_content)
             
-            if not current_tags and not tags_to_add:
-                print(f"⚠️  No hay tags en {filepath}")
-                return False
+            # Si no hay tags y solo se quiere agregar (sin normalizar o reemplazar)
+            # entonces omitir este archivo
+            if not current_tags:
+                if tags_to_add and not normalize_only and not replacements and not tags_to_remove:
+                    print(f"⚠️  No hay tags en {filepath} - omitiendo archivo (no se agregan tags a archivos sin tags)")
+                    return False
+                elif not tags_to_add:
+                    print(f"⚠️  No hay tags en {filepath}")
+                    return False
             
             print(f"\n📄 Procesando: {filepath}")
             print(f"   Tags actuales: {current_tags}")
@@ -217,8 +223,13 @@ class QMDTagManager:
             # Actualizar YAML
             updated_yaml = self.update_tags_in_yaml(yaml_content, unique_tags)
             
-            # Reconstruir archivo
-            new_content = f"---\n{updated_yaml}---\n{content_after}"
+            # Reconstruir archivo - asegurar saltos de línea correctos
+            # Asegurar que updated_yaml no termine con \n extra
+            updated_yaml = updated_yaml.rstrip('\n') + '\n'
+            # Asegurar que content_after comience correctamente
+            if not content_after.startswith('\n'):
+                content_after = '\n' + content_after
+            new_content = f"---\n{updated_yaml}---{content_after}"
             
             # Guardar cambios
             if not dry_run:
