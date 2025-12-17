@@ -1,55 +1,195 @@
-# 🔧 Guía de Reparación - Archivos QMD Afectados
+# Guía de Uso - fix_qmd_files_v2.py
 
-## Problemas Identificados
+## 🎯 Qué hace este script
 
-### 1. Separador YAML pegado al contenido
-**Síntoma:** El contenido del documento aparece pegado a la última línea `---` del YAML
+Corrige automáticamente el formato del bloque YAML en archivos `.qmd`, asegurando que:
 
-**Antes (incorrecto):**
+1. **NO hay línea en blanco** después del primer `---`
+2. **Hay EXACTAMENTE una línea en blanco** después del segundo `---` y antes del contenido
+3. **Es idempotente**: puedes ejecutarlo múltiples veces y siempre producirá el mismo resultado
+
+### Formato correcto:
+
 ```yaml
-date: "05/15/2025"
-draft: false---
-## Plataformas de Inteligencia Comercial
-```
-
-**Después (correcto):**
-```yaml
+---
+title: Mi título
 date: "05/15/2025"
 draft: false
 ---
 
-## Plataformas de Inteligencia Comercial
+## Mi contenido empieza aquí
 ```
 
-### 2. Tags agregados a archivos que no deberían tenerlos
-**Síntoma:** Archivos sin tags originalmente ahora tienen tags agregados
+## 🚀 Uso Rápido
+
+### Para archivos con el problema del `---` pegado:
+
+```bash
+# Ver qué se cambiaría (sin modificar)
+python fix_qmd_files_v2.py --directory ./posts --dry-run
+
+# Aplicar la corrección
+python fix_qmd_files_v2.py --directory ./posts
+```
+
+### Para procesar recursivamente todos los subdirectorios:
+
+```bash
+python fix_qmd_files_v2.py --directory ./posts --recursive
+```
+
+### Para un archivo específico:
+
+```bash
+python fix_qmd_files_v2.py --file mi_archivo.qmd
+```
+
+## 📋 Ejemplos
+
+### Ejemplo 1: Archivo con `---` pegado
+
+**Antes:**
+```yaml
+---
+title: Mi título
+draft: false---
+## Contenido
+```
+
+**Después de ejecutar el script:**
+```yaml
+---
+title: Mi título
+draft: false
+---
+
+## Contenido
+```
+
+### Ejemplo 2: Archivo con múltiples líneas en blanco
+
+**Antes:**
+```yaml
+---
+
+title: Mi título
+draft: false
+
 
 ---
 
-## ✅ Solución Rápida
 
-### Paso 1: Reparar separadores YAML
-
-```bash
-# Ver qué archivos se repararían (dry-run)
-python fix_qmd_files.py --fix-separator --recursive --dry-run
-
-# Aplicar reparación
-python fix_qmd_files.py --fix-separator --recursive
+## Contenido
 ```
 
-### Paso 2: Eliminar tags de archivos que no los tenían
+**Después:**
+```yaml
+---
+title: Mi título
+draft: false
 
-```bash
-# El script preguntará por cada archivo
-python fix_qmd_files.py --remove-unwanted-tags --recursive
+
+---
+
+## Contenido
 ```
 
-### Paso 3: Hacer ambas reparaciones de una vez
+**Nota:** Las líneas en blanco DENTRO del contenido YAML se mantienen (son parte del YAML). Solo se normaliza el espacio DESPUÉS del `---` de cierre.
+
+## ✅ Características clave
+
+### 1. Idempotente
+Puedes ejecutarlo 1, 2, 3, 10 veces y siempre produce el mismo resultado:
 
 ```bash
-python fix_qmd_files.py --fix-separator --remove-unwanted-tags --recursive
+# Primera ejecución
+python fix_qmd_files_v2.py --file archivo.qmd
+# ✅ Archivo corregido
+
+# Segunda ejecución
+python fix_qmd_files_v2.py --file archivo.qmd
+# ✓ OK (formato correcto)
+
+# Tercera ejecución
+python fix_qmd_files_v2.py --file archivo.qmd
+# ✓ OK (formato correcto)
 ```
+
+### 2. Seguro con --dry-run
+Siempre puedes verificar qué cambiará antes de aplicarlo:
+
+```bash
+python fix_qmd_files_v2.py --directory ./posts --recursive --dry-run
+```
+
+### 3. Verbose para más detalles
+```bash
+python fix_qmd_files_v2.py --directory ./posts --verbose
+```
+
+## 🔄 Flujo de trabajo recomendado
+
+```bash
+# 1. Backup (siempre primero!)
+cp -r ./posts ./posts_backup_$(date +%Y%m%d)
+
+# 2. Ver qué se cambiaría
+python fix_qmd_files_v2.py --directory ./posts --recursive --dry-run
+
+# 3. Aplicar cambios
+python fix_qmd_files_v2.py --directory ./posts --recursive
+
+# 4. Verificar algunos archivos manualmente
+head -20 ./posts/mi_archivo.qmd
+
+# 5. Si todo está bien, hacer commit
+git add .
+git commit -m "Corregir formato YAML en archivos .qmd"
+```
+
+## 🆘 Solución de problemas
+
+### El script dice "No se encontró bloque YAML válido"
+
+**Posibles causas:**
+1. El archivo no empieza con `---`
+2. El archivo no tiene un segundo `---`
+3. El formato está muy corrupto
+
+**Solución:** Revisa manualmente el archivo.
+
+### El script no hace cambios pero mi archivo se ve mal
+
+Si tu archivo tiene este formato:
+```yaml
+---
+title: Test
+---
+## Contenido
+```
+
+El script NO lo modificará porque ya tiene el formato correcto (hay una línea en blanco implícita después de `---`).
+
+Para verificar, usa:
+```bash
+cat -A mi_archivo.qmd | head -10
+```
+
+Esto muestra todos los caracteres invisibles.
+
+## 📊 Opciones del script
+
+```
+Opciones:
+  -d, --directory DIR    Directorio con archivos .qmd (por defecto: .)
+  -f, --file FILE        Reparar un archivo específico
+  --dry-run              Simular cambios sin modificar archivos
+  --recursive            Procesar subdirectorios recursivamente
+  -v, --verbose          Mostrar información detallada
+  -h, --help             Mostrar ayuda
+```
+
+
 
 ---
 
@@ -274,5 +414,25 @@ Si encuentras más problemas:
 
 ---
 
-**Versión del Script:** 1.1.0 (Corregido)  
+## 💡 Tips
+
+1. **Siempre usa `--dry-run` primero** para ver qué cambiará
+2. **Haz backup antes de operaciones masivas**
+3. **El script es seguro de ejecutar múltiples veces** (idempotente)
+4. **Verifica manualmente algunos archivos** después de procesar
+
+## ✨ Diferencia con fix_qmd_files.py (versión anterior)
+
+| Característica | v1 (fix_qmd_files.py) | v2 (fix_qmd_files_v2.py) |
+|----------------|----------------------|--------------------------|
+| Idempotente | ❌ No (agrega líneas cada vez) | ✅ Sí |
+| Línea después de primer `---` | ❌ Agregaba línea | ✅ No agrega línea |
+| Línea antes de segundo `---` | ❌ Agregaba múltiples | ✅ Solo normaliza después |
+| Simplicidad | Complejo | Simple y claro |
+
+**Recomendación:** Usa `fix_qmd_files_v2.py` (esta versión).
+
+---
+
+**Versión:** 2.0  
 **Fecha:** 17 de Diciembre 2025
