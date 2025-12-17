@@ -13,7 +13,7 @@ from pathlib import Path
 #   MANUAL_DIRECTORY = r"C:\Users\Edison\Documentos\proyecto"
 #   MANUAL_DIRECTORY = None  # Usar directorio padre del script (comportamiento predeterminado)
 
-MANUAL_DIRECTORY = None  # <-- MODIFICA ESTA LÍNEA con tu ruta o déjala en None
+MANUAL_DIRECTORY = "/home/achalmaedison/Documents/publicaciones/"  # <-- MODIFICA ESTA LÍNEA con tu ruta o déjala en None
 
 # =============================================================================
 # INSTRUCCIONES DE USO

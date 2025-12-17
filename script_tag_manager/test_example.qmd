@@ -1,0 +1,41 @@
+---
+title: Cadena de suministros - Ejemplo de prueba
+shorttitle: "Gestión de la cadena de suministros"
+abstract: "Este es un archivo de prueba para demostrar el funcionamiento del script de gestión de tags."
+keywords:
+  - supply chain management
+  - business processes
+  - logistics
+categories:
+  - Posts
+  - Economía internacional
+tags:
+  - Gestión Empresarial
+  - Economía Internacional
+  - Cadena de suministros
+  - GESTIÓN DE NEGOCIOS
+  - gestión empresarial
+  - Análisis de Datos
+  - Supply Chain
+date: 01/23/2022
+draft: false
+---
+
+# Ejemplo de archivo .qmd para pruebas
+
+Este archivo contiene varios tags en diferentes formatos para probar el script:
+
+1. Tags con mayúsculas y minúsculas mezcladas
+2. Tags con tildes
+3. Tags con espacios
+4. Tags duplicados (con diferentes formatos)
+5. Tags en inglés y español
+
+## Contenido de ejemplo
+
+El script debería:
+- Normalizar todos los tags a minúsculas
+- Eliminar tildes
+- Reemplazar espacios por guiones bajos
+- Eliminar duplicados
+- Permitir reemplazar tags específicos
