@@ -2,6 +2,32 @@
 
 Un script completo en Python para gestionar tags en archivos `.qmd` de Quarto con capacidades de normalización, reemplazo, eliminación y adición de tags.
 
+## 📝 Changelog
+
+### v1.1.0 (17 Diciembre 2025)
+- ✅ **CORREGIDO**: Separador YAML `---` ahora tiene salto de línea correcto antes del contenido
+- ✅ **CORREGIDO**: `--add` ya no agrega tags a archivos que no tienen tags
+- ✅ **NUEVO**: Script de reparación `fix_qmd_files.py` para archivos afectados
+- ℹ️ Ahora solo procesa archivos que YA tienen tags cuando se usa `--add`
+
+### v1.0.0 (17 Diciembre 2025)
+- Lanzamiento inicial
+
+## 🔧 Si Actualizaste desde v1.0.0
+
+Si ya usaste la versión anterior del script, puede que algunos archivos tengan:
+1. El separador `---` pegado al contenido
+2. Tags agregados a archivos que no deberían tenerlos
+
+**Solución rápida:**
+```bash
+# Reparar separadores
+python fix_qmd_files.py --fix-separator --recursive
+
+# Ver guía completa
+cat REPARACION.md
+```
+
 ## 📋 Características
 
 - ✅ **Normalización automática**: Convierte tags a minúsculas, elimina tildes y caracteres especiales
@@ -97,6 +123,8 @@ python qmd_tag_manager.py --remove "tag_obsoleto" "otro_tag_viejo"
 ```bash
 python qmd_tag_manager.py --add "supply_chain" "logistics" "business_management"
 ```
+
+**⚠️ IMPORTANTE**: El comando `--add` solo agrega tags a archivos que **YA tienen** una sección de tags. Los archivos sin tags serán omitidos automáticamente. Esto previene agregar tags a archivos que no deberían tenerlos.
 
 ### 6. Combinación de operaciones
 
