@@ -19,6 +19,18 @@ draft: false
 
 ## Mi contenido empieza aquí
 ```
+## Uso de entorno conda (opcional)
+
+### 1. Creamos el entorno para el script
+```bash
+conda create --name script_tag_manager python=3.14 pyyaml 
+```
+
+### 2. Activamos el entorno
+```bash
+conda activate econblog
+```
+
 
 ## 🚀 Uso Rápido
 
