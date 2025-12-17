@@ -26,22 +26,22 @@ draft: false
 
 ```bash
 # Ver qué se cambiaría (sin modificar)
-python fix_qmd_files_v2.py --directory ./posts --dry-run
+python fix_qmd_files.py --directory /home/achalmaedison/Documents/publicaciones --recursive --dry-run
 
 # Aplicar la corrección
-python fix_qmd_files_v2.py --directory ./posts
+python fix_qmd_files.py --directory /home/achalmaedison/Documents/publicaciones --recursive
 ```
 
 ### Para procesar recursivamente todos los subdirectorios:
 
 ```bash
-python fix_qmd_files_v2.py --directory ./posts --recursive
+python fix_qmd_files.py --directory /home/achalmaedison/Documents/publicaciones --recursive
 ```
 
 ### Para un archivo específico:
 
 ```bash
-python fix_qmd_files_v2.py --file mi_archivo.qmd
+python fix_qmd_files.py --file mi_archivo.qmd
 ```
 
 ## 📋 Ejemplos
@@ -103,15 +103,15 @@ Puedes ejecutarlo 1, 2, 3, 10 veces y siempre produce el mismo resultado:
 
 ```bash
 # Primera ejecución
-python fix_qmd_files_v2.py --file archivo.qmd
+python fix_qmd_files.py --file archivo.qmd
 # ✅ Archivo corregido
 
 # Segunda ejecución
-python fix_qmd_files_v2.py --file archivo.qmd
+python fix_qmd_files.py --file archivo.qmd
 # ✓ OK (formato correcto)
 
 # Tercera ejecución
-python fix_qmd_files_v2.py --file archivo.qmd
+python fix_qmd_files.py --file archivo.qmd
 # ✓ OK (formato correcto)
 ```
 
@@ -119,12 +119,12 @@ python fix_qmd_files_v2.py --file archivo.qmd
 Siempre puedes verificar qué cambiará antes de aplicarlo:
 
 ```bash
-python fix_qmd_files_v2.py --directory ./posts --recursive --dry-run
+python fix_qmd_files.py --directory ./posts --recursive --dry-run
 ```
 
 ### 3. Verbose para más detalles
 ```bash
-python fix_qmd_files_v2.py --directory ./posts --verbose
+python fix_qmd_files.py --directory ./posts --verbose
 ```
 
 ## 🔄 Flujo de trabajo recomendado
@@ -134,10 +134,10 @@ python fix_qmd_files_v2.py --directory ./posts --verbose
 cp -r ./posts ./posts_backup_$(date +%Y%m%d)
 
 # 2. Ver qué se cambiaría
-python fix_qmd_files_v2.py --directory ./posts --recursive --dry-run
+python fix_qmd_files.py --directory ./posts --recursive --dry-run
 
 # 3. Aplicar cambios
-python fix_qmd_files_v2.py --directory ./posts --recursive
+python fix_qmd_files.py --directory ./posts --recursive
 
 # 4. Verificar algunos archivos manualmente
 head -20 ./posts/mi_archivo.qmd
@@ -429,8 +429,6 @@ Si encuentras más problemas:
 | Línea después de primer `---` | ❌ Agregaba línea | ✅ No agrega línea |
 | Línea antes de segundo `---` | ❌ Agregaba múltiples | ✅ Solo normaliza después |
 | Simplicidad | Complejo | Simple y claro |
-
-**Recomendación:** Usa `fix_qmd_files_v2.py` (esta versión).
 
 ---
 
