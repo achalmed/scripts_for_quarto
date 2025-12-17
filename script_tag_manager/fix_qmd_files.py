@@ -9,12 +9,12 @@ import re
 from pathlib import Path
 import argparse
 
-
 def fix_yaml_separator(filepath: Path, dry_run: bool = False) -> bool:
     """
-    Repara el separador YAML de cierre cuando está pegado al contenido
-    o cuando no hay línea en blanco después del bloque YAML.
-    NO modifica el --- de apertura.
+    Repara el separador YAML de cierre cuando está pegado al final de una línea
+    y asegura exactamente UNA línea en blanco después del --- de cierre.
+    Es idempotente: ejecutarlo varias veces no agrega más líneas.
+    NO agrega nada después del --- de apertura ni al inicio del archivo.
     """
     try:
         with open(filepath, 'r', encoding='utf-8') as f:
@@ -23,27 +23,38 @@ def fix_yaml_separator(filepath: Path, dry_run: bool = False) -> bool:
         original_content = content
         changed = False
 
-        # 1. Caso principal: --- pegado al final de una línea (ej: comentario---\n## Título)
-        if re.search(r'([^\n])---\s*\n', content, re.MULTILINE):
-            content = re.sub(r'([^\n])---\s*\n', r'\1\n---\n', content, flags=re.MULTILINE)
+        # 1. Corregir --- pegado al final de una línea (incluso con espacios antes)
+        pattern_pegged = r'([^\n]+?)(\s*)---\s*\n'
+        if re.search(pattern_pegged, content, re.MULTILINE):
+            content = re.sub(
+                pattern_pegged,
+                r'\1\2\n---\n',  # mantiene espacios previos si los había
+                content,
+                flags=re.MULTILINE
+            )
             changed = True
 
-        # 2. Asegurar línea en blanco DESPUÉS del --- de cierre (pero NO antes del primero)
-        # Buscamos el bloque YAML completo: desde primer --- hasta segundo ---
-        yaml_block_match = re.search(r'^---\s*\n(.*?)\n---', content, re.DOTALL)
-        if yaml_block_match:
-            end_pos = yaml_block_match.end()
-            after_yaml = content[end_pos:]
+        # 2. Asegurar exactamente UNA línea en blanco después del --- de cierre
+        # Buscamos todo el frontmatter YAML: desde el inicio del archivo hasta el --- de cierre
+        # seguido de espacios opcionales y saltos de línea opcionales
+        yaml_match = re.match(r'^---\s*\n(.*?)\n---\s*\n*(.*)$', content, re.DOTALL)
+        if yaml_match:
+            yaml_header = yaml_match.group(0)  # incluye los --- y lo que haya después hasta el contenido
+            body = yaml_match.group(2)         # contenido después del frontmatter
 
-            # Si después del --- de cierre no hay al menos una línea en blanco antes del contenido real
-            if not re.match(r'\s*\n\s*\n', after_yaml):  # no hay \n\n o equivalente
-                # Insertamos una línea en blanco justo después del --- de cierre
-                content = content[:end_pos] + '\n' + content[end_pos:]
+            # Si después del --- de cierre NO hay exactamente una línea en blanco
+            # (es decir, no termina con exactamente \n\n o \n al final del archivo)
+            if not yaml_header.endswith('\n\n') and body != '':
+                # Agregamos solo lo necesario para tener \n\n al final del header
+                content = yaml_header.rstrip('\n') + '\n\n' + body
+                changed = True
+            elif yaml_header.endswith('\n') and body == '':  # archivo termina justo después del ---
+                content = yaml_header + '\n'
                 changed = True
 
-        # 3. Caso raro: contenido pegado directamente sin salto (---Titulo)
-        if re.search(r'---([^\s\n])', content):
-            content = re.sub(r'---([^\s\n])', r'---\n\1', content)
+        # 3. Caso raro: contenido pegado directamente después de --- sin salto alguno
+        if re.search(r'---\s*([^\s\n])', content):
+            content = re.sub(r'---\s*([^\s\n])', r'---\n\n\1', content)
             changed = True
 
         if changed:
@@ -62,6 +73,7 @@ def fix_yaml_separator(filepath: Path, dry_run: bool = False) -> bool:
     except Exception as e:
         print(f"❌ Error procesando {filepath}: {e}")
         return False
+
 
 def remove_unwanted_tags(filepath: Path, dry_run: bool = False) -> bool:
     """
