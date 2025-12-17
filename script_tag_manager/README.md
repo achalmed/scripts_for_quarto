@@ -41,14 +41,14 @@ cat REPARACION.md
 
 ## 🚀 Instalación
 
-### Requisitos previos
-
+### 1. Creamos el entorno para el script
 ```bash
-# Python 3.6 o superior
-python --version
+conda create --name script_tag_manager python=3.14 pyyaml 
+```
 
-# Instalar dependencias
-pip install pyyaml
+### 2. Activamos el entorno
+```bash
+conda activate script_tag_manager
 ```
 
 ### Descargar el script

@@ -28,7 +28,7 @@ conda create --name script_tag_manager python=3.14 pyyaml
 
 ### 2. Activamos el entorno
 ```bash
-conda activate econblog
+conda activate script_tag_manager
 ```
 
 
