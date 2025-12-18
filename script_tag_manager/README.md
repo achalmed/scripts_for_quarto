@@ -139,7 +139,7 @@ python qmd_tag_manager.py \
 ### 7. Procesar un directorio específico
 
 ```bash
-python qmd_tag_manager.py --directory "/ruta/a/tus/posts" --normalize
+python qmd_tag_manager.py --directory /home/achalmaedison/Documents/publicaciones --normalize
 ```
 
 ### 8. Modo dry-run (simular sin guardar)
@@ -155,7 +155,7 @@ python qmd_tag_manager.py --normalize --dry-run
 ### 9. Procesar recursivamente
 
 ```bash
-python qmd_tag_manager.py --directory "/ruta/base" --normalize --recursive
+python qmd_tag_manager.py --directory /home/achalmaedison/Documents/publicaciones --normalize --recursive
 ```
 
 **Qué hace:**
