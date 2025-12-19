@@ -1,5 +1,7 @@
 # QMD Tag Manager - Gestor de Tags para Archivos Quarto
 
+#readme
+
 Un script completo en Python para gestionar tags en archivos `.qmd` de Quarto con capacidades de normalización, reemplazo, eliminación y adición de tags.
 
 ## 📝 Changelog

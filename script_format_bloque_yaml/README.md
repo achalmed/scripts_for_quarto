@@ -1,4 +1,6 @@
-# Guía de Uso - fix_qmd_files_v2.py
+# Guía de Uso - fix_qmd_files.py
+
+#readme
 
 ## 🎯 Qué hace este script
 
