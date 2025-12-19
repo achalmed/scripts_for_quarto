@@ -2,222 +2,238 @@
 
 ## 📋 Descripción
 
-Script Bash automatizado que genera archivos de índice (.qmd) para blogs construidos con Quarto. Escanea carpetas organizadas por fecha y crea listas numeradas con enlaces directos a publicaciones y sus versiones PDF.
+Script Bash que genera automáticamente archivos de índice (.qmd) para blogs Quarto. **Soporta dos estructuras diferentes**:
 
-## 🎯 Características
+1. **Página web completa** (con nivel blog/)
+2. **Blog independiente** (sin nivel blog/)
 
-- ✅ Generación automática de índices en formato Quarto Markdown
-- 📅 Detección automática de posts organizados por fecha (YYYY-MM-DD-titulo)
-- 🔗 Generación de enlaces a páginas web y archivos PDF
-- 📝 Títulos legibles con capitalización automática
-- 🎨 Iconos de Font Awesome para enlaces PDF
-- 📊 Logging detallado del proceso
-- ⚠️ Validaciones de seguridad y manejo de errores
+## 🎯 Estructuras Soportadas
 
-## 📂 Estructura Esperada
+### Estructura 1: Página Web Completa
 ```
-blog-principal/
-├── subblog-1/
-│   ├── 2024-01-15-primera-publicacion/
-│   │   └── index.qmd
-│   ├── 2024-02-20-segunda-publicacion/
-│   │   └── index.qmd
-│   └── _contenido_subblog-1.qmd  # ← Generado automáticamente
-├── subblog-2/
-│   ├── 2024-03-10-otra-publicacion/
-│   │   └── index.qmd
-│   └── _contenido_subblog-2.qmd  # ← Generado automáticamente
+mi-sitio/
+├── blog/                          # ← Nivel extra
+│   ├── posts/
+│   │   ├── 2023-05-12-titulo/
+│   │   │   └── index.qmd
+│   │   └── _contenido_posts.qmd  # ← Generado
+│   ├── index.qmd
+│   └── sidebar.jpg
 └── ...
 ```
 
-## 🚀 Instalación
+**URL generada:** `https://dominio.com/blog/posts/2023-05-12-titulo/`
 
-### Requisitos Previos
-
-- Bash 4.0 o superior
-- Sistema operativo Unix/Linux/macOS o WSL en Windows
-- Estructura de directorios compatible con Quarto
-
-### Pasos de Instalación
-
-1. **Clonar o descargar el script:**
-```bash
-# Crear directorio para el script
-mkdir -p ~/scripts/blog-tools
-cd ~/scripts/blog-tools
-
-# Descargar el script (sustituir con tu método preferido)
-curl -O [URL_del_script]/generar_indices.sh
-# O copiar manualmente el script
+### Estructura 2: Blog Independiente
+```
+actus-mercator/
+├── posts/                         # ← Directo, sin blog/
+│   ├── 2022-01-23-titulo/
+│   │   └── index.qmd
+│   └── _contenido_posts.qmd      # ← Generado
+├── inteligencia-comercial/
+│   ├── 2025-05-15-titulo/
+│   │   └── index.qmd
+│   └── _contenido_inteligencia-comercial.qmd  # ← Generado
+└── index.qmd
 ```
 
-2. **Dar permisos de ejecución:**
+**URL generada:** `https://dominio.com/posts/2022-01-23-titulo/`
+
+## 🚀 Instalación y Configuración
+
+### 1. Descargar el Script
 ```bash
+# Crear directorio para scripts
+mkdir -p ~/scripts
+
+# Descargar o crear el script
+cd ~/scripts
+nano generar_indices.sh
+# [Pegar el contenido del script]
+
+# Dar permisos de ejecución
 chmod +x generar_indices.sh
 ```
 
-3. **Configurar variables:**
+### 2. Configurar Variables
 
-Editar el archivo y ajustar las variables de configuración:
+Editar las siguientes líneas según tu proyecto:
 ```bash
-nano generar_indices.sh
+# CONFIGURACIÓN PARA PÁGINA WEB
+main_blog="/home/usuario/proyectos/mi-sitio/blog"
+base_url="https://achalmaedison.netlify.app"
+blog_type="auto"  # Detecta automáticamente
+
+# CONFIGURACIÓN PARA BLOG INDEPENDIENTE
+main_blog="/home/usuario/proyectos/actus-mercator"
+base_url="https://actus-mercator.netlify.app"
+blog_type="auto"  # Detecta automáticamente
 ```
 
-Modificar estas líneas según tu estructura:
+**Opciones para `blog_type`:**
+- `"auto"` - Detecta automáticamente (recomendado)
+- `"website"` - Fuerza estructura de página web (blog/posts/)
+- `"blog"` - Fuerza estructura de blog independiente (posts/)
+
+### 3. Crear Alias (Opcional)
+
+Para ejecutar desde cualquier directorio:
 ```bash
-main_blog="../gestion-empresarial"  # Cambiar a tu blog
-base_url="https://achalmaedison.netlify.app"  # Tu URL
+# Agregar al .bashrc o .zshrc
+echo 'alias generar-indices="~/scripts/generar_indices.sh"' >> ~/.bashrc
+source ~/.bashrc
 ```
 
 ## 💻 Uso
 
 ### Uso Básico
 ```bash
-# Ejecutar desde el directorio del script
+# Ejecutar directamente
+cd ~/scripts
 ./generar_indices.sh
 ```
 
-### Uso desde Cualquier Directorio
+### Uso con Alias
 ```bash
-# Agregar alias al .bashrc o .zshrc
-echo "alias generar-indices='~/scripts/blog-tools/generar_indices.sh'" >> ~/.bashrc
-source ~/.bashrc
-
-# Ahora puedes ejecutar desde cualquier lugar
+# Desde cualquier directorio
 generar-indices
 ```
 
-### Procesar Diferentes Blogs
-```bash
-# Método 1: Editar la variable main_blog antes de ejecutar
-main_blog="../finanzas" ./generar_indices.sh
+### Procesar Múltiples Blogs
 
-# Método 2: Crear scripts específicos para cada blog
-cp generar_indices.sh generar_indices_finanzas.sh
-# Editar generar_indices_finanzas.sh y cambiar main_blog
+**Opción 1: Cambiar configuración**
+```bash
+# Editar el script antes de ejecutar
+nano ~/scripts/generar_indices.sh
+# Cambiar main_blog y base_url
+# Guardar y ejecutar
+./generar_indices.sh
 ```
 
-## 📖 Ejemplos
+**Opción 2: Crear scripts específicos**
+```bash
+cd ~/scripts
 
-### Ejemplo de Salida Generada
+# Para página web
+cp generar_indices.sh generar_indices_web.sh
+nano generar_indices_web.sh
+# Configurar: main_blog="/ruta/a/sitio/blog"
+#            base_url="https://achalmaedison.netlify.app"
 
-**Archivo:** `_contenido_introduccion.qmd`
+# Para blog independiente
+cp generar_indices.sh generar_indices_actus.sh
+nano generar_indices_actus.sh
+# Configurar: main_blog="/ruta/a/actus-mercator"
+#            base_url="https://actus-mercator.netlify.app"
+
+# Crear alias
+echo 'alias indices-web="~/scripts/generar_indices_web.sh"' >> ~/.bashrc
+echo 'alias indices-actus="~/scripts/generar_indices_actus.sh"' >> ~/.bashrc
+source ~/.bashrc
+```
+
+## 📖 Ejemplos de Salida
+
+### Para Página Web (`blog/posts/`)
+
+**Archivo generado:** `blog/posts/_contenido_posts.qmd`
 ```markdown
----
-title: "Índice de Contenidos - introduccion"
-date: "2025-01-19"
-format: html
----
-
-# Publicaciones
-
-1. [{{< fa regular file-pdf >}}](https://achalmaedison.netlify.app/gestion-empresarial/introduccion/2024-01-15-conceptos-basicos/index.pdf) [Conceptos Basicos](https://achalmaedison.netlify.app/gestion-empresarial/introduccion/2024-01-15-conceptos-basicos)
-2. [{{< fa regular file-pdf >}}](https://achalmaedison.netlify.app/gestion-empresarial/introduccion/2024-02-20-metodologias-agiles/index.pdf) [Metodologias Agiles](https://achalmaedison.netlify.app/gestion-empresarial/introduccion/2024-02-20-metodologias-agiles)
+1. [{{< fa regular file-pdf >}}](https://achalmaedison.netlify.app/blog/posts/2023-05-12-la-economia-peruana-entre-1970-1990/index.pdf) [La Economia Peruana Entre 1970 1990](https://achalmaedison.netlify.app/blog/posts/2023-05-12-la-economia-peruana-entre-1970-1990)
+2. [{{< fa regular file-pdf >}}](https://achalmaedison.netlify.app/blog/posts/2023-05-16-economia-regional/index.pdf) [Economia Regional](https://achalmaedison.netlify.app/blog/posts/2023-05-16-economia-regional)
 ```
 
-### Ejemplo de Log de Ejecución
+### Para Blog Independiente (`posts/`)
+
+**Archivo generado:** `posts/_contenido_posts.qmd`
+```markdown
+1. [{{< fa regular file-pdf >}}](https://actus-mercator.netlify.app/posts/2022-01-23-cadena-de-suministros/index.pdf) [Cadena De Suministros](https://actus-mercator.netlify.app/posts/2022-01-23-cadena-de-suministros)
+2. [{{< fa regular file-pdf >}}](https://actus-mercator.netlify.app/posts/2021-07-13-plan-de-negocio-exportacion-de-tuna/index.pdf) [Plan De Negocio Exportacion De Tuna](https://actus-mercator.netlify.app/posts/2021-07-13-plan-de-negocio-exportacion-de-tuna)
 ```
-[2025-01-19 10:30:45] ℹ️  Iniciando procesamiento del blog: ../gestion-empresarial
-[2025-01-19 10:30:45] ℹ️  URL base configurada: https://achalmaedison.netlify.app
-[2025-01-19 10:30:45] ℹ️  Procesando subblog: introduccion
-[2025-01-19 10:30:45] ✅ Generado: ../gestion-empresarial/introduccion/_contenido_introduccion.qmd (12 publicaciones)
-[2025-01-19 10:30:45] ℹ️  Procesando subblog: avanzado
-[2025-01-19 10:30:45] ✅ Generado: ../gestion-empresarial/avanzado/_contenido_avanzado.qmd (8 publicaciones)
+
+## 📊 Log de Ejecución
+```
+[2025-01-19 15:30:00] ℹ️  Estructura detectada automáticamente: blog
+[2025-01-19 15:30:00] ℹ️  Iniciando procesamiento del blog: /home/usuario/actus-mercator
+[2025-01-19 15:30:00] ℹ️  URL base configurada: https://actus-mercator.netlify.app
+[2025-01-19 15:30:00] ℹ️  Tipo de estructura: blog
+[2025-01-19 15:30:00] ℹ️  Procesando subblog: posts
+[2025-01-19 15:30:00] ✅ Generado: /home/usuario/actus-mercator/posts/_contenido_posts.qmd (15 publicaciones)
+[2025-01-19 15:30:00] ℹ️  Procesando subblog: inteligencia-comercial
+[2025-01-19 15:30:00] ✅ Generado: /home/usuario/actus-mercator/inteligencia-comercial/_contenido_inteligencia-comercial.qmd (8 publicaciones)
 
 ════════════════════════════════════════════════════════════════
-[2025-01-19 10:30:45] ✅ Proceso completado exitosamente
-[2025-01-19 10:30:45] ℹ️  Total de archivos de índice generados: 2
+[2025-01-19 15:30:00] ✅ Proceso completado exitosamente
+[2025-01-19 15:30:00] ℹ️  Total de archivos de índice generados: 2
+[2025-01-19 15:30:00] ℹ️  Total de publicaciones procesadas: 23
+[2025-01-19 15:30:00] ℹ️  Estructura utilizada: blog
 ════════════════════════════════════════════════════════════════
-```
-
-## 🔧 Personalización
-
-### Modificar el Formato de los Enlaces
-
-Editar la función `convert_to_link`:
-```bash
-# Para agregar fecha al título
-local title="[$(echo "$folder_name" | sed 's/^\([0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}\).*/\1/')] $title"
-
-# Para usar diferentes iconos
-echo -e "[📄]($pdf_url) [$title]($url)"  # Emoji directo
-echo -e "[PDF]($pdf_url) [$title]($url)" # Texto simple
-```
-
-### Agregar Encabezado Personalizado
-
-Modificar la sección del archivo de salida:
-```bash
-cat > "$output_file" << EOF
----
-title: "Índice - $subblog_name"
-author: "Edison Achalma"
-date: "$(date '+%Y-%m-%d')"
-categories: [índice, contenido]
----
-
-:::{.callout-note}
-Índice generado automáticamente el $(date '+%d de %B de %Y')
-:::
-
-# 📚 Publicaciones
-
-EOF
 ```
 
 ## ❓ Solución de Problemas
 
-### El script no encuentra el directorio
+### El script no detecta la estructura correctamente
 ```bash
-# Verificar la ruta relativa
-ls -la ../gestion-empresarial
-
-# O usar ruta absoluta
-main_blog="/home/usuario/proyectos/blog/gestion-empresarial"
+# Forzar el tipo manualmente
+blog_type="blog"      # Para blogs independientes
+# o
+blog_type="website"   # Para páginas web
 ```
 
-### Los enlaces no funcionan
+### Las URLs no son correctas
 
-- Verificar que `base_url` no tenga barra final
-- Confirmar la estructura de URLs de tu sitio Quarto
-- Revisar que los archivos PDF se generen correctamente
+1. Verificar que `base_url` NO tenga barra final
+2. Confirmar el valor de `blog_type`
+3. Revisar la estructura real de tu sitio
 
-### Permisos denegados
+### Carpetas ignoradas
+
+El script ignora automáticamente:
+- Carpetas que empiezan con `_` o `.`
+- `site_libs`, `_partials`, etc.
+
+Para ajustar, edita la sección:
 ```bash
-chmod +x generar_indices.sh
-# O ejecutar con bash explícitamente
-bash generar_indices.sh
+if [[ "$subblog_name" =~ ^[._] ]] || \
+   [[ "$subblog_name" == "tu_carpeta_a_ignorar" ]]; then
+    continue
+fi
 ```
 
-## 🤝 Contribuciones
+## 🔄 Integración con Quarto
 
-Las contribuciones son bienvenidas. Por favor:
+### Incluir el índice en otro archivo
+```markdown
+---
+title: "Mi Blog"
+---
 
-1. Fork el proyecto
-2. Crea una rama para tu feature (`git checkout -b feature/mejora`)
-3. Commit tus cambios (`git commit -m 'Agregar nueva funcionalidad'`)
-4. Push a la rama (`git push origin feature/mejora`)
-5. Abre un Pull Request
+## Publicaciones Recientes
 
-## 📄 Licencia
+{{< include posts/_contenido_posts.qmd >}}
+```
 
-Este proyecto está bajo la Licencia MIT. Ver archivo `LICENSE` para más detalles.
+### Workflow automatizado
+```bash
+#!/bin/bash
+# Script para regenerar índices y renderizar
+
+# Generar índices
+~/scripts/generar_indices.sh
+
+# Renderizar el sitio
+quarto render
+
+echo "✅ Sitio actualizado con nuevos índices"
+```
 
 ## 👤 Autor
 
 **Edison Achalma**
 - Website: [achalmaedison.netlify.app](https://achalmaedison.netlify.app)
+- Blog: [actus-mercator.netlify.app](https://actus-mercator.netlify.app)
 - GitHub: [@achalmed](https://github.com/achalmed)
-- LinkedIn: [achalmaedison](https://www.linkedin.com/in/achalmaedison)
-
-## 📞 Soporte
-
-Si encuentras algún problema o tienes sugerencias:
-
-- 🐛 [Reportar un bug](https://github.com/achalmed/blog-tools/issues)
-- 💡 [Solicitar una feature](https://github.com/achalmed/blog-tools/issues)
-- 💬 [Discusiones](https://github.com/achalmed/blog-tools/discussions)
 
 ---
 
-⭐ Si este proyecto te resulta útil, considera darle una estrella en GitHub
+⭐ **Tip**: Ejecuta este script cada vez que agregues nuevas publicaciones para mantener tus índices actualizados automáticamente.
