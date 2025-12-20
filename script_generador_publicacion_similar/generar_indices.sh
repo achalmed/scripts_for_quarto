@@ -18,9 +18,9 @@
 
 # RUTA ABSOLUTA al directorio del blog que deseas procesar
 # Ejemplos:
-#   - Para página web: "/home/usuario/proyectos/mi-sitio/blog"
-#   - Para blog independiente: "/home/usuario/proyectos/actus-mercator"
-main_blog="/ruta/absoluta/a/tu/blog"
+#   - Para página web:         "/home/achalmaedison/Documents/publicaciones/website-achalma/blog"
+#   - Para blog independiente: "/home/achalmaedison/Documents/publicaciones/axiomata"
+main_blog="/home/achalmaedison/Documents/publicaciones/website-achalma/teching"
 
 # URL base del sitio web (sin barra final)
 # Para página web: "https://achalmaedison.netlify.app"
