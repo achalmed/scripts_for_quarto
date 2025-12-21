@@ -1,0 +1,80 @@
+# =============================================================================
+# ARCHIVO DE CONFIGURACIÓN - Sistema de Gestión de Metadatos Quarto
+# Autor: Edison Achalma
+# Versión: 1.1.0
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# BLOGS PERMITIDOS
+# -----------------------------------------------------------------------------
+# Lista de blogs que serán procesados
+# Si está vacía, se procesarán todos los blogs encontrados
+# Útil para excluir carpetas que no son blogs
+
+allowed_blogs:
+  - axiomata
+  - aequilibria
+  - numerus-scriptum
+  - actus-mercator
+  - res-publica
+  - website-achalma
+  - pecunia-fluxus
+  - optimums
+  - epsilon-y-beta
+  - methodica
+  - chaska
+  - dialectica-y-mercado
+  # Agregar más blogs según necesidad
+
+# -----------------------------------------------------------------------------
+# CARPETAS A EXCLUIR
+# -----------------------------------------------------------------------------
+# Carpetas adicionales que NO son blogs y deben ser ignoradas
+# Nota: _site, _freeze, .git, etc. ya están excluidas por defecto
+
+excluded_folders:
+  - apa                                           # Plantillas APA
+  - notas                                         # Notas personales
+  - borradores                                    # Borradores en proceso
+  - propuesta bicentenario                        # Propuestas específicas
+  - taller unsch como elaborar tesis de pregrado  # Material de taller
+  - practicas preprofesionales                    # Prácticas
+  - mytestproyect                                 # Proyectos de prueba
+  - website-achalma/about
+  - website-achalma/beschikbaarheid
+  - website-achalma/talk
+  # Agregar más carpetas según necesidad
+
+# -----------------------------------------------------------------------------
+# DIRECTORIO DE SALIDA PARA EXCEL
+# -----------------------------------------------------------------------------
+# Ubicación donde se guardarán los archivos Excel generados
+# Puede ser una ruta absoluta o relativa
+# Usar ~ para referirse al home del usuario
+
+excel_output_dir: ~/Documents/scripts/scripts_for_quarto/script_metadata_manager/excel_databases
+
+# =============================================================================
+# NOTAS DE USO
+# =============================================================================
+#
+# 1. ALLOWED_BLOGS:
+#    - Si la lista está vacía [], se procesan todos los blogs
+#    - Si tiene elementos, solo se procesan los listados
+#    - Útil para enfocarse en blogs específicos
+#
+# 2. EXCLUDED_FOLDERS:
+#    - Nombres exactos de carpetas a ignorar
+#    - No usar rutas, solo nombres
+#    - Las carpetas del sistema (_site, etc.) ya están excluidas
+#
+# 3. EXCEL_OUTPUT_DIR:
+#    - Si no existe, se crea automáticamente
+#    - Todos los Excel se guardarán aquí
+#    - Facilita organización centralizada
+#
+# 4. PARA USAR ESTE ARCHIVO:
+#    python quarto_metadata_manager.py create-template ~/Documents/publicaciones \
+#        --config metadata_config.yml
+#
+# =============================================================================

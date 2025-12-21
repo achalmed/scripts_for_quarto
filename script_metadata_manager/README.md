@@ -1,8 +1,18 @@
 # Sistema de Gestión de Metadatos para Blogs Quarto
 
 **Autor:** Edison Achalma  
-**Versión:** 1.0.0  
+**Versión:** 1.1.0  
 **Fecha:** Diciembre 2024
+
+## 🆕 Novedades v1.1
+
+- ✅ **Soporte para `_metadata.yml`**: Herencia automática de configuración
+- ✅ **Configuración personalizable**: Archivo de config para blogs y carpetas
+- ✅ **Detección mejorada**: Reconoce `documentmode` desde `_metadata.yml`
+- ✅ **Corrección de bugs**: Manejo robusto de `citation` (bool vs dict)
+- ✅ **Preservación YAML**: Mejor formato e indentación
+- ✅ **Ubicación configurable**: Define dónde guardar los Excel
+- ✅ **Compatible con LibreOffice**: Formato de instrucciones mejorado
 
 ## 📋 Descripción
 
@@ -23,19 +33,55 @@ Sistema completo para administrar metadatos de múltiples blogs Quarto desde arc
 
 ## 📦 Requisitos
 
-
-### 1. Creamos el entorno para el script
 ```bash
-conda create --name script_tag_manager python=3.14
+# Con conda (recomendado)
+conda create -n metadata_manager python=3.9
+conda activate metadata_manager
+conda install pandas openpyxl pyyaml
+
+# Con pip
+pip install pandas openpyxl pyyaml --break-system-packages
 ```
 
-### 2. Activamos el entorno
-```bash
-conda activate script_tag_manager
-```
+## ⚙️ Configuración Inicial
+
+### 1. Crear archivo de configuración
 
 ```bash
-conda install pandas openpyxl pyyaml 
+python quarto_metadata_manager.py create-config ~/Documents/publicaciones
+```
+
+Esto crea `metadata_config.yml` con:
+
+```yaml
+allowed_blogs:
+  - axiomata
+  - aequilibria
+  - numerus-scriptum
+  # tus blogs aquí
+
+excluded_folders:
+  - apa
+  - notas
+  - borradores
+  # carpetas a ignorar
+
+excel_output_dir: ~/Documents/scripts/.../excel_databases
+```
+
+### 2. Editar configuración
+
+Personaliza el archivo `metadata_config.yml`:
+
+- **`allowed_blogs`**: Lista de blogs a procesar (vacía = todos)
+- **`excluded_folders`**: Carpetas adicionales a ignorar
+- **`excel_output_dir`**: Dónde guardar los Excel generados
+
+### 3. Usar configuración
+
+```bash
+python quarto_metadata_manager.py create-template ~/Documents/publicaciones \
+    --config metadata_config.yml
 ```
 
 ## 🚀 Instalación
