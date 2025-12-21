@@ -23,15 +23,26 @@ Sistema completo para administrar metadatos de múltiples blogs Quarto desde arc
 
 ## 📦 Requisitos
 
+
+### 1. Creamos el entorno para el script
 ```bash
-pip install pandas openpyxl pyyaml --break-system-packages
+conda create --name script_tag_manager python=3.14
+```
+
+### 2. Activamos el entorno
+```bash
+conda activate script_tag_manager
+```
+
+```bash
+conda install pandas openpyxl pyyaml 
 ```
 
 ## 🚀 Instalación
 
 1. Descargar el script:
 ```bash
-wget https://example.com/quarto_metadata_manager.py
+wget https://github.com/achalmed/scripts_for_quarto/blob/main/script_metadata_manager/quarto_metadata_manager.py
 # O copiar el script a tu directorio de trabajo
 ```
 
