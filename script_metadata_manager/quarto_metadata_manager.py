@@ -150,7 +150,8 @@ class QuartoMetadataManager:
         
         Args:
             file_path: Ruta del .qmd
-            use_metadata: Si True, fusiona con _metadata.yml
+            use_metadata: Si True, fusiona con _metadata.yml SOLO para visualización
+                         Si False, retorna solo lo que está en index.qmd
         """
         try:
             with open(file_path, 'r', encoding='utf-8') as f:
@@ -166,7 +167,7 @@ class QuartoMetadataManager:
             if not use_metadata:
                 return index_yaml
             
-            # Buscar _metadata.yml
+            # Para visualización: fusionar pero indicar origen
             metadata_path = self.find_metadata_yml(file_path)
             if not metadata_path:
                 return index_yaml
@@ -188,28 +189,76 @@ class QuartoMetadataManager:
             print(f"⚠️  Error extrayendo YAML de {file_path.name}: {e}")
             return None
     
-    def detect_document_mode(self, yaml_data: Dict) -> str:
-        """Detecta tipo de documento con prioridad a definición explícita"""
-        # 1. Buscar en format.apaquarto-pdf.documentmode
-        if 'format' in yaml_data:
-            formats = yaml_data['format']
-            if isinstance(formats, dict) and 'apaquarto-pdf' in formats:
-                apa_config = formats['apaquarto-pdf']
-                if isinstance(apa_config, dict) and 'documentmode' in apa_config:
-                    mode = apa_config['documentmode']
-                    if mode in ['stu', 'man', 'jou', 'doc']:
-                        return mode
+    def extract_yaml_only_index(self, file_path: Path) -> Optional[Dict]:
+        """
+        Extrae YAML SOLO del index.qmd (sin fusionar con _metadata.yml)
+        Usado para extraer a Excel solo lo que está explícitamente definido
+        """
+        try:
+            with open(file_path, 'r', encoding='utf-8') as f:
+                content = f.read()
+            
+            yaml_match = re.match(r'^---\s*\n(.*?)\n---', content, re.DOTALL)
+            if not yaml_match:
+                return None
+            
+            yaml_content = yaml_match.group(1)
+            return yaml.safe_load(yaml_content) or {}
+            
+        except Exception as e:
+            print(f"⚠️  Error extrayendo YAML de {file_path.name}: {e}")
+            return None
+    
+    def detect_document_mode(self, yaml_data: Dict, file_path: Path) -> str:
+        """
+        Detecta tipo de documento SOLO del index.qmd (sin _metadata.yml)
         
-        # 2. Detectar por campos específicos
-        if 'course' in yaml_data or 'professor' in yaml_data:
-            return 'stu'
-        elif 'journal' in yaml_data and 'volume' in yaml_data:
-            return 'jou'
-        elif 'meta-analysis' in yaml_data:
-            return 'man'
-        
-        # 3. Por defecto jou
-        return 'jou'
+        Prioridad:
+        1. documentmode explícito en index.qmd
+        2. Inferir por campos específicos en index.qmd
+        3. Si no hay nada, retornar None (usará _metadata.yml)
+        """
+        # Extraer YAML solo del index.qmd (sin fusión)
+        try:
+            with open(file_path, 'r', encoding='utf-8') as f:
+                content = f.read()
+            
+            yaml_match = re.match(r'^---\s*\n(.*?)\n---', content, re.DOTALL)
+            if not yaml_match:
+                return None
+            
+            yaml_content = yaml_match.group(1)
+            index_only_yaml = yaml.safe_load(yaml_content) or {}
+            
+            # 1. Buscar documentmode directo en index.qmd
+            if 'documentmode' in index_only_yaml:
+                mode = index_only_yaml['documentmode']
+                if mode in ['stu', 'man', 'jou', 'doc']:
+                    return mode
+            
+            # 2. Buscar en format.apaquarto-pdf.documentmode en index.qmd
+            if 'format' in index_only_yaml:
+                formats = index_only_yaml['format']
+                if isinstance(formats, dict) and 'apaquarto-pdf' in formats:
+                    apa_config = formats['apaquarto-pdf']
+                    if isinstance(apa_config, dict) and 'documentmode' in apa_config:
+                        mode = apa_config['documentmode']
+                        if mode in ['stu', 'man', 'jou', 'doc']:
+                            return mode
+            
+            # 3. Inferir por campos específicos SOLO en index.qmd
+            if 'course' in index_only_yaml or 'professor' in index_only_yaml:
+                return 'stu'
+            elif 'journal' in index_only_yaml and 'volume' in index_only_yaml:
+                return 'jou'
+            elif 'meta-analysis' in index_only_yaml or 'meta_analysis' in index_only_yaml:
+                return 'man'
+            
+            # 4. Si no hay nada en index.qmd, retornar None
+            return None
+            
+        except Exception as e:
+            return None
     
     def collect_index_files(self, blog_name: Optional[str] = None, 
                            verbose: bool = True) -> pd.DataFrame:
@@ -285,7 +334,10 @@ class QuartoMetadataManager:
                             blog_skipped += 1
                             continue
                         
-                        doc_type = self.detect_document_mode(yaml_data)
+                        # Detectar tipo de documento SOLO del index.qmd
+                        doc_type = self.detect_document_mode(yaml_data, file_path)
+                        if doc_type is None:
+                            doc_type = 'jou'  # Default si no está definido en ningún lugar
                         
                         try:
                             creation_time = datetime.fromtimestamp(file_path.stat().st_ctime)
@@ -362,7 +414,9 @@ class QuartoMetadataManager:
             ws.cell(row_idx, 3, row_data['tipo_documento'])
             
             file_path = self.base_path / row_data['ruta_archivo']
-            yaml_data = self.extract_yaml_from_qmd(file_path)
+            
+            # IMPORTANTE: Extraer SOLO lo que está en index.qmd (sin _metadata.yml)
+            yaml_data = self.extract_yaml_only_index(file_path)
             
             if yaml_data:
                 self._fill_excel_row_from_yaml(ws, row_idx, yaml_data, columns)
@@ -948,20 +1002,31 @@ class QuartoMetadataManager:
                 yaml_data['meta-analysis'] = new_value
                 changes.append(f"meta-analysis: {old_value} → {new_value}")
         
-        # Tipo de documento
+        # Tipo de documento - SOLO actualizar si existe en index.qmd
         if 'tipo_documento' in row and not pd.isna(row['tipo_documento']):
             new_type = row['tipo_documento'].lower()
             if new_type in ['stu', 'man', 'jou', 'doc']:
-                # Actualizar en format.apaquarto-pdf.documentmode
-                if 'format' not in yaml_data:
-                    yaml_data['format'] = {}
-                if 'apaquarto-pdf' not in yaml_data['format']:
-                    yaml_data['format']['apaquarto-pdf'] = {}
-                
-                old_type = yaml_data['format']['apaquarto-pdf'].get('documentmode')
-                if old_type != new_type:
-                    yaml_data['format']['apaquarto-pdf']['documentmode'] = new_type
-                    changes.append(f"documentmode: {old_type} → {new_type}")
+                # Verificar si documentmode ya existe en el index.qmd
+                # Si existe como campo directo, actualizar ahí
+                if 'documentmode' in yaml_data:
+                    old_type = yaml_data.get('documentmode')
+                    if old_type != new_type:
+                        yaml_data['documentmode'] = new_type
+                        changes.append(f"documentmode: {old_type} → {new_type}")
+                # Si existe en format.apaquarto-pdf, actualizar ahí
+                elif 'format' in yaml_data and isinstance(yaml_data['format'], dict):
+                    if 'apaquarto-pdf' in yaml_data['format']:
+                        apa_config = yaml_data['format']['apaquarto-pdf']
+                        if isinstance(apa_config, dict):
+                            old_type = apa_config.get('documentmode')
+                            if old_type != new_type:
+                                yaml_data['format']['apaquarto-pdf']['documentmode'] = new_type
+                                changes.append(f"format.apaquarto-pdf.documentmode: {old_type} → {new_type}")
+                # Si NO existe en index.qmd, no agregarlo (significa que usa _metadata.yml)
+                # Solo informar si hay cambio
+                else:
+                    # No crear el campo si no existe, solo registrar el cambio
+                    pass
         
         # Listas
         for field in ['keywords', 'tags', 'categories']:
@@ -997,11 +1062,14 @@ class QuartoMetadataManager:
                 yaml_data['citation']['pdf-url'] = new_url
                 changes.append(f"citation.pdf-url actualizada")
         
-        # Authors
+        # Authors - SOLO actualizar si ya existen en index.qmd
         authors_data = []
+        has_author_in_row = False
+        
         for i in range(1, 4):
             prefix = f'author_{i}_'
             if f'{prefix}name' in row and not pd.isna(row[f'{prefix}name']):
+                has_author_in_row = True
                 author = {'name': row[f'{prefix}name']}
                 
                 if f'{prefix}corresponding' in row and not pd.isna(row[f'{prefix}corresponding']):
@@ -1032,11 +1100,18 @@ class QuartoMetadataManager:
                 
                 authors_data.append(author)
         
-        if authors_data:
+        # Solo actualizar authors si:
+        # 1. Hay autores en el Excel Y
+        # 2. Ya existen autores en el index.qmd
+        if authors_data and 'author' in yaml_data:
             old_authors = yaml_data.get('author', [])
             if old_authors != authors_data:
                 yaml_data['author'] = authors_data
                 changes.append(f"author: actualizado ({len(authors_data)} autores)")
+        elif authors_data and has_author_in_row:
+            # Si no hay author en yaml_data pero sí en Excel, informar pero NO agregar
+            # (significa que usa _metadata.yml)
+            pass
         
         return yaml_data
 
