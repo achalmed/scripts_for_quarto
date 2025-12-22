@@ -993,8 +993,8 @@ class QuartoMetadataManager:
             print("💡 Para aplicar cambios, ejecute sin --dry-run\n")
     
     def _update_single_qmd(self, file_path: Path, row: pd.Series, 
-                          dry_run: bool, current: int, total: int) -> bool:
-        """Actualiza un archivo QMD individual con datos del Excel"""
+                        dry_run: bool, current: int, total: int) -> bool:
+        """Actualiza archivo QMD preservando orden y formato"""
         with open(file_path, 'r', encoding='utf-8') as f:
             content = f.read()
         
@@ -1018,23 +1018,29 @@ class QuartoMetadataManager:
         print(f"\n[{current}/{total}] {icon} {action}: {file_path.parent.name}/{file_path.name}")
         print(f"   📝 Cambios detectados: {len(changes)}")
         
-        for i, change in enumerate(changes[:5], 1):
+        for i, change in enumerate(changes[:10], 1):  # Mostrar hasta 10 cambios
             print(f"      {i}. {change}")
         
-        if len(changes) > 5:
-            print(f"      ... y {len(changes) - 5} cambios más")
+        if len(changes) > 10:
+            print(f"      ... y {len(changes) - 10} cambios más")
         
         if dry_run:
             return True
         
+        # YAML con formato limpio (sin enters extras)
         new_yaml_str = yaml.dump(
             updated_yaml, 
             allow_unicode=True,
             default_flow_style=False,
             sort_keys=False,
             indent=2,
-            width=80
+            width=80,
+            default_style='"' if any(isinstance(v, str) and '\n' in v for v in updated_yaml.values()) else None
         )
+        
+        # Limpiar enters extras en abstract y description
+        new_yaml_str = re.sub(r"abstract: '([^']+)'\s+", lambda m: f"abstract: '{m.group(1).strip()}'\n", new_yaml_str)
+        new_yaml_str = re.sub(r"description: '([^']+)'\s+", lambda m: f"description: '{m.group(1).strip()}'\n", new_yaml_str)
         
         new_content = f"---\n{new_yaml_str}---{content[yaml_match.end():]}"
         
@@ -1045,58 +1051,132 @@ class QuartoMetadataManager:
     
     def _apply_excel_row_to_yaml(self, yaml_data: Dict, row: pd.Series, 
                                 changes: List[str]) -> Dict:
-        """Aplica cambios desde una fila de Excel al YAML"""
+        """
+        Aplica cambios desde Excel al YAML con ACTUALIZACIÓN COMPLETA
         
+        - Actualiza TODOS los campos (incluyendo title, shorttitle, etc.)
+        - Elimina campos si están vacíos en Excel
+        - Convierte booleanos correctamente (TRUE/FALSE → true/false)
+        - Limpia texto sin enters extras
+        """
+        
+        # ORDEN CORRECTO de campos YAML (para mantener estructura)
+        field_order = [
+            'documentmode', 'course', 'professor', 'duedate', 'note',
+            'journal', 'volume', 'copyrightnotice', 'copyrightext',
+            'image', 'title', 'subtitle', 'shorttitle', 'abstract',
+            'keywords', 'categories', 'tags', 'author-note', 'description',
+            'eval', 'citation', 'date', 'draft', 'bibliography',
+            'floatsintext', 'numbered-lines', 'meta-analysis', 'mask', 'author'
+        ]
+        
+        # Crear nuevo YAML ordenado
+        new_yaml = {}
+        
+        # Procesar cada campo en orden
+        for field in field_order:
+            if field in yaml_data:
+                new_yaml[field] = yaml_data[field]
+        
+        # Agregar campos que no están en el orden pero existen
+        for key, value in yaml_data.items():
+            if key not in new_yaml:
+                new_yaml[key] = value
+        
+        yaml_data = new_yaml
+        
+        # MAPEO de campos Excel → YAML
         simple_fields = {
-            'title': 'title', 'shorttitle': 'shorttitle', 'subtitle': 'subtitle',
-            'date': 'date', 'draft': 'draft', 'abstract': 'abstract',
-            'description': 'description', 'image': 'image', 'eval': 'eval',
-            'bibliography': 'bibliography', 'course': 'course', 'professor': 'professor',
-            'duedate': 'duedate', 'note': 'note', 'journal': 'journal',
-            'volume': 'volume', 'copyrightnotice': 'copyrightnotice',
-            'copyrightext': 'copyrightext', 'floatsintext': 'floatsintext',
+            'title': 'title',
+            'shorttitle': 'shorttitle',
+            'subtitle': 'subtitle',
+            'date': 'date',
+            'draft': 'draft',
+            'abstract': 'abstract',
+            'description': 'description',
+            'image': 'image',
+            'eval': 'eval',
+            'bibliography': 'bibliography',
+            'course': 'course',
+            'professor': 'professor',
+            'duedate': 'duedate',
+            'note': 'note',
+            'journal': 'journal',
+            'volume': 'volume',
+            'copyrightnotice': 'copyrightnotice',
+            'copyrightext': 'copyrightext',
+            'floatsintext': 'floatsintext',
             'mask': 'mask'
         }
         
+        # PROCESAR CAMPOS SIMPLES
         for excel_field, yaml_field in simple_fields.items():
-            if excel_field in row and not pd.isna(row[excel_field]):
-                new_value = row[excel_field]
-                old_value = yaml_data.get(yaml_field)
+            if excel_field not in row:
+                continue
                 
-                if isinstance(new_value, str) and new_value.upper() in ['TRUE', 'FALSE']:
-                    new_value = new_value.upper() == 'TRUE'
-                
-                # FIX: Convertir copyrightnotice a int
-                if excel_field == 'copyrightnotice':
-                    try:
-                        new_value = int(float(new_value))
-                    except:
-                        pass
-                
-                if old_value != new_value:
-                    yaml_data[yaml_field] = new_value
-                    changes.append(f"{yaml_field}: '{old_value}' → '{new_value}'")
+            new_value = row[excel_field]
+            old_value = yaml_data.get(yaml_field)
+            
+            # SI ESTÁ VACÍO EN EXCEL → ELIMINAR del YAML
+            if pd.isna(new_value) or (isinstance(new_value, str) and new_value.strip() == ''):
+                if yaml_field in yaml_data:
+                    del yaml_data[yaml_field]
+                    changes.append(f"{yaml_field}: ELIMINADO (vacío en Excel)")
+                continue
+            
+            # CONVERTIR BOOLEANOS (TRUE/FALSE → true/false)
+            if isinstance(new_value, str) and new_value.upper() in ['TRUE', 'FALSE']:
+                new_value = new_value.upper() == 'TRUE'
+            
+            # CONVERTIR copyrightnotice a INT
+            if excel_field == 'copyrightnotice':
+                try:
+                    new_value = int(float(new_value))
+                except:
+                    pass
+            
+            # LIMPIAR TEXTO (sin enters extras en abstract/description)
+            if excel_field in ['abstract', 'description'] and isinstance(new_value, str):
+                # Eliminar enters múltiples y espacios extras
+                new_value = ' '.join(new_value.split())
+            
+            # ACTUALIZAR si hay diferencia
+            if old_value != new_value:
+                yaml_data[yaml_field] = new_value
+                old_display = repr(old_value)[:50] if old_value else 'vacío'
+                new_display = repr(new_value)[:50]
+                changes.append(f"{yaml_field}: {old_display} → {new_display}")
         
-        # Campos con guiones
-        if 'numbered_lines' in row and not pd.isna(row['numbered_lines']):
+        # CAMPOS CON GUIONES (numbered-lines, meta-analysis)
+        if 'numbered_lines' in row:
             new_value = row['numbered_lines']
-            if isinstance(new_value, str):
-                new_value = new_value.upper() == 'TRUE'
-            old_value = yaml_data.get('numbered-lines')
-            if old_value != new_value:
-                yaml_data['numbered-lines'] = new_value
-                changes.append(f"numbered-lines: {old_value} → {new_value}")
+            if pd.isna(new_value) or (isinstance(new_value, str) and new_value.strip() == ''):
+                if 'numbered-lines' in yaml_data:
+                    del yaml_data['numbered-lines']
+                    changes.append("numbered-lines: ELIMINADO")
+            else:
+                if isinstance(new_value, str):
+                    new_value = new_value.upper() == 'TRUE'
+                old_value = yaml_data.get('numbered-lines')
+                if old_value != new_value:
+                    yaml_data['numbered-lines'] = new_value
+                    changes.append(f"numbered-lines: {old_value} → {new_value}")
         
-        if 'meta_analysis' in row and not pd.isna(row['meta_analysis']):
+        if 'meta_analysis' in row:
             new_value = row['meta_analysis']
-            if isinstance(new_value, str):
-                new_value = new_value.upper() == 'TRUE'
-            old_value = yaml_data.get('meta-analysis')
-            if old_value != new_value:
-                yaml_data['meta-analysis'] = new_value
-                changes.append(f"meta-analysis: {old_value} → {new_value}")
+            if pd.isna(new_value) or (isinstance(new_value, str) and new_value.strip() == ''):
+                if 'meta-analysis' in yaml_data:
+                    del yaml_data['meta-analysis']
+                    changes.append("meta-analysis: ELIMINADO")
+            else:
+                if isinstance(new_value, str):
+                    new_value = new_value.upper() == 'TRUE'
+                old_value = yaml_data.get('meta-analysis')
+                if old_value != new_value:
+                    yaml_data['meta-analysis'] = new_value
+                    changes.append(f"meta-analysis: {old_value} → {new_value}")
         
-        # FIX: Tipo de documento - Crea documentmode si cambia de jou
+        # TIPO DE DOCUMENTO (documentmode)
         if 'tipo_documento' in row and not pd.isna(row['tipo_documento']):
             new_type = row['tipo_documento'].lower()
             if new_type in ['stu', 'man', 'jou', 'doc']:
@@ -1112,102 +1192,117 @@ class QuartoMetadataManager:
                 old_type = old_type_direct or old_type_format or 'jou'
                 
                 if old_type != new_type:
-                    if 'documentmode' in yaml_data:
+                    # Si jou → otro: CREAR documentmode al PRINCIPIO
+                    if new_type != 'jou':
+                        # Crear nuevo dict con documentmode primero
+                        new_ordered = {'documentmode': new_type}
+                        for key, value in yaml_data.items():
+                            if key != 'documentmode':
+                                new_ordered[key] = value
+                        yaml_data = new_ordered
+                        changes.append(f"documentmode: {old_type} → {new_type} (AGREGADO AL INICIO)")
+                    # Si ya existe, actualizar
+                    elif 'documentmode' in yaml_data:
                         yaml_data['documentmode'] = new_type
                         changes.append(f"documentmode: {old_type} → {new_type}")
                     elif old_type_format:
                         yaml_data['format']['apaquarto-pdf']['documentmode'] = new_type
                         changes.append(f"format.apaquarto-pdf.documentmode: {old_type} → {new_type}")
-                    elif new_type != 'jou':
-                        yaml_data['documentmode'] = new_type
-                        changes.append(f"documentmode: (jou) → {new_type}")
         
+        # LISTAS (keywords, tags, categories)
         for field in ['keywords', 'tags', 'categories']:
-            if field in row and not pd.isna(row[field]):
-                if isinstance(row[field], str):
-                    new_value = [item.strip() for item in row[field].split(',') if item.strip()]
-                else:
-                    new_value = [str(row[field])]
+            if field not in row:
+                continue
                 
-                old_value = yaml_data.get(field, [])
-                
-                # Comparar listas
-                if set(old_value) != set(new_value):
-                    yaml_data[field] = new_value
-                    changes.append(f"{field}: actualizado ({len(new_value)} items)")
+            new_value = row[field]
+            
+            # SI VACÍO → ELIMINAR
+            if pd.isna(new_value) or (isinstance(new_value, str) and new_value.strip() == ''):
+                if field in yaml_data:
+                    del yaml_data[field]
+                    changes.append(f"{field}: ELIMINADO")
+                continue
+            
+            # CONVERTIR a lista
+            if isinstance(new_value, str):
+                new_value = [item.strip() for item in new_value.split(',') if item.strip()]
+            else:
+                new_value = [str(new_value)]
+            
+            old_value = yaml_data.get(field, [])
+
+            # Comparar listas
+            if set(old_value) != set(new_value):
+                yaml_data[field] = new_value
+                changes.append(f"{field}: actualizado ({len(new_value)} items)")
         
-        # Citation
-        if 'citation_type' in row and not pd.isna(row['citation_type']):
+        # CITACIÓN
+        if 'citation_type' in row or 'citation_pdf_url' in row:
+            # Crear citation si no existe
             if 'citation' not in yaml_data or not isinstance(yaml_data['citation'], dict):
                 yaml_data['citation'] = {}
-            new_type = row['citation_type']
-            old_type = yaml_data['citation'].get('type')
-            if old_type != new_type:
-                yaml_data['citation']['type'] = new_type
-                changes.append(f"citation.type: {old_type} → {new_type}")
+            
+            if 'citation_type' in row and not pd.isna(row['citation_type']):
+                new_type = row['citation_type']
+                old_type = yaml_data['citation'].get('type')
+                if old_type != new_type:
+                    yaml_data['citation']['type'] = new_type
+                    changes.append(f"citation.type: {old_type} → {new_type}")
+            
+            if 'citation_pdf_url' in row and not pd.isna(row['citation_pdf_url']):
+                new_url = row['citation_pdf_url']
+                old_url = yaml_data['citation'].get('pdf-url')
+                if old_url != new_url:
+                    yaml_data['citation']['pdf-url'] = new_url
+                    changes.append(f"citation.pdf-url actualizada")
         
-        if 'citation_pdf_url' in row and not pd.isna(row['citation_pdf_url']):
-            if 'citation' not in yaml_data or not isinstance(yaml_data['citation'], dict):
-                yaml_data['citation'] = {}
-            new_url = row['citation_pdf_url']
-            old_url = yaml_data['citation'].get('pdf-url')
-            if old_url != new_url:
-                yaml_data['citation']['pdf-url'] = new_url
-                changes.append(f"citation.pdf-url actualizada")
-        
-        # FIX: Autores con corresponding como bool
-        authors_data = []
-        has_author_in_row = False
-        
-        for i in range(1, 4):
-            prefix = f'author_{i}_'
-            if f'{prefix}name' in row and not pd.isna(row[f'{prefix}name']):
-                has_author_in_row = True
-                author = {'name': row[f'{prefix}name']}
-                
-                # FIX: Corresponding como bool
-                if f'{prefix}corresponding' in row and not pd.isna(row[f'{prefix}corresponding']):
-                    corr_val = row[f'{prefix}corresponding']
-                    if isinstance(corr_val, str):
-                        corr_val = corr_val.upper() == 'TRUE'
-                    elif isinstance(corr_val, (int, float)):
-                        corr_val = bool(int(corr_val))
-                    author['corresponding'] = corr_val
-                
-                if f'{prefix}orcid' in row and not pd.isna(row[f'{prefix}orcid']):
-                    author['orcid'] = row[f'{prefix}orcid']
-                
-                if f'{prefix}email' in row and not pd.isna(row[f'{prefix}email']):
-                    author['email'] = row[f'{prefix}email']
-                
-                aff = {}
-                for aff_field in ['name', 'department', 'city', 'region', 'country']:
-                    full_field = f'{prefix}affiliation_{aff_field}'
-                    if full_field in row and not pd.isna(row[full_field]):
-                        aff[aff_field] = row[full_field]
-                
-                if aff:
-                    author['affiliations'] = [aff]
-                
-                if f'{prefix}roles' in row and not pd.isna(row[f'{prefix}roles']):
-                    roles_str = row[f'{prefix}roles']
-                    if isinstance(roles_str, str):
-                        author['role'] = [r.strip() for r in roles_str.split(',')]
-                
-                authors_data.append(author)
-        
-        # Solo actualizar authors si:
-        # 1. Hay autores en el Excel Y
-        # 2. Ya existen autores en el index.qmd
-        if authors_data and 'author' in yaml_data:
-            old_authors = yaml_data.get('author', [])
-            if old_authors != authors_data:
-                yaml_data['author'] = authors_data
-                changes.append(f"author: actualizado ({len(authors_data)} autores)")
-        elif authors_data and has_author_in_row:
-            # Si no hay author en yaml_data pero sí en Excel, informar pero NO agregar
-            # (significa que usa _metadata.yml)
-            pass
+        # AUTORES (solo si existen en index.qmd)
+        if 'author' in yaml_data:
+            authors_data = []
+            
+            for i in range(1, 4):
+                prefix = f'author_{i}_'
+                if f'{prefix}name' in row and not pd.isna(row[f'{prefix}name']):
+                    author = {'name': row[f'{prefix}name']}
+                    
+                    # Corresponding como bool
+                    if f'{prefix}corresponding' in row and not pd.isna(row[f'{prefix}corresponding']):
+                        corr_val = row[f'{prefix}corresponding']
+                        if isinstance(corr_val, str):
+                            corr_val = corr_val.upper() == 'TRUE'
+                        elif isinstance(corr_val, (int, float)):
+                            corr_val = bool(int(corr_val))
+                        author['corresponding'] = corr_val
+                    
+                    if f'{prefix}orcid' in row and not pd.isna(row[f'{prefix}orcid']):
+                        author['orcid'] = row[f'{prefix}orcid']
+                    
+                    if f'{prefix}email' in row and not pd.isna(row[f'{prefix}email']):
+                        author['email'] = row[f'{prefix}email']
+                    
+                    aff = {}
+                    for aff_field in ['name', 'department', 'city', 'region', 'country']:
+                        full_field = f'{prefix}affiliation_{aff_field}'
+                        if full_field in row and not pd.isna(row[full_field]):
+                            aff[aff_field] = row[full_field]
+                    
+                    if aff:
+                        author['affiliations'] = [aff]
+                    
+                    if f'{prefix}roles' in row and not pd.isna(row[f'{prefix}roles']):
+                        roles_str = row[f'{prefix}roles']
+                        if isinstance(roles_str, str):
+                            author['role'] = [r.strip() for r in roles_str.split(',')]
+                    
+                    authors_data.append(author)
+            # Solo actualizar authors si:
+            # 1. Hay autores en el Excel Y
+            # 2. Ya existen autores en el index.qmd
+            if authors_data:
+                old_authors = yaml_data.get('author', [])
+                if old_authors != authors_data:
+                    yaml_data['author'] = authors_data
+                    changes.append(f"author: actualizado ({len(authors_data)} autores)")
         
         return yaml_data
 

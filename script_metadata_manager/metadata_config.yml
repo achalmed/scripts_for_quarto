@@ -43,6 +43,7 @@ excluded_folders:
   - website-achalma/about
   - website-achalma/beschikbaarheid
   - website-achalma/talk
+  - website-achalma/publication
   # Agregar más carpetas según necesidad
 
 # -----------------------------------------------------------------------------
