@@ -1,8 +1,15 @@
 #!/usr/bin/env python3
 """
-Sistema de Gestión de Metadatos para Blogs Quarto - Versión 1.2
+Sistema de Gestión de Metadatos para Blogs Quarto - Versión 1.2.1
 Autor: Edison Achalma
-Fecha: Diciembre 2024
+Fecha: Diciembre 2025
+
+Mejoras v1.2.1:
+- FIX: copyrightnotice se convierte correctamente a int (no float)
+- FIX: corresponding se convierte correctamente a bool (no float)
+- FIX: tipo_documento se actualiza correctamente (crea documentmode cuando cambia)
+- NUEVO: Modo incremental para create-template (preserva fórmulas de Excel)
+- NUEVO: Solo agrega nuevos artículos sin tocar existentes
 
 Mejoras v1.2:
 - Excluye index.qmd que no son artículos (sin fecha en ruta)
@@ -29,7 +36,7 @@ import json
 
 
 class QuartoMetadataManager:
-    """Gestor principal de metadatos de blogs Quarto v1.2"""
+    """Gestor principal de metadatos de blogs Quarto v1.2.1"""
     
     # Carpetas del sistema a excluir SIEMPRE
     SYSTEM_EXCLUDED_FOLDERS = {
@@ -48,7 +55,7 @@ class QuartoMetadataManager:
         'accessibility.qmd', 'license.qmd', '_index.md', 'index.md'
     }
     
-    # Campos de metadatos
+    # Campos de metadatos completos
     ALL_FIELDS = [
         'ruta_archivo', 'blog_nombre', 'tipo_documento',
         'title', 'shorttitle', 'subtitle', 
@@ -71,7 +78,7 @@ class QuartoMetadataManager:
     ]
     
     def __init__(self, base_path: str, config_file: Optional[str] = None):
-        """Inicializa el gestor"""
+        """Inicializa el gestor de metadatos"""
         self.base_path = Path(base_path).expanduser()
         if not self.base_path.exists():
             raise ValueError(f"❌ La ruta base no existe: {base_path}")
@@ -83,25 +90,25 @@ class QuartoMetadataManager:
         self.excel_output_dir.mkdir(parents=True, exist_ok=True)
     
     def _load_config(self, config_file: Optional[str]) -> Dict:
-        """Carga configuración"""
+        """Carga archivo de configuración YAML"""
         if config_file and Path(config_file).exists():
             with open(config_file, 'r', encoding='utf-8') as f:
                 return yaml.safe_load(f) or {}
         return {}
     
     def should_exclude_folder(self, folder_path: Path) -> bool:
-        """Determina si excluir carpeta"""
+        """Determina si una carpeta debe excluirse"""
         parts = set(folder_path.parts)
         return bool(parts & (self.SYSTEM_EXCLUDED_FOLDERS | self.user_excluded_folders))
     
     def should_exclude_file(self, file_path: Path) -> bool:
-        """Determina si excluir archivo"""
+        """Determina si un archivo debe excluirse"""
         return file_path.name in self.EXCLUDED_INDEX_FILES
     
     def is_article_index(self, file_path: Path) -> bool:
         """
-        Determina si un index.qmd es un artículo/publicación.
-        Criterio: La carpeta padre debe comenzar con una fecha (YYYY-MM-DD o similar)
+        Determina si un index.qmd es un artículo/publicación válido.
+        Criterio: La carpeta padre debe comenzar con una fecha (YYYY-MM-DD)
         """
         parent_dir = file_path.parent.name
         
@@ -120,13 +127,13 @@ class QuartoMetadataManager:
         return False
     
     def is_allowed_blog(self, blog_name: str) -> bool:
-        """Verifica si el blog está permitido"""
+        """Verifica si un blog está permitido según configuración"""
         if not self.allowed_blogs:
             return True
         return blog_name in self.allowed_blogs
     
     def find_metadata_yml(self, qmd_path: Path) -> Optional[Path]:
-        """Busca _metadata.yml más cercano"""
+        """Busca el archivo _metadata.yml más cercano"""
         current_dir = qmd_path.parent
         while current_dir >= self.base_path:
             metadata_file = current_dir / '_metadata.yml'
@@ -136,7 +143,7 @@ class QuartoMetadataManager:
         return None
     
     def load_metadata_yml(self, metadata_path: Path) -> Dict:
-        """Carga _metadata.yml"""
+        """Carga contenido de _metadata.yml"""
         try:
             with open(metadata_path, 'r', encoding='utf-8') as f:
                 return yaml.safe_load(f) or {}
@@ -147,11 +154,7 @@ class QuartoMetadataManager:
     def extract_yaml_from_qmd(self, file_path: Path, use_metadata: bool = True) -> Optional[Dict]:
         """
         Extrae YAML con PRIORIDAD a index.qmd sobre _metadata.yml
-        
-        Args:
-            file_path: Ruta del .qmd
-            use_metadata: Si True, fusiona con _metadata.yml SOLO para visualización
-                         Si False, retorna solo lo que está en index.qmd
+        Para visualización completa, fusiona ambos con prioridad a index.qmd
         """
         try:
             with open(file_path, 'r', encoding='utf-8') as f:
@@ -215,8 +218,9 @@ class QuartoMetadataManager:
         
         Prioridad:
         1. documentmode explícito en index.qmd
-        2. Inferir por campos específicos en index.qmd
-        3. Si no hay nada, retornar None (usará _metadata.yml)
+        2. format.apaquarto-pdf.documentmode en index.qmd
+        3. Inferir por campos (course→stu, journal→jou)
+        4. Si no hay nada, retornar None (usará _metadata.yml)
         """
         # Extraer YAML solo del index.qmd (sin fusión)
         try:
@@ -264,10 +268,7 @@ class QuartoMetadataManager:
                            verbose: bool = True) -> pd.DataFrame:
         """
         Recolecta archivos index.qmd CON FILTRO de artículos
-        
-        Args:
-            blog_name: Blog específico o None para todos
-            verbose: Mostrar progreso detallado
+        Solo incluye archivos que son artículos válidos (con fecha en carpeta)
         """
         index_files = []
         
@@ -378,8 +379,14 @@ class QuartoMetadataManager:
         
         return df
     
-    def create_excel_template(self, output_filename: str, blog_name: Optional[str] = None):
-        """Crea plantilla Excel con UNA SOLA HOJA de metadatos"""
+    def create_excel_template(self, output_filename: str, blog_name: Optional[str] = None,
+                             incremental: bool = False):
+        """
+        Crea plantilla Excel con UNA SOLA HOJA de metadatos
+        
+        Modo incremental: Solo agrega nuevos artículos sin tocar existentes
+        Esto preserva fórmulas y formatos personalizados en Excel
+        """
         print("🔍 Recolectando archivos index.qmd...")
         print("   (Solo se incluirán artículos/publicaciones con fecha)\n")
         
@@ -391,6 +398,65 @@ class QuartoMetadataManager:
         
         output_path = self.excel_output_dir / output_filename
         
+        # MODO INCREMENTAL: Solo agregar nuevos artículos
+        if incremental and output_path.exists():
+            print("\n🔄 MODO INCREMENTAL: Preservando datos existentes")
+            print("   Solo se agregarán artículos nuevos\n")
+            
+            try:
+                wb_existing = load_workbook(output_path)
+                ws_existing = wb_existing['METADATOS']
+                
+                existing_paths = set()
+                for row in ws_existing.iter_rows(min_row=2, max_col=1, values_only=True):
+                    if row[0]:
+                        existing_paths.add(row[0])
+                
+                print(f"📊 Artículos en Excel existente: {len(existing_paths)}")
+                print(f"📊 Artículos encontrados ahora: {len(df_files)}")
+                
+                df_new = df_files[~df_files['ruta_archivo'].isin(existing_paths)]
+                
+                if df_new.empty:
+                    print("\n✅ No hay artículos nuevos para agregar")
+                    print("   El Excel está actualizado\n")
+                    return
+                
+                print(f"➕ Artículos nuevos a agregar: {len(df_new)}\n")
+                
+                last_row = ws_existing.max_row
+                
+                print("📝 Agregando artículos nuevos...\n")
+                for idx, (_, row_data) in enumerate(df_new.iterrows(), last_row + 1):
+                    ws_existing.cell(idx, 1, row_data['ruta_archivo'])
+                    ws_existing.cell(idx, 2, row_data['blog_nombre'])
+                    ws_existing.cell(idx, 3, row_data['tipo_documento'])
+                    
+                    file_path = self.base_path / row_data['ruta_archivo']
+                    yaml_data = self.extract_yaml_only_index(file_path)
+                    
+                    if yaml_data:
+                        self._fill_excel_row_from_yaml(ws_existing, idx, yaml_data, self.ALL_FIELDS)
+                    
+                    if idx % 10 == 0:
+                        print(f"  ✅ Procesados: {idx - last_row}/{len(df_new)} artículos")
+                
+                print(f"  ✅ Procesados: {len(df_new)}/{len(df_new)} artículos (100%)\n")
+                
+                wb_existing.save(output_path)
+                
+                print(f"✅ Excel actualizado (modo incremental): {output_path}")
+                print(f"📊 Total artículos ahora: {len(existing_paths) + len(df_new)}")
+                print(f"➕ Artículos nuevos agregados: {len(df_new)}")
+                print(f"\n💡 Las fórmulas y formatos existentes se preservaron\n")
+                
+                return
+                
+            except Exception as e:
+                print(f"⚠️  Error en modo incremental: {e}")
+                print("   Creando Excel nuevo en su lugar...\n")
+        
+        # MODO NORMAL: Crear Excel desde cero
         wb = Workbook()
         wb.remove(wb.active)
         
@@ -456,14 +522,21 @@ class QuartoMetadataManager:
         print(f"   3. Guardar")
         print(f"   4. Actualizar: python quarto_metadata_manager.py update \\")
         print(f"      {self.base_path} {output_path}")
+        print(f"\n💡 Tip: Usa '--incremental' para agregar solo artículos nuevos:")
+        print(f"   python quarto_metadata_manager.py create-template ... --incremental\n")
     
     def _create_instructions_sheet(self, wb: Workbook):
         """Crea hoja de instrucciones con EMOJIS intuitivos"""
         ws = wb.create_sheet("INSTRUCCIONES", 0)
         
         instructions = [
-            ["🎯 GUIA RAPIDA - SISTEMA DE GESTION DE METADATOS"],
+            ["🎯 GUIA RAPIDA - SISTEMA DE GESTION DE METADATOS v1.2.1"],
             [""],
+            ["✅ CAMBIOS v1.2.1"],
+            ["   • FIX: copyrightnotice como entero (2025, no 2025.0)"],
+            ["   • FIX: corresponding como booleano (TRUE, no 1.0)"],
+            ["   • FIX: tipo_documento actualiza correctamente"],
+            ["   • NUEVO: Modo incremental (preserva formulas)"],
             ["📋 INSTRUCCIONES GENERALES"],
             [""],
             ["⚠️  COLUMNAS DE SOLO LECTURA (NO MODIFICAR):"],
@@ -732,7 +805,7 @@ class QuartoMetadataManager:
         ws.column_dimensions['A'].width = 90
     
     def _fill_excel_row_from_yaml(self, ws, row_idx: int, yaml_data: Dict, columns: List[str]):
-        """Llena fila de Excel"""
+        """Llena una fila de Excel con datos extraídos del YAML"""
         for col_idx, col_name in enumerate(columns, 1):
             try:
                 value = self._extract_yaml_value(yaml_data, col_name)
@@ -742,7 +815,7 @@ class QuartoMetadataManager:
                 continue
     
     def _extract_yaml_value(self, yaml_data: Dict, field_name: str) -> Any:
-        """Extrae valor del YAML"""
+        """Extrae un valor específico del YAML"""
         simple_mapping = {
             'title': 'title', 'shorttitle': 'shorttitle', 'subtitle': 'subtitle',
             'date': 'date', 'draft': 'draft', 'abstract': 'abstract',
@@ -756,7 +829,16 @@ class QuartoMetadataManager:
         }
         
         if field_name in simple_mapping:
-            return yaml_data.get(simple_mapping[field_name])
+            value = yaml_data.get(simple_mapping[field_name])
+            
+            # FIX: Convertir copyrightnotice a int
+            if field_name == 'copyrightnotice' and value is not None:
+                try:
+                    return int(value)
+                except:
+                    return value
+            
+            return value
         
         if field_name in ['keywords', 'tags', 'categories']:
             value = yaml_data.get(field_name, [])
@@ -802,7 +884,13 @@ class QuartoMetadataManager:
                 if field_suffix == 'name':
                     return author.get('name')
                 elif field_suffix == 'corresponding':
-                    return author.get('corresponding')
+                    # FIX: Convertir corresponding a string TRUE/FALSE
+                    corr = author.get('corresponding')
+                    if corr is True:
+                        return 'TRUE'
+                    elif corr is False:
+                        return 'FALSE'
+                    return corr
                 elif field_suffix == 'orcid':
                     return author.get('orcid')
                 elif field_suffix == 'email':
@@ -906,7 +994,7 @@ class QuartoMetadataManager:
     
     def _update_single_qmd(self, file_path: Path, row: pd.Series, 
                           dry_run: bool, current: int, total: int) -> bool:
-        """Actualiza archivo QMD con detalle"""
+        """Actualiza un archivo QMD individual con datos del Excel"""
         with open(file_path, 'r', encoding='utf-8') as f:
             content = f.read()
         
@@ -957,7 +1045,7 @@ class QuartoMetadataManager:
     
     def _apply_excel_row_to_yaml(self, yaml_data: Dict, row: pd.Series, 
                                 changes: List[str]) -> Dict:
-        """Aplica cambios SOLO si hay diferencias"""
+        """Aplica cambios desde una fila de Excel al YAML"""
         
         simple_fields = {
             'title': 'title', 'shorttitle': 'shorttitle', 'subtitle': 'subtitle',
@@ -978,7 +1066,13 @@ class QuartoMetadataManager:
                 if isinstance(new_value, str) and new_value.upper() in ['TRUE', 'FALSE']:
                     new_value = new_value.upper() == 'TRUE'
                 
-                # Solo actualizar si hay diferencia
+                # FIX: Convertir copyrightnotice a int
+                if excel_field == 'copyrightnotice':
+                    try:
+                        new_value = int(float(new_value))
+                    except:
+                        pass
+                
                 if old_value != new_value:
                     yaml_data[yaml_field] = new_value
                     changes.append(f"{yaml_field}: '{old_value}' → '{new_value}'")
@@ -1002,33 +1096,32 @@ class QuartoMetadataManager:
                 yaml_data['meta-analysis'] = new_value
                 changes.append(f"meta-analysis: {old_value} → {new_value}")
         
-        # Tipo de documento - SOLO actualizar si existe en index.qmd
+        # FIX: Tipo de documento - Crea documentmode si cambia de jou
         if 'tipo_documento' in row and not pd.isna(row['tipo_documento']):
             new_type = row['tipo_documento'].lower()
             if new_type in ['stu', 'man', 'jou', 'doc']:
-                # Verificar si documentmode ya existe en el index.qmd
-                # Si existe como campo directo, actualizar ahí
-                if 'documentmode' in yaml_data:
-                    old_type = yaml_data.get('documentmode')
-                    if old_type != new_type:
-                        yaml_data['documentmode'] = new_type
-                        changes.append(f"documentmode: {old_type} → {new_type}")
-                # Si existe en format.apaquarto-pdf, actualizar ahí
-                elif 'format' in yaml_data and isinstance(yaml_data['format'], dict):
+                old_type_direct = yaml_data.get('documentmode')
+                old_type_format = None
+                
+                if 'format' in yaml_data and isinstance(yaml_data['format'], dict):
                     if 'apaquarto-pdf' in yaml_data['format']:
                         apa_config = yaml_data['format']['apaquarto-pdf']
                         if isinstance(apa_config, dict):
-                            old_type = apa_config.get('documentmode')
-                            if old_type != new_type:
-                                yaml_data['format']['apaquarto-pdf']['documentmode'] = new_type
-                                changes.append(f"format.apaquarto-pdf.documentmode: {old_type} → {new_type}")
-                # Si NO existe en index.qmd, no agregarlo (significa que usa _metadata.yml)
-                # Solo informar si hay cambio
-                else:
-                    # No crear el campo si no existe, solo registrar el cambio
-                    pass
+                            old_type_format = apa_config.get('documentmode')
+                
+                old_type = old_type_direct or old_type_format or 'jou'
+                
+                if old_type != new_type:
+                    if 'documentmode' in yaml_data:
+                        yaml_data['documentmode'] = new_type
+                        changes.append(f"documentmode: {old_type} → {new_type}")
+                    elif old_type_format:
+                        yaml_data['format']['apaquarto-pdf']['documentmode'] = new_type
+                        changes.append(f"format.apaquarto-pdf.documentmode: {old_type} → {new_type}")
+                    elif new_type != 'jou':
+                        yaml_data['documentmode'] = new_type
+                        changes.append(f"documentmode: (jou) → {new_type}")
         
-        # Listas
         for field in ['keywords', 'tags', 'categories']:
             if field in row and not pd.isna(row[field]):
                 if isinstance(row[field], str):
@@ -1062,7 +1155,7 @@ class QuartoMetadataManager:
                 yaml_data['citation']['pdf-url'] = new_url
                 changes.append(f"citation.pdf-url actualizada")
         
-        # Authors - SOLO actualizar si ya existen en index.qmd
+        # FIX: Autores con corresponding como bool
         authors_data = []
         has_author_in_row = False
         
@@ -1072,10 +1165,13 @@ class QuartoMetadataManager:
                 has_author_in_row = True
                 author = {'name': row[f'{prefix}name']}
                 
+                # FIX: Corresponding como bool
                 if f'{prefix}corresponding' in row and not pd.isna(row[f'{prefix}corresponding']):
                     corr_val = row[f'{prefix}corresponding']
                     if isinstance(corr_val, str):
                         corr_val = corr_val.upper() == 'TRUE'
+                    elif isinstance(corr_val, (int, float)):
+                        corr_val = bool(int(corr_val))
                     author['corresponding'] = corr_val
                 
                 if f'{prefix}orcid' in row and not pd.isna(row[f'{prefix}orcid']):
@@ -1117,7 +1213,7 @@ class QuartoMetadataManager:
 
 
 def create_config_file(config_path: str, base_path: str):
-    """Crea archivo de configuración"""
+    """Crea archivo de configuración con valores por defecto"""
     config = {
         'allowed_blogs': [
             'axiomata', 'aequilibria', 'numerus-scriptum',
@@ -1143,7 +1239,7 @@ def create_config_file(config_path: str, base_path: str):
 def main():
     """Función principal con CLI completo"""
     parser = argparse.ArgumentParser(
-        description='Sistema de Gestión de Metadatos Quarto v1.2',
+        description='Sistema de Gestión de Metadatos Quarto v1.2.1',
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Ejemplos:
@@ -1155,15 +1251,15 @@ Ejemplos:
   python quarto_metadata_manager.py create-template ~/Documents/publicaciones \\
       --config metadata_config.yml
   
-  # Crear base de datos de un blog
+  # Agregar solo articulos nuevos (modo incremental)
   python quarto_metadata_manager.py create-template ~/Documents/publicaciones \\
-      --blog axiomata --config metadata_config.yml
-  
+      --config metadata_config.yml --incremental
+
   # Simular actualización
   python quarto_metadata_manager.py update ~/Documents/publicaciones \\
       excel_databases/quarto_metadata.xlsx --dry-run
   
-  # Actualizar todo
+  # Actualizar
   python quarto_metadata_manager.py update ~/Documents/publicaciones \\
       excel_databases/quarto_metadata.xlsx
   
@@ -1193,6 +1289,8 @@ Autor: Edison Achalma
     parser_create.add_argument('-o', '--output', default='quarto_metadata.xlsx')
     parser_create.add_argument('-b', '--blog')
     parser_create.add_argument('-c', '--config')
+    parser_create.add_argument('--incremental', action='store_true',
+                              help='Solo agregar nuevos articulos')
     
     # update
     parser_update = subparsers.add_parser('update')
@@ -1222,7 +1320,8 @@ Autor: Edison Achalma
                 name, ext = os.path.splitext(output_path)
                 output_path = f"{name}_{args.blog}{ext}"
             
-            manager.create_excel_template(output_path, args.blog)
+            incremental = getattr(args, 'incremental', False)
+            manager.create_excel_template(output_path, args.blog, incremental)
             
         elif args.command == 'update':
             config_file = getattr(args, 'config', None)
