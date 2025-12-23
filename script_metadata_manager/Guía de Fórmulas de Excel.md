@@ -3,7 +3,7 @@
 **Versión:** 1.0  
 **Autor:** Edison Achalma  
 **Fecha:** Diciembre 2024
-
+#excel #ofimatica #quarto
 ---
 
 ## 📋 Tabla de Contenidos
@@ -18,7 +18,6 @@
 8. [Fórmulas Avanzadas](#8-f%C3%B3rmulas-avanzadas)
 
 ---
-
 ## 1. Eliminar Saltos de Línea (Enter)
 
 ### 🎯 Problema
@@ -33,8 +32,6 @@ Si el texto está en **A1**:
 =SUBSTITUTE(A1,CHAR(10)," ")
 ```
 
-**Explicación:**
-
 - `CHAR(10)` = Salto de línea (Line Feed)
 - Reemplaza cada Enter por un espacio
 
@@ -43,8 +40,6 @@ Si el texto está en **A1**:
 ```excel
 =SUBSTITUTE(SUBSTITUTE(A1,CHAR(13)," "),CHAR(10)," ")
 ```
-
-**Explicación:**
 
 - `CHAR(13)` = Retorno de carro (Carriage Return)
 - `CHAR(10)` = Salto de línea (Line Feed)
@@ -72,12 +67,9 @@ Si el texto está en **A1**:
 =TRIM(SUBSTITUTE(A1,CHAR(10)," "))
 ```
 
-**Explicación:**
-
 - `TRIM()` elimina espacios múltiples dejando solo uno
 
 ---
-
 ## 2. Generar Títulos desde Rutas
 
 ### 🎯 Objetivo
@@ -182,7 +174,6 @@ Resultado final: `Crecimiento economico`
 ```
 
 ---
-
 ## 3. Crear Enlaces a PDFs
 
 ### 🎯 Objetivo
@@ -261,7 +252,6 @@ SUBSTITUTE(SUBSTITUTE(TEXTAFTER(A2,B2&"/"),"index.qmd","index.pdf"),".html",".pd
 ```
 
 ---
-
 ## 4. Extraer Fechas de Rutas
 
 ### 🎯 Objetivo
@@ -356,13 +346,11 @@ Si **C2** contiene el tipo de documento:
 =IF(C2="stu",TEXT(DATE(LEFT(TEXTAFTER(A2,"/",2),4),MID(TEXTAFTER(A2,"/",2),6,2),MID(TEXTAFTER(A2,"/",2),9,2)),"mm/dd/yyyy"),"")
 ```
 
-**Explicación:**
 
 - Si es tipo `stu` → genera fecha
 - Si no → celda vacía
 
 ---
-
 ## 5. Gestión de Tags
 
 ### 🎯 Objetivo
@@ -430,7 +418,6 @@ En **METADATOS → columna L (tags)**, fila **L2**:
 _Requiere macro o Power Query - ver sección avanzada_
 
 ---
-
 ## 6. Extraer Información de Rutas
 
 ### Extraer Nombre del Blog
@@ -480,8 +467,133 @@ _Requiere macro o Power Query - ver sección avanzada_
 =LEN(A2)-LEN(SUBSTITUTE(A2,"/",""))
 ```
 
----
+###  Journal
+En Z2 (y arrastrar abajo):
 
+```excel
+=IF($C2<>"jou", "",
+  IF(OR(LOWER(B2)="dialectica-y-mercado", LOWER(B2)="epsilon-y-beta"),
+    PROPER(LEFT(B2, FIND("-y-", B2)-1)),
+    PROPER(SUBSTITUTE(B2, "-", " "))
+  )
+)
+```
+
+Resultados:
+- dialectica-y-mercado → Dialectica
+- epsilon-y-beta → Epsilon
+- actus-mercator → Actus Mercator
+- aequilibria → Aequilibria
+- chaska → Chaska
+
+### Volume
+
+#### Paso 1: Ordena la hoja (OBLIGATORIO)
+
+1. Selecciona todos tus datos
+2. Datos → Ordenar
+3. Primer criterio: columna `journal` (Z) → Ascendente
+4. Segundo criterio: columna `pub_date` (AZ) → Ascendente
+5. Aceptar
+
+#### Paso 2: Columna auxiliar `vol_number` (columna BC)
+
+**En BC2** (primera fila de datos):
+
+```excel
+=IF($C2<>"jou";"";1)
+```
+
+**En BC3** (y arrastra hacia abajo):
+
+```excel
+=IF($C3<>"jou";"";IF(Z3<>Z2;1;IF(BA3<>BA2;BC2+1;BC2)))
+```
+
+Esto detecta:
+
+- Si cambia el journal → Vol. 1 (reinicia)
+- Si cambia el año (mismo journal) → suma 1 al volumen anterior
+- Si es el mismo año → mantiene el volumen
+
+#### Paso 3: Columna auxiliar `issue_number` (columna BD)
+
+**En BD2**:
+
+```excel
+=IF($C2<>"jou";"";1)
+```
+
+**En BD3** (y arrastra hacia abajo):
+
+```excel
+=IF($C3<>"jou";"";IF(OR(Z3<>Z2;BA3<>BA2);1;BD2+1))
+```
+
+Esto:
+
+- Reinicia a 1 cuando cambia el journal o el año
+- Incrementa el número dentro del mismo journal/año
+
+#### Paso 4: Fórmula final para `volume` (columna AB)
+
+```excel
+=IF($C2<>"jou";"";BA2&", Vol. "&BC2&", No. "&BD2&", 10--60")
+```
+
+#### Resultado esperado:
+
+**Actus Mercator:**
+
+- 2022 → `2022, Vol. 1, No. 1, 10--60`
+- 2025 → `2025, Vol. 2, No. 1, 10--60`
+
+**Aequilibria:**
+
+- 2021 (todos) → `2021, Vol. 1, No. 1` hasta `No. 6`
+- 2022 (todos) → `2022, Vol. 2, No. 1` hasta `No. 5`
+
+**Chaska:**
+
+- 2019 → `2019, Vol. 1, No. 1`
+- 2020 → `2020, Vol. 2, No. 1` hasta `No. 10`
+- 2021 → `2021, Vol. 3, No. 1`
+- 2022 → `2022, Vol. 4, No. 1` hasta `No. 4`
+- 2023 → `2023, Vol. 5, No. 1` hasta `No. 5`
+### Copyrightnotice (columna AB)
+
+```excel
+=IF($C2="jou", LEFT(MID(A2, FIND("/",A2, FIND("/",A2)+1)+1, 10),4), "")
+```
+
+### Copyrightext (columna AC)
+
+Opción simple:
+```excel
+=IF($C2<>"jou", "", "All rights reserved")
+```
+
+Opción con símbolo ©:
+```excel
+=IF($C2="jou","© "&LEFT(MID(A2, FIND("/",A2, FIND("/",A2)+1)+1, 10),4)&" All rights reserved","")
+```
+
+
+### Note
+Solo poner la nota si hay course y professor
+
+```excel
+=IF(AND($C2="stu", $V2<>"", $W2<>""), "Student ID: 09170105", "")
+```
+
+Opcion simple (ignora mayúsculas/minúsculas)
+
+```excel
+=IF(LOWER($C2)="stu", "Student ID: 09170105", "")
+```
+
+
+---
 ## 7. Limpieza y Normalización
 
 ### Eliminar Espacios Extras
@@ -537,7 +649,6 @@ _Requiere macro o Power Query - ver sección avanzada_
 - Salida: `economia-internacional`
 
 ---
-
 ## 8. Fórmulas Avanzadas
 
 ### Validación de Rutas
@@ -581,7 +692,7 @@ Verificar que la ruta tenga el formato correcto:
 ### Generar Keywords desde Título
 
 ```excel
-=LOWER(SUBSTITUTE(SUBSTITUTE(B2," ",", "),"  "," "))
+=LOWER(SUBSTITUTE(SUBSTITUTE(D2," ",", "),"  "," "))
 ```
 
 **Ejemplo:**
@@ -625,7 +736,6 @@ _Requiere fórmula array o Power Query_
 ```
 
 ---
-
 ## 9. Macros Útiles (VBA)
 
 ### 🔧 Eliminar Enter en Rango Seleccionado
@@ -661,7 +771,6 @@ End Sub
 ```
 
 ---
-
 ## 10. Atajos de Teclado Útiles
 
 ### Excel en Windows
@@ -688,7 +797,6 @@ End Sub
 |`Ctrl + Shift + ;`|Insertar hora actual|
 
 ---
-
 ## 11. Tips y Mejores Prácticas
 
 ### Al Trabajar con Fórmulas
@@ -719,7 +827,6 @@ End Sub
 4. **Limita cantidad** (3-5 tags por artículo)
 
 ---
-
 ## 12. Solución de Problemas Comunes
 
 ### ❌ Problema: `#VALUE!`
@@ -756,19 +863,9 @@ End Sub
 ```
 
 ---
-
-## 📞 Soporte
-
-**Autor:** Edison Achalma  
-**Email:** achalmaedison@outlook.com  
-**Versión:** 1.0  
-**Fecha:** Diciembre 2024
-
----
-
 ## 📝 Changelog
 
-### v1.0 (Diciembre 2024)
+### v1.0 (Diciembre 2025)
 
 - Guía inicial completa
 - 8 secciones principales
