@@ -568,6 +568,13 @@ python quarto_metadata_manager.py update ~/Documents/publicaciones \
     --filter-path "python" \
     --config metadata_config.yml \
     --dry-run
+
+# Combinar filtros para website
+python quarto_metadata_manager.py update ~/Documents/publicaciones \
+    excel_databases/quarto_metadata.xlsx \
+    --blog website-achalma \
+    --filter-path "teching" \
+    --config metadata_config.yml
 ```
 
 **Salida esperada:**
