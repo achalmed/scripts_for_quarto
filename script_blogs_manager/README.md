@@ -87,6 +87,18 @@ Script completo para gestionar múltiples blogs y sitios web creados con Quarto.
         └── README.md
 ```
 
+## ⚡ Instalación Rápida
+
+```bash
+# Copiar y dar permisos
+cp build.sh /home/achalmaedison/Documents/scripts/scripts_for_quarto/
+chmod +x /home/achalmaedison/Documents/scripts/scripts_for_quarto/build.sh
+
+# Crear alias (opcional)
+echo 'alias qbuild="build.sh"' >> ~/.bashrc
+source ~/.bashrc
+```
+
 ## 🔧 Instalación
 
 ### 1. Descargar el Script
@@ -147,6 +159,15 @@ La forma más sencilla de usar el script es en modo interactivo:
 ./build.sh -i
 # o
 ./build.sh interactive
+
+# Modo interactivo
+./build.sh
+
+# Comandos directos
+./build.sh list                      # Listar blogs
+./build.sh new-post numerus-scriptum # Crear post
+./build.sh render epsilon-y-beta     # Renderizar
+./build.sh preview website-achalma   # Preview
 ```
 
 Esto mostrará un menú con todas las opciones disponibles:
@@ -359,6 +380,66 @@ draft: true
 
 Tu contenido aquí...
 ```
+
+## 📝 Crear Posts con APAQuarto
+
+### Proceso Interactivo
+
+1. **Seleccionar carpeta** (python, matlab, r, etc. - detecta automáticamente)
+2. **Información básica** (título, subtítulo)
+3. **Tipo de documento** (doc/jou/man/stu)
+4. **Metadatos** (tags, categorías)
+5. **Autor** (predeterminado o personalizado)
+6. **Información específica** (según tipo de documento)
+
+### Tipos de Documento
+
+| Tipo | Uso | Formato |
+|------|-----|---------|
+| **doc** | Documentos generales | 1 columna, flexible |
+| **jou** | Artículos tipo revista | 2 columnas, pulido |
+| **man** | Manuscritos formales | 1 columna, APA completo |
+| **stu** | Trabajos estudiantiles | 1 columna, con curso |
+
+### Ejemplo Completo
+
+```bash
+$ ./build.sh new-post numerus-scriptum
+
+═══════════════════════════════════════════════════════════════
+  🚀 Crear Nuevo Post en numerus-scriptum
+═══════════════════════════════════════════════════════════════
+
+Carpetas disponibles:
+1. python
+2. r
+3. matlab
+[...]
+
+Selecciona carpeta: 1
+Título: Análisis de Datos con Pandas
+Tipo de documento: jou
+Tags: pandas, python
+Categorías: tutorial
+
+✓ Post creado exitosamente
+```
+
+## 🔧 Integración con _metadata.yml
+
+El script **evita duplicación** usando `_metadata.yml` compartido:
+
+### En _metadata.yml (compartido)
+- Configuración de formatos
+- Autor predeterminado
+- Opciones de ejecución
+- Configuración de idioma
+
+### En index.qmd (específico)
+- Título, subtítulo, fecha
+- Tags y categorías
+- Información del tipo de documento
+- Autor (solo si es diferente)
 
 ### Operaciones Múltiples
 
@@ -917,7 +998,7 @@ Este script es de uso personal pero puede ser adaptado según necesidades.
 
 ---
 
-**Versión:** 1.0.0  
+**Versión:** 2.0.0  
 **Fecha:** Diciembre 2025  
 **Autor:** Edison Achalma  
 **Licencia:** Uso personal
