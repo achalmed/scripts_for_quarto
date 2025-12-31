@@ -2,7 +2,7 @@
 
 Script completo para gestionar múltiples blogs y sitios web creados con Quarto. Diseñado específicamente para gestionar la estructura de publicaciones de Edison Achalma.
 
-## 📋 Tabla de Contenidos
+# 📋 Tabla de Contenidos
 
 - [Características](#características)
 - [Requisitos](#requisitos)
@@ -15,9 +15,9 @@ Script completo para gestionar múltiples blogs y sitios web creados con Quarto.
 - [Estructura de Directorios](#estructura-de-directorios)
 - [Solución de Problemas](#solución-de-problemas)
 
-## ✨ Características
+# ✨ Características
 
-### Gestión de Blogs
+## Gestión de Blogs
 - ✅ Listar todos los blogs disponibles
 - ✅ Renderizar blogs completos o individuales
 - ✅ Preview local con servidor integrado
@@ -25,32 +25,32 @@ Script completo para gestionar múltiples blogs y sitios web creados con Quarto.
 - ✅ Limpieza de archivos generados
 - ✅ Verificación e inspección de proyectos
 
-### Gestión de Posts
+## Gestión de Posts
 - ✅ Crear nuevos posts con plantilla automática
 - ✅ Listar posts de cualquier blog
 - ✅ Renderizar posts individuales
 - ✅ Estructura de nombres automática basada en fecha
 
-### Operaciones Múltiples
+## Operaciones Múltiples
 - ✅ Renderizar todos los blogs en batch
 - ✅ Limpiar todos los proyectos simultáneamente
 - ✅ Operaciones en paralelo para mayor eficiencia
 
-### Integración Git
+## Integración Git
 - ✅ Inicialización de repositorios
 - ✅ Commit y push automatizado
 - ✅ Verificación de estado
 - ✅ Creación automática de .gitignore
 
-### Interfaz
+## Interfaz
 - ✅ Modo interactivo con menú intuitivo
 - ✅ Modo línea de comandos para automatización
 - ✅ Colores y formato para mejor visualización
 - ✅ Mensajes claros de éxito/error
 
-## 📦 Requisitos
+# 📦 Requisitos
 
-### Software Necesario
+## Software Necesario
 
 1. **Quarto** (versión 1.3 o superior)
    ```bash
@@ -69,7 +69,7 @@ Script completo para gestionar múltiples blogs y sitios web creados con Quarto.
    git --version
    ```
 
-### Estructura de Directorios Requerida
+## Estructura de Directorios Requerida
 
 ```
 /home/achalmaedison/Documents/
@@ -87,6 +87,9 @@ Script completo para gestionar múltiples blogs y sitios web creados con Quarto.
         └── README.md
 ```
 
+
+# 🔧 Instalación
+
 ## ⚡ Instalación Rápida
 
 ```bash
@@ -99,9 +102,7 @@ echo 'alias qbuild="build.sh"' >> ~/.bashrc
 source ~/.bashrc
 ```
 
-## 🔧 Instalación
-
-### 1. Descargar el Script
+## 1. Descargar el Script
 
 ```bash
 # Crear directorio de scripts si no existe
@@ -113,13 +114,13 @@ cd /home/achalmaedison/Documents/scripts/scripts_for_quarto
 # Descargar o copiar el script build.sh aquí
 ```
 
-### 2. Dar Permisos de Ejecución
+## 2. Dar Permisos de Ejecución
 
 ```bash
 chmod +x build.sh
 ```
 
-### 3. (Opcional) Añadir al PATH
+## 3. (Opcional) Añadir al PATH
 
 Para ejecutar el script desde cualquier ubicación:
 
@@ -134,7 +135,7 @@ source ~/.bashrc
 build.sh
 ```
 
-### 4. (Opcional) Crear Alias
+## 4. (Opcional) Crear Alias
 
 ```bash
 # Añadir al ~/.bashrc o ~/.zshrc
@@ -147,9 +148,9 @@ source ~/.bashrc
 qbuild list
 ```
 
-## 🎯 Uso
+# 🎯 Uso
 
-### Modo Interactivo
+## Modo Interactivo
 
 La forma más sencilla de usar el script es en modo interactivo:
 
@@ -188,7 +189,7 @@ Opciones principales:
   ...
 ```
 
-### Línea de Comandos
+## Línea de Comandos
 
 Para automatización o uso rápido:
 
@@ -196,11 +197,11 @@ Para automatización o uso rápido:
 ./build.sh [COMANDO] [OPCIONES]
 ```
 
-## 📖 Comandos Disponibles
+# 📖 Comandos Disponibles
 
-### Gestión de Blogs
+## Gestión de Blogs
 
-#### `list`
+## `list`
 Lista todos los blogs disponibles con sus títulos.
 
 ```bash
@@ -221,7 +222,7 @@ Lista todos los blogs disponibles con sus títulos.
 ...
 ```
 
-#### `render BLOG`
+## `render BLOG`
 Renderiza un blog completo.
 
 ```bash
@@ -234,7 +235,7 @@ Renderiza un blog completo.
 2. Ejecuta `quarto render`
 3. Genera el sitio en `_site/`
 
-#### `preview BLOG [PUERTO]`
+## `preview BLOG [PUERTO]`
 Inicia servidor de preview local.
 
 ```bash
@@ -250,14 +251,14 @@ Inicia servidor de preview local.
 - No abre navegador automáticamente
 - Ctrl+C para detener
 
-#### `preview-browser BLOG [PUERTO]`
+## `preview-browser BLOG [PUERTO]`
 Preview con apertura automática del navegador.
 
 ```bash
 ./build.sh preview-browser chaska 4500
 ```
 
-#### `clean BLOG`
+## `clean BLOG`
 Elimina archivos generados.
 
 ```bash
@@ -269,7 +270,7 @@ Elimina archivos generados.
 - `_freeze/` - Cache de ejecución
 - `.quarto/` - Archivos temporales de Quarto
 
-#### `publish BLOG [TARGET]`
+## `publish BLOG [TARGET]`
 Publica el blog en plataforma seleccionada.
 
 ```bash
@@ -292,7 +293,7 @@ Publica el blog en plataforma seleccionada.
 - `quarto-pub` - Quarto Pub
 - `confluence` - Confluence
 
-#### `check BLOG`
+## `check BLOG`
 Verifica configuración del blog.
 
 ```bash
@@ -305,7 +306,7 @@ Verifica configuración del blog.
 - Configuración YAML
 - Extensiones
 
-#### `inspect BLOG`
+## `inspect BLOG`
 Inspecciona estructura del proyecto.
 
 ```bash
@@ -317,9 +318,9 @@ Inspecciona estructura del proyecto.
 - Configuración detectada
 - Outputs esperados
 
-### Gestión de Posts
+## Gestión de Posts
 
-#### `list-posts BLOG`
+## `list-posts BLOG`
 Lista todos los posts de un blog.
 
 ```bash
@@ -341,14 +342,14 @@ Lista todos los posts de un blog.
 ...
 ```
 
-#### `render-post RUTA_POST`
+## `render-post RUTA_POST`
 Renderiza un post específico.
 
 ```bash
 ./build.sh render-post /home/achalmaedison/Documents/publicaciones/numerus-scriptum/python/2021-04-17-01-introducion-a-la-programacion-con-python/index.qmd
 ```
 
-#### `new-post BLOG [TITULO]`
+## `new-post BLOG [TITULO]`
 Crea un nuevo post con plantilla.
 
 ```bash
@@ -376,21 +377,12 @@ description: ""
 draft: true
 ---
 
-## Introducción
+# Introducción
 
 Tu contenido aquí...
 ```
 
 ## 📝 Crear Posts con APAQuarto
-
-### Proceso Interactivo
-
-1. **Seleccionar carpeta** (python, matlab, r, etc. - detecta automáticamente)
-2. **Información básica** (título, subtítulo)
-3. **Tipo de documento** (doc/jou/man/stu)
-4. **Metadatos** (tags, categorías)
-5. **Autor** (predeterminado o personalizado)
-6. **Información específica** (según tipo de documento)
 
 ### Tipos de Documento
 
@@ -401,49 +393,167 @@ Tu contenido aquí...
 | **man** | Manuscritos formales | 1 columna, APA completo |
 | **stu** | Trabajos estudiantiles | 1 columna, con curso |
 
-### Ejemplo Completo
+
+### Características Principales
+
+### Seis Secciones Completas del Formulario
+
+1. **Opciones Generales** (3 subsecciones)
+   - Información del Título
+   - Opciones del Documento
+   - Suprimir Elementos
+
+2. **Opciones de Formato**
+   - Tipo de documento (doc/jou/man/stu)
+   - Formatos de salida
+   - Configuración específica por tipo
+
+3. **Autores y Afiliaciones**
+   - Información del autor
+   - Roles CRediT completos
+   - Afiliación institucional detallada
+
+4. **Author Note**
+   - Cambios de estado
+   - Disclosures completos
+
+5. **Abstract y Keywords**
+   - Abstract multilinea
+   - Keywords
+   - Impact statement
+   - Word count
+
+6. **Opciones de Idioma**
+   - Idioma principal
+   - Personalizaciones específicas
+
+### Características del Asistente
+
+- **📝 Paso a paso**: Pantalla limpia en cada sección
+- **💡 Ejemplos claros**: Cada campo muestra un ejemplo
+- **⏭️ Opción de omitir**: Enter para usar defaults u omitir
+- **🎨 Interfaz visual**: Colores, emojis, progress tracking
+- **🧹 Metadata limpia**: Sin comentarios en el YAML generado
+- **✔️ Validaciones**: Verifica campos obligatorios
+- **📊 Resumen final**: Muestra configuración completa
+
+### Ejemplos en Cada Campo
+```bash
+Ejemplo: "Análisis Econométrico Avanzado: Modelos ARIMA"
+read -p "Title (título principal): " post_title
+```
+
+### Valores por Defecto
+```bash
+read -p "Floatsintext (s/n, default: n): " floatsintext
+floatsintext=${floatsintext:-n}
+```
+
+### Opciones de Omitir
+```bash
+read -p "Impact-statement (Enter para omitir): " impact_statement
+```
+
+### Progress Tracking
+```bash
+print_header "📝 Sección 1/6: Opciones Generales"
+```
+
+### Metadata Generada
+
+```yaml
+---
+title: "Mi Título"
+subtitle: "Mi Subtítulo"
+shorttitle: "Mi Título"
+date: "2025-01-28"
+date-modified: "today"
+tags: ["tag1", "tag2"]
+categories: ["cat1"]
+image: ../featured.jpg
+bibliography: references.bib
+jupyter: python3
+```
+
+### Flujo del Asistente
+
+```
+🚀 Inicio
+    ↓
+📁 Paso 0: Seleccionar carpeta
+    ↓
+📝 Sección 1/6: Opciones Generales
+    → 1.1 Título
+    → 1.2 Opciones documento
+    → 1.3 Suprimir elementos
+    ↓
+🎨 Sección 2/6: Formato
+    → Tipo documento
+    → Formatos salida
+    → Config específica
+    ↓
+👤 Sección 3/6: Autores
+    → Información autor
+    → Roles CRediT
+    → Afiliación
+    ↓
+📋 Sección 4/6: Author Note
+    → Cambios estado
+    → Disclosures
+    ↓
+📄 Sección 5/6: Abstract
+    → Abstract
+    → Keywords
+    → Impact
+    ↓
+🌍 Sección 6/6: Idioma
+    → Lang
+    → Personalizaciones
+    ↓
+🏷️ Info Adicional
+    → Tags
+    → Categorías
+    ↓
+⚙️ Generación
+    ↓
+✅ Resumen y Abrir
+```
+
+### Ejemplo de Uso
 
 ```bash
 $ ./build.sh new-post numerus-scriptum
 
 ═══════════════════════════════════════════════════════════════
-  🚀 Crear Nuevo Post en numerus-scriptum
+  🚀 Asistente de Creación de Posts - numerus-scriptum
 ═══════════════════════════════════════════════════════════════
 
-Carpetas disponibles:
-1. python
-2. r
-3. matlab
-[...]
+Este asistente te guiará paso a paso para crear un post APAQuarto completo.
+Presiona Enter para usar valores por defecto | Escribe 'omitir' para saltar
 
-Selecciona carpeta: 1
-Título: Análisis de Datos con Pandas
-Tipo de documento: jou
-Tags: pandas, python
-Categorías: tutorial
+[Proceso guiado con 6 secciones completas]
 
-✓ Post creado exitosamente
+═══════════════════════════════════════════════════════════════
+  ✅ Post Creado Exitosamente
+═══════════════════════════════════════════════════════════════
+
+ℹ️ Ubicación: .../python/2025-01-28-analisis-datos
+ℹ️ Archivo: index.qmd
+ℹ️ Tipo: APAQuarto jou
+
+Resumen de configuración:
+  • Título: Análisis de Datos con Pandas
+  • Tipo de documento: jou
+  • Tags: 3
+  • Categorías: 2
+  • Autor: Edison Achalma
+
+¿Deseas abrir el archivo para editar? (s/n):
 ```
 
-## 🔧 Integración con _metadata.yml
+# Operaciones Múltiples
 
-El script **evita duplicación** usando `_metadata.yml` compartido:
-
-### En _metadata.yml (compartido)
-- Configuración de formatos
-- Autor predeterminado
-- Opciones de ejecución
-- Configuración de idioma
-
-### En index.qmd (específico)
-- Título, subtítulo, fecha
-- Tags y categorías
-- Información del tipo de documento
-- Autor (solo si es diferente)
-
-### Operaciones Múltiples
-
-#### `render-all`
+## `render-all`
 Renderiza todos los blogs.
 
 ```bash
@@ -474,7 +584,7 @@ Renderiza todos los blogs.
 ✓ Exitosos: 15
 ```
 
-#### `clean-all`
+## `clean-all`
 Limpia todos los blogs (con confirmación).
 
 ```bash
@@ -486,9 +596,9 @@ Limpia todos los blogs (con confirmación).
 ¿Estás seguro? Esta acción eliminará todos los archivos generados (s/n):
 ```
 
-### Integración Git
+# Integración Git
 
-#### `git-init BLOG`
+## `git-init BLOG`
 Inicializa repositorio Git.
 
 ```bash
@@ -510,14 +620,14 @@ Inicializa repositorio Git.
 .DS_Store
 ```
 
-#### `git-status BLOG`
+## `git-status BLOG`
 Muestra estado de Git.
 
 ```bash
 ./build.sh git-status dialectica-y-mercado
 ```
 
-#### `git-commit BLOG [MENSAJE]`
+## `git-commit BLOG [MENSAJE]`
 Commit y push de cambios.
 
 ```bash
@@ -533,9 +643,9 @@ Commit y push de cambios.
 2. `git commit -m "MENSAJE"`
 3. `git push`
 
-### Utilidades
+# Utilidades
 
-#### `convert ARCHIVO [FORMATO]`
+## `convert ARCHIVO [FORMATO]`
 Convierte documento a otro formato.
 
 ```bash
@@ -556,25 +666,25 @@ Convierte documento a otro formato.
 - `revealjs` (presentaciones)
 - `beamer` (presentaciones PDF)
 
-#### `help`, `-h`, `--help`
+## `help`, `-h`, `--help`
 Muestra ayuda completa.
 
 ```bash
 ./build.sh help
 ```
 
-#### `version`, `-v`
+## `version`, `-v`
 Muestra versión de Quarto.
 
 ```bash
 ./build.sh version
 ```
 
-## 💡 Ejemplos Prácticos
+# 💡 Ejemplos Prácticos
 
-### Flujo de Trabajo Típico
+## Flujo de Trabajo Típico
 
-#### 1. Crear y Desarrollar Nuevo Post
+## 1. Crear y Desarrollar Nuevo Post
 
 ```bash
 # Crear nuevo post
@@ -589,7 +699,7 @@ Muestra versión de Quarto.
 ./build.sh render epsilon-y-beta
 ```
 
-#### 2. Actualizar Blog Existente
+## 2. Actualizar Blog Existente
 
 ```bash
 # Ver estado actual
@@ -606,7 +716,7 @@ Muestra versión de Quarto.
 ./build.sh publish website-achalma
 ```
 
-#### 3. Mantenimiento General
+## 3. Mantenimiento General
 
 ```bash
 # Listar todos los blogs
@@ -622,7 +732,7 @@ Muestra versión de Quarto.
 ./build.sh clean-all
 ```
 
-#### 4. Trabajo en Post Específico
+## 4. Trabajo en Post Específico
 
 ```bash
 # Listar posts de un blog
@@ -632,9 +742,9 @@ Muestra versión de Quarto.
 ./build.sh render-post /home/achalmaedison/Documents/publicaciones/numerus-scriptum/python/2021-04-17-01-introducion-a-la-programacion-con-python/index.qmd
 ```
 
-### Casos de Uso Avanzados
+## Casos de Uso Avanzados
 
-#### Publicación Multi-Plataforma
+## Publicación Multi-Plataforma
 
 ```bash
 # Publicar en GitHub Pages
@@ -647,7 +757,7 @@ Muestra versión de Quarto.
 ./build.sh publish website-achalma quarto-pub
 ```
 
-#### Automatización con Cron
+## Automatización con Cron
 
 ```bash
 # Editar crontab
@@ -660,7 +770,7 @@ crontab -e
 0 3 * * 0 /home/achalmaedison/Documents/scripts/scripts_for_quarto/build.sh clean-all
 ```
 
-#### Scripts de Integración Continua
+## Scripts de Integración Continua
 
 ```bash
 #!/bin/bash
@@ -683,9 +793,9 @@ else
 fi
 ```
 
-## 📁 Estructura de Directorios
+# 📁 Estructura de Directorios
 
-### Estructura Esperada de un Blog
+## Estructura Esperada de un Blog
 
 ```
 blog-name/
@@ -710,9 +820,9 @@ blog-name/
 └── .gitignore
 ```
 
-### Archivos Clave
+## Archivos Clave
 
-#### `_quarto.yml`
+## `_quarto.yml`
 ```yaml
 project:
   type: website
@@ -732,7 +842,7 @@ format:
     css: styles.css
 ```
 
-#### `index.qmd`
+## `index.qmd`
 ```yaml
 ---
 title: "Mi Blog"
@@ -744,9 +854,9 @@ listing:
 ---
 ```
 
-## 🔍 Solución de Problemas
+# 🔍 Solución de Problemas
 
-### Problema: Script no ejecuta
+## Problema: Script no ejecuta
 
 **Síntomas:**
 ```bash
@@ -759,7 +869,7 @@ bash: ./build.sh: Permission denied
 chmod +x build.sh
 ```
 
-### Problema: Quarto no encontrado
+## Problema: Quarto no encontrado
 
 **Síntomas:**
 ```
@@ -781,7 +891,7 @@ echo $PATH
 export PATH="$PATH:/opt/quarto/bin"
 ```
 
-### Problema: Blog no encontrado
+## Problema: Blog no encontrado
 
 **Síntomas:**
 ```
@@ -797,7 +907,7 @@ export PATH="$PATH:/opt/quarto/bin"
 ./build.sh render nombre-exacto-del-blog
 ```
 
-### Problema: Error al renderizar
+## Problema: Error al renderizar
 
 **Síntomas:**
 ```
@@ -828,7 +938,7 @@ quarto render --verbose
 ./build.sh render nombre-blog
 ```
 
-### Problema: Git push falla
+## Problema: Git push falla
 
 **Síntomas:**
 ```
@@ -849,7 +959,7 @@ git remote add origin https://github.com/usuario/repo.git
 git push -u origin main
 ```
 
-### Problema: Puerto en uso
+## Problema: Puerto en uso
 
 **Síntomas:**
 ```
@@ -865,9 +975,9 @@ Error: Port 4200 already in use
 lsof -ti:4200 | xargs kill -9
 ```
 
-## 🎨 Personalización
+# 🎨 Personalización
 
-### Cambiar Directorios por Defecto
+## Cambiar Directorios por Defecto
 
 Editar variables al inicio del script:
 
@@ -877,7 +987,7 @@ PUBLICACIONES_DIR="/ruta/personalizada/publicaciones"
 SCRIPT_DIR="/ruta/personalizada/scripts"
 ```
 
-### Añadir Nuevos Comandos
+## Añadir Nuevos Comandos
 
 1. Crear función en sección de funciones:
 
@@ -912,7 +1022,7 @@ case "$1" in
 
 3. Actualizar ayuda y menú interactivo.
 
-### Cambiar Plantilla de Posts
+## Cambiar Plantilla de Posts
 
 Modificar la función `create_post`:
 
@@ -929,23 +1039,23 @@ image: "thumbnail.jpg"
 draft: false
 ---
 
-## Resumen
+# Resumen
 
 Resumen del post...
 
-## Contenido Principal
+# Contenido Principal
 
 Tu contenido aquí...
 
-## Conclusiones
+# Conclusiones
 
 Conclusiones del post...
 
-## Referencias
+# Referencias
 EOF
 ```
 
-## 📚 Referencias
+# 📚 Referencias
 
 - [Documentación Quarto](https://quarto.org/docs/guide/)
 - [Quarto Publishing](https://quarto.org/docs/publishing/)
@@ -953,27 +1063,27 @@ EOF
 - [GitHub Pages con Quarto](https://quarto.org/docs/publishing/github-pages.html)
 - [Bash Scripting Guide](https://www.gnu.org/software/bash/manual/)
 
-## 📝 Notas Adicionales
+# 📝 Notas Adicionales
 
-### Compatibilidad
+## Compatibilidad
 
 - **Linux:** Totalmente compatible
 - **macOS:** Totalmente compatible
 - **Windows:** Requiere Git Bash o WSL
 
-### Rendimiento
+## Rendimiento
 
 - Renderizado individual: ~5-30 segundos por blog
 - Renderizado completo: Varía según cantidad de posts
 - Preview: Inicio instantáneo
 
-### Seguridad
+## Seguridad
 
 - No ejecuta comandos remotos
 - No modifica archivos fuera de directorios configurados
 - Pide confirmación en operaciones destructivas
 
-### Actualizaciones
+## Actualizaciones
 
 Para actualizar el script:
 
@@ -984,11 +1094,11 @@ cd /home/achalmaedison/Documents/scripts/scripts_for_quarto
 ./build.sh version
 ```
 
-## 🤝 Contribuciones
+# 🤝 Contribuciones
 
 Este script es de uso personal pero puede ser adaptado según necesidades.
 
-### Sugerencias de Mejora
+## Sugerencias de Mejora
 
 - Añadir soporte para más formatos de exportación
 - Integración con más plataformas de publicación
