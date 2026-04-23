@@ -1,13 +1,6 @@
-# 📚 Sistema de Gestión de Metadatos para Blogs Quarto
+# Sistema de Gestión de Metadatos para Blogs Quarto
 
-**Versión:** 1.2.0  
-**Autor:** Edison Achalma   
-**Ubicación:** Ayacucho, Perú  
-**Fecha:** Diciembre 2024
-
----
-
-## 📋 Tabla de Contenidos
+## Tabla de Contenidos
 
 1. [Descripción General](#-descripción-general)
 2. [Características Principales](#-características-principales)
@@ -30,66 +23,74 @@
 
 ---
 
-## 🎯 Descripción General
+## Descripción General
 
 El **Sistema de Gestión de Metadatos para Blogs Quarto** es una herramienta que permite administrar de forma centralizada los metadatos YAML de múltiples blogs Quarto usando hojas de cálculo Excel.
 
 ### ¿Para qué sirve?
 
-- ✅ Gestionar metadatos de **cientos de artículos** desde un solo archivo Excel
-- ✅ Actualizar títulos, keywords, tags, autores, etc. de forma masiva
-- ✅ Cambiar el estado de publicación (`draft: TRUE/FALSE`) fácilmente
-- ✅ Mantener consistencia en metadatos entre múltiples blogs
-- ✅ Exportar e importar metadatos para backup y análisis
+- Gestionar metadatos de **cientos de artículos** desde un solo archivo Excel
+- Actualizar títulos, keywords, tags, autores, etc. de forma masiva
+- Cambiar el estado de publicación (`draft: TRUE/FALSE`) fácilmente
+- Mantener consistencia en metadatos entre múltiples blogs
+- Exportar e importar metadatos para backup y análisis
 
 ### ¿Por qué usar este sistema?
 
 **Antes:**
-- ❌ Editar manualmente cada archivo `index.qmd`
-- ❌ Buscar y reemplazar en múltiples archivos
-- ❌ Riesgo de errores de sintaxis YAML
-- ❌ Difícil mantener consistencia
+
+- Editar manualmente cada archivo `index.qmd`
+- Buscar y reemplazar en múltiples archivos
+- Riesgo de errores de sintaxis YAML
+- Difícil mantener consistencia
 
 **Ahora:**
-- ✅ Editar todos los metadatos en Excel
-- ✅ Actualización masiva con un comando
-- ✅ Validación automática de formatos
-- ✅ Filtros para actualización selectiva
+
+- Editar todos los metadatos en Excel
+- Actualización masiva con un comando
+- Validación automática de formatos
+- Filtros para actualización selectiva
 
 ---
 
-## ⭐ Características Principales
+## Características Principales
 
-### 🎯 **Recolección Inteligente**
+### **Recolección Inteligente**
+
 - Solo procesa artículos/publicaciones (con fecha en carpeta)
 - Excluye automáticamente archivos de configuración
 - Respeta `_metadata.yml` para herencia de configuración
 - Prioriza valores específicos de `index.qmd`
 
-### 📊 **Excel Unificado**
+### **Excel Unificado**
+
 - Una sola hoja `METADATOS` con todos los artículos
 - Hoja `INSTRUCCIONES` con guía completa
 - Compatible con Excel y LibreOffice Calc
 
-### 🔄 **Actualización Eficiente**
+### **Actualización Eficiente**
+
 - Solo actualiza cuando hay diferencias
 - Preserva formato e indentación YAML
 - Reportes detallados de cambios aplicados
 - Modo simulación para pruebas seguras
 
-### 🎨 **Filtros Avanzados**
+### **Filtros Avanzados**
+
 - Actualizar solo un blog específico
 - Filtrar por rutas parciales
 - Combinar múltiples filtros
 - Usar base de datos general sin generar archivos separados
 
-### 📝 **Soporte Completo de Tipos**
+### **Soporte Completo de Tipos**
+
 - **STU (Estudiante):** Trabajos académicos
 - **MAN (Manuscrito):** Envíos a revistas
 - **JOU (Revista):** Artículos publicados
 - **DOC (Documento):** Informes y ensayos
 
-### 👥 **Gestión de Autores**
+### **Gestión de Autores**
+
 - Hasta 3 autores por artículo
 - Información completa: nombre, ORCID, email
 - Afiliaciones institucionales
@@ -97,16 +98,18 @@ El **Sistema de Gestión de Metadatos para Blogs Quarto** es una herramienta que
 
 ---
 
-## 🆕 Novedades v1.2
+## Novedades v1.2
 
-### ✨ Mejoras Principales
+### Mejoras Principales
 
 #### 1. **Filtro de Artículos Mejorado**
-- ✅ Solo procesa `index.qmd` con fecha en carpeta
-- ⏭️ Omite `blog/index.qmd`, `about/index.qmd`, etc.
-- 📊 Reportes detallados de artículos vs configuraciones
+
+- Solo procesa `index.qmd` con fecha en carpeta
+- Omite `blog/index.qmd`, `about/index.qmd`, etc.
+- Reportes detallados de artículos vs configuraciones
 
 **Ejemplo:**
+
 ```
 ✅ Procesa: axiomata/posts/2025-06-01-proporcionalidad/index.qmd
 ⏭️ Omite:  axiomata/index.qmd (no es artículo)
@@ -114,26 +117,31 @@ El **Sistema de Gestión de Metadatos para Blogs Quarto** es una herramienta que
 ```
 
 #### 2. **Una Sola Hoja de Metadatos**
+
 - Todos los artículos en hoja `METADATOS`
 - Fácil filtrado y búsqueda
 - Gestión unificada
 
 **Antes:**
+
 ```
 📁 Hojas: STU, MAN, JOU, DOC (separadas)
 ```
 
 **Ahora:**
+
 ```
 📁 Hojas: METADATOS (todos juntos), INSTRUCCIONES
 ```
 
-#### 3. **Prioridad Clara: index.qmd > _metadata.yml**
+#### 3. **Prioridad Clara: index.qmd > \_metadata.yml**
+
 - Respeta configuraciones específicas de cada artículo
 - Hereda valores por defecto de `_metadata.yml`
 - Fusión inteligente de datos
 
 **Ejemplo:**
+
 ```yaml
 # _metadata.yml (predeterminado)
 documentmode: jou
@@ -149,11 +157,13 @@ author: Edison Achalma  ← Heredado de _metadata.yml
 ```
 
 #### 4. **Solo Actualiza Diferencias**
+
 - Compara valores antes de actualizar
 - Omite archivos sin cambios
 - Reportes precisos de modificaciones
 
 **Ejemplo:**
+
 ```
 [1/15] ✅ Actualizando: proporcionalidad/index.qmd
    📝 Cambios detectados: 2
@@ -177,18 +187,20 @@ author: Edison Achalma  ← Heredado de _metadata.yml
 ```
 
 #### 6. **Instrucciones con Emojis**
-- 🎯 Guías intuitivas
-- ✅ Compatible con LibreOffice
-- 📝 Sin caracteres especiales problemáticos
+
+- Guías intuitivas
+- Compatible con LibreOffice
+- Sin caracteres especiales problemáticos
 
 #### 7. **Procesamiento Detallado**
+
 - Progreso en tiempo real
 - Resúmenes completos
 - Mensajes informativos
 
 ---
 
-## 💻 Requisitos del Sistema
+## Requisitos del Sistema
 
 ### Software Necesario
 
@@ -212,7 +224,7 @@ pyyaml >= 5.4.0
 
 ---
 
-## 📦 Instalación
+## Instalación
 
 ### Opción 1: Usando Conda (Recomendado)
 
@@ -255,7 +267,7 @@ bash install.sh
 
 ---
 
-## ⚙️ Configuración Inicial
+## Configuración Inicial
 
 ### Paso 1: Crear Archivo de Configuración
 
@@ -304,11 +316,9 @@ code metadata_config.yml
 - **`allowed_blogs`**: Lista de blogs a procesar
   - Si está vacía `[]`, procesa todos los blogs encontrados
   - Si tiene elementos, solo procesa los listados
-  
 - **`excluded_folders`**: Carpetas adicionales a ignorar
   - Solo nombres, no rutas completas
   - Las carpetas del sistema ya están excluidas por defecto
-  
 - **`excel_output_dir`**: Dónde guardar los archivos Excel
   - Usa `~` para referirse a tu home
   - Se crea automáticamente si no existe
@@ -348,13 +358,13 @@ Tu estructura debe verse así:
 
 ---
 
-## 📁 Estructura del Proyecto
+## Estructura del Proyecto
 
 ### Carpetas y Archivos Principales
 
 ```
 script_metadata_manager/
-├── quarto_metadata_manager.py    # Script principal
+├── quarto_metadata_manager.py     # Script principal
 ├── metadata_config.yml            # Configuración
 ├── README.md                      # Esta guía
 ├── EJEMPLOS_CONFIGURACION.md      # Ejemplos detallados
@@ -386,14 +396,14 @@ draft: true
 Configuración del sistema de gestión:
 
 ```yaml
-allowed_blogs: [...]      # Blogs a procesar
-excluded_folders: [...]   # Carpetas a ignorar
-excel_output_dir: ...     # Dónde guardar Excel
+allowed_blogs: [...] # Blogs a procesar
+excluded_folders: [...] # Carpetas a ignorar
+excel_output_dir: ... # Dónde guardar Excel
 ```
 
 ---
 
-## 🚀 Uso Básico
+## Uso Básico
 
 ### Flujo de Trabajo Completo
 
@@ -431,21 +441,24 @@ quarto render
 
 ---
 
-## 📝 Comandos Disponibles
+## Comandos Disponibles
 
 ### 1. `create-config` - Crear Configuración
 
 Genera archivo de configuración personalizado.
 
 **Sintaxis:**
+
 ```bash
 python quarto_metadata_manager.py create-config <ruta_base> [opciones]
 ```
 
 **Opciones:**
+
 - `-o, --output`: Nombre del archivo (default: `metadata_config.yml`)
 
 **Ejemplos:**
+
 ```bash
 # Crear con nombre por defecto
 python quarto_metadata_manager.py create-config ~/Documents/publicaciones
@@ -462,11 +475,13 @@ python quarto_metadata_manager.py create-config ~/Documents/publicaciones \
 Recolecta metadatos y genera archivo Excel.
 
 **Sintaxis:**
+
 ```bash
 python quarto_metadata_manager.py create-template <ruta_base> [opciones]
 ```
 
 **Opciones:**
+
 - `-o, --output`: Nombre del Excel (default: `quarto_metadata.xlsx`)
 - `-b, --blog`: Blog específico a procesar
 - `-c, --config`: Archivo de configuración
@@ -474,9 +489,13 @@ python quarto_metadata_manager.py create-template <ruta_base> [opciones]
 **Ejemplos:**
 
 ```bash
-# Base de datos general (todos los blogs)
+# Base de datos general (todos los blogs) UNA SOLA VEZ
 python quarto_metadata_manager.py create-template ~/Documents/publicaciones \
     --config metadata_config.yml
+    
+# Base de datos general (Agrega solo articulos nuevos (modo incremental))
+python quarto_metadata_manager.py create-template ~/Documents/publicaciones \
+    --config metadata_config.yml --incremental
 
 # Blog específico
 python quarto_metadata_manager.py create-template ~/Documents/publicaciones \
@@ -494,6 +513,7 @@ python quarto_metadata_manager.py create-template ~/Documents/publicaciones
 ```
 
 **Salida esperada:**
+
 ```
 🔍 Recolectando archivos index.qmd...
    (Solo se incluirán artículos/publicaciones con fecha)
@@ -518,6 +538,7 @@ python quarto_metadata_manager.py create-template ~/Documents/publicaciones
 📁 Hojas: METADATOS (todos los artículos), INSTRUCCIONES
 ```
 
+
 ---
 
 ### 3. `update` - Actualizar desde Excel
@@ -525,11 +546,13 @@ python quarto_metadata_manager.py create-template ~/Documents/publicaciones
 Actualiza archivos `index.qmd` con datos del Excel.
 
 **Sintaxis:**
+
 ```bash
 python quarto_metadata_manager.py update <ruta_base> <archivo_excel> [opciones]
 ```
 
 **Opciones:**
+
 - `-b, --blog`: Filtrar por blog específico
 - `-p, --filter-path`: Filtrar por substring en ruta
 - `-c, --config`: Archivo de configuración
@@ -578,6 +601,7 @@ python quarto_metadata_manager.py update ~/Documents/publicaciones \
 ```
 
 **Salida esperada:**
+
 ```
 📖 Leyendo Excel: excel_databases/quarto_metadata.xlsx
 
@@ -607,9 +631,39 @@ python quarto_metadata_manager.py update ~/Documents/publicaciones \
 ======================================================================
 ```
 
+### 4. Más opciones
+
+```bash
+# 1. Detectar nuevos metadatos
+python quarto_metadata_manager.py detect-new-fields ~/Documents/publicaciones
+
+# 2. Agregar columnas detectadas
+python quarto_metadata_manager.py add-columns ~/Documents/publicaciones \
+  excel_databases/quarto_metadata.xlsx keywords-string author-note
+
+# 3. Encontrar diferencias
+python quarto_metadata_manager.py find-differences ~/Documents/publicaciones \
+  excel_databases/quarto_metadata.xlsx --blog axiomata
+
+# 4. Sincronizar UN artículo (interactivo)
+python quarto_metadata_manager.py sync-article ~/Documents/publicaciones \
+  excel_databases/quarto_metadata.xlsx \
+  "axiomata/blog/2024-01-15-mi-articulo/index.qmd"
+
+# 5. Sincronizar VARIOS artículos (interactivo)
+python quarto_metadata_manager.py sync-batch ~/Documents/publicaciones \
+  excel_databases/quarto_metadata.xlsx --blog axiomata
+
+# 6. Simulación
+python quarto_metadata_manager.py sync-batch ~/Documents/publicaciones \
+  excel_databases/quarto_metadata.xlsx --dry-run
+```
+
+
+
 ---
 
-## 💼 Casos de Uso Comunes
+## Casos de Uso Comunes
 
 ### Caso 1: Publicar Artículos (cambiar draft a FALSE)
 
@@ -732,17 +786,25 @@ python quarto_metadata_manager.py update ~/Documents/publicaciones \
 
 ---
 
-## 📊 Formato de Datos en Excel
+## Formato de Datos en Excel
+
+### Ordena la hoja (OBLIGATORIO)
+
+1. Selecciona todos tus datos
+2. Datos → Ordenar
+3. Primer criterio: columna `pub_date` (AZ) → Ascendente
+4. Segundo criterio: columna `journal` (Z) → Ascendente
+5. Aceptar
 
 ### Hoja METADATOS
 
 #### Columnas de Solo Lectura (NO MODIFICAR)
 
-| Columna | Descripción | Ejemplo |
-|---------|-------------|---------|
-| `ruta_archivo` | Ubicación del archivo | `axiomata/posts/2025-06-01-prop.../index.qmd` |
-| `blog_nombre` | Nombre del blog | `axiomata` |
-| `tipo_documento` | Tipo inicial | `jou` |
+| Columna          | Descripción           | Ejemplo                                       |
+| ---------------- | --------------------- | --------------------------------------------- |
+| `ruta_archivo`   | Ubicación del archivo | `axiomata/posts/2025-06-01-prop.../index.qmd` |
+| `blog_nombre`    | Nombre del blog       | `axiomata`                                    |
+| `tipo_documento` | Tipo inicial          | `jou`                                         |
 
 ⚠️ **Importante:** Estas columnas identifican el archivo. Si las modificas, el script no encontrará el archivo.
 
@@ -750,39 +812,41 @@ python quarto_metadata_manager.py update ~/Documents/publicaciones \
 
 ##### **Identificación**
 
-| Columna | Formato | Ejemplo | Obligatorio |
-|---------|---------|---------|-------------|
-| `title` | Texto | `Proporcionalidad de Magnitudes` | ✅ |
-| `shorttitle` | Texto (<50 chars) | `Proporcionalidad` | ✅ |
-| `subtitle` | Texto | `Aplicaciones en Comunicación` | ❌ |
+| Columna      | Formato           | Ejemplo                          | Obligatorio |
+| ------------ | ----------------- | -------------------------------- | ----------- |
+| `title`      | Texto             | `Proporcionalidad de Magnitudes` | ✅          |
+| `shorttitle` | Texto (<50 chars) | `Proporcionalidad`               | ✅          |
+| `subtitle`   | Texto             | `Aplicaciones en Comunicación`   | ❌          |
 
 ##### **Publicación**
 
-| Columna | Formato | Ejemplo | Obligatorio |
-|---------|---------|---------|-------------|
-| `date` | `MM/DD/YYYY` | `06/01/2025` | ✅ |
-| `draft` | `TRUE` o `FALSE` | `FALSE` | ✅ |
+| Columna | Formato          | Ejemplo      | Obligatorio |
+| ------- | ---------------- | ------------ | ----------- |
+| `date`  | `MM/DD/YYYY`     | `06/01/2025` | ✅          |
+| `draft` | `TRUE` o `FALSE` | `FALSE`      | ✅          |
 
 **Importante:**
+
 - `draft = FALSE`: Artículo publicado (visible)
 - `draft = TRUE`: Artículo borrador (oculto)
 
 ##### **Descripción**
 
-| Columna | Formato | Ejemplo | Obligatorio |
-|---------|---------|---------|-------------|
-| `abstract` | Texto (<250 palabras) | `Este trabajo explora...` | ✅ |
-| `description` | Texto (<160 chars) | `Análisis de proporcionalidad` | ✅ |
+| Columna       | Formato               | Ejemplo                        | Obligatorio |
+| ------------- | --------------------- | ------------------------------ | ----------- |
+| `abstract`    | Texto (<250 palabras) | `Este trabajo explora...`      | ✅          |
+| `description` | Texto (<160 chars)    | `Análisis de proporcionalidad` | ✅          |
 
 ##### **Clasificación**
 
-| Columna | Formato | Ejemplo | Obligatorio |
-|---------|---------|---------|-------------|
-| `keywords` | Lista (separada por comas) | `economía, análisis, datos` | ✅ |
-| `tags` | Lista (separada por comas) | `python, tutorial, análisis` | ✅ |
-| `categories` | Lista (separada por comas) | `Economía, Estadística` | ✅ |
+| Columna      | Formato                    | Ejemplo                      | Obligatorio |
+| ------------ | -------------------------- | ---------------------------- | ----------- |
+| `keywords`   | Lista (separada por comas) | `economía, análisis, datos`  | ✅          |
+| `tags`       | Lista (separada por comas) | `python, tutorial, análisis` | ✅          |
+| `categories` | Lista (separada por comas) | `Economía, Estadística`      | ✅          |
 
 **Formato de listas:**
+
 ```
 Correcto:   economía, estadística, análisis de datos
 Incorrecto: economía; estadística; análisis de datos
@@ -791,88 +855,90 @@ Incorrecto: [economía, estadística, análisis de datos]
 
 ##### **Medios**
 
-| Columna | Formato | Ejemplo | Obligatorio |
-|---------|---------|---------|-------------|
-| `image` | Nombre de archivo | `featured.png` | ❌ |
+| Columna | Formato           | Ejemplo        | Obligatorio |
+| ------- | ----------------- | -------------- | ----------- |
+| `image` | Nombre de archivo | `featured.png` | ❌          |
 
 ##### **Código**
 
-| Columna | Formato | Ejemplo | Obligatorio |
-|---------|---------|---------|-------------|
-| `eval` | `TRUE` o `FALSE` | `TRUE` | ❌ |
+| Columna | Formato          | Ejemplo | Obligatorio |
+| ------- | ---------------- | ------- | ----------- |
+| `eval`  | `TRUE` o `FALSE` | `TRUE`  | ❌          |
 
 **Importante:**
+
 - `eval = TRUE`: Ejecuta bloques de código al renderizar
 - `eval = FALSE`: No ejecuta código (solo muestra)
 
 ##### **Citación**
 
-| Columna | Formato | Ejemplo | Obligatorio |
-|---------|---------|---------|-------------|
-| `citation_type` | Tipo | `article-journal` | ❌ |
-| `citation_author` | Texto | `Edison Achalma` | ❌ |
-| `citation_pdf_url` | URL | `https://...` | ❌ |
+| Columna            | Formato | Ejemplo           | Obligatorio |
+| ------------------ | ------- | ----------------- | ----------- |
+| `citation_type`    | Tipo    | `article-journal` | ❌          |
+| `citation_author`  | Texto   | `Edison Achalma`  | ❌          |
+| `citation_pdf_url` | URL     | `https://...`     | ❌          |
 
 ##### **Bibliografía**
 
-| Columna | Formato | Ejemplo | Obligatorio |
-|---------|---------|---------|-------------|
-| `bibliography` | Nombre de archivo | `referencias.bib` | ❌ |
+| Columna        | Formato           | Ejemplo           | Obligatorio |
+| -------------- | ----------------- | ----------------- | ----------- |
+| `bibliography` | Nombre de archivo | `referencias.bib` | ❌          |
 
 ##### **Campos Específicos por Tipo**
 
 ###### STU (Estudiante)
 
-| Columna | Formato | Ejemplo |
-|---------|---------|---------|
-| `course` | Texto | `Metodología (ECON 101)` |
-| `professor` | Texto | `Dr. Edison Achalma` |
-| `duedate` | `MM/DD/YYYY` | `12/25/2025` |
-| `note` | Texto | `Código: 2020123456` |
+| Columna     | Formato      | Ejemplo                  |
+| ----------- | ------------ | ------------------------ |
+| `course`    | Texto        | `Metodología (ECON 101)` |
+| `professor` | Texto        | `Dr. Edison Achalma`     |
+| `duedate`   | `MM/DD/YYYY` | `12/25/2025`             |
+| `note`      | Texto        | `Código: 2020123456`     |
 
 ###### JOU (Revista)
 
-| Columna | Formato | Ejemplo |
-|---------|---------|---------|
-| `journal` | Texto | `Revista Peruana de Economía` |
-| `volume` | Texto | `2025, Vol. 7, No. 1, 1--25` |
-| `copyrightnotice` | Año | `2025` |
-| `copyrightext` | Texto | `Todos los derechos reservados` |
+| Columna           | Formato | Ejemplo                         |
+| ----------------- | ------- | ------------------------------- |
+| `journal`         | Texto   | `Revista Peruana de Economía`   |
+| `volume`          | Texto   | `2025, Vol. 7, No. 1, 1--25`    |
+| `copyrightnotice` | Año     | `2025`                          |
+| `copyrightext`    | Texto   | `Todos los derechos reservados` |
 
 ###### MAN (Manuscrito)
 
-| Columna | Formato | Ejemplo |
-|---------|---------|---------|
-| `floatsintext` | `TRUE`/`FALSE` | `FALSE` |
-| `numbered_lines` | `TRUE`/`FALSE` | `TRUE` |
-| `meta_analysis` | `TRUE`/`FALSE` | `FALSE` |
-| `mask` | `TRUE`/`FALSE` | `FALSE` |
+| Columna          | Formato        | Ejemplo |
+| ---------------- | -------------- | ------- |
+| `floatsintext`   | `TRUE`/`FALSE` | `FALSE` |
+| `numbered_lines` | `TRUE`/`FALSE` | `TRUE`  |
+| `meta_analysis`  | `TRUE`/`FALSE` | `FALSE` |
+| `mask`           | `TRUE`/`FALSE` | `FALSE` |
 
 ###### DOC (Documento)
 
-| Columna | Formato | Ejemplo |
-|---------|---------|---------|
-| `floatsintext` | `TRUE`/`FALSE` | `TRUE` |
+| Columna          | Formato        | Ejemplo |
+| ---------------- | -------------- | ------- |
+| `floatsintext`   | `TRUE`/`FALSE` | `TRUE`  |
 | `numbered_lines` | `TRUE`/`FALSE` | `FALSE` |
 
 ##### **Autores (hasta 3)**
 
 Para cada autor (N = 1, 2, 3):
 
-| Columna | Formato | Ejemplo |
-|---------|---------|---------|
-| `author_N_name` | Texto | `Edison Achalma` |
-| `author_N_corresponding` | `TRUE`/`FALSE` | `TRUE` (solo uno) |
-| `author_N_orcid` | ORCID | `0000-0001-6996-3364` |
-| `author_N_email` | Email | `achalmaedison@gmail.com` |
-| `author_N_affiliation_name` | Texto | `UNSCH` |
-| `author_N_affiliation_department` | Texto | `Economía` |
-| `author_N_affiliation_city` | Texto | `Ayacucho` |
-| `author_N_affiliation_region` | Texto | `AYA` |
-| `author_N_affiliation_country` | Texto | `Perú` |
-| `author_N_roles` | Lista (separada por comas) | `conceptualization, writing` |
+| Columna                           | Formato                    | Ejemplo                      |
+| --------------------------------- | -------------------------- | ---------------------------- |
+| `author_N_name`                   | Texto                      | `Edison Achalma`             |
+| `author_N_corresponding`          | `TRUE`/`FALSE`             | `TRUE` (solo uno)            |
+| `author_N_orcid`                  | ORCID                      | `0000-0001-6996-3364`        |
+| `author_N_email`                  | Email                      | `achalmaedison@gmail.com`    |
+| `author_N_affiliation_name`       | Texto                      | `UNSCH`                      |
+| `author_N_affiliation_department` | Texto                      | `Economía`                   |
+| `author_N_affiliation_city`       | Texto                      | `Ayacucho`                   |
+| `author_N_affiliation_region`     | Texto                      | `AYA`                        |
+| `author_N_affiliation_country`    | Texto                      | `Perú`                       |
+| `author_N_roles`                  | Lista (separada por comas) | `conceptualization, writing` |
 
 **Roles CRediT válidos:**
+
 - `conceptualization`, `methodology`, `software`, `validation`
 - `formal-analysis`, `investigation`, `resources`, `data-curation`
 - `writing`, `visualization`, `supervision`, `project-administration`
@@ -880,7 +946,7 @@ Para cada autor (N = 1, 2, 3):
 
 ---
 
-## 🔍 Filtros Avanzados
+## Filtros Avanzados
 
 ### Filtro por Blog
 
@@ -893,6 +959,7 @@ python quarto_metadata_manager.py update ~/Documents/publicaciones \
 ```
 
 **Uso:**
+
 - Útil cuando editas solo artículos de un blog en el Excel general
 - Ignora cambios en otros blogs
 
@@ -918,6 +985,7 @@ python quarto_metadata_manager.py update ~/Documents/publicaciones \
 ```
 
 **Uso:**
+
 - Útil para actualizar artículos por tema o período
 - El filtro busca el substring en toda la ruta
 
@@ -951,22 +1019,25 @@ python quarto_metadata_manager.py update ~/Documents/publicaciones \
 ```
 
 **Beneficios:**
+
 - Ver cambios antes de aplicar
 - Detectar errores
 - Confirmar que los filtros funcionan correctamente
 
 ---
 
-## 🔧 Solución de Problemas
+## Solución de Problemas
 
 ### Error: "La ruta base no existe"
 
 **Mensaje:**
+
 ```
 ❌ La ruta base no existe: ~/Documents/publicaciones
 ```
 
 **Solución:**
+
 ```bash
 # Verificar que la ruta existe
 ls ~/Documents/publicaciones
@@ -982,6 +1053,7 @@ python quarto_metadata_manager.py create-template \
 ### Error: "No se encontraron artículos válidos"
 
 **Mensaje:**
+
 ```
 ⚠️ No se encontraron artículos válidos
 ```
@@ -989,6 +1061,7 @@ python quarto_metadata_manager.py create-template \
 **Causas y soluciones:**
 
 1. **No hay artículos con fecha en carpeta**
+
    ```bash
    # Verificar estructura
    # ✅ Correcto: posts/2025-06-01-articulo/index.qmd
@@ -996,6 +1069,7 @@ python quarto_metadata_manager.py create-template \
    ```
 
 2. **Blogs no están en `allowed_blogs`**
+
    ```yaml
    # Editar metadata_config.yml
    allowed_blogs:
@@ -1026,6 +1100,7 @@ citation:
 ### Error: "Archivo no encontrado"
 
 **Mensaje:**
+
 ```
 ❌ Archivo no encontrado: axiomata/posts/2025-06-01.../index.qmd
 ```
@@ -1033,6 +1108,7 @@ citation:
 **Causas:**
 
 1. **Archivo movido o eliminado**
+
    ```bash
    # Regenerar Excel
    python quarto_metadata_manager.py create-template ~/Documents/publicaciones
@@ -1058,6 +1134,7 @@ citation:
 **Síntoma:** Error al renderizar con Quarto
 
 **Solución:**
+
 ```bash
 # 1. Verificar sintaxis YAML
 cat index.qmd | head -20
@@ -1071,7 +1148,7 @@ cat index.qmd | head -20
 
 ---
 
-## ❓ Preguntas Frecuentes
+## Preguntas Frecuentes
 
 ### ¿Puedo usar este sistema con otros formatos además de APA?
 
@@ -1128,7 +1205,7 @@ git commit -m "Backup metadatos"
 
 ---
 
-## ✨ Mejores Prácticas
+## Mejores Prácticas
 
 ### 1. Hacer Backup Siempre
 
@@ -1204,7 +1281,7 @@ conda activate metadata_manager
 
 ---
 
-## 📚 Ejemplos Prácticos
+## Ejemplos Prácticos
 
 ### Ejemplo 1: Publicación Masiva de Artículos
 
@@ -1291,7 +1368,7 @@ python quarto_metadata_manager.py update ~/Documents/publicaciones \
 
 ---
 
-## 🤝 Contribuir
+## Contribuir
 
 ### Reportar Problemas
 
@@ -1310,13 +1387,13 @@ Envía sugerencias a: achalmaedison@gmail.com
 
 ---
 
-## 📄 Licencia
+## Licencia
 
 Este proyecto está licenciado bajo CC BY-SA 4.0.
 
 ---
 
-## 📞 Soporte
+## Soporte
 
 **Autor:** Edison Achalma  
 **Email:** achalmaedison@gmail.com  
@@ -1326,10 +1403,10 @@ Este proyecto está licenciado bajo CC BY-SA 4.0.
 
 ---
 
-## 🎉 Agradecimientos
+## Agradecimientos
 
 Gracias a todos los que han contribuido con ideas y reportes de bugs para mejorar este sistema.
 
 ---
 
-**Última actualización:** Diciembre 19, 2024
+**Última actualización:** Enero 22, 2026

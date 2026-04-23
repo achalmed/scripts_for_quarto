@@ -12,18 +12,18 @@
 # Útil para excluir carpetas que no son blogs
 
 allowed_blogs:
-  - axiomata
-  - aequilibria
-  - numerus-scriptum
-  - actus-mercator
-  - res-publica
+  - pub_actus-mercator
+  - pub_aequilibria
+  - pub_axiomata
+  - pub_chaska
+  - pub_dialectica-y-mercado
+  - pub_epsilon-y-beta
+  - pub_methodica
+  - pub_numerus-scriptum
+  - pub_optimums
+  - pub_pecunia-fluxus
+  - pub_res-publica
   - website-achalma/blog
-  - pecunia-fluxus
-  - optimums
-  - epsilon-y-beta
-  - methodica
-  - chaska
-  - dialectica-y-mercado
   # Agregar más blogs según necesidad
 
 # -----------------------------------------------------------------------------
@@ -34,12 +34,35 @@ allowed_blogs:
 
 excluded_folders:
   - apa                                           # Plantillas APA
-  - notas                                         # Notas personales
-  - borradores                                    # Borradores en proceso
-  - propuesta bicentenario                        # Propuestas específicas
-  - taller unsch como elaborar tesis de pregrado  # Material de taller
-  - practicas preprofesionales                    # Prácticas
   - mytestproyect                                 # Proyectos de prueba
+  - academia
+  - biblioteca
+  - doc_2fa vault
+  - doc_administrativos
+  - doc_agenda
+  - doc_educativos
+  - doc_financieros
+  - doc_identidad
+  - doc_propiedad
+  - doc_registro civil
+  - geogebra
+  - gestion empresarial
+  - ideas
+  - idiomas
+  - infox python
+  - latex
+  - logos y tipografias
+  - ofimatica
+  - prompts
+  - propuesta bicentenario
+  - scripts_for_calibre
+  - scripts_for_libreoffice
+  - scripts_for_linux
+  - scripts_for_quarto
+  - scripts_for_zotero
+  - spss
+  - stata
+  - whatsapp chat
   - website-achalma/about
   - website-achalma/beschikbaarheid
   - website-achalma/talk
@@ -53,7 +76,7 @@ excluded_folders:
 # Puede ser una ruta absoluta o relativa
 # Usar ~ para referirse al home del usuario
 
-excel_output_dir: ~/Documents/scripts/scripts_for_quarto/script_metadata_manager/excel_databases
+excel_output_dir: ~/Documents/scripts_for_quarto/script_metadata_manager/excel_databases
 
 # =============================================================================
 # NOTAS DE USO

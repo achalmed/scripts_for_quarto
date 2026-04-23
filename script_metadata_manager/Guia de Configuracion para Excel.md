@@ -1,6 +1,6 @@
-# EJEMPLOS DE CONFIGURACIÓN PARA EXCEL
-# Autor: Edison Achalma
-# Fecha: Diciembre 2024
+# Ejemplos de configuración de Excel 
+**Autor:** Edison Achalma  
+**Fecha:** Diciembre 2024
 
 Este documento contiene ejemplos de cómo llenar correctamente los campos en el Excel.
 
@@ -316,7 +316,7 @@ tags: series-de-tiempo, parte-2, arima
 
 ## VALIDACIÓN DE DATOS
 
-### ✅ CORRECTO
+### CORRECTO
 
 ```
 draft: TRUE
@@ -324,7 +324,7 @@ eval: FALSE
 floatsintext: TRUE
 ```
 
-### ❌ INCORRECTO
+### INCORRECTO
 
 ```
 draft: true    # Debe ser mayúsculas
@@ -332,28 +332,28 @@ eval: false    # Debe ser mayúsculas
 floatsintext: Si  # Debe ser TRUE o FALSE
 ```
 
-### ✅ CORRECTO (Listas)
+### CORRECTO (Listas)
 
 ```
 keywords: economía, estadística, análisis
 tags: tutorial, python, datos
 ```
 
-### ❌ INCORRECTO (Listas)
+### INCORRECTO (Listas)
 
 ```
 keywords: economía; estadística; análisis  # Usar comas, no punto y coma
 tags: [tutorial, python, datos]           # No usar corchetes
 ```
 
-### ✅ CORRECTO (Fechas)
+### CORRECTO (Fechas)
 
 ```
 date: 12/19/2025
 date: 2025-12-19
 ```
 
-### ❌ INCORRECTO (Fechas)
+### INCORRECTO (Fechas)
 
 ```
 date: 19-12-2025     # Puede causar confusión
@@ -417,11 +417,11 @@ date: Siempre MM/DD/YYYY
 ### 5. Preparación para Publicación
 
 Antes de cambiar `draft: FALSE`:
-- ✅ Revisar ortografía
-- ✅ Verificar links
-- ✅ Comprobar que imágenes existen
-- ✅ Validar referencias bibliográficas
-- ✅ Probar código (si eval: TRUE)
+- Revisar ortografía
+- Verificar links
+- Comprobar que imágenes existen
+- Validar referencias bibliográficas
+- Probar código (si eval: TRUE)
 
 ---
 
@@ -448,9 +448,3 @@ Antes de cambiar `draft: FALSE`:
 1. Verificar que `author_N_name` no esté vacío
 2. Solo UN autor puede tener `corresponding: TRUE`
 3. ORCID debe tener formato: 0000-0000-0000-0000
-
----
-
-**Autor:** Edison Achalma  
-**Contacto:** achalmaedison@gmail.com  
-**Versión:** 1.0.0

@@ -1,12 +1,11 @@
-# 📖 Guía Completa de Fórmulas de Excel para Gestión de Metadatos Quarto
+# Guía de Fórmulas de Excel para Gestión de Metadatos Quarto
 
-**Versión:** 1.0  
 **Autor:** Edison Achalma  
 **Fecha:** Diciembre 2024
 #excel #ofimatica #quarto
 ---
 
-## 📋 Tabla de Contenidos
+## Tabla de Contenidos
 
 1. [Eliminar Saltos de Línea](#1-eliminar-saltos-de-l%C3%ADnea-enter)
 2. [Generar Títulos desde Rutas](#2-generar-t%C3%ADtulos-desde-rutas)
@@ -20,7 +19,7 @@
 ---
 ## 1. Eliminar Saltos de Línea (Enter)
 
-### 🎯 Problema
+### Problema
 
 Tienes texto con **saltos de línea (Enter)** dentro de una celda y necesitas eliminarlos.
 
@@ -51,7 +50,7 @@ Si el texto está en **A1**:
 =SUBSTITUTE(A1,CHAR(10),"")
 ```
 
-### ⚡ Método Rápido: Buscar y Reemplazar
+### Método Rápido: Buscar y Reemplazar
 
 **Pasos:**
 
@@ -61,7 +60,7 @@ Si el texto está en **A1**:
 4. En **Reemplazar con**: escribe un espacio (o déjalo vacío)
 5. Click en **Reemplazar todo**
 
-### 🧹 Limpiar Espacios Múltiples Después
+### Limpiar Espacios Múltiples Después
 
 ```excel
 =TRIM(SUBSTITUTE(A1,CHAR(10)," "))
@@ -72,7 +71,7 @@ Si el texto está en **A1**:
 ---
 ## 2. Generar Títulos desde Rutas
 
-### 🎯 Objetivo
+### Objetivo
 
 Convertir rutas como:
 
@@ -102,7 +101,7 @@ Suponiendo ruta en **A1**:
  & LOWER(MID(SUBSTITUTE(TEXTBEFORE(TEXTAFTER(A1,"-",4),"/"),"-"," "),2,99))
 ```
 
-### 🔍 Desglose de la Fórmula
+### Desglose de la Fórmula
 
 #### Paso 1: Extraer después del cuarto guion
 
@@ -153,7 +152,7 @@ Resultado: `recimiento economico`
 
 Resultado final: `Crecimiento economico`
 
-### 📝 Variantes Útiles
+### Variantes Útiles
 
 #### Solo primera palabra en mayúscula
 
@@ -176,11 +175,11 @@ Resultado final: `Crecimiento economico`
 ---
 ## 3. Crear Enlaces a PDFs
 
-### 🎯 Objetivo
+### Objetivo
 
 Generar URLs de PDFs desde rutas de archivos `.qmd`.
 
-### 📋 Suposiciones
+### Suposiciones
 
 - **A2** → `ruta_archivo`
 - **B2** → `blog_nombre`
@@ -215,7 +214,7 @@ SUBSTITUTE(
 )
 ```
 
-### 🔍 Ejemplo Real
+### Ejemplo Real
 
 **Entrada:**
 
@@ -230,7 +229,7 @@ blog_nombre: actus-mercator
 https://actus-mercator.netlify.app/inteligencia-comercial/2025-05-15-herramientas/index.pdf
 ```
 
-### 📝 Variantes
+### Variantes
 
 #### Con dominio personalizado
 
@@ -254,7 +253,7 @@ SUBSTITUTE(SUBSTITUTE(TEXTAFTER(A2,B2&"/"),"index.qmd","index.pdf"),".html",".pd
 ---
 ## 4. Extraer Fechas de Rutas
 
-### 🎯 Objetivo
+### Objetivo
 
 Extraer fechas de rutas como:
 
@@ -268,7 +267,7 @@ posts/2022-01-17-titulo/index.qmd
 =TEXT(DATE(LEFT(TEXTAFTER(A2,"/",2),4),MID(TEXTAFTER(A2,"/",2),6,2),MID(TEXTAFTER(A2,"/",2),9,2)),"mm/dd/yyyy")
 ```
 
-### 🔍 Desglose
+### Desglose
 
 #### Extraer año (primeros 4 caracteres)
 
@@ -306,7 +305,7 @@ DATE(2022,01,17)
 TEXT(...,"mm/dd/yyyy")
 ```
 
-### 📝 Variantes de Formato
+### Variantes de Formato
 
 #### Formato DD/MM/YYYY
 
@@ -353,7 +352,7 @@ Si **C2** contiene el tipo de documento:
 ---
 ## 5. Gestión de Tags
 
-### 🎯 Objetivo
+### Objetivo
 
 Combinar tags existentes con tags nuevos de otra hoja, evitando duplicados.
 
@@ -376,7 +375,7 @@ En **METADATOS → columna L (tags)**, fila **L2**:
 )
 ```
 
-### 🔍 Lógica de la Fórmula
+### Lógica de la Fórmula
 
 1. Busca tag en **Sheet3** usando la ruta (columna A)
 2. Si **Sheet3** no tiene tag → mantiene el original
@@ -384,7 +383,7 @@ En **METADATOS → columna L (tags)**, fila **L2**:
 4. Si ambos existen → concatena con `,`
 5. Si hay error → mantiene el original
 
-### ⚠️ IMPORTANTE: Cómo Aplicar
+### IMPORTANTE: Cómo Aplicar
 
 **NO escribas la fórmula directamente sobre L2 con datos**
 
@@ -397,7 +396,7 @@ En **METADATOS → columna L (tags)**, fila **L2**:
 5. **Paste Special → Values only** sobre columna L
 6. Elimina columna M
 
-### 📝 Variante: Eliminar Duplicados
+### Variante: Eliminar Duplicados
 
 ```excel
 =TRIM(SUBSTITUTE(SUBSTITUTE(SUBSTITUTE(
@@ -407,13 +406,13 @@ En **METADATOS → columna L (tags)**, fila **L2**:
   ",,",","))
 ```
 
-### 🧹 Normalizar Tags (Minúsculas)
+### Normalizar Tags (Minúsculas)
 
 ```excel
 =LOWER(TRIM(SUBSTITUTE(L2,",",", ")))
 ```
 
-### 🔤 Ordenar Tags Alfabéticamente
+### Ordenar Tags Alfabéticamente
 
 _Requiere macro o Power Query - ver sección avanzada_
 
@@ -470,6 +469,8 @@ _Requiere macro o Power Query - ver sección avanzada_
 ###  Journal
 En Z2 (y arrastrar abajo):
 
+Solo para articulo JOU
+
 ```excel
 =IF($C2<>"jou", "",
   IF(OR(LOWER(B2)="dialectica-y-mercado", LOWER(B2)="epsilon-y-beta"),
@@ -478,6 +479,13 @@ En Z2 (y arrastrar abajo):
   )
 )
 ```
+
+Para todo los articulos
+
+```excel
+=IF(OR(LOWER(B2)="dialectica-y-mercado", LOWER(B2)="epsilon-y-beta"), PROPER(LEFT(B2, FIND("-y-", B2)-1)), PROPER(SUBSTITUTE(B2, "-", " ")))
+```
+
 
 Resultados:
 - dialectica-y-mercado → Dialectica
@@ -540,6 +548,8 @@ Esto:
 ```excel
 =IF($C2<>"jou";"";BA2&", Vol. "&BC2&", No. "&BD2&", 10--60")
 ```
+
+
 
 #### Resultado esperado:
 
@@ -738,7 +748,7 @@ _Requiere fórmula array o Power Query_
 ---
 ## 9. Macros Útiles (VBA)
 
-### 🔧 Eliminar Enter en Rango Seleccionado
+### Eliminar Enter en Rango Seleccionado
 
 ```vba
 Sub EliminarEnter()
@@ -750,7 +760,7 @@ Sub EliminarEnter()
 End Sub
 ```
 
-### 🔧 Normalizar Tags
+### Normalizar Tags
 
 ```vba
 Sub NormalizarTags()
@@ -829,7 +839,7 @@ End Sub
 ---
 ## 12. Solución de Problemas Comunes
 
-### ❌ Problema: `#VALUE!`
+### Problema: `#VALUE!`
 
 **Causa:** Dato no válido para la función  
 **Solución:** Usa `IFERROR()` o `IFNA()`
@@ -838,22 +848,22 @@ End Sub
 =IFERROR(tu_formula,"")
 ```
 
-### ❌ Problema: `#REF!`
+### Problema: `#REF!`
 
 **Causa:** Referencia a celda eliminada  
 **Solución:** Revisa referencias de celdas
 
-### ❌ Problema: `#NAME?`
+### Problema: `#NAME?`
 
 **Causa:** Nombre de función incorrecto  
 **Solución:** Verifica idioma de Excel (español/inglés)
 
-### ❌ Problema: Fórmula no calcula
+### Problema: Fórmula no calcula
 
 **Causa:** Modo de cálculo manual  
 **Solución:** `Fórmulas → Opciones de cálculo → Automático`
 
-### ❌ Problema: Enter no se elimina
+### Problema: Enter no se elimina
 
 **Causa:** Puede ser `CHAR(13)` en vez de `CHAR(10)`  
 **Solución:** Usa ambos:
@@ -862,17 +872,4 @@ End Sub
 =SUBSTITUTE(SUBSTITUTE(A1,CHAR(13),""),CHAR(10),"")
 ```
 
----
-## 📝 Changelog
 
-### v1.0 (Diciembre 2025)
-
-- Guía inicial completa
-- 8 secciones principales
-- 50+ fórmulas documentadas
-- Ejemplos prácticos
-- Macros VBA incluidos
-
----
-
-**¡Disfruta automatizando tu gestión de metadatos!** 🚀📊

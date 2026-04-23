@@ -1,24 +1,8 @@
 #!/usr/bin/env python3
 """
-Sistema de Gestión de Metadatos para Blogs Quarto - Versión 1.2.1
+Sistema de Gestión de Metadatos para Blogs Quarto
 Autor: Edison Achalma
 Fecha: Diciembre 2025
-
-Mejoras v1.2.1:
-- FIX: copyrightnotice se convierte correctamente a int (no float)
-- FIX: corresponding se convierte correctamente a bool (no float)
-- FIX: tipo_documento se actualiza correctamente (crea documentmode cuando cambia)
-- NUEVO: Modo incremental para create-template (preserva fórmulas de Excel)
-- NUEVO: Solo agrega nuevos artículos sin tocar existentes
-
-Mejoras v1.2:
-- Excluye index.qmd que no son artículos (sin fecha en ruta)
-- Una sola hoja "METADATOS" en Excel (sin separar por tipo)
-- Prioriza datos de index.qmd sobre _metadata.yml
-- Solo actualiza cuando hay diferencias
-- Filtros avanzados para actualización selectiva
-- Instrucciones con emojis intuitivos
-- Procesamiento más detallado y verbose
 """
 
 import os
@@ -37,185 +21,308 @@ import json
 
 class QuartoMetadataManager:
     """Gestor principal de metadatos de blogs Quarto v1.2.1"""
-    
+
     # Carpetas del sistema a excluir SIEMPRE
     SYSTEM_EXCLUDED_FOLDERS = {
-        '_site', '_freeze', 'site_libs', '.git', '.quarto', 
-        'node_modules', '__pycache__', '_extensions',
-        '.venv', 'venv', 'env', 'assets', '_partials',
-        'title-block-link-buttons', 'Excalidraw'
+        "_site",
+        "_freeze",
+        "site_libs",
+        ".git",
+        ".quarto",
+        "node_modules",
+        "__pycache__",
+        "_extensions",
+        ".venv",
+        "venv",
+        "env",
+        "assets",
+        "_partials",
+        "title-block-link-buttons",
+        "Excalidraw",
     }
-    
+
     # Archivos index.qmd a excluir (configuración)
     EXCLUDED_INDEX_FILES = {
-        '_contenido-inicio.qmd', '_contenido-final.qmd', 
-        '_contenido_posts.qmd', '_contenido_economia-preuniversitaria.qmd',
-        '_contenido_inteligencia-comercial.qmd', '_contenido_talk.qmd',
-        '_contenido_teching.qmd', '404.qmd', 'contact.qmd', 
-        'accessibility.qmd', 'license.qmd', '_index.md', 'index.md'
+        "_contenido-inicio.qmd",
+        "_contenido-final.qmd",
+        "_contenido_posts.qmd",
+        "_contenido_economia-preuniversitaria.qmd",
+        "_contenido_inteligencia-comercial.qmd",
+        "_contenido_talk.qmd",
+        "_contenido_teching.qmd",
+        "404.qmd",
+        "contact.qmd",
+        "accessibility.qmd",
+        "license.qmd",
+        "_index.md",
+        "index.md",
     }
-    
+
     # Campos de metadatos completos
     ALL_FIELDS = [
-        'ruta_archivo', 'blog_nombre', 'tipo_documento',
-        'title', 'shorttitle', 'subtitle', 
-        'date', 'draft', 'abstract', 'description',
-        'keywords', 'tags', 'categories',
-        'image', 'eval', 'bibliography',
-        'citation_type', 'citation_author', 'citation_pdf_url',
-        'links_enabled', 'links_data',
+        "ruta_archivo",
+        "blog_nombre",
+        "tipo_documento",
+        "title",
+        "shorttitle",
+        "subtitle",
+        "date",
+        "draft",
+        "abstract",
+        "description",
+        "keywords",
+        "tags",
+        "categories",
+        "image",
+        "eval",
+        "bibliography",
+        "citation_type",
+        "citation_author",
+        "citation_pdf_url",
+        "links_enabled",
+        "links_data",
         # Campos específicos (se incluyen todos)
-        'course', 'professor', 'duedate', 'note',
-        'journal', 'volume', 'copyrightnotice', 'copyrightext',
-        'floatsintext', 'numbered_lines', 'meta_analysis', 'mask',
+        "course",
+        "professor",
+        "duedate",
+        "note",
+        "journal",
+        "volume",
+        "copyrightnotice",
+        "copyrightext",
+        "floatsintext",
+        "numbered_lines",
+        "meta_analysis",
+        "mask",
         # Autores
-        'author_1_name', 'author_1_corresponding', 'author_1_orcid', 'author_1_email',
-        'author_1_affiliation_name', 'author_1_affiliation_department',
-        'author_1_affiliation_city', 'author_1_affiliation_region',
-        'author_1_affiliation_country', 'author_1_roles',
-        'author_2_name', 'author_2_orcid', 'author_2_affiliation_name', 'author_2_roles',
-        'author_3_name', 'author_3_orcid', 'author_3_affiliation_name', 'author_3_roles'
+        "author_1_name",
+        "author_1_corresponding",
+        "author_1_orcid",
+        "author_1_email",
+        "author_1_affiliation_name",
+        "author_1_affiliation_department",
+        "author_1_affiliation_city",
+        "author_1_affiliation_region",
+        "author_1_affiliation_country",
+        "author_1_roles",
+        "author_2_name",
+        "author_2_orcid",
+        "author_2_affiliation_name",
+        "author_2_roles",
+        "author_3_name",
+        "author_3_orcid",
+        "author_3_affiliation_name",
+        "author_3_roles",
     ]
-    
+
+    # =============================================================================
+    # Inicialización del gestor completo de metadatos Quarto
+    # Carga la ruta base, configuración YAML y prepara filtros de exclusión
+    # =============================================================================
+
     def __init__(self, base_path: str, config_file: Optional[str] = None):
         """Inicializa el gestor de metadatos"""
         self.base_path = Path(base_path).expanduser()
         if not self.base_path.exists():
             raise ValueError(f"❌ La ruta base no existe: {base_path}")
-        
+
         self.config = self._load_config(config_file)
-        self.user_excluded_folders = set(self.config.get('excluded_folders', []))
-        self.allowed_blogs = set(self.config.get('allowed_blogs', []))
-        self.excel_output_dir = Path(self.config.get('excel_output_dir', '.')).expanduser()
+        self.user_excluded_folders = set(self.config.get("excluded_folders", []))
+        self.allowed_blogs = set(self.config.get("allowed_blogs", []))
+        self.excel_output_dir = Path(
+            self.config.get("excel_output_dir", ".")
+        ).expanduser()
         self.excel_output_dir.mkdir(parents=True, exist_ok=True)
-    
+
+    # =============================================================================
+    # Carga segura del archivo de configuración YAML (si existe)
+    # Devuelve diccionario vacío si no hay archivo o hay error
+    # =============================================================================
+
     def _load_config(self, config_file: Optional[str]) -> Dict:
         """Carga archivo de configuración YAML"""
         if config_file and Path(config_file).exists():
-            with open(config_file, 'r', encoding='utf-8') as f:
+            with open(config_file, "r", encoding="utf-8") as f:
                 return yaml.safe_load(f) or {}
         return {}
-    
+
+    # =============================================================================
+    # Decide si una carpeta debe ser ignorada (sistema + usuario)
+    # Evita procesar _site, .git, node_modules, venv, etc.
+    # =============================================================================
+
     def should_exclude_folder(self, folder_path: Path) -> bool:
         """Determina si una carpeta debe excluirse"""
         parts = set(folder_path.parts)
         return bool(parts & (self.SYSTEM_EXCLUDED_FOLDERS | self.user_excluded_folders))
-    
+
+    # =============================================================================
+    # Verifica si el archivo index.qmd está en la lista de excluidos
+    # (páginas especiales como 404, contact, _contenido-inicio, etc.)
+    # =============================================================================
+
     def should_exclude_file(self, file_path: Path) -> bool:
         """Determina si un archivo debe excluirse"""
         return file_path.name in self.EXCLUDED_INDEX_FILES
-    
+
+    # =============================================================================
+    # Determina si un index.qmd corresponde a un artículo real
+    # Criterio principal: la carpeta padre debe empezar con fecha YYYY-MM-DD
+    # =============================================================================
+
     def is_article_index(self, file_path: Path) -> bool:
         """
         Determina si un index.qmd es un artículo/publicación válido.
         Criterio: La carpeta padre debe comenzar con una fecha (YYYY-MM-DD)
         """
         parent_dir = file_path.parent.name
-        
+
         # Patrón de fecha: YYYY-MM-DD o variantes
-        date_pattern = r'^\d{4}-\d{2}-\d{2}'
-        
+        date_pattern = r"^\d{4}-\d{2}-\d{2}"
+
         if re.match(date_pattern, parent_dir):
             return True
-        
+
         # Si está directamente en blog/index.qmd o similar, NO es artículo
         grandparent = file_path.parent.parent.name
-        if parent_dir in ['blog', 'posts', 'talk', 'teching', 'publication', 
-                         'about', 'beschikbaarheid', 'appointment']:
+        if parent_dir in [
+            "blog",
+            "posts",
+            "talk",
+            "teching",
+            "publication",
+            "about",
+            "beschikbaarheid",
+            "appointment",
+        ]:
             return False
-        
+
         return False
-    
+
+    # =============================================================================
+    # Verifica si el blog detectado está permitido según la configuración
+    # Si no hay lista de blogs permitidos → todos pasan
+    # =============================================================================
+
     def is_allowed_blog(self, blog_name: str) -> bool:
         """Verifica si un blog está permitido según configuración"""
         if not self.allowed_blogs:
             return True
         return blog_name in self.allowed_blogs
-    
+
+    # =============================================================================
+    # Busca recursivamente hacia arriba el archivo _metadata.yml más cercano
+    # Retorna None si no encuentra ninguno hasta la raíz del proyecto
+    # =============================================================================
+
     def find_metadata_yml(self, qmd_path: Path) -> Optional[Path]:
         """Busca el archivo _metadata.yml más cercano"""
         current_dir = qmd_path.parent
         while current_dir >= self.base_path:
-            metadata_file = current_dir / '_metadata.yml'
+            metadata_file = current_dir / "_metadata.yml"
             if metadata_file.exists():
                 return metadata_file
             current_dir = current_dir.parent
         return None
-    
+
+    # =============================================================================
+    # Lee y parsea el contenido de un archivo _metadata.yml
+    # Maneja errores silenciosamente devolviendo dict vacío
+    # =============================================================================
+
     def load_metadata_yml(self, metadata_path: Path) -> Dict:
         """Carga contenido de _metadata.yml"""
         try:
-            with open(metadata_path, 'r', encoding='utf-8') as f:
+            with open(metadata_path, "r", encoding="utf-8") as f:
                 return yaml.safe_load(f) or {}
         except Exception as e:
             print(f"⚠️  Error leyendo {metadata_path}: {e}")
             return {}
-    
-    def extract_yaml_from_qmd(self, file_path: Path, use_metadata: bool = True) -> Optional[Dict]:
+
+    # =============================================================================
+    # Extrae YAML de index.qmd + fusión inteligente con _metadata.yml
+    # Prioridad: valores de index.qmd > valores de _metadata.yml
+    # =============================================================================
+
+    def extract_yaml_from_qmd(
+        self, file_path: Path, use_metadata: bool = True
+    ) -> Optional[Dict]:
         """
         Extrae YAML con PRIORIDAD a index.qmd sobre _metadata.yml
         Para visualización completa, fusiona ambos con prioridad a index.qmd
         """
         try:
-            with open(file_path, 'r', encoding='utf-8') as f:
+            with open(file_path, "r", encoding="utf-8") as f:
                 content = f.read()
-            
-            yaml_match = re.match(r'^---\s*\n(.*?)\n---', content, re.DOTALL)
+
+            yaml_match = re.match(r"^---\s*\n(.*?)\n---", content, re.DOTALL)
             if not yaml_match:
                 return None
-            
+
             yaml_content = yaml_match.group(1)
             index_yaml = yaml.safe_load(yaml_content) or {}
-            
+
             if not use_metadata:
                 return index_yaml
-            
+
             # Para visualización: fusionar pero indicar origen
             metadata_path = self.find_metadata_yml(file_path)
             if not metadata_path:
                 return index_yaml
-            
+
             base_yaml = self.load_metadata_yml(metadata_path)
-            
+
             # FUSIÓN CON PRIORIDAD: index.qmd sobrescribe _metadata.yml
             # Solo usar _metadata.yml para campos que NO están en index.qmd
             result = base_yaml.copy()
-            
+
             # Actualizar con valores de index.qmd (estos tienen prioridad)
             for key, value in index_yaml.items():
                 if value is not None:
                     result[key] = value
-            
+
             return result
-            
+
         except Exception as e:
             print(f"⚠️  Error extrayendo YAML de {file_path.name}: {e}")
             return None
-    
+
+    # =============================================================================
+    # Extrae SOLO el YAML frontal que está escrito en el index.qmd
+    # Ignora completamente el _metadata.yml heredado
+    # Ideal para saber qué está explícitamente definido por el autor
+    # =============================================================================
+
     def extract_yaml_only_index(self, file_path: Path) -> Optional[Dict]:
         """
         Extrae YAML SOLO del index.qmd (sin fusionar con _metadata.yml)
         Usado para extraer a Excel solo lo que está explícitamente definido
         """
         try:
-            with open(file_path, 'r', encoding='utf-8') as f:
+            with open(file_path, "r", encoding="utf-8") as f:
                 content = f.read()
-            
-            yaml_match = re.match(r'^---\s*\n(.*?)\n---', content, re.DOTALL)
+
+            yaml_match = re.match(r"^---\s*\n(.*?)\n---", content, re.DOTALL)
             if not yaml_match:
                 return None
-            
+
             yaml_content = yaml_match.group(1)
             return yaml.safe_load(yaml_content) or {}
-            
+
         except Exception as e:
             print(f"⚠️  Error extrayendo YAML de {file_path.name}: {e}")
             return None
-    
+
+    # =============================================================================
+    # Detecta el modo de documento (stu / man / jou / doc)
+    # Prioridad: 1) documentmode explícito → 2) format.apaquarto-pdf → 3) inferir por campos
+    # Solo mira index.qmd (no fusiona _metadata)
+    # =============================================================================
+
     def detect_document_mode(self, yaml_data: Dict, file_path: Path) -> str:
         """
         Detecta tipo de documento SOLO del index.qmd (sin _metadata.yml)
-        
+
         Prioridad:
         1. documentmode explícito en index.qmd
         2. format.apaquarto-pdf.documentmode en index.qmd
@@ -224,54 +331,687 @@ class QuartoMetadataManager:
         """
         # Extraer YAML solo del index.qmd (sin fusión)
         try:
-            with open(file_path, 'r', encoding='utf-8') as f:
+            with open(file_path, "r", encoding="utf-8") as f:
                 content = f.read()
-            
-            yaml_match = re.match(r'^---\s*\n(.*?)\n---', content, re.DOTALL)
+
+            yaml_match = re.match(r"^---\s*\n(.*?)\n---", content, re.DOTALL)
             if not yaml_match:
                 return None
-            
+
             yaml_content = yaml_match.group(1)
             index_only_yaml = yaml.safe_load(yaml_content) or {}
-            
+
             # 1. Buscar documentmode directo en index.qmd
-            if 'documentmode' in index_only_yaml:
-                mode = index_only_yaml['documentmode']
-                if mode in ['stu', 'man', 'jou', 'doc']:
+            if "documentmode" in index_only_yaml:
+                mode = index_only_yaml["documentmode"]
+                if mode in ["stu", "man", "jou", "doc"]:
                     return mode
-            
+
             # 2. Buscar en format.apaquarto-pdf.documentmode en index.qmd
-            if 'format' in index_only_yaml:
-                formats = index_only_yaml['format']
-                if isinstance(formats, dict) and 'apaquarto-pdf' in formats:
-                    apa_config = formats['apaquarto-pdf']
-                    if isinstance(apa_config, dict) and 'documentmode' in apa_config:
-                        mode = apa_config['documentmode']
-                        if mode in ['stu', 'man', 'jou', 'doc']:
+            if "format" in index_only_yaml:
+                formats = index_only_yaml["format"]
+                if isinstance(formats, dict) and "apaquarto-pdf" in formats:
+                    apa_config = formats["apaquarto-pdf"]
+                    if isinstance(apa_config, dict) and "documentmode" in apa_config:
+                        mode = apa_config["documentmode"]
+                        if mode in ["stu", "man", "jou", "doc"]:
                             return mode
-            
+
             # 3. Inferir por campos específicos SOLO en index.qmd
-            if 'course' in index_only_yaml or 'professor' in index_only_yaml:
-                return 'stu'
-            elif 'journal' in index_only_yaml and 'volume' in index_only_yaml:
-                return 'jou'
-            elif 'meta-analysis' in index_only_yaml or 'meta_analysis' in index_only_yaml:
-                return 'man'
-            
+            if "course" in index_only_yaml or "professor" in index_only_yaml:
+                return "stu"
+            elif "journal" in index_only_yaml and "volume" in index_only_yaml:
+                return "jou"
+            elif (
+                "meta-analysis" in index_only_yaml or "meta_analysis" in index_only_yaml
+            ):
+                return "man"
+
             # 4. Si no hay nada en index.qmd, retornar None
             return None
-            
+
         except Exception as e:
             return None
-    
-    def collect_index_files(self, blog_name: Optional[str] = None, 
-                           verbose: bool = True) -> pd.DataFrame:
+
+    # =============================================================================
+    # Busca campos de metadatos nuevos (no declarados en ALL_FIELDS)
+    # Útil para mantener actualizada la plantilla Excel
+    # Muestra reporte detallado y sugerencia de columnas a agregar
+    # =============================================================================
+
+    def detect_new_metadata_fields(self, verbose: bool = True) -> Dict[str, Set[str]]:
+        """
+        Detecta nuevos campos de metadatos en index.qmd que NO están en ALL_FIELDS
+
+        Returns:
+            Dict con {ruta_archivo: {set de campos nuevos}}
+        """
+        print("\n🔍 DETECCIÓN DE NUEVOS METADATOS\n")
+        print("=" * 70)
+
+        new_fields_by_file = {}
+        all_new_fields = set()
+
+        # Obtener todos los index.qmd
+        df_files = self.collect_index_files(verbose=False)
+
+        for idx, row in df_files.iterrows():
+            file_path = self.base_path / row["ruta_archivo"]
+
+            # Extraer YAML solo del index.qmd
+            yaml_data = self.extract_yaml_only_index(file_path)
+            if not yaml_data:
+                continue
+
+            # Aplanar el YAML para encontrar todos los campos
+            flat_fields = self._flatten_yaml_keys(yaml_data)
+
+            # Comparar con ALL_FIELDS
+            new_fields = flat_fields - set(self.ALL_FIELDS)
+
+            if new_fields:
+                new_fields_by_file[row["ruta_archivo"]] = new_fields
+                all_new_fields.update(new_fields)
+
+                if verbose:
+                    print(f"\n📄 {row['ruta_archivo']}")
+                    print(f"   Nuevos campos: {', '.join(sorted(new_fields))}")
+
+        print("\n" + "=" * 70)
+        print(f"📊 RESUMEN:")
+        print(f"   Archivos con campos nuevos: {len(new_fields_by_file)}")
+        print(f"   Total campos nuevos únicos: {len(all_new_fields)}")
+
+        if all_new_fields:
+            print(f"\n💡 Campos nuevos detectados:")
+            for field in sorted(all_new_fields):
+                print(f"   • {field}")
+            print(f"\n💡 Para agregar estos campos al Excel, usa:")
+            print(
+                f"   manager.add_new_columns_to_excel(excel_path, {list(all_new_fields)})"
+            )
+
+        print("=" * 70 + "\n")
+
+        return new_fields_by_file
+
+    # =============================================================================
+    # Convierte YAML anidado (authors, citation, etc.) en claves planas
+    # Ejemplo: author[0].name → author_1_name
+    # Usado para detectar campos desconocidos
+    # =============================================================================
+
+    def _flatten_yaml_keys(self, yaml_data: Dict, prefix: str = "") -> Set[str]:
+        """
+        Aplana un diccionario YAML para obtener todos los campos
+        Ejemplo: {'author': [{'name': 'X'}]} → {'author_1_name'}
+        """
+        fields = set()
+
+        for key, value in yaml_data.items():
+            full_key = f"{prefix}_{key}" if prefix else key
+
+            # Si es lista de dicts (como authors)
+            if isinstance(value, list) and value and isinstance(value[0], dict):
+                for i, item in enumerate(value, 1):
+                    if isinstance(item, dict):
+                        subfields = self._flatten_yaml_keys(item, f"{full_key}_{i}")
+                        fields.update(subfields)
+
+            # Si es dict anidado (como citation, format)
+            elif isinstance(value, dict):
+                subfields = self._flatten_yaml_keys(value, full_key)
+                fields.update(subfields)
+
+            # Campo simple
+            else:
+                fields.add(full_key)
+
+        return fields
+
+    # =============================================================================
+    # Agrega columnas nuevas al Excel para campos recién detectados
+    # Puede ejecutarse en modo dry-run (simulación)
+    # Llena automáticamente los valores existentes cuando es posible
+    # =============================================================================
+
+    def add_new_columns_to_excel(
+        self, excel_path: str, new_fields: List[str], dry_run: bool = False
+    ):
+        """
+        Agrega nuevas columnas al Excel para campos detectados en index.qmd
+
+        Args:
+            excel_path: Ruta del Excel
+            new_fields: Lista de campos nuevos a agregar
+            dry_run: Si True, solo simula sin modificar
+        """
+        print(f"\n{'🔍 SIMULACIÓN' if dry_run else '➕ AGREGANDO'} COLUMNAS AL EXCEL\n")
+        print("=" * 70)
+
+        if not new_fields:
+            print("⚠️  No hay campos nuevos para agregar")
+            return
+
+        try:
+            wb = load_workbook(excel_path)
+            ws = wb["METADATOS"]
+
+            # Obtener última columna
+            last_col = ws.max_column
+
+            print(f"📊 Excel actual: {last_col} columnas")
+            print(f"➕ Campos a agregar: {len(new_fields)}\n")
+
+            for i, field in enumerate(new_fields, 1):
+                new_col = last_col + i
+
+                # Header
+                cell = ws.cell(1, new_col, field)
+                cell.font = Font(bold=True, color="FFFFFF", size=11)
+                cell.fill = PatternFill(
+                    start_color="366092", end_color="366092", fill_type="solid"
+                )
+                cell.alignment = Alignment(
+                    horizontal="center", vertical="center", wrap_text=True
+                )
+
+                print(f"   {i}. {field} (columna {new_col})")
+
+                # Llenar datos existentes
+                if not dry_run:
+                    for row_idx in range(2, ws.max_row + 1):
+                        ruta = ws.cell(row_idx, 1).value
+                        if not ruta:
+                            continue
+
+                        file_path = self.base_path / ruta
+                        if not file_path.exists():
+                            continue
+
+                        yaml_data = self.extract_yaml_only_index(file_path)
+                        if yaml_data:
+                            value = self._extract_yaml_value(yaml_data, field)
+                            if value is not None:
+                                ws.cell(row_idx, new_col, value)
+
+            if not dry_run:
+                wb.save(excel_path)
+                print(f"\n✅ Excel actualizado: {excel_path}")
+                print(f"📊 Total columnas ahora: {ws.max_column}")
+            else:
+                print(f"\n🔍 Simulación completada (no se guardaron cambios)")
+
+            print("=" * 70 + "\n")
+
+        except Exception as e:
+            print(f"❌ Error: {e}")
+
+    # =============================================================================
+    # Compara UN SOLO artículo: index.qmd vs fila en Excel
+    # Detecta: diferencias, campos solo en index, campos solo en Excel
+    # =============================================================================
+
+    def compare_single_article(
+        self, file_path: Path, excel_row: pd.Series
+    ) -> Dict[str, Dict]:
+        """
+        Compara metadatos de UN SOLO artículo entre index.qmd y Excel
+
+        Returns:
+            {
+                'ruta': str,
+                'differences': {
+                    'campo': {
+                        'index_value': valor,
+                        'excel_value': valor,
+                        'conflict': bool
+                    }
+                },
+                'only_in_index': [campos],
+                'only_in_excel': [campos]
+            }
+        """
+        # Extraer YAML del index.qmd
+        yaml_data = self.extract_yaml_only_index(file_path)
+        if not yaml_data:
+            return None
+
+        differences = {}
+        only_in_index = []
+        only_in_excel = []
+
+        # Campos a comparar (todos los de ALL_FIELDS)
+        for field in self.ALL_FIELDS:
+            if field in ["ruta_archivo", "blog_nombre", "fecha_creacion"]:
+                continue  # Skip metadata fields
+
+            # Valor en index.qmd
+            index_value = self._extract_yaml_value(yaml_data, field)
+
+            # Valor en Excel
+            excel_value = excel_row.get(field)
+            if pd.isna(excel_value):
+                excel_value = None
+            elif isinstance(excel_value, str) and excel_value.strip() == "":
+                excel_value = None
+
+            # Normalizar booleanos
+            if isinstance(index_value, bool):
+                index_value = "TRUE" if index_value else "FALSE"
+            if isinstance(excel_value, str) and excel_value.upper() in [
+                "TRUE",
+                "FALSE",
+            ]:
+                excel_value = excel_value.upper()
+
+            # Comparar
+            if index_value is not None and excel_value is not None:
+                if str(index_value) != str(excel_value):
+                    differences[field] = {
+                        "index_value": index_value,
+                        "excel_value": excel_value,
+                        "conflict": True,
+                    }
+            elif index_value is not None and excel_value is None:
+                only_in_index.append(field)
+            elif index_value is None and excel_value is not None:
+                only_in_excel.append(field)
+
+        return {
+            "ruta": str(file_path.relative_to(self.base_path)),
+            "differences": differences,
+            "only_in_index": only_in_index,
+            "only_in_excel": only_in_excel,
+        }
+
+    # =============================================================================
+    # Busca TODOS los artículos que tienen diferencias entre index.qmd y Excel
+    # Permite filtros por blog o por ruta parcial
+    # Muestra reporte resumido + ejemplos detallados
+    # =============================================================================
+
+    def find_articles_with_differences(
+        self,
+        excel_path: str,
+        blog_filter: Optional[str] = None,
+        path_filter: Optional[str] = None,
+        max_show: int = 10,
+    ) -> List[Dict]:
+        """
+        Encuentra todos los artículos con diferencias entre index.qmd y Excel
+
+        Returns:
+            Lista de artículos con diferencias
+        """
+        print(f"\n🔍 BUSCANDO DIFERENCIAS ENTRE INDEX.QMD Y EXCEL\n")
+        print("=" * 70)
+
+        # Leer Excel
+        try:
+            df = pd.read_excel(excel_path, sheet_name="METADATOS")
+        except Exception as e:
+            print(f"❌ Error leyendo Excel: {e}")
+            return []
+
+        # Aplicar filtros
+        if blog_filter:
+            df = df[df["blog_nombre"] == blog_filter]
+            print(f"🔍 Filtro: blog = '{blog_filter}'")
+
+        if path_filter:
+            df = df[df["ruta_archivo"].str.contains(path_filter, case=False, na=False)]
+            print(f"🔍 Filtro: ruta contiene '{path_filter}'")
+
+        print(f"📊 Artículos a analizar: {len(df)}\n")
+
+        articles_with_diff = []
+
+        for idx, row in df.iterrows():
+            ruta = row.get("ruta_archivo")
+            if pd.isna(ruta):
+                continue
+
+            file_path = self.base_path / ruta
+            if not file_path.exists():
+                continue
+
+            comparison = self.compare_single_article(file_path, row)
+            if not comparison:
+                continue
+
+            # Si hay diferencias
+            if (
+                comparison["differences"]
+                or comparison["only_in_index"]
+                or comparison["only_in_excel"]
+            ):
+                articles_with_diff.append(comparison)
+
+        print("=" * 70)
+        print(f"\n📊 RESUMEN:")
+        print(f"   Total artículos analizados: {len(df)}")
+        print(f"   Artículos con diferencias: {len(articles_with_diff)}")
+        print(f"   Artículos sincronizados: {len(df) - len(articles_with_diff)}")
+
+        if articles_with_diff:
+            print(
+                f"\n📋 MOSTRANDO {min(max_show, len(articles_with_diff))} DE {len(articles_with_diff)} ARTÍCULOS CON DIFERENCIAS:\n"
+            )
+
+            for i, article in enumerate(articles_with_diff[:max_show], 1):
+                print(f"\n{i}. 📄 {article['ruta']}")
+
+                if article["differences"]:
+                    print(f"   ⚠️  Diferencias ({len(article['differences'])} campos):")
+                    for field, diff in list(article["differences"].items())[:5]:
+                        idx_val = str(diff["index_value"])[:40]
+                        exc_val = str(diff["excel_value"])[:40]
+                        print(f"      • {field}:")
+                        print(f"         index.qmd: {idx_val}")
+                        print(f"         Excel:     {exc_val}")
+
+                    if len(article["differences"]) > 5:
+                        print(
+                            f"      ... y {len(article['differences']) - 5} diferencias más"
+                        )
+
+                if article["only_in_index"]:
+                    print(
+                        f"   📝 Solo en index.qmd ({len(article['only_in_index'])}): {', '.join(article['only_in_index'][:5])}"
+                    )
+
+                if article["only_in_excel"]:
+                    print(
+                        f"   📊 Solo en Excel ({len(article['only_in_excel'])}): {', '.join(article['only_in_excel'][:5])}"
+                    )
+
+            if len(articles_with_diff) > max_show:
+                print(
+                    f"\n... y {len(articles_with_diff) - max_show} artículos más con diferencias"
+                )
+
+        print("\n" + "=" * 70 + "\n")
+
+        return articles_with_diff
+
+    # =============================================================================
+    # Sincroniza UN SOLO artículo de forma interactiva
+    # Pregunta al usuario: ¿index → Excel? ¿Excel → index? ¿Cancelar?
+    # Ideal para revisar casos conflictivos uno por uno
+    # =============================================================================
+
+    def sync_single_article_interactive(
+        self, file_path: Path, excel_path: str, dry_run: bool = False
+    ):
+        """
+        Sincroniza UN SOLO artículo de forma interactiva
+        Pregunta al usuario qué dirección sincronizar
+        """
+        # Buscar el artículo en Excel
+        df = pd.read_excel(excel_path, sheet_name="METADATOS")
+        ruta_rel = str(file_path.relative_to(self.base_path))
+
+        row = df[df["ruta_archivo"] == ruta_rel]
+        if row.empty:
+            print(f"❌ Artículo no encontrado en Excel: {ruta_rel}")
+            return
+
+        row = row.iloc[0]
+
+        # Comparar
+        comparison = self.compare_single_article(file_path, row)
+        if not comparison:
+            print(f"⚠️  No se pudo analizar: {ruta_rel}")
+            return
+
+        # Mostrar diferencias
+        print(f"\n📄 ANÁLISIS: {ruta_rel}\n")
+        print("=" * 70)
+
+        total_diff = (
+            len(comparison["differences"])
+            + len(comparison["only_in_index"])
+            + len(comparison["only_in_excel"])
+        )
+
+        if total_diff == 0:
+            print("✅ Artículo sincronizado (sin diferencias)")
+            print("=" * 70 + "\n")
+            return
+
+        print(f"⚠️  DIFERENCIAS ENCONTRADAS: {total_diff}\n")
+
+        if comparison["differences"]:
+            print(
+                f"📊 Campos con valores diferentes ({len(comparison['differences'])}):\n"
+            )
+            for field, diff in comparison["differences"].items():
+                print(f"   • {field}:")
+                print(f"      index.qmd: {diff['index_value']}")
+                print(f"      Excel:     {diff['excel_value']}")
+                print()
+
+        if comparison["only_in_index"]:
+            print(f"📝 Solo en index.qmd ({len(comparison['only_in_index'])}):")
+            print(f"   {', '.join(comparison['only_in_index'])}\n")
+
+        if comparison["only_in_excel"]:
+            print(f"📊 Solo en Excel ({len(comparison['only_in_excel'])}):")
+            print(f"   {', '.join(comparison['only_in_excel'])}\n")
+
+        print("=" * 70)
+
+        # Preguntar dirección
+        print("\n💡 ¿Qué desea hacer?\n")
+        print("   1. Actualizar Excel desde index.qmd (index.qmd → Excel)")
+        print("   2. Actualizar index.qmd desde Excel (Excel → index.qmd)")
+        print("   3. Cancelar (no hacer nada)")
+
+        if dry_run:
+            print("\n🔍 MODO SIMULACIÓN (sin cambios reales)")
+            choice = "1"  # Default para dry-run
+        else:
+            choice = input("\n👉 Seleccione opción (1/2/3): ").strip()
+
+        if choice == "1":
+            # index.qmd → Excel
+            print(
+                f"\n{'🔍 SIMULANDO' if dry_run else '✅ ACTUALIZANDO'} Excel desde index.qmd...\n"
+            )
+            self._sync_index_to_excel_single(file_path, excel_path, dry_run)
+
+        elif choice == "2":
+            # Excel → index.qmd
+            print(
+                f"\n{'🔍 SIMULANDO' if dry_run else '✅ ACTUALIZANDO'} index.qmd desde Excel...\n"
+            )
+            self._sync_excel_to_index_single(file_path, row, dry_run)
+
+        else:
+            print("\n⏭️  Cancelado (sin cambios)")
+
+        print()
+
+    # =============================================================================
+    # Aplica sincronización index.qmd → Excel en un solo artículo
+    # (parte interna usada por sync_single y sync_batch)
+    # =============================================================================
+
+    def _sync_index_to_excel_single(
+        self, file_path: Path, excel_path: str, dry_run: bool = False
+    ):
+        """
+        Sincroniza UN artículo: index.qmd → Excel
+        """
+        yaml_data = self.extract_yaml_only_index(file_path)
+        if not yaml_data:
+            print("❌ No se pudo extraer YAML")
+            return
+
+        # Cargar Excel
+        wb = load_workbook(excel_path)
+        ws = wb["METADATOS"]
+
+        # Buscar fila
+        ruta_rel = str(file_path.relative_to(self.base_path))
+        row_idx = None
+
+        for idx in range(2, ws.max_row + 1):
+            if ws.cell(idx, 1).value == ruta_rel:
+                row_idx = idx
+                break
+
+        if not row_idx:
+            print(f"❌ Artículo no encontrado en Excel")
+            return
+
+        # Actualizar campos
+        changes = []
+        for col_idx, field in enumerate(self.ALL_FIELDS, 1):
+            if field in ["ruta_archivo", "blog_nombre"]:
+                continue
+
+            new_value = self._extract_yaml_value(yaml_data, field)
+            old_value = ws.cell(row_idx, col_idx).value
+
+            if new_value != old_value:
+                if not dry_run:
+                    ws.cell(row_idx, col_idx, new_value)
+                changes.append(f"{field}: {old_value} → {new_value}")
+
+        if changes:
+            print(f"📝 Cambios aplicados: {len(changes)}\n")
+            for change in changes[:10]:
+                print(f"   • {change}")
+            if len(changes) > 10:
+                print(f"   ... y {len(changes) - 10} más")
+
+            if not dry_run:
+                wb.save(excel_path)
+                print(f"\n✅ Excel actualizado")
+        else:
+            print("ℹ️  Sin cambios (ya estaba sincronizado)")
+
+    # =============================================================================
+    # Aplica sincronización Excel → index.qmd en un solo artículo
+    # (parte interna usada por sync_single y sync_batch)
+    # =============================================================================
+
+    def _sync_excel_to_index_single(
+        self, file_path: Path, excel_row: pd.Series, dry_run: bool = False
+    ):
+        """
+        Sincroniza UN artículo: Excel → index.qmd
+        """
+        changes = []
+        result = self._update_single_qmd(file_path, excel_row, dry_run, 1, 1)
+
+        if result:
+            print("✅ index.qmd actualizado")
+        else:
+            print("ℹ️  Sin cambios (ya estaba sincronizado)")
+
+    # =============================================================================
+    # Sincronización masiva interactiva de artículos con diferencias
+    # Opciones: todo desde index, todo desde Excel, uno por uno, cancelar
+    # Soporta filtros y modo dry-run
+    # =============================================================================
+
+    def sync_articles_batch_interactive(
+        self,
+        excel_path: str,
+        blog_filter: Optional[str] = None,
+        path_filter: Optional[str] = None,
+        dry_run: bool = False,
+    ):
+        """
+        Sincroniza múltiples artículos de forma interactiva
+        Muestra artículos con diferencias y permite elegir qué hacer
+        """
+        # Encontrar artículos con diferencias
+        articles = self.find_articles_with_differences(
+            excel_path, blog_filter, path_filter, max_show=20
+        )
+
+        if not articles:
+            print("✅ Todos los artículos están sincronizados")
+            return
+
+        print(f"\n💡 OPCIONES DE SINCRONIZACIÓN MASIVA:\n")
+        print(f"   1. Actualizar TODO desde index.qmd → Excel")
+        print(f"   2. Actualizar TODO desde Excel → index.qmd")
+        print(f"   3. Decidir UNO POR UNO")
+        print(f"   4. Cancelar")
+
+        if dry_run:
+            choice = "1"
+        else:
+            choice = input("\n👉 Seleccione opción (1/2/3/4): ").strip()
+
+        if choice == "1":
+            # Todos: index.qmd → Excel
+            print(
+                f"\n{'🔍 SIMULANDO' if dry_run else '✅ ACTUALIZANDO'} TODO desde index.qmd → Excel\n"
+            )
+            for article in articles:
+                file_path = self.base_path / article["ruta"]
+                print(f"📄 {article['ruta']}")
+                self._sync_index_to_excel_single(file_path, excel_path, dry_run)
+
+        elif choice == "2":
+            # Todos: Excel → index.qmd
+            print(
+                f"\n{'🔍 SIMULANDO' if dry_run else '✅ ACTUALIZANDO'} TODO desde Excel → index.qmd\n"
+            )
+            df = pd.read_excel(excel_path, sheet_name="METADATOS")
+
+            for article in articles:
+                file_path = self.base_path / article["ruta"]
+                row = df[df["ruta_archivo"] == article["ruta"]].iloc[0]
+                print(f"📄 {article['ruta']}")
+                self._sync_excel_to_index_single(file_path, row, dry_run)
+
+        elif choice == "3":
+            # Uno por uno
+            for i, article in enumerate(articles, 1):
+                print(f"\n{'=' * 70}")
+                print(f"ARTÍCULO {i}/{len(articles)}")
+                print(f"{'=' * 70}")
+
+                file_path = self.base_path / article["ruta"]
+                self.sync_single_article_interactive(file_path, excel_path, dry_run)
+
+                if i < len(articles):
+                    if dry_run:
+                        cont = "s"
+                    else:
+                        cont = (
+                            input("\n👉 Continuar con el siguiente? (s/n): ")
+                            .strip()
+                            .lower()
+                        )
+                    if cont != "s":
+                        print("\n⏭️  Proceso cancelado")
+                        break
+
+        else:
+            print("\n⏭️  Cancelado")
+
+    # =============================================================================
+    # Recolecta TODOS los index.qmd válidos que sean artículos (con fecha en carpeta)
+    # Devuelve DataFrame ordenado con info básica + tipo_documento inferido
+    # =============================================================================
+
+    def collect_index_files(
+        self, blog_name: Optional[str] = None, verbose: bool = True
+    ) -> pd.DataFrame:
         """
         Recolecta archivos index.qmd CON FILTRO de artículos
         Solo incluye archivos que son artículos válidos (con fecha en carpeta)
         """
         index_files = []
-        
+
         if blog_name:
             blog_path = self.base_path / blog_name
             if not blog_path.exists():
@@ -279,36 +1019,41 @@ class QuartoMetadataManager:
                 return pd.DataFrame()
             blogs_to_process = [blog_path]
         else:
-            all_dirs = [d for d in self.base_path.iterdir() 
-                       if d.is_dir() and not d.name.startswith('.')]
-            
+            all_dirs = [
+                d
+                for d in self.base_path.iterdir()
+                if d.is_dir() and not d.name.startswith(".")
+            ]
+
             if self.allowed_blogs:
                 blogs_to_process = [d for d in all_dirs if d.name in self.allowed_blogs]
             else:
                 blogs_to_process = all_dirs
-        
+
         total_found = 0
         total_articles = 0
         total_skipped = 0
-        
+
         for blog_dir in blogs_to_process:
             if not self.is_allowed_blog(blog_dir.name):
                 continue
-            
+
             print(f"\n📂 Procesando blog: {blog_dir.name}")
             blog_found = 0
             blog_articles = 0
             blog_skipped = 0
-            
+
             for root, dirs, files in os.walk(blog_dir):
-                dirs[:] = [d for d in dirs if not self.should_exclude_folder(Path(root) / d)]
-                
+                dirs[:] = [
+                    d for d in dirs if not self.should_exclude_folder(Path(root) / d)
+                ]
+
                 for file in files:
-                    if file == 'index.qmd':
+                    if file == "index.qmd":
                         file_path = Path(root) / file
                         total_found += 1
                         blog_found += 1
-                        
+
                         # Excluir archivos especiales
                         if self.should_exclude_file(file_path):
                             if verbose:
@@ -316,7 +1061,7 @@ class QuartoMetadataManager:
                             total_skipped += 1
                             blog_skipped += 1
                             continue
-                        
+
                         # FILTRO: Solo artículos (con fecha en carpeta)
                         if not self.is_article_index(file_path):
                             if verbose:
@@ -325,7 +1070,7 @@ class QuartoMetadataManager:
                             total_skipped += 1
                             blog_skipped += 1
                             continue
-                        
+
                         # Extraer YAML
                         yaml_data = self.extract_yaml_from_qmd(file_path)
                         if not yaml_data:
@@ -334,165 +1079,199 @@ class QuartoMetadataManager:
                             total_skipped += 1
                             blog_skipped += 1
                             continue
-                        
+
                         # Detectar tipo de documento SOLO del index.qmd
                         doc_type = self.detect_document_mode(yaml_data, file_path)
                         if doc_type is None:
-                            doc_type = 'jou'  # Default si no está definido en ningún lugar
-                        
+                            doc_type = (
+                                "jou"  # Default si no está definido en ningún lugar
+                            )
+
                         try:
-                            creation_time = datetime.fromtimestamp(file_path.stat().st_ctime)
+                            creation_time = datetime.fromtimestamp(
+                                file_path.stat().st_ctime
+                            )
                         except:
                             creation_time = datetime.now()
-                        
+
                         rel_path = file_path.relative_to(self.base_path)
-                        
-                        index_files.append({
-                            'blog_nombre': blog_dir.name,
-                            'ruta_archivo': str(rel_path),
-                            'tipo_documento': doc_type,
-                            'fecha_creacion': creation_time,
-                            'titulo': yaml_data.get('title', ''),
-                            'draft': yaml_data.get('draft', True)
-                        })
-                        
+
+                        index_files.append(
+                            {
+                                "blog_nombre": blog_dir.name,
+                                "ruta_archivo": str(rel_path),
+                                "tipo_documento": doc_type,
+                                "fecha_creacion": creation_time,
+                                "titulo": yaml_data.get("title", ""),
+                                "draft": yaml_data.get("draft", True),
+                            }
+                        )
+
                         total_articles += 1
                         blog_articles += 1
-                        
+
                         if verbose:
-                            print(f"  ✅ Artículo: {file_path.parent.name}/{file_path.name}")
-            
-            print(f"  📊 Blog '{blog_dir.name}': {blog_articles} artículos, {blog_skipped} omitidos")
-        
-        print(f"\n{'='*70}")
+                            print(
+                                f"  ✅ Artículo: {file_path.parent.name}/{file_path.name}"
+                            )
+
+            print(
+                f"  📊 Blog '{blog_dir.name}': {blog_articles} artículos, {blog_skipped} omitidos"
+            )
+
+        print(f"\n{'=' * 70}")
         print(f"📊 RESUMEN DE RECOLECCIÓN:")
         print(f"  📁 Total archivos encontrados: {total_found}")
         print(f"  ✅ Artículos válidos: {total_articles}")
         print(f"  ⏭️  Omitidos: {total_skipped}")
-        print(f"{'='*70}\n")
-        
+        print(f"{'=' * 70}\n")
+
         df = pd.DataFrame(index_files)
-        
+
         if not df.empty:
-            df = df.sort_values(['blog_nombre', 'tipo_documento', 'fecha_creacion'], 
-                              ascending=[True, True, False])
-        
+            df = df.sort_values(
+                ["blog_nombre", "tipo_documento", "fecha_creacion"],
+                ascending=[True, True, False],
+            )
+
         return df
-    
-    def create_excel_template(self, output_filename: str, blog_name: Optional[str] = None,
-                             incremental: bool = False):
+
+    # =============================================================================
+    # Crea o actualiza la plantilla Excel de metadatos
+    # Modo incremental: solo agrega filas nuevas (¡preserva fórmulas y formatos!)
+    # Genera hoja METADATOS + hoja INSTRUCCIONES con emojis y guía clara
+    # =============================================================================
+
+    def create_excel_template(
+        self,
+        output_filename: str,
+        blog_name: Optional[str] = None,
+        incremental: bool = False,
+    ):
         """
         Crea plantilla Excel con UNA SOLA HOJA de metadatos
-        
+
         Modo incremental: Solo agrega nuevos artículos sin tocar existentes
         Esto preserva fórmulas y formatos personalizados en Excel
         """
         print("🔍 Recolectando archivos index.qmd...")
         print("   (Solo se incluirán artículos/publicaciones con fecha)\n")
-        
+
         df_files = self.collect_index_files(blog_name, verbose=True)
-        
+
         if df_files.empty:
             print("⚠️  No se encontraron artículos válidos")
             return
-        
+
         output_path = self.excel_output_dir / output_filename
-        
+
         # MODO INCREMENTAL: Solo agregar nuevos artículos
         if incremental and output_path.exists():
             print("\n🔄 MODO INCREMENTAL: Preservando datos existentes")
             print("   Solo se agregarán artículos nuevos\n")
-            
+
             try:
                 wb_existing = load_workbook(output_path)
-                ws_existing = wb_existing['METADATOS']
-                
+                ws_existing = wb_existing["METADATOS"]
+
                 existing_paths = set()
-                for row in ws_existing.iter_rows(min_row=2, max_col=1, values_only=True):
+                for row in ws_existing.iter_rows(
+                    min_row=2, max_col=1, values_only=True
+                ):
                     if row[0]:
                         existing_paths.add(row[0])
-                
+
                 print(f"📊 Artículos en Excel existente: {len(existing_paths)}")
                 print(f"📊 Artículos encontrados ahora: {len(df_files)}")
-                
-                df_new = df_files[~df_files['ruta_archivo'].isin(existing_paths)]
-                
+
+                df_new = df_files[~df_files["ruta_archivo"].isin(existing_paths)]
+
                 if df_new.empty:
                     print("\n✅ No hay artículos nuevos para agregar")
                     print("   El Excel está actualizado\n")
                     return
-                
+
                 print(f"➕ Artículos nuevos a agregar: {len(df_new)}\n")
-                
+
                 last_row = ws_existing.max_row
-                
+
                 print("📝 Agregando artículos nuevos...\n")
                 for idx, (_, row_data) in enumerate(df_new.iterrows(), last_row + 1):
-                    ws_existing.cell(idx, 1, row_data['ruta_archivo'])
-                    ws_existing.cell(idx, 2, row_data['blog_nombre'])
-                    ws_existing.cell(idx, 3, row_data['tipo_documento'])
-                    
-                    file_path = self.base_path / row_data['ruta_archivo']
+                    ws_existing.cell(idx, 1, row_data["ruta_archivo"])
+                    ws_existing.cell(idx, 2, row_data["blog_nombre"])
+                    ws_existing.cell(idx, 3, row_data["tipo_documento"])
+
+                    file_path = self.base_path / row_data["ruta_archivo"]
                     yaml_data = self.extract_yaml_only_index(file_path)
-                    
+
                     if yaml_data:
-                        self._fill_excel_row_from_yaml(ws_existing, idx, yaml_data, self.ALL_FIELDS)
-                    
+                        self._fill_excel_row_from_yaml(
+                            ws_existing, idx, yaml_data, self.ALL_FIELDS
+                        )
+
                     if idx % 10 == 0:
-                        print(f"  ✅ Procesados: {idx - last_row}/{len(df_new)} artículos")
-                
-                print(f"  ✅ Procesados: {len(df_new)}/{len(df_new)} artículos (100%)\n")
-                
+                        print(
+                            f"  ✅ Procesados: {idx - last_row}/{len(df_new)} artículos"
+                        )
+
+                print(
+                    f"  ✅ Procesados: {len(df_new)}/{len(df_new)} artículos (100%)\n"
+                )
+
                 wb_existing.save(output_path)
-                
+
                 print(f"✅ Excel actualizado (modo incremental): {output_path}")
                 print(f"📊 Total artículos ahora: {len(existing_paths) + len(df_new)}")
                 print(f"➕ Artículos nuevos agregados: {len(df_new)}")
                 print(f"\n💡 Las fórmulas y formatos existentes se preservaron\n")
-                
+
                 return
-                
+
             except Exception as e:
                 print(f"⚠️  Error en modo incremental: {e}")
                 print("   Creando Excel nuevo en su lugar...\n")
-        
+
         # MODO NORMAL: Crear Excel desde cero
         wb = Workbook()
         wb.remove(wb.active)
-        
+
         # HOJA ÚNICA DE METADATOS
         ws = wb.create_sheet("METADATOS")
-        
+
         columns = self.ALL_FIELDS
-        
+
         # Encabezados con estilo
         for col_idx, col_name in enumerate(columns, 1):
             cell = ws.cell(1, col_idx, col_name)
-            cell.font = Font(bold=True, color='FFFFFF', size=11)
-            cell.fill = PatternFill(start_color='366092', end_color='366092', fill_type='solid')
-            cell.alignment = Alignment(horizontal='center', vertical='center', wrap_text=True)
-        
+            cell.font = Font(bold=True, color="FFFFFF", size=11)
+            cell.fill = PatternFill(
+                start_color="366092", end_color="366092", fill_type="solid"
+            )
+            cell.alignment = Alignment(
+                horizontal="center", vertical="center", wrap_text=True
+            )
+
         # Datos
         print("\n📝 Extrayendo metadatos de cada artículo...\n")
         for row_idx, (_, row_data) in enumerate(df_files.iterrows(), 2):
-            ws.cell(row_idx, 1, row_data['ruta_archivo'])
-            ws.cell(row_idx, 2, row_data['blog_nombre'])
-            ws.cell(row_idx, 3, row_data['tipo_documento'])
-            
-            file_path = self.base_path / row_data['ruta_archivo']
-            
+            ws.cell(row_idx, 1, row_data["ruta_archivo"])
+            ws.cell(row_idx, 2, row_data["blog_nombre"])
+            ws.cell(row_idx, 3, row_data["tipo_documento"])
+
+            file_path = self.base_path / row_data["ruta_archivo"]
+
             # IMPORTANTE: Extraer SOLO lo que está en index.qmd (sin _metadata.yml)
             yaml_data = self.extract_yaml_only_index(file_path)
-            
+
             if yaml_data:
                 self._fill_excel_row_from_yaml(ws, row_idx, yaml_data, columns)
-                
+
             # Progreso
             if row_idx % 10 == 0:
                 print(f"  ✅ Procesados: {row_idx - 1}/{len(df_files)} artículos")
-        
+
         print(f"  ✅ Procesados: {len(df_files)}/{len(df_files)} artículos (100%)\n")
-        
+
         # Ajustar columnas
         for col in ws.columns:
             max_length = 0
@@ -505,14 +1284,14 @@ class QuartoMetadataManager:
                     pass
             adjusted_width = min(max(max_length + 2, 15), 60)
             ws.column_dimensions[column].width = adjusted_width
-        
-        ws.freeze_panes = 'A2'
-        
+
+        ws.freeze_panes = "A2"
+
         # Hoja de instrucciones
         self._create_instructions_sheet(wb)
-        
+
         wb.save(output_path)
-        
+
         print(f"✅ Plantilla Excel creada: {output_path}")
         print(f"📊 Total de artículos: {len(df_files)}")
         print(f"📁 Hojas: METADATOS (todos los artículos), INSTRUCCIONES")
@@ -523,12 +1302,19 @@ class QuartoMetadataManager:
         print(f"   4. Actualizar: python quarto_metadata_manager.py update \\")
         print(f"      {self.base_path} {output_path}")
         print(f"\n💡 Tip: Usa '--incremental' para agregar solo artículos nuevos:")
-        print(f"   python quarto_metadata_manager.py create-template ... --incremental\n")
-    
+        print(
+            f"   python quarto_metadata_manager.py create-template ~/Documents/publicaciones --config metadata_config.yml --incremental\n"
+        )
+
+    # =============================================================================
+    # Crea la hoja de instrucciones con formato bonito y emojis
+    # Incluye cambios recientes, guías de uso, formatos esperados y precauciones
+    # =============================================================================
+
     def _create_instructions_sheet(self, wb: Workbook):
         """Crea hoja de instrucciones con EMOJIS intuitivos"""
         ws = wb.create_sheet("INSTRUCCIONES", 0)
-        
+
         instructions = [
             ["🎯 GUIA RAPIDA - SISTEMA DE GESTION DE METADATOS v1.2.1"],
             [""],
@@ -558,7 +1344,9 @@ class QuartoMetadataManager:
             ["   3. Ejecutar: python ... update [ruta] [excel]"],
             ["   4. Solo se actualizan los index.qmd que tienen diferencias"],
             [""],
-            ["========================================================================"],
+            [
+                "========================================================================"
+            ],
             [""],
             ["📝 FORMATO DE CAMPOS"],
             [""],
@@ -581,7 +1369,9 @@ class QuartoMetadataManager:
             ["   • links_enabled: TRUE o FALSE"],
             ["   • links_data: [{'icon':'github','url':'...'}]"],
             [""],
-            ["========================================================================"],
+            [
+                "========================================================================"
+            ],
             [""],
             ["📋 CAMPOS OBLIGATORIOS (Todos los tipos)"],
             [""],
@@ -617,7 +1407,9 @@ class QuartoMetadataManager:
             ["📚 BIBLIOGRAFIA:"],
             ["   • bibliography: referencias.bib"],
             [""],
-            ["========================================================================"],
+            [
+                "========================================================================"
+            ],
             [""],
             ["📑 CAMPOS ESPECIFICOS POR TIPO"],
             [""],
@@ -673,7 +1465,9 @@ class QuartoMetadataManager:
             ["   • floatsintext: TRUE/FALSE"],
             ["   • numbered_lines: TRUE/FALSE"],
             [""],
-            ["========================================================================"],
+            [
+                "========================================================================"
+            ],
             [""],
             ["👥 AUTORES (Hasta 3 autores)"],
             [""],
@@ -699,7 +1493,9 @@ class QuartoMetadataManager:
             ["   • author_N_roles: Roles CRediT (separados por comas)"],
             ["     Ejemplo: conceptualization, writing, analysis"],
             [""],
-            ["========================================================================"],
+            [
+                "========================================================================"
+            ],
             [""],
             ["⚠️  PRECAUCIONES IMPORTANTES"],
             [""],
@@ -720,7 +1516,9 @@ class QuartoMetadataManager:
             ["   • Guardar como .xlsx (Excel 2007+)"],
             ["   • NO usar .xls ni .csv"],
             [""],
-            ["========================================================================"],
+            [
+                "========================================================================"
+            ],
             [""],
             ["🚀 COMANDOS UTILES"],
             [""],
@@ -739,7 +1537,9 @@ class QuartoMetadataManager:
             ["🌐 Crear base de datos general:"],
             ["   python ... create-template [ruta] --config config.yml"],
             [""],
-            ["========================================================================"],
+            [
+                "========================================================================"
+            ],
             [""],
             ["💡 CONSEJOS Y TIPS"],
             [""],
@@ -759,7 +1559,9 @@ class QuartoMetadataManager:
             ["   2. Separar con comas"],
             ["   3. No usar punto y coma ni corchetes"],
             [""],
-            ["========================================================================"],
+            [
+                "========================================================================"
+            ],
             [""],
             ["📞 SOPORTE Y AYUDA"],
             [""],
@@ -774,7 +1576,9 @@ class QuartoMetadataManager:
             ["   3. Revisar mensajes de error"],
             ["   4. Contactar con detalles del error"],
             [""],
-            ["========================================================================"],
+            [
+                "========================================================================"
+            ],
             [""],
             ["✅ CAMBIOS v1.2.0"],
             [""],
@@ -787,24 +1591,36 @@ class QuartoMetadataManager:
             ["   • Instrucciones con emojis intuitivos"],
             ["   • Procesamiento mas detallado"],
             [""],
-            ["========================================================================"],
+            [
+                "========================================================================"
+            ],
         ]
-        
+
         for row_idx, instruction in enumerate(instructions, 1):
             cell = ws.cell(row_idx, 1, instruction[0])
-            
+
             # Estilos según contenido
             text = instruction[0]
             if text.startswith("🎯") or text.startswith("==="):
-                cell.font = Font(bold=True, size=14, color='1F4E78')
-            elif any(text.startswith(emoji) for emoji in ["📋", "📝", "👥", "⚠️", "🚀", "💡", "📞", "✅"]):
-                cell.font = Font(bold=True, size=12, color='366092')
+                cell.font = Font(bold=True, size=14, color="1F4E78")
+            elif any(
+                text.startswith(emoji)
+                for emoji in ["📋", "📝", "👥", "⚠️", "🚀", "💡", "📞", "✅"]
+            ):
+                cell.font = Font(bold=True, size=12, color="366092")
             elif text.startswith("   •"):
                 cell.font = Font(size=10)
-        
-        ws.column_dimensions['A'].width = 90
-    
-    def _fill_excel_row_from_yaml(self, ws, row_idx: int, yaml_data: Dict, columns: List[str]):
+
+        ws.column_dimensions["A"].width = 90
+
+    # =============================================================================
+    # Llena una fila del Excel con los valores extraídos del YAML del index.qmd
+    # (usado tanto en creación inicial como en modo incremental)
+    # =============================================================================
+
+    def _fill_excel_row_from_yaml(
+        self, ws, row_idx: int, yaml_data: Dict, columns: List[str]
+    ):
         """Llena una fila de Excel con datos extraídos del YAML"""
         for col_idx, col_name in enumerate(columns, 1):
             try:
@@ -813,110 +1629,137 @@ class QuartoMetadataManager:
                     ws.cell(row_idx, col_idx, value)
             except Exception as e:
                 continue
-    
+
+    # =============================================================================
+    # Extrae un valor específico de cualquier campo del YAML
+    # Maneja mapeos complejos: autores, citation, listas, booleanos, etc.
+    # =============================================================================
+
     def _extract_yaml_value(self, yaml_data: Dict, field_name: str) -> Any:
         """Extrae un valor específico del YAML"""
         simple_mapping = {
-            'title': 'title', 'shorttitle': 'shorttitle', 'subtitle': 'subtitle',
-            'date': 'date', 'draft': 'draft', 'abstract': 'abstract',
-            'description': 'description', 'image': 'image', 'eval': 'eval',
-            'bibliography': 'bibliography', 'course': 'course', 'professor': 'professor',
-            'duedate': 'duedate', 'note': 'note', 'journal': 'journal',
-            'volume': 'volume', 'copyrightnotice': 'copyrightnotice',
-            'copyrightext': 'copyrightext', 'floatsintext': 'floatsintext',
-            'numbered_lines': 'numbered-lines', 'meta_analysis': 'meta-analysis',
-            'mask': 'mask'
+            "title": "title",
+            "shorttitle": "shorttitle",
+            "subtitle": "subtitle",
+            "date": "date",
+            "draft": "draft",
+            "abstract": "abstract",
+            "description": "description",
+            "image": "image",
+            "eval": "eval",
+            "bibliography": "bibliography",
+            "course": "course",
+            "professor": "professor",
+            "duedate": "duedate",
+            "note": "note",
+            "journal": "journal",
+            "volume": "volume",
+            "copyrightnotice": "copyrightnotice",
+            "copyrightext": "copyrightext",
+            "floatsintext": "floatsintext",
+            "numbered_lines": "numbered-lines",
+            "meta_analysis": "meta-analysis",
+            "mask": "mask",
         }
-        
+
         if field_name in simple_mapping:
             value = yaml_data.get(simple_mapping[field_name])
-            
+
             # FIX: Convertir copyrightnotice a int
-            if field_name == 'copyrightnotice' and value is not None:
+            if field_name == "copyrightnotice" and value is not None:
                 try:
                     return int(value)
                 except:
                     return value
-            
+
             return value
-        
-        if field_name in ['keywords', 'tags', 'categories']:
+
+        if field_name in ["keywords", "tags", "categories"]:
             value = yaml_data.get(field_name, [])
             if isinstance(value, list):
-                return ', '.join([str(v) for v in value])
+                return ", ".join([str(v) for v in value])
             return value
-        
-        if field_name.startswith('citation_'):
-            citation = yaml_data.get('citation')
+
+        if field_name.startswith("citation_"):
+            citation = yaml_data.get("citation")
             if not isinstance(citation, dict):
                 return None
-            
-            if field_name == 'citation_type':
-                return citation.get('type')
-            elif field_name == 'citation_author':
-                authors = citation.get('author', [])
+
+            if field_name == "citation_type":
+                return citation.get("type")
+            elif field_name == "citation_author":
+                authors = citation.get("author", [])
                 if isinstance(authors, list):
-                    return ', '.join([str(a) for a in authors])
+                    return ", ".join([str(a) for a in authors])
                 return authors
-            elif field_name == 'citation_pdf_url':
-                return citation.get('pdf-url')
-        
-        if field_name == 'links_enabled':
-            links = yaml_data.get('links')
+            elif field_name == "citation_pdf_url":
+                return citation.get("pdf-url")
+
+        if field_name == "links_enabled":
+            links = yaml_data.get("links")
             return links is not None and links != False
-        elif field_name == 'links_data':
-            links = yaml_data.get('links')
+        elif field_name == "links_data":
+            links = yaml_data.get("links")
             if links and isinstance(links, (list, dict)):
                 return json.dumps(links, ensure_ascii=False)
-        
-        if field_name.startswith('author_'):
-            match = re.match(r'author_(\d+)_(.*)', field_name)
+
+        if field_name.startswith("author_"):
+            match = re.match(r"author_(\d+)_(.*)", field_name)
             if match:
                 author_idx = int(match.group(1)) - 1
                 field_suffix = match.group(2)
-                
-                authors = yaml_data.get('author', [])
+
+                authors = yaml_data.get("author", [])
                 if not isinstance(authors, list) or author_idx >= len(authors):
                     return None
-                
+
                 author = authors[author_idx]
-                
-                if field_suffix == 'name':
-                    return author.get('name')
-                elif field_suffix == 'corresponding':
+
+                if field_suffix == "name":
+                    return author.get("name")
+                elif field_suffix == "corresponding":
                     # FIX: Convertir corresponding a string TRUE/FALSE
-                    corr = author.get('corresponding')
+                    corr = author.get("corresponding")
                     if corr is True:
-                        return 'TRUE'
+                        return "TRUE"
                     elif corr is False:
-                        return 'FALSE'
+                        return "FALSE"
                     return corr
-                elif field_suffix == 'orcid':
-                    return author.get('orcid')
-                elif field_suffix == 'email':
-                    return author.get('email')
-                elif field_suffix == 'roles':
-                    roles = author.get('role', [])
+                elif field_suffix == "orcid":
+                    return author.get("orcid")
+                elif field_suffix == "email":
+                    return author.get("email")
+                elif field_suffix == "roles":
+                    roles = author.get("role", [])
                     if isinstance(roles, list):
-                        return ', '.join([str(r) for r in roles])
+                        return ", ".join([str(r) for r in roles])
                     return roles
-                elif field_suffix.startswith('affiliation_'):
-                    aff_field = field_suffix.replace('affiliation_', '')
-                    affiliations = author.get('affiliations', [])
+                elif field_suffix.startswith("affiliation_"):
+                    aff_field = field_suffix.replace("affiliation_", "")
+                    affiliations = author.get("affiliations", [])
                     if affiliations and isinstance(affiliations, list):
                         for aff in affiliations:
                             if isinstance(aff, dict):
                                 return aff.get(aff_field)
-        
+
         return None
-    
-    def update_yaml_from_excel(self, excel_path: str, 
-                              blog_filter: Optional[str] = None,
-                              path_filter: Optional[str] = None,
-                              dry_run: bool = False):
+
+    # =============================================================================
+    # Comando principal de actualización: aplica cambios del Excel a los .qmd
+    # Solo modifica archivos que realmente tienen diferencias
+    # Soporta filtros, dry-run y reporte detallado al final
+    # =============================================================================
+
+    def update_yaml_from_excel(
+        self,
+        excel_path: str,
+        blog_filter: Optional[str] = None,
+        path_filter: Optional[str] = None,
+        dry_run: bool = False,
+    ):
         """
         Actualiza archivos desde Excel con FILTROS AVANZADOS
-        
+
         Args:
             excel_path: Ruta del Excel
             blog_filter: Filtrar por blog específico
@@ -924,55 +1767,61 @@ class QuartoMetadataManager:
             dry_run: Simulación sin aplicar cambios
         """
         print(f"\n📖 Leyendo Excel: {excel_path}\n")
-        
+
         try:
-            df = pd.read_excel(excel_path, sheet_name='METADATOS')
+            df = pd.read_excel(excel_path, sheet_name="METADATOS")
         except Exception as e:
             print(f"❌ Error leyendo Excel: {e}")
             return
-        
+
         if df.empty:
             print("⚠️  Excel vacío")
             return
-        
+
         # Aplicar filtros
         original_count = len(df)
-        
+
         if blog_filter:
-            df = df[df['blog_nombre'] == blog_filter]
-            print(f"🔍 Filtro por blog '{blog_filter}': {len(df)}/{original_count} artículos")
-        
+            df = df[df["blog_nombre"] == blog_filter]
+            print(
+                f"🔍 Filtro por blog '{blog_filter}': {len(df)}/{original_count} artículos"
+            )
+
         if path_filter:
-            df = df[df['ruta_archivo'].str.contains(path_filter, case=False, na=False)]
-            print(f"🔍 Filtro por ruta '{path_filter}': {len(df)}/{original_count} artículos")
-        
+            df = df[df["ruta_archivo"].str.contains(path_filter, case=False, na=False)]
+            print(
+                f"🔍 Filtro por ruta '{path_filter}': {len(df)}/{original_count} artículos"
+            )
+
         if df.empty:
             print("⚠️  No hay artículos después de aplicar filtros")
             return
-        
-        print(f"\n{'='*70}")
+
+        print(f"\n{'=' * 70}")
         print(f"{'🔍 MODO SIMULACION' if dry_run else '✅ ACTUALIZACION REAL'}")
         print(f"📊 Artículos a procesar: {len(df)}")
-        print(f"{'='*70}\n")
-        
+        print(f"{'=' * 70}\n")
+
         total_updated = 0
         total_skipped = 0
         total_errors = 0
-        
+
         for idx, row in df.iterrows():
-            ruta_archivo = row.get('ruta_archivo')
+            ruta_archivo = row.get("ruta_archivo")
             if pd.isna(ruta_archivo):
                 continue
-            
+
             file_path = self.base_path / ruta_archivo
-            
+
             if not file_path.exists():
                 print(f"❌ Archivo no encontrado: {ruta_archivo}")
                 total_errors += 1
                 continue
-            
+
             try:
-                result = self._update_single_qmd(file_path, row, dry_run, idx + 1, len(df))
+                result = self._update_single_qmd(
+                    file_path, row, dry_run, idx + 1, len(df)
+                )
                 if result:
                     total_updated += 1
                 else:
@@ -980,361 +1829,450 @@ class QuartoMetadataManager:
             except Exception as e:
                 print(f"❌ Error en {ruta_archivo}: {e}")
                 total_errors += 1
-        
-        print(f"\n{'='*70}")
-        print(f"{'🔍 RESUMEN DE SIMULACION' if dry_run else '✅ RESUMEN DE ACTUALIZACION'}")
-        print(f"{'='*70}")
+
+        print(f"\n{'=' * 70}")
+        print(
+            f"{'🔍 RESUMEN DE SIMULACION' if dry_run else '✅ RESUMEN DE ACTUALIZACION'}"
+        )
+        print(f"{'=' * 70}")
         print(f"✅ Actualizados: {total_updated}")
         print(f"⏭️  Sin cambios: {total_skipped}")
         print(f"❌ Errores: {total_errors}")
-        print(f"{'='*70}\n")
-        
+        print(f"{'=' * 70}\n")
+
         if dry_run and total_updated > 0:
             print("💡 Para aplicar cambios, ejecute sin --dry-run\n")
-    
-    def _update_single_qmd(self, file_path: Path, row: pd.Series, 
-                        dry_run: bool, current: int, total: int) -> bool:
+
+    # =============================================================================
+    # Actualiza UN SOLO archivo .qmd desde una fila de Excel
+    # Preserva el orden de campos, formato YAML limpio y comentarios existentes
+    # Devuelve True si hubo cambios, False si ya estaba sincronizado
+    # =============================================================================
+
+    def _update_single_qmd(
+        self, file_path: Path, row: pd.Series, dry_run: bool, current: int, total: int
+    ) -> bool:
         """Actualiza archivo QMD preservando orden y formato"""
-        with open(file_path, 'r', encoding='utf-8') as f:
+        with open(file_path, "r", encoding="utf-8") as f:
             content = f.read()
-        
-        yaml_match = re.match(r'^---\s*\n(.*?)\n---', content, re.DOTALL)
+
+        yaml_match = re.match(r"^---\s*\n(.*?)\n---", content, re.DOTALL)
         if not yaml_match:
             return False
-        
+
         yaml_content = yaml_match.group(1)
         yaml_data = yaml.safe_load(yaml_content) or {}
-        
+
         changes = []
         updated_yaml = self._apply_excel_row_to_yaml(yaml_data, row, changes)
-        
+
         if not changes:
-            print(f"[{current}/{total}] ⏭️  Sin cambios: {file_path.parent.name}/{file_path.name}")
+            print(
+                f"[{current}/{total}] ⏭️  Sin cambios: {file_path.parent.name}/{file_path.name}"
+            )
             return False
-        
+
         icon = "🔍" if dry_run else "✅"
         action = "Simulando" if dry_run else "Actualizando"
-        
-        print(f"\n[{current}/{total}] {icon} {action}: {file_path.parent.name}/{file_path.name}")
+
+        print(
+            f"\n[{current}/{total}] {icon} {action}: {file_path.parent.name}/{file_path.name}"
+        )
         print(f"   📝 Cambios detectados: {len(changes)}")
-        
+
         for i, change in enumerate(changes[:10], 1):  # Mostrar hasta 10 cambios
             print(f"      {i}. {change}")
-        
+
         if len(changes) > 10:
             print(f"      ... y {len(changes) - 10} cambios más")
-        
+
         if dry_run:
             return True
-        
+
         # YAML con formato limpio (sin enters extras)
         new_yaml_str = yaml.dump(
-            updated_yaml, 
+            updated_yaml,
             allow_unicode=True,
             default_flow_style=False,
             sort_keys=False,
             indent=2,
             width=80,
-            default_style='"' if any(isinstance(v, str) and '\n' in v for v in updated_yaml.values()) else None
+            default_style='"'
+            if any(isinstance(v, str) and "\n" in v for v in updated_yaml.values())
+            else None,
         )
-        
+
         # Limpiar enters extras en abstract y description
-        new_yaml_str = re.sub(r"abstract: '([^']+)'\s+", lambda m: f"abstract: '{m.group(1).strip()}'\n", new_yaml_str)
-        new_yaml_str = re.sub(r"description: '([^']+)'\s+", lambda m: f"description: '{m.group(1).strip()}'\n", new_yaml_str)
-        
-        new_content = f"---\n{new_yaml_str}---{content[yaml_match.end():]}"
-        
-        with open(file_path, 'w', encoding='utf-8') as f:
+        new_yaml_str = re.sub(
+            r"abstract: '([^']+)'\s+",
+            lambda m: f"abstract: '{m.group(1).strip()}'\n",
+            new_yaml_str,
+        )
+        new_yaml_str = re.sub(
+            r"description: '([^']+)'\s+",
+            lambda m: f"description: '{m.group(1).strip()}'\n",
+            new_yaml_str,
+        )
+
+        new_content = f"---\n{new_yaml_str}---{content[yaml_match.end() :]}"
+
+        with open(file_path, "w", encoding="utf-8") as f:
             f.write(new_content)
-        
+
         return True
-    
-    def _apply_excel_row_to_yaml(self, yaml_data: Dict, row: pd.Series, 
-                                changes: List[str]) -> Dict:
+
+    # =============================================================================
+    # Aplica los valores de una fila de Excel al diccionario YAML
+    # Maneja eliminación de campos vacíos, conversión de booleanos, listas, autores, etc.
+    # Registra cada cambio en la lista changes
+    # =============================================================================
+
+    def _apply_excel_row_to_yaml(
+        self, yaml_data: Dict, row: pd.Series, changes: List[str]
+    ) -> Dict:
         """
         Aplica cambios desde Excel al YAML con ACTUALIZACIÓN COMPLETA
-        
+
         - Actualiza TODOS los campos (incluyendo title, shorttitle, etc.)
         - Elimina campos si están vacíos en Excel
         - Convierte booleanos correctamente (TRUE/FALSE → true/false)
         - Limpia texto sin enters extras
         """
-        
+
         # ORDEN CORRECTO de campos YAML (para mantener estructura)
         field_order = [
-            'documentmode', 'course', 'professor', 'duedate', 'note',
-            'journal', 'volume', 'copyrightnotice', 'copyrightext',
-            'image', 'title', 'subtitle', 'shorttitle', 'abstract',
-            'keywords', 'categories', 'tags', 'author-note', 'description',
-            'eval', 'citation', 'date', 'draft', 'bibliography',
-            'floatsintext', 'numbered-lines', 'meta-analysis', 'mask', 'author'
+            "documentmode",
+            "course",
+            "professor",
+            "duedate",
+            "note",
+            "journal",
+            "volume",
+            "copyrightnotice",
+            "copyrightext",
+            "image",
+            "title",
+            "subtitle",
+            "shorttitle",
+            "abstract",
+            "keywords",
+            "categories",
+            "tags",
+            "author-note",
+            "description",
+            "eval",
+            "citation",
+            "date",
+            "draft",
+            "bibliography",
+            "floatsintext",
+            "numbered-lines",
+            "meta-analysis",
+            "mask",
+            "author",
         ]
-        
+
         # Crear nuevo YAML ordenado
         new_yaml = {}
-        
+
         # Procesar cada campo en orden
         for field in field_order:
             if field in yaml_data:
                 new_yaml[field] = yaml_data[field]
-        
+
         # Agregar campos que no están en el orden pero existen
         for key, value in yaml_data.items():
             if key not in new_yaml:
                 new_yaml[key] = value
-        
+
         yaml_data = new_yaml
-        
+
         # MAPEO de campos Excel → YAML
         simple_fields = {
-            'title': 'title',
-            'shorttitle': 'shorttitle',
-            'subtitle': 'subtitle',
-            'date': 'date',
-            'draft': 'draft',
-            'abstract': 'abstract',
-            'description': 'description',
-            'image': 'image',
-            'eval': 'eval',
-            'bibliography': 'bibliography',
-            'course': 'course',
-            'professor': 'professor',
-            'duedate': 'duedate',
-            'note': 'note',
-            'journal': 'journal',
-            'volume': 'volume',
-            'copyrightnotice': 'copyrightnotice',
-            'copyrightext': 'copyrightext',
-            'floatsintext': 'floatsintext',
-            'mask': 'mask'
+            "title": "title",
+            "shorttitle": "shorttitle",
+            "subtitle": "subtitle",
+            "date": "date",
+            "draft": "draft",
+            "abstract": "abstract",
+            "description": "description",
+            "image": "image",
+            "eval": "eval",
+            "bibliography": "bibliography",
+            "course": "course",
+            "professor": "professor",
+            "duedate": "duedate",
+            "note": "note",
+            "journal": "journal",
+            "volume": "volume",
+            "copyrightnotice": "copyrightnotice",
+            "copyrightext": "copyrightext",
+            "floatsintext": "floatsintext",
+            "mask": "mask",
         }
-        
+
         # PROCESAR CAMPOS SIMPLES
         for excel_field, yaml_field in simple_fields.items():
             if excel_field not in row:
                 continue
-                
+
             new_value = row[excel_field]
             old_value = yaml_data.get(yaml_field)
-            
+
             # SI ESTÁ VACÍO EN EXCEL → ELIMINAR del YAML
-            if pd.isna(new_value) or (isinstance(new_value, str) and new_value.strip() == ''):
+            if pd.isna(new_value) or (
+                isinstance(new_value, str) and new_value.strip() == ""
+            ):
                 if yaml_field in yaml_data:
                     del yaml_data[yaml_field]
                     changes.append(f"{yaml_field}: ELIMINADO (vacío en Excel)")
                 continue
-            
+
             # CONVERTIR BOOLEANOS (TRUE/FALSE → true/false)
-            if isinstance(new_value, str) and new_value.upper() in ['TRUE', 'FALSE']:
-                new_value = new_value.upper() == 'TRUE'
-            
+            if isinstance(new_value, str) and new_value.upper() in ["TRUE", "FALSE"]:
+                new_value = new_value.upper() == "TRUE"
+
             # CONVERTIR copyrightnotice a INT
-            if excel_field == 'copyrightnotice':
+            if excel_field == "copyrightnotice":
                 try:
                     new_value = int(float(new_value))
                 except:
                     pass
-            
+
             # LIMPIAR TEXTO (sin enters extras en abstract/description)
-            if excel_field in ['abstract', 'description'] and isinstance(new_value, str):
+            if excel_field in ["abstract", "description"] and isinstance(
+                new_value, str
+            ):
                 # Eliminar enters múltiples y espacios extras
-                new_value = ' '.join(new_value.split())
-            
+                new_value = " ".join(new_value.split())
+
             # ACTUALIZAR si hay diferencia
             if old_value != new_value:
                 yaml_data[yaml_field] = new_value
-                old_display = repr(old_value)[:50] if old_value else 'vacío'
+                old_display = repr(old_value)[:50] if old_value else "vacío"
                 new_display = repr(new_value)[:50]
                 changes.append(f"{yaml_field}: {old_display} → {new_display}")
-        
+
         # CAMPOS CON GUIONES (numbered-lines, meta-analysis)
-        if 'numbered_lines' in row:
-            new_value = row['numbered_lines']
-            if pd.isna(new_value) or (isinstance(new_value, str) and new_value.strip() == ''):
-                if 'numbered-lines' in yaml_data:
-                    del yaml_data['numbered-lines']
+        if "numbered_lines" in row:
+            new_value = row["numbered_lines"]
+            if pd.isna(new_value) or (
+                isinstance(new_value, str) and new_value.strip() == ""
+            ):
+                if "numbered-lines" in yaml_data:
+                    del yaml_data["numbered-lines"]
                     changes.append("numbered-lines: ELIMINADO")
             else:
                 if isinstance(new_value, str):
-                    new_value = new_value.upper() == 'TRUE'
-                old_value = yaml_data.get('numbered-lines')
+                    new_value = new_value.upper() == "TRUE"
+                old_value = yaml_data.get("numbered-lines")
                 if old_value != new_value:
-                    yaml_data['numbered-lines'] = new_value
+                    yaml_data["numbered-lines"] = new_value
                     changes.append(f"numbered-lines: {old_value} → {new_value}")
-        
-        if 'meta_analysis' in row:
-            new_value = row['meta_analysis']
-            if pd.isna(new_value) or (isinstance(new_value, str) and new_value.strip() == ''):
-                if 'meta-analysis' in yaml_data:
-                    del yaml_data['meta-analysis']
+
+        if "meta_analysis" in row:
+            new_value = row["meta_analysis"]
+            if pd.isna(new_value) or (
+                isinstance(new_value, str) and new_value.strip() == ""
+            ):
+                if "meta-analysis" in yaml_data:
+                    del yaml_data["meta-analysis"]
                     changes.append("meta-analysis: ELIMINADO")
             else:
                 if isinstance(new_value, str):
-                    new_value = new_value.upper() == 'TRUE'
-                old_value = yaml_data.get('meta-analysis')
+                    new_value = new_value.upper() == "TRUE"
+                old_value = yaml_data.get("meta-analysis")
                 if old_value != new_value:
-                    yaml_data['meta-analysis'] = new_value
+                    yaml_data["meta-analysis"] = new_value
                     changes.append(f"meta-analysis: {old_value} → {new_value}")
-        
+
         # TIPO DE DOCUMENTO (documentmode)
-        if 'tipo_documento' in row and not pd.isna(row['tipo_documento']):
-            new_type = row['tipo_documento'].lower()
-            if new_type in ['stu', 'man', 'jou', 'doc']:
-                old_type_direct = yaml_data.get('documentmode')
+        if "tipo_documento" in row and not pd.isna(row["tipo_documento"]):
+            new_type = row["tipo_documento"].lower()
+            if new_type in ["stu", "man", "jou", "doc"]:
+                old_type_direct = yaml_data.get("documentmode")
                 old_type_format = None
-                
-                if 'format' in yaml_data and isinstance(yaml_data['format'], dict):
-                    if 'apaquarto-pdf' in yaml_data['format']:
-                        apa_config = yaml_data['format']['apaquarto-pdf']
+
+                if "format" in yaml_data and isinstance(yaml_data["format"], dict):
+                    if "apaquarto-pdf" in yaml_data["format"]:
+                        apa_config = yaml_data["format"]["apaquarto-pdf"]
                         if isinstance(apa_config, dict):
-                            old_type_format = apa_config.get('documentmode')
-                
-                old_type = old_type_direct or old_type_format or 'jou'
-                
+                            old_type_format = apa_config.get("documentmode")
+
+                old_type = old_type_direct or old_type_format or "jou"
+
                 if old_type != new_type:
                     # Si jou → otro: CREAR documentmode al PRINCIPIO
-                    if new_type != 'jou':
+                    if new_type != "jou":
                         # Crear nuevo dict con documentmode primero
-                        new_ordered = {'documentmode': new_type}
+                        new_ordered = {"documentmode": new_type}
                         for key, value in yaml_data.items():
-                            if key != 'documentmode':
+                            if key != "documentmode":
                                 new_ordered[key] = value
                         yaml_data = new_ordered
-                        changes.append(f"documentmode: {old_type} → {new_type} (AGREGADO AL INICIO)")
+                        changes.append(
+                            f"documentmode: {old_type} → {new_type} (AGREGADO AL INICIO)"
+                        )
                     # Si ya existe, actualizar
-                    elif 'documentmode' in yaml_data:
-                        yaml_data['documentmode'] = new_type
+                    elif "documentmode" in yaml_data:
+                        yaml_data["documentmode"] = new_type
                         changes.append(f"documentmode: {old_type} → {new_type}")
                     elif old_type_format:
-                        yaml_data['format']['apaquarto-pdf']['documentmode'] = new_type
-                        changes.append(f"format.apaquarto-pdf.documentmode: {old_type} → {new_type}")
-        
+                        yaml_data["format"]["apaquarto-pdf"]["documentmode"] = new_type
+                        changes.append(
+                            f"format.apaquarto-pdf.documentmode: {old_type} → {new_type}"
+                        )
+
         # LISTAS (keywords, tags, categories)
-        for field in ['keywords', 'tags', 'categories']:
+        for field in ["keywords", "tags", "categories"]:
             if field not in row:
                 continue
-                
+
             new_value = row[field]
-            
+
             # SI VACÍO → ELIMINAR
-            if pd.isna(new_value) or (isinstance(new_value, str) and new_value.strip() == ''):
+            if pd.isna(new_value) or (
+                isinstance(new_value, str) and new_value.strip() == ""
+            ):
                 if field in yaml_data:
                     del yaml_data[field]
                     changes.append(f"{field}: ELIMINADO")
                 continue
-            
+
             # CONVERTIR a lista
             if isinstance(new_value, str):
-                new_value = [item.strip() for item in new_value.split(',') if item.strip()]
+                new_value = [
+                    item.strip() for item in new_value.split(",") if item.strip()
+                ]
             else:
                 new_value = [str(new_value)]
-            
+
             old_value = yaml_data.get(field, [])
 
             # Comparar listas
             if set(old_value) != set(new_value):
                 yaml_data[field] = new_value
                 changes.append(f"{field}: actualizado ({len(new_value)} items)")
-        
+
         # CITACIÓN
-        if 'citation_type' in row or 'citation_pdf_url' in row:
+        if "citation_type" in row or "citation_pdf_url" in row:
             # Crear citation si no existe
-            if 'citation' not in yaml_data or not isinstance(yaml_data['citation'], dict):
-                yaml_data['citation'] = {}
-            
-            if 'citation_type' in row and not pd.isna(row['citation_type']):
-                new_type = row['citation_type']
-                old_type = yaml_data['citation'].get('type')
+            if "citation" not in yaml_data or not isinstance(
+                yaml_data["citation"], dict
+            ):
+                yaml_data["citation"] = {}
+
+            if "citation_type" in row and not pd.isna(row["citation_type"]):
+                new_type = row["citation_type"]
+                old_type = yaml_data["citation"].get("type")
                 if old_type != new_type:
-                    yaml_data['citation']['type'] = new_type
+                    yaml_data["citation"]["type"] = new_type
                     changes.append(f"citation.type: {old_type} → {new_type}")
-            
-            if 'citation_pdf_url' in row and not pd.isna(row['citation_pdf_url']):
-                new_url = row['citation_pdf_url']
-                old_url = yaml_data['citation'].get('pdf-url')
+
+            if "citation_pdf_url" in row and not pd.isna(row["citation_pdf_url"]):
+                new_url = row["citation_pdf_url"]
+                old_url = yaml_data["citation"].get("pdf-url")
                 if old_url != new_url:
-                    yaml_data['citation']['pdf-url'] = new_url
+                    yaml_data["citation"]["pdf-url"] = new_url
                     changes.append(f"citation.pdf-url actualizada")
-        
+
         # AUTORES (solo si existen en index.qmd)
-        if 'author' in yaml_data:
+        if "author" in yaml_data:
             authors_data = []
-            
+
             for i in range(1, 4):
-                prefix = f'author_{i}_'
-                if f'{prefix}name' in row and not pd.isna(row[f'{prefix}name']):
-                    author = {'name': row[f'{prefix}name']}
-                    
+                prefix = f"author_{i}_"
+                if f"{prefix}name" in row and not pd.isna(row[f"{prefix}name"]):
+                    author = {"name": row[f"{prefix}name"]}
+
                     # Corresponding como bool
-                    if f'{prefix}corresponding' in row and not pd.isna(row[f'{prefix}corresponding']):
-                        corr_val = row[f'{prefix}corresponding']
+                    if f"{prefix}corresponding" in row and not pd.isna(
+                        row[f"{prefix}corresponding"]
+                    ):
+                        corr_val = row[f"{prefix}corresponding"]
                         if isinstance(corr_val, str):
-                            corr_val = corr_val.upper() == 'TRUE'
+                            corr_val = corr_val.upper() == "TRUE"
                         elif isinstance(corr_val, (int, float)):
                             corr_val = bool(int(corr_val))
-                        author['corresponding'] = corr_val
-                    
-                    if f'{prefix}orcid' in row and not pd.isna(row[f'{prefix}orcid']):
-                        author['orcid'] = row[f'{prefix}orcid']
-                    
-                    if f'{prefix}email' in row and not pd.isna(row[f'{prefix}email']):
-                        author['email'] = row[f'{prefix}email']
-                    
+                        author["corresponding"] = corr_val
+
+                    if f"{prefix}orcid" in row and not pd.isna(row[f"{prefix}orcid"]):
+                        author["orcid"] = row[f"{prefix}orcid"]
+
+                    if f"{prefix}email" in row and not pd.isna(row[f"{prefix}email"]):
+                        author["email"] = row[f"{prefix}email"]
+
                     aff = {}
-                    for aff_field in ['name', 'department', 'city', 'region', 'country']:
-                        full_field = f'{prefix}affiliation_{aff_field}'
+                    for aff_field in [
+                        "name",
+                        "department",
+                        "city",
+                        "region",
+                        "country",
+                    ]:
+                        full_field = f"{prefix}affiliation_{aff_field}"
                         if full_field in row and not pd.isna(row[full_field]):
                             aff[aff_field] = row[full_field]
-                    
+
                     if aff:
-                        author['affiliations'] = [aff]
-                    
-                    if f'{prefix}roles' in row and not pd.isna(row[f'{prefix}roles']):
-                        roles_str = row[f'{prefix}roles']
+                        author["affiliations"] = [aff]
+
+                    if f"{prefix}roles" in row and not pd.isna(row[f"{prefix}roles"]):
+                        roles_str = row[f"{prefix}roles"]
                         if isinstance(roles_str, str):
-                            author['role'] = [r.strip() for r in roles_str.split(',')]
-                    
+                            author["role"] = [r.strip() for r in roles_str.split(",")]
+
                     authors_data.append(author)
             # Solo actualizar authors si:
             # 1. Hay autores en el Excel Y
             # 2. Ya existen autores en el index.qmd
             if authors_data:
-                old_authors = yaml_data.get('author', [])
+                old_authors = yaml_data.get("author", [])
                 if old_authors != authors_data:
-                    yaml_data['author'] = authors_data
+                    yaml_data["author"] = authors_data
                     changes.append(f"author: actualizado ({len(authors_data)} autores)")
-        
+
         return yaml_data
 
 
 def create_config_file(config_path: str, base_path: str):
     """Crea archivo de configuración con valores por defecto"""
     config = {
-        'allowed_blogs': [
-            'axiomata', 'aequilibria', 'numerus-scriptum',
-            'actus-mercator', 'res-publica', 'website-achalma',
-            'pecunia-fluxus', 'optimums', 'epsilon-y-beta',
-            'methodica', 'chaska', 'dialectica-y-mercado',
+        "allowed_blogs": [
+            "axiomata",
+            "aequilibria",
+            "numerus-scriptum",
+            "actus-mercator",
+            "res-publica",
+            "website-achalma",
+            "pecunia-fluxus",
+            "optimums",
+            "epsilon-y-beta",
+            "methodica",
+            "chaska",
+            "dialectica-y-mercado",
         ],
-        'excluded_folders': [
-            'apa', 'notas', 'borradores',
-            'propuesta bicentenario',
-            'taller unsch como elaborar tesis de pregrado',
-            'practicas preprofesionales',
+        "excluded_folders": [
+            "apa",
+            "notas",
+            "borradores",
+            "propuesta bicentenario",
+            "taller unsch como elaborar tesis de pregrado",
+            "practicas preprofesionales",
         ],
-        'excel_output_dir': '~/Documents/scripts/scripts_for_quarto/script_metadata_manager/excel_databases'
+        "excel_output_dir": "~/Documents/scripts/scripts_for_quarto/script_metadata_manager/excel_databases",
     }
-    
-    with open(config_path, 'w', encoding='utf-8') as f:
+
+    with open(config_path, "w", encoding="utf-8") as f:
         yaml.dump(config, f, allow_unicode=True, default_flow_style=False)
-    
+
     print(f"✅ Configuración creada: {config_path}")
 
 
 def main():
     """Función principal con CLI completo"""
     parser = argparse.ArgumentParser(
-        description='Sistema de Gestión de Metadatos Quarto v1.2.1',
+        description="Sistema de Gestión de Metadatos Quarto v1.2.1",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Ejemplos:
@@ -1368,78 +2306,154 @@ Ejemplos:
 
 Versión: 1.2.0
 Autor: Edison Achalma
-        """
+        """,
     )
-    
-    subparsers = parser.add_subparsers(dest='command', help='Comandos')
-    
+
+    subparsers = parser.add_subparsers(dest="command", help="Comandos")
+
     # create-config
-    parser_config = subparsers.add_parser('create-config')
-    parser_config.add_argument('base_path')
-    parser_config.add_argument('-o', '--output', default='metadata_config.yml')
-    
+    parser_config = subparsers.add_parser("create-config")
+    parser_config.add_argument("base_path")
+    parser_config.add_argument("-o", "--output", default="metadata_config.yml")
+
     # create-template
-    parser_create = subparsers.add_parser('create-template')
-    parser_create.add_argument('base_path')
-    parser_create.add_argument('-o', '--output', default='quarto_metadata.xlsx')
-    parser_create.add_argument('-b', '--blog')
-    parser_create.add_argument('-c', '--config')
-    parser_create.add_argument('--incremental', action='store_true',
-                              help='Solo agregar nuevos articulos')
-    
+    parser_create = subparsers.add_parser("create-template")
+    parser_create.add_argument("base_path")
+    parser_create.add_argument("-o", "--output", default="quarto_metadata.xlsx")
+    parser_create.add_argument("-b", "--blog")
+    parser_create.add_argument("-c", "--config")
+    parser_create.add_argument(
+        "--incremental", action="store_true", help="Solo agregar nuevos articulos"
+    )
+
     # update
-    parser_update = subparsers.add_parser('update')
-    parser_update.add_argument('base_path')
-    parser_update.add_argument('excel_file')
-    parser_update.add_argument('-b', '--blog', help='Filtrar por blog')
-    parser_update.add_argument('-p', '--filter-path', help='Filtrar por ruta')
-    parser_update.add_argument('-c', '--config')
-    parser_update.add_argument('--dry-run', action='store_true')
-    
+    parser_update = subparsers.add_parser("update")
+    parser_update.add_argument("base_path")
+    parser_update.add_argument("excel_file")
+    parser_update.add_argument("-b", "--blog", help="Filtrar por blog")
+    parser_update.add_argument("-p", "--filter-path", help="Filtrar por ruta")
+    parser_update.add_argument("-c", "--config")
+    parser_update.add_argument("--dry-run", action="store_true")
+
+    # NUEVO: Detectar campos nuevos
+    parser_detect = subparsers.add_parser("detect-new-fields")
+    parser_detect.add_argument("base_path")
+    parser_detect.add_argument("-c", "--config")
+
+    # NUEVO: Agregar columnas
+    parser_add_cols = subparsers.add_parser("add-columns")
+    parser_add_cols.add_argument("base_path")
+    parser_add_cols.add_argument("excel_file")
+    parser_add_cols.add_argument("fields", nargs="+")
+    parser_add_cols.add_argument("-c", "--config")
+    parser_add_cols.add_argument("--dry-run", action="store_true")
+
+    # NUEVO: Encontrar diferencias
+    parser_diff = subparsers.add_parser("find-differences")
+    parser_diff.add_argument("base_path")
+    parser_diff.add_argument("excel_file")
+    parser_diff.add_argument("-b", "--blog")
+    parser_diff.add_argument("-p", "--filter-path")
+    parser_diff.add_argument("-c", "--config")
+    parser_diff.add_argument("--max-show", type=int, default=10)
+
+    # NUEVO: Sincronizar individual
+    parser_sync_one = subparsers.add_parser("sync-article")
+    parser_sync_one.add_argument("base_path")
+    parser_sync_one.add_argument("excel_file")
+    parser_sync_one.add_argument("article_path")
+    parser_sync_one.add_argument("-c", "--config")
+    parser_sync_one.add_argument("--dry-run", action="store_true")
+
+    # NUEVO: Sincronizar batch
+    parser_sync_batch = subparsers.add_parser("sync-batch")
+    parser_sync_batch.add_argument("base_path")
+    parser_sync_batch.add_argument("excel_file")
+    parser_sync_batch.add_argument("-b", "--blog")
+    parser_sync_batch.add_argument("-p", "--filter-path")
+    parser_sync_batch.add_argument("-c", "--config")
+    parser_sync_batch.add_argument("--dry-run", action="store_true")
+
     args = parser.parse_args()
-    
+
     if not args.command:
         parser.print_help()
         return
-    
+
     try:
-        if args.command == 'create-config':
+        if args.command == "create-config":
             create_config_file(args.output, args.base_path)
-            
-        elif args.command == 'create-template':
-            config_file = getattr(args, 'config', None)
+
+        elif args.command == "create-template":
+            config_file = getattr(args, "config", None)
             manager = QuartoMetadataManager(args.base_path, config_file)
-            
+
             output_path = args.output
             if args.blog:
                 name, ext = os.path.splitext(output_path)
                 output_path = f"{name}_{args.blog}{ext}"
-            
-            incremental = getattr(args, 'incremental', False)
+
+            incremental = getattr(args, "incremental", False)
             manager.create_excel_template(output_path, args.blog, incremental)
-            
-        elif args.command == 'update':
-            config_file = getattr(args, 'config', None)
+
+        elif args.command == "update":
+            config_file = getattr(args, "config", None)
             manager = QuartoMetadataManager(args.base_path, config_file)
-            
-            blog_filter = getattr(args, 'blog', None)
-            path_filter = getattr(args, 'filter_path', None)
-            
+
+            blog_filter = getattr(args, "blog", None)
+            path_filter = getattr(args, "filter_path", None)
+
             manager.update_yaml_from_excel(
-                args.excel_file, 
-                blog_filter, 
-                path_filter,
-                args.dry_run
+                args.excel_file, blog_filter, path_filter, args.dry_run
             )
-            
+
+        elif args.command == "detect-new-fields":
+            config_file = getattr(args, "config", None)
+            manager = QuartoMetadataManager(args.base_path, config_file)
+            manager.detect_new_metadata_fields()
+
+        elif args.command == "add-columns":
+            config_file = getattr(args, "config", None)
+            manager = QuartoMetadataManager(args.base_path, config_file)
+            manager.add_new_columns_to_excel(args.excel_file, args.fields, args.dry_run)
+
+        elif args.command == "find-differences":
+            config_file = getattr(args, "config", None)
+            manager = QuartoMetadataManager(args.base_path, config_file)
+            manager.find_articles_with_differences(
+                args.excel_file,
+                getattr(args, "blog", None),
+                getattr(args, "filter_path", None),
+                getattr(args, "max_show", 10),
+            )
+
+        elif args.command == "sync-article":
+            config_file = getattr(args, "config", None)
+            manager = QuartoMetadataManager(args.base_path, config_file)
+            file_path = manager.base_path / args.article_path
+            manager.sync_single_article_interactive(
+                file_path, args.excel_file, args.dry_run
+            )
+
+        elif args.command == "sync-batch":
+            config_file = getattr(args, "config", None)
+            manager = QuartoMetadataManager(args.base_path, config_file)
+            manager.sync_articles_batch_interactive(
+                args.excel_file,
+                getattr(args, "blog", None),
+                getattr(args, "filter_path", None),
+                args.dry_run,
+            )
+
     except Exception as e:
         print(f"❌ Error: {e}")
         import traceback
+
         traceback.print_exc()
         return 1
-    
+
     return 0
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     sys.exit(main())

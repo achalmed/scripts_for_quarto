@@ -1,8 +1,8 @@
-# 🚀 Gestor de Publicaciones Quarto
+# Gestor de Publicaciones Quarto
 
-Script completo para gestionar múltiples blogs y sitios web creados con Quarto. Diseñado específicamente para gestionar la estructura de publicaciones de Edison Achalma.
+Script completo para gestionar múltiples blogs y sitios web creados con Quarto. 
 
-# 📋 Tabla de Contenidos
+# Tabla de Contenidos
 
 - [Características](#características)
 - [Requisitos](#requisitos)
@@ -15,40 +15,40 @@ Script completo para gestionar múltiples blogs y sitios web creados con Quarto.
 - [Estructura de Directorios](#estructura-de-directorios)
 - [Solución de Problemas](#solución-de-problemas)
 
-# ✨ Características
+# Características
 
 ## Gestión de Blogs
-- ✅ Listar todos los blogs disponibles
-- ✅ Renderizar blogs completos o individuales
-- ✅ Preview local con servidor integrado
-- ✅ Publicación a múltiples plataformas (GitHub Pages, Netlify, Quarto Pub)
-- ✅ Limpieza de archivos generados
-- ✅ Verificación e inspección de proyectos
+- Listar todos los blogs disponibles
+- Renderizar blogs completos o individuales
+- Preview local con servidor integrado
+- Publicación a múltiples plataformas (GitHub Pages, Netlify, Quarto Pub)
+- Limpieza de archivos generados
+- Verificación e inspección de proyectos
 
 ## Gestión de Posts
-- ✅ Crear nuevos posts con plantilla automática
-- ✅ Listar posts de cualquier blog
-- ✅ Renderizar posts individuales
-- ✅ Estructura de nombres automática basada en fecha
+- Crear nuevos posts con plantilla automática
+- Listar posts de cualquier blog
+- Renderizar posts individuales
+- Estructura de nombres automática basada en fecha
 
 ## Operaciones Múltiples
-- ✅ Renderizar todos los blogs en batch
-- ✅ Limpiar todos los proyectos simultáneamente
-- ✅ Operaciones en paralelo para mayor eficiencia
+- Renderizar todos los blogs en batch
+- Limpiar todos los proyectos simultáneamente
+- Operaciones en paralelo para mayor eficiencia
 
 ## Integración Git
-- ✅ Inicialización de repositorios
-- ✅ Commit y push automatizado
-- ✅ Verificación de estado
-- ✅ Creación automática de .gitignore
+- Inicialización de repositorios
+- Commit y push automatizado
+- Verificación de estado
+- Creación automática de .gitignore
 
 ## Interfaz
-- ✅ Modo interactivo con menú intuitivo
-- ✅ Modo línea de comandos para automatización
-- ✅ Colores y formato para mejor visualización
-- ✅ Mensajes claros de éxito/error
+- Modo interactivo con menú intuitivo
+- Modo línea de comandos para automatización
+- Colores y formato para mejor visualización
+- Mensajes claros de éxito/error
 
-# 📦 Requisitos
+# Requisitos
 
 ## Software Necesario
 
@@ -88,9 +88,9 @@ Script completo para gestionar múltiples blogs y sitios web creados con Quarto.
 ```
 
 
-# 🔧 Instalación
+# Instalación
 
-## ⚡ Instalación Rápida
+## Instalación Rápida
 
 ```bash
 # Copiar y dar permisos
@@ -148,7 +148,7 @@ source ~/.bashrc
 qbuild list
 ```
 
-# 🎯 Uso
+# Uso
 
 ## Modo Interactivo
 
@@ -197,7 +197,7 @@ Para automatización o uso rápido:
 ./build.sh [COMANDO] [OPCIONES]
 ```
 
-# 📖 Comandos Disponibles
+# Comandos Disponibles
 
 ## Gestión de Blogs
 
@@ -382,7 +382,7 @@ draft: true
 Tu contenido aquí...
 ```
 
-## 📝 Crear Posts con APAQuarto
+## Crear Posts con APAQuarto
 
 ### Tipos de Documento
 
@@ -429,13 +429,13 @@ Tu contenido aquí...
 
 ### Características del Asistente
 
-- **📝 Paso a paso**: Pantalla limpia en cada sección
-- **💡 Ejemplos claros**: Cada campo muestra un ejemplo
-- **⏭️ Opción de omitir**: Enter para usar defaults u omitir
-- **🎨 Interfaz visual**: Colores, emojis, progress tracking
-- **🧹 Metadata limpia**: Sin comentarios en el YAML generado
-- **✔️ Validaciones**: Verifica campos obligatorios
-- **📊 Resumen final**: Muestra configuración completa
+- **Paso a paso**: Pantalla limpia en cada sección
+- **Ejemplos claros**: Cada campo muestra un ejemplo
+- **Opción de omitir**: Enter para usar defaults u omitir
+- **Interfaz visual**: Colores, emojis, progress tracking
+- **Metadata limpia**: Sin comentarios en el YAML generado
+- **Validaciones**: Verifica campos obligatorios
+- **Resumen final**: Muestra configuración completa
 
 ### Ejemplos en Cada Campo
 ```bash
@@ -680,7 +680,7 @@ Muestra versión de Quarto.
 ./build.sh version
 ```
 
-# 💡 Ejemplos Prácticos
+# Ejemplos Prácticos
 
 ## Flujo de Trabajo Típico
 
@@ -793,7 +793,7 @@ else
 fi
 ```
 
-# 📁 Estructura de Directorios
+# Estructura de Directorios
 
 ## Estructura Esperada de un Blog
 
@@ -854,7 +854,7 @@ listing:
 ---
 ```
 
-# 🔍 Solución de Problemas
+# Solución de Problemas
 
 ## Problema: Script no ejecuta
 
@@ -975,7 +975,7 @@ Error: Port 4200 already in use
 lsof -ti:4200 | xargs kill -9
 ```
 
-# 🎨 Personalización
+# Personalización
 
 ## Cambiar Directorios por Defecto
 
@@ -1055,7 +1055,7 @@ Conclusiones del post...
 EOF
 ```
 
-# 📚 Referencias
+# Referencias
 
 - [Documentación Quarto](https://quarto.org/docs/guide/)
 - [Quarto Publishing](https://quarto.org/docs/publishing/)
@@ -1063,7 +1063,7 @@ EOF
 - [GitHub Pages con Quarto](https://quarto.org/docs/publishing/github-pages.html)
 - [Bash Scripting Guide](https://www.gnu.org/software/bash/manual/)
 
-# 📝 Notas Adicionales
+# Notas Adicionales
 
 ## Compatibilidad
 
@@ -1094,7 +1094,7 @@ cd /home/achalmaedison/Documents/scripts/scripts_for_quarto
 ./build.sh version
 ```
 
-# 🤝 Contribuciones
+# Contribuciones
 
 Este script es de uso personal pero puede ser adaptado según necesidades.
 
