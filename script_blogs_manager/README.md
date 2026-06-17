@@ -1,5 +1,5 @@
 # Gestor de Publicaciones Quarto
-
+#readme 
 Script completo para gestionar múltiples blogs y sitios web creados con Quarto. 
 
 # Tabla de Contenidos
