@@ -1,4 +1,5 @@
 # 🛠️ Scripts for Quarto
+#readme
 
 **Colección de herramientas para optimizar y automatizar la gestión de blogs Quarto**
 
