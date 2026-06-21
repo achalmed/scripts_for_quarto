@@ -7,6 +7,7 @@ Instalación rápida y sencilla en 5 minutos.
 ### Software Necesario
 
 #### 1. Quarto (Requerido)
+
 ```bash
 # Verificar si está instalado
 quarto --version
@@ -19,6 +20,7 @@ quarto --version
 **Recomendada:** 1.4.0+
 
 #### 2. Bash (Incluido en Linux/macOS)
+
 ```bash
 # Verificar versión
 bash --version
@@ -27,6 +29,7 @@ bash --version
 **Versión mínima:** 4.0+
 
 #### 3. Git (Opcional, para funciones Git)
+
 ```bash
 # Verificar instalación
 git --version
@@ -108,6 +111,7 @@ build.sh list
 ```
 
 **Salida esperada:**
+
 ```
 ═══════════════════════════════════════════════════════════════
   🚀 Blogs Disponibles
@@ -161,6 +165,7 @@ SCRIPT_DIR="/tu/ruta/personalizada/scripts"
 ### Configurar Blogs Excluidos
 
 Por defecto, estos blogs se excluyen automáticamente:
+
 - apa
 - borradores
 - notas
@@ -211,6 +216,7 @@ source ~/.bashrc
 ```
 
 Ahora puedes usar:
+
 ```bash
 qlist                           # Listar blogs
 qnew numerus-scriptum           # Crear post
@@ -257,6 +263,7 @@ build.sh new-post numerus-scriptum
 **Problema:** El sistema no encuentra `build.sh`
 
 **Solución:**
+
 ```bash
 # Opción 1: Usar ruta completa
 /home/achalmaedison/Documents/scripts/scripts_for_quarto/build.sh list
@@ -271,6 +278,7 @@ build.sh new-post numerus-scriptum
 **Problema:** No tiene permisos de ejecución
 
 **Solución:**
+
 ```bash
 chmod +x /home/achalmaedison/Documents/scripts/scripts_for_quarto/build.sh
 ```
@@ -280,6 +288,7 @@ chmod +x /home/achalmaedison/Documents/scripts/scripts_for_quarto/build.sh
 **Problema:** Quarto no está en el sistema
 
 **Solución:**
+
 ```bash
 # Descargar e instalar desde:
 # https://quarto.org/docs/get-started/
@@ -294,6 +303,7 @@ quarto --version
 **Problema:** La ruta de publicaciones es incorrecta
 
 **Solución:**
+
 ```bash
 # Verificar que existe
 ls -la /home/achalmaedison/Documents/publicaciones
@@ -308,6 +318,7 @@ nano /home/achalmaedison/Documents/scripts/scripts_for_quarto/build.sh
 **Esto ya fue solucionado en v2.0** - Ahora solo muestra información relevante.
 
 Si aún ves mucho código:
+
 ```bash
 # Verificar que tienes v2.0
 head -5 build.sh
@@ -317,6 +328,7 @@ head -5 build.sh
 ## 📚 Siguientes Pasos
 
 ### 1. Leer Documentación
+
 ```bash
 # Ver ayuda completa
 build.sh help
@@ -438,15 +450,18 @@ git push -u origin main
 ## 📞 Soporte
 
 ### Documentación
+
 - README.md - Guía completa
 - CHANGELOG.md - Historial de cambios
 - Este archivo - Guía de instalación
 
 ### Recursos Online
+
 - [Quarto Docs](https://quarto.org/docs/)
 - [APAQuarto](https://wjschne.github.io/apaquarto/)
 
 ### Contacto
+
 - **Email:** achalmaedison@gmail.com
 - **GitHub:** @achalmed
 
@@ -455,6 +470,7 @@ git push -u origin main
 ## 📝 Notas Finales
 
 ### Compatibilidad
+
 - ✅ Linux (todas las distribuciones)
 - ✅ macOS
 - ⚠️ Windows (requiere Git Bash o WSL)

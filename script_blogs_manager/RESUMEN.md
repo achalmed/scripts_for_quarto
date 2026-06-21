@@ -3,75 +3,82 @@
 ## Archivos Incluidos
 
 ### 1. **build.sh** (Script Principal) ⭐
-   - **Tamaño:** 25 KB
-   - **Descripción:** Script principal con todas las funcionalidades
-   - **Características:**
-     - Modo interactivo con menú completo
-     - Gestión de blogs (render, preview, publish, clean)
-     - Gestión de posts (crear, listar, renderizar)
-     - Operaciones múltiples (render-all, clean-all)
-     - Integración con Git (init, status, commit)
-     - Utilidades avanzadas
-   - **Comandos:** 16+ comandos diferentes
+
+- **Tamaño:** 25 KB
+- **Descripción:** Script principal con todas las funcionalidades
+- **Características:**
+  - Modo interactivo con menú completo
+  - Gestión de blogs (render, preview, publish, clean)
+  - Gestión de posts (crear, listar, renderizar)
+  - Operaciones múltiples (render-all, clean-all)
+  - Integración con Git (init, status, commit)
+  - Utilidades avanzadas
+- **Comandos:** 16+ comandos diferentes
 
 ### 2. **README.md** (Documentación Completa)
-   - **Tamaño:** 20 KB
-   - **Contenido:**
-     - Guía completa de uso
-     - Todos los comandos explicados con ejemplos
-     - Casos de uso prácticos
-     - Solución de problemas
-     - Personalización
-     - Referencias y recursos
+
+- **Tamaño:** 20 KB
+- **Contenido:**
+  - Guía completa de uso
+  - Todos los comandos explicados con ejemplos
+  - Casos de uso prácticos
+  - Solución de problemas
+  - Personalización
+  - Referencias y recursos
 
 ### 3. **INSTALL.md** (Guía de Instalación)
-   - **Tamaño:** 3.4 KB
-   - **Contenido:**
-     - Pasos de instalación paso a paso
-     - Configuración de aliases
-     - Verificación de instalación
-     - Solución rápida de problemas
+
+- **Tamaño:** 3.4 KB
+- **Contenido:**
+  - Pasos de instalación paso a paso
+  - Configuración de aliases
+  - Verificación de instalación
+  - Solución rápida de problemas
 
 ### 4. **init-blog.sh** (Inicializador de Blogs)
-   - **Tamaño:** 3.2 KB
-   - **Función:** Crear nuevos blogs con estructura completa
-   - **Crea:**
-     - Estructura de directorios
-     - _quarto.yml configurado
-     - index.qmd y about.qmd
-     - styles.css
-     - .gitignore
-     - README.md
+
+- **Tamaño:** 3.2 KB
+- **Función:** Crear nuevos blogs con estructura completa
+- **Crea:**
+  - Estructura de directorios
+  - \_quarto.yml configurado
+  - index.qmd y about.qmd
+  - styles.css
+  - .gitignore
+  - README.md
 
 ### 5. **check-structure.sh** (Verificador)
-   - **Tamaño:** 4.9 KB
-   - **Función:** Verificar integridad de todos los blogs
-   - **Verifica:**
-     - Archivos esenciales
-     - Estructura de directorios
-     - Configuración Git
-     - Sintaxis YAML
-   - **Genera:** Reporte detallado con estadísticas
+
+- **Tamaño:** 4.9 KB
+- **Función:** Verificar integridad de todos los blogs
+- **Verifica:**
+  - Archivos esenciales
+  - Estructura de directorios
+  - Configuración Git
+  - Sintaxis YAML
+- **Genera:** Reporte detallado con estadísticas
 
 ### 6. **backup-blogs.sh** (Sistema de Backups)
-   - **Tamaño:** 5.0 KB
-   - **Funciones:**
-     - Backup individual por blog
-     - Backup completo de todas las publicaciones
-     - Backup incremental con rsync
-     - Gestión automática de backups antiguos
-   - **Características:**
-     - Excluye archivos generados
-     - Compresión automática
-     - Reportes de tamaño
+
+- **Tamaño:** 5.0 KB
+- **Funciones:**
+  - Backup individual por blog
+  - Backup completo de todas las publicaciones
+  - Backup incremental con rsync
+  - Gestión automática de backups antiguos
+- **Características:**
+  - Excluye archivos generados
+  - Compresión automática
+  - Reportes de tamaño
 
 ### 7. **config.sh** (Configuración)
-   - **Tamaño:** 2.4 KB
-   - **Contiene:**
-     - Variables de configuración centralizadas
-     - Aliases útiles
-     - Funciones de acceso rápido
-     - Configuración de Git
+
+- **Tamaño:** 2.4 KB
+- **Contiene:**
+  - Variables de configuración centralizadas
+  - Aliases útiles
+  - Funciones de acceso rápido
+  - Configuración de Git
 
 ## Instalación Rápida
 
@@ -130,26 +137,31 @@ backup-blogs.sh
 ## Características Destacadas
 
 ### ✅ Gestión Completa
+
 - Todos los comandos de Quarto integrados
 - Modo interactivo amigable
 - Modo CLI para automatización
 
 ### ✅ Organización
+
 - Gestión de múltiples blogs simultáneamente
 - Operaciones batch eficientes
 - Estructura de directorios clara
 
 ### ✅ Git Integration
+
 - Inicialización automática de repositorios
 - Commit y push simplificados
 - Verificación de estado
 
 ### ✅ Utilidades
+
 - Sistema de backups completo
 - Verificación de integridad
 - Creación rápida de nuevos blogs
 
 ### ✅ Interfaz
+
 - Colores y formato legible
 - Mensajes claros de éxito/error
 - Ayuda contextual
@@ -183,6 +195,7 @@ backup-blogs.sh
 ## Workflows Recomendados
 
 ### Desarrollo de Post
+
 ```bash
 # 1. Crear post
 build.sh new-post epsilon-y-beta "Análisis Econométrico"
@@ -199,6 +212,7 @@ build.sh publish epsilon-y-beta
 ```
 
 ### Mantenimiento Semanal
+
 ```bash
 # 1. Verificar estructura
 check-structure.sh
@@ -214,6 +228,7 @@ build.sh clean-all
 ```
 
 ### Inicio de Nuevo Blog
+
 ```bash
 # 1. Crear estructura
 init-blog.sh mi-nuevo-blog "Mi Nuevo Blog"
@@ -231,6 +246,7 @@ build.sh preview mi-nuevo-blog
 ## Comandos Completos Disponibles
 
 ### build.sh (Principal)
+
 1. `list` - Listar blogs
 2. `render BLOG` - Renderizar blog
 3. `preview BLOG [PORT]` - Preview
@@ -253,6 +269,7 @@ build.sh preview mi-nuevo-blog
 20. `version, -v` - Versión
 
 ### Otros Scripts
+
 - `init-blog.sh NOMBRE "TITULO"` - Crear blog nuevo
 - `check-structure.sh` - Verificar todos los blogs
 - `backup-blogs.sh` - Sistema de backups interactivo
@@ -260,16 +277,20 @@ build.sh preview mi-nuevo-blog
 ## Personalización
 
 ### Cambiar Directorios
+
 Editar en `build.sh` (líneas 15-16):
+
 ```bash
 PUBLICACIONES_DIR="/tu/ruta/personalizada"
 SCRIPT_DIR="/tu/ruta/scripts"
 ```
 
 ### Cambiar Plantilla de Posts
+
 Editar función `create_post` en `build.sh` (línea ~450)
 
 ### Añadir Comandos
+
 1. Crear función en `build.sh`
 2. Añadir caso en función `main`
 3. Actualizar ayuda y menú
@@ -277,14 +298,17 @@ Editar función `create_post` en `build.sh` (línea ~450)
 ## Soporte y Ayuda
 
 ### Documentación
+
 - `README.md` - Guía completa y detallada
 - `INSTALL.md` - Guía de instalación
 - `build.sh help` - Ayuda en línea
 
 ### Resolución de Problemas
+
 Consulta la sección "Solución de Problemas" en `README.md`
 
 ### Verificación
+
 ```bash
 # Verificar instalación
 quarto --version

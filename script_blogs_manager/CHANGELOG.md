@@ -7,15 +7,17 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 ### 🎉 Características Principales Añadidas
 
 #### Creación de Posts con APAQuarto
+
 - ✨ **Formulario interactivo completo** para crear posts paso a paso
 - ✨ **Soporte para 4 tipos de documentos**: doc, jou, man, stu
 - ✨ **Detección automática** de carpetas de posts (eviews, python, matlab, etc.)
-- ✨ **Integración inteligente con _metadata.yml** para evitar duplicación
+- ✨ **Integración inteligente con \_metadata.yml** para evitar duplicación
 - ✨ **Generación automática** de estructura de archivos (index.qmd, references.bib)
 - ✨ **Configuración de autor** predeterminado o personalizado
 - ✨ **Metadata específica** según tipo de documento (journal, course, etc.)
 
 #### Interfaz Visual Mejorada
+
 - 🎨 **Colores y emojis** para mejor legibilidad
 - 🎨 **Cajas decorativas** para encabezados importantes
 - 🎨 **Separadores visuales** entre secciones
@@ -24,6 +26,7 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 - 🎨 **Mensajes informativos** con iconos contextuales
 
 #### Gestión de Blogs Mejorada
+
 - 📁 **Exclusión automática** de blogs específicos:
   - apa
   - borradores
@@ -39,15 +42,17 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 - 📁 **Detección inteligente** de carpetas de posts
 
 #### Inspección Optimizada
+
 - 🔍 **Salida filtrada** sin código innecesario
 - 🔍 **Solo información relevante** (Type, Engine, Formats, Output)
 - 🔍 **Límite de 50 líneas** en salida sin filtro
 - 🔍 **Formato mejorado** con colores tenues
 
 #### Funciones Nuevas
+
 - 📝 `create_post_interactive()` - Creación completa de posts
 - 📝 `detect_post_folders()` - Detecta carpetas automáticamente
-- 📝 `create_metadata_file()` - Genera _metadata.yml
+- 📝 `create_metadata_file()` - Genera \_metadata.yml
 - 📝 `is_excluded_blog()` - Verifica exclusión de blogs
 - 📝 `print_box()` - Crea cajas decorativas
 - 📝 `print_step()` - Indicador de pasos del proceso
@@ -56,18 +61,21 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 ### 🔧 Mejoras Técnicas
 
 #### Estructura de Código
+
 - ♻️ **Refactorización completa** del código base
 - ♻️ **Mejor organización** de funciones por categoría
 - ♻️ **Comentarios mejorados** y documentación inline
 - ♻️ **Constantes centralizadas** para configuración
 
 #### Manejo de Datos
+
 - 💾 **Detección automática** de estructura de blogs
 - 💾 **Parseo inteligente** de archivos YAML
 - 💾 **Validación de datos** en formularios
 - 💾 **Generación dinámica** de metadata
 
 #### Rendimiento
+
 - ⚡ **Filtrado eficiente** de blogs excluidos
 - ⚡ **Caché de detección** de carpetas
 - ⚡ **Optimización** de operaciones batch
@@ -76,14 +84,16 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 ### 📚 Documentación
 
 #### README
+
 - 📖 **Reescritura completa** del README
 - 📖 **Sección nueva**: Crear Posts con APAQuarto
 - 📖 **Tabla comparativa** de tipos de documento
 - 📖 **Ejemplos prácticos** extendidos
 - 📖 **Interfaz visual** documentada con screenshots ASCII
-- 📖 **Guía de integración** con _metadata.yml
+- 📖 **Guía de integración** con \_metadata.yml
 
 #### Ejemplos
+
 - 💡 **Ejemplo completo** de creación de post
 - 💡 **Workflow de publicación** documentado
 - 💡 **Casos de uso** específicos por tipo de blog
@@ -92,21 +102,25 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 ### 🐛 Correcciones
 
 #### Bugs Resueltos
-- ✅ **Inspeccionar** ya no muestra código innecesario de extensiones
-- ✅ **Listado de posts** ahora agrupa correctamente por carpetas
-- ✅ **Detección de blogs** excluye correctamente carpetas del sistema
-- ✅ **Metadata** no se duplica entre _metadata.yml e index.qmd
+
+- **Inspeccionar** ya no muestra código innecesario de extensiones
+- **Listado de posts** ahora agrupa correctamente por carpetas
+- **Detección de blogs** excluye correctamente carpetas del sistema
+- **Metadata** no se duplica entre \_metadata.yml e index.qmd
 
 #### Validaciones
-- ✅ **Verificación de existencia** de posts antes de crear
-- ✅ **Validación de nombres** de carpetas y archivos
-- ✅ **Comprobación de formato** de datos ingresados
-- ✅ **Manejo de errores** mejorado en todas las funciones
+
+- **Verificación de existencia** de posts antes de crear
+- **Validación de nombres** de carpetas y archivos
+- **Comprobación de formato** de datos ingresados
+- **Manejo de errores** mejorado en todas las funciones
 
 ### 🔄 Cambios en Comportamiento
 
 #### Listado de Blogs
+
 **Antes:**
+
 ```
 Blogs Disponibles
 
@@ -116,6 +130,7 @@ Blogs Disponibles
 ```
 
 **Ahora:**
+
 ```
 ═══════════════════════════════════════════════════════════════
   🚀 Blogs Disponibles
@@ -128,9 +143,11 @@ Blogs Disponibles
 ```
 
 #### Inspección
+
 **Antes:** Muestra ~200 líneas de código Lua y configuración
 
 **Ahora:** Muestra solo:
+
 ```
 ═══════════════════════════════════════════════════════════════
   ℹ Inspeccionando: optimums
@@ -143,9 +160,11 @@ Output: _site/
 ```
 
 #### Creación de Posts
+
 **Antes:** Solo plantilla básica sin interacción
 
 **Ahora:** Formulario completo con:
+
 - Selección de carpeta
 - Tipo de documento APAQuarto
 - Metadata completa
@@ -155,21 +174,23 @@ Output: _site/
 ### ⚙️ Configuración
 
 #### Variables Nuevas
+
 ```bash
 EXCLUDED_BLOGS=(...)  # Lista de blogs a excluir
 EMOJI_*              # Conjunto de emojis para UI
 ```
 
 #### Rutas
+
 - Sin cambios en rutas principales
 - Compatible con configuración v1.0
 
 ### 🔐 Seguridad
 
-- ✅ Validación de inputs de usuario
-- ✅ Escape de caracteres especiales
-- ✅ Prevención de sobrescritura accidental
-- ✅ Confirmación en operaciones destructivas
+- Validación de inputs de usuario
+- Escape de caracteres especiales
+- Prevención de sobrescritura accidental
+- Confirmación en operaciones destructivas
 
 ### 📊 Estadísticas
 
@@ -182,12 +203,14 @@ EMOJI_*              # Conjunto de emojis para UI
 ### 🎯 Próximas Características (Planificadas)
 
 #### v2.1
+
 - [ ] Editar posts existentes
 - [ ] Plantillas personalizadas de posts
 - [ ] Búsqueda de posts por tags/categorías
 - [ ] Estadísticas de blogs
 
 #### v2.2
+
 - [ ] Integración con editores externos
 - [ ] Generación automática de TOC
 - [ ] Exportación batch a PDF/DOCX
@@ -206,15 +229,17 @@ EMOJI_*              # Conjunto de emojis para UI
 ### 🎉 Lanzamiento Inicial
 
 #### Características Base
-- ✅ Gestión básica de blogs
-- ✅ Comandos de Quarto (render, preview, clean, publish)
-- ✅ Operaciones batch
-- ✅ Integración con Git
-- ✅ Modo interactivo básico
-- ✅ Creación simple de posts
-- ✅ Scripts auxiliares (init-blog, check-structure, backup)
+
+- Gestión básica de blogs
+- Comandos de Quarto (render, preview, clean, publish)
+- Operaciones batch
+- Integración con Git
+- Modo interactivo básico
+- Creación simple de posts
+- Scripts auxiliares (init-blog, check-structure, backup)
 
 #### Comandos Implementados
+
 - `list` - Listar blogs
 - `render` - Renderizar blog
 - `preview` - Preview local
@@ -225,6 +250,7 @@ EMOJI_*              # Conjunto de emojis para UI
 - `clean-all` - Batch cleaning
 
 #### Documentación
+
 - README básico
 - INSTALL.md
 - Plantillas de ejemplo

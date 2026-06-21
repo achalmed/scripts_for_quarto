@@ -1,0 +1,738 @@
+[2026-06-21 18:24:38] [INFO] Documents detectado en: /home/achalmaedison/Documents
+[2026-06-21 18:24:38] [INFO] Carpeta índice: /home/achalmaedison/Documents/04 index
+[2026-06-21 18:24:38] [WARN] Modo dry-run activado: no se escribirá ni borrará nada.
+[2026-06-21 18:24:38] [SECTION] Escaneando proyectos pub_* y website-achalma
+[2026-06-21 18:24:38] [INFO] Publicaciones encontradas: 237
+[2026-06-21 18:24:38] [SECTION] Sincronizando symlinks en '04 index'
+[2026-06-21 18:24:38] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2023
+[2026-06-21 18:24:38] [INFO] [dry-run] Crearía symlink: 2023/2023-06-23-balanza-pagos
+[2026-06-21 18:24:38] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2023
+[2026-06-21 18:24:38] [INFO] [dry-run] Crearía symlink: 2023/2023-06-17-sistema-monetario-internacional
+[2026-06-21 18:24:38] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2023
+[2026-06-21 18:24:38] [INFO] [dry-run] Crearía symlink: 2023/2023-06-16-la-globalizacion
+[2026-06-21 18:24:38] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:38] [INFO] [dry-run] Crearía symlink: 2022/2022-08-22-04-renta-fija
+[2026-06-21 18:24:38] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:38] [INFO] [dry-run] Crearía symlink: 2022/2022-08-01-01-conceptos-basicos
+[2026-06-21 18:24:38] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:38] [INFO] [dry-run] Crearía symlink: 2022/2022-08-15-03-renta-variable
+[2026-06-21 18:24:38] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:38] [INFO] [dry-run] Crearía symlink: 2022/2022-08-29-05-derivados-financieros
+[2026-06-21 18:24:38] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:38] [INFO] [dry-run] Crearía symlink: 2022/2022-09-05-06-teoria-de-portafolio
+[2026-06-21 18:24:38] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:38] [INFO] [dry-run] Crearía symlink: 2022/2022-08-08-02-finanzas-corporativas
+[2026-06-21 18:24:38] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2025
+[2026-06-21 18:24:38] [INFO] [dry-run] Crearía symlink: 2025/2025-05-15-herramientas-y-plataformas-de-comercio-internacional
+[2026-06-21 18:24:38] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2017
+[2026-06-21 18:24:38] [INFO] [dry-run] Crearía symlink: 2017/2017-10-23-costeo-de-la-empresa-dulce-deleite-srl
+[2026-06-21 18:24:38] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2021
+[2026-06-21 18:24:38] [INFO] [dry-run] Crearía symlink: 2021/2021-07-13-plan-de-negocio-exportacion-de-tuna
+[2026-06-21 18:24:38] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2020
+[2026-06-21 18:24:38] [INFO] [dry-run] Crearía symlink: 2020/2020-09-15-plan-de-negocio-exportacion-de-trucha-arcoires
+[2026-06-21 18:24:38] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:38] [INFO] [dry-run] Crearía symlink: 2022/2022-01-23-cadena-de-suministros
+[2026-06-21 18:24:38] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2021
+[2026-06-21 18:24:38] [INFO] [dry-run] Crearía symlink: 2021/2021-07-26-05-monopolio-y-modelos-de-oligopolio
+[2026-06-21 18:24:38] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2021
+[2026-06-21 18:24:38] [INFO] [dry-run] Crearía symlink: 2021/2021-07-19-04-equilibrio-parcial-y-competitivo
+[2026-06-21 18:24:38] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2021
+[2026-06-21 18:24:38] [INFO] [dry-run] Crearía symlink: 2021/2021-08-02-06-modelo-de-intercambio-puro
+[2026-06-21 18:24:38] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2021
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2021/2021-07-05-02-teoria-del-productor
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2021
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2021/2021-08-09-07-fallas-de-mercado
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2021
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2021/2021-06-28-01-teoria-del-consumidor
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2021
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2021/2021-07-12-03-decisiones-de-consumo-y-produccion-en-el-tiempo
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2023
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2023/2023-06-13-empresa-como-organizacion
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2023
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2023/2023-06-13-sistemas-economicos
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2023
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2023/2023-06-17-estructura-del-mercado
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2023
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2023/2023-06-23-elasticidad
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2023
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2023/2023-06-15-mercado-relevante
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2023
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2023/2023-06-12-introducion-a-organizacion-industrial
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2023
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2023/2023-06-16-medidas-concentracion-desempeño
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2021
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2021/2021-08-09-04-tipo-de-cambio
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2022/2022-01-31-11-modelos-de-empleo
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2021
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2021/2021-07-26-02-teoria-de-consumo
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2022/2022-01-10-08-ciclos-economicos-reales-rbc
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2021
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2021/2021-12-20-05-modelo-de-mundell-fleming
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2022/2022-01-17-09-crecimiento-economico
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2021
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2021/2021-07-19-01-conceptos-basicos
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2017
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2017/2017-12-30-comportamiento-de-la-inflacion-1980-a-2017
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2022/2022-01-03-07-fluctuaciones-de-corto-plazo
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2021
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2021/2021-08-02-03-teoria-de-la-inversion
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2021
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2021/2021-12-27-06-sector-externo
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2022/2022-01-24-10-economia-monetaria
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2025
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2025/2025-05-11-teoria-y-politica-monetaria-bcrp
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2025
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2025/2025-06-01-proporcionalidad-de-magnitudes-en-ciencias-de-la-comunicacion
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2025
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2025/2025-04-14-economia-matematica-I
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2018
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2018/2018-04-23-aparicion-pensamiento-socialista
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2023
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2023/2023-06-09-entendiendo-a-mariategui
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2023
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2023/2023-05-19-seminario-de-filosofia-marxista
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2023
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2023/2023-10-23-tres-fuentes-tres-partes-del-marxismo
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2023
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2023/2023-06-09-naturaleza-humana
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2017
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2017/2017-05-23-el-mercantilismo
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2023
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2023/2023-03-03-el-capitalismo
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2015
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2015/2015-05-14-el-aborto
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2023
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2023/2023-04-29-primero-de-mayo
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2018
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2018/2018-05-16-estadigrafos
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2018
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2018/2018-12-26-factores-que-influyen-rendimiento-academico
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2022/2022-04-04-01-introduccion-a-la-evaluacion-de-impacto
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2022/2022-04-18-03-modelo-de-emparejamiento
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2022/2022-05-16-07-metodo-de-control-sintetico-mcs
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2022/2022-04-11-02-introduccion-a-los-experimentos-aleatorios
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2022/2022-05-02-05-regresion-discontinua-sharp-vs-fuzzy
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2022/2022-04-25-04-regresion-discontinua-rd
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2022/2022-05-09-06-analizando-papers-con-rdd-usando-stata-y-r
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2022/2022-03-21-04-simulacion-y-estimacion-bayesiana
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2022/2022-03-14-02-modelo-de-regresion-lineal
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2022/2022-03-18-03-familia-de-distribuciones-prior
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2022/2022-03-28-05-aplicaciones-econometricas
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2022/2022-03-07-01-introduccion-a-la-econometria-bayesiana
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2021
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2021/2021-09-20-01-analisis-univariado
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2021
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2021/2021-10-11-06-modelos-no-lineales-en-la-media
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2021
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2021/2021-09-27-03-analisis-multivariado
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2021
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2021/2021-10-04-05-modelos-de-factores-latentes
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2021
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2021/2021-12-06-08-panel-data-dinamico
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2021
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2021/2021-10-25-02-modelos-fraccionados
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2021
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2021/2021-11-29-07-panel-data-estatico
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2021
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2021/2021-11-22-06-modelos-de-ecuaciones-simultaneas
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2021
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2021/2021-11-15-05-sesgo-de-seleccion
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2021
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2021/2021-11-08-04-modelos-con-variables-censuradas-y-truncadas
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2021
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2021/2021-10-18-01-modelos-de-eleccion-discreta-probit-y-logit
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2021
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2021/2021-11-01-03-modelos-multinomiales-y-ordenados
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2022/2022-06-13-07-event-studies-en-economia
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2022/2022-05-09-02-metodos-experimentales-en-economia
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2022/2022-06-20-08-miscelanea
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2022/2022-06-06-06-efectos-fijos-diferencias-en-diferencias-y-datos-de-panel
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2022/2022-05-16-03-la-herramienta-fundamental-regresiones
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2022/2022-05-02-01-introduccion-a-la-econometria
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2022/2022-05-23-04-variables-instrumentales
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2022/2022-05-30-05-diseño-de-regresion-discontinua-rdd
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2022/2022-01-11-recaudacion-de-impuestos-y-crecimiento-economico-2017-2019
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2019
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2019/2019-12-30-rendimiento-academico-y-genero-de-ingresantes-a-unsch
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2022/2022-02-28-01-volatilidad-en-las-series-de-tiempo
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2021
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2021/2021-03-01-01-modelo-clasico-de-regresion-lineal
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2021
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía symlink: 2021/2021-05-17-11-problemas-de-endogeneidad
+[2026-06-21 18:24:39] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2021
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía symlink: 2021/2021-05-24-12-perturbaciones-no-esfericas
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2021
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía symlink: 2021/2021-03-15-03-algebra-y-geometria-de-mco
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2021
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía symlink: 2021/2021-04-26-08-multicolinealidad
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2021
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía symlink: 2021/2021-05-10-10-el-modelo-general-de-regresion-lineal-permitiendo-heterocedasticidad-en-los-errores
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2021
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía symlink: 2021/2021-04-19-07-bondad-de-ajuste
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2021
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía symlink: 2021/2021-03-22-04-propiedades-en-muestras-finitas-del-estimador-mco
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2021
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía symlink: 2021/2021-03-29-05-propiedades-en-muestras-infinitas-del-estimador-mco
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2021
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía symlink: 2021/2021-03-08-02-el-estimador-de-minimos-cuadrados-ordinarios-mco
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2021
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía symlink: 2021/2021-04-10-06-el-trade-off-sesgo-varianza
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2021
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía symlink: 2021/2021-05-03-09-inferencia
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2025
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía symlink: 2025/2025-02-09-recursos-para-traducción-y-correccion
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2026
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía symlink: 2026/2026-01-02-configuracion-de-quarto-yml
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2025
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía symlink: 2025/2025-04-23-tipos-de-elementos-en-zotero
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2023
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía symlink: 2023/2023-06-03-ideas-de-investigacion-para-economia
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2026
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía symlink: 2026/2026-01-02-guia-practica-de-metadata-en-quarto
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2023
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía symlink: 2023/2023-06-03-pautas-de-presentacion-del-informe-de-investigacion
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2025
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía symlink: 2025/2025-01-12-recursos-de-bibliografia-y-documentacion
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2021
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía symlink: 2021/2021-10-01-gestion-publica-y-administracion-publica
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2023
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía symlink: 2023/2023-05-11-cualidades-de-los-servidores-publicos
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2021
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía symlink: 2021/2021-10-01-reformas-y-modernizacion-de-la-gestion-publica
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2020
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía symlink: 2020/2020-02-16-guia-de-instalacion-y-configuracion-de-i3wm
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2020
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía symlink: 2020/2020-02-17-atajos-de-teclado-y-comandos-esenciales-de-i3wm
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2020
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía symlink: 2020/2020-02-21-integracion-de-i3wm-en-tu-entorno-de-trabajo
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2020
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía symlink: 2020/2020-02-18-personalizando-de-i3wm
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2020
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía symlink: 2020/2020-02-15-introduccion-a-i3wm
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2020
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía symlink: 2020/2020-02-18-trabajando-con-ventanas-en-i3wm
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2020
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía symlink: 2020/2020-02-23-solucion-de-problemas-comunes-en-i3wm
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2020
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía symlink: 2020/2020-02-19-aumenta-tu-productividad-con-i3wm
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2020
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía symlink: 2020/2020-02-20-i3wm-vs-otros-gestores-de-ventanas
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2020
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía symlink: 2020/2020-02-22-casos-de-uso-avanzados-de-i3wm
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2023
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía symlink: 2023/2023-06-18-02-distribuciones-linux
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2023
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía symlink: 2023/2023-06-19-03-instalacion-linux
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2024
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía symlink: 2024/2024-07-15-instalando-specitify
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2023
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía symlink: 2023/2023-07-01-atajos-de-teclado-y-comandos-para-usar-vim
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2025
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía symlink: 2025/2025-12-31-guia-de-kitty-terminal
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2025
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía symlink: 2025/2025-12-31-guia-de-positron-ide
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2021
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía symlink: 2021/2021-08-17-limpieza-y-optimizacion-de-pc
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía symlink: 2022/2022-09-27-comandos-vim
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2021
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía symlink: 2021/2021-10-21-scrcpy
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2023
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía symlink: 2023/2023-05-02-00-primeros-pasos-en-linux
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2023
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía symlink: 2023/2023-06-20-04-administracion-particiones-volumenes
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2019
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía symlink: 2019/2019-06-19-adb
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2025
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía symlink: 2025/2025-12-30-guia-de-ranger
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2023
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía symlink: 2023/2023-06-17-01-introduccion-linux
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2025
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía symlink: 2025/2025-07-10-gestiona-tus-dotfiles-con-gnu-stow
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía symlink: 2022/2022-08-14-crear-enlaces-duros-o-hard-link-en-linux
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2023
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía symlink: 2023/2023-02-16-guia-de-git-y-github
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía symlink: 2022/2022-05-12-gestionar-versiones-de-jdk-en-kubuntu
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2017
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía symlink: 2017/2017-05-21-comandos-de-informacion-windows
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía symlink: 2022/2022-07-21-instalar-tor-browser
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2026
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía symlink: 2026/2026-04-23-guia-de-rsync
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2024
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía symlink: 2024/2024-09-03-ejecutando-payload
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía symlink: 2022/2022-11-21-06-modelo-de-machine-learning-iii-modelo-de-regresion
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía symlink: 2022/2022-11-28-07-modelo-de-machine-learning-iv-tex-mining
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía symlink: 2022/2022-11-07-04-modelo-de-machine-learning-i-analisis-exploratorio
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2020
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía symlink: 2020/2020-06-10-011-instalacion-de-r
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía symlink: 2022/2022-11-14-05-modelo-de-machine-learning-ii-modelo-de-clasificacion
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2021
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía symlink: 2021/2021-04-12-03-visualizacion-de-datos
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2021
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía symlink: 2021/2021-04-05-02-manipulacion-de-datos
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2020
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía symlink: 2020/2020-06-10-013-lo-que-debemos-saber-de-r
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2020
+[2026-06-21 18:24:40] [INFO] [dry-run] Crearía symlink: 2020/2020-06-10-012-configurar-entorno-virtual-r
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2022/2022-12-05-01-introduccion-al-lenguaje-y-editor-vba
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2023
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2023/2023-01-02-05-funciones-condicionales-estructuras-condicionales
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2023
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2023/2023-03-17-comando-para-convertir-docx-a-odt
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2022/2022-12-26-04-funciones-en-vba
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2023
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2023/2023-01-23-08-eventos
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2023
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2023/2023-05-31-combinando-hojas-de-excel-con-vba
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2023
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2023/2023-01-16-07-formularios
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2023
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2023/2023-05-21-anclaje-envoltura-alineacion-y-organizacion-de-objetos-en-llibreoffice
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2022/2022-12-19-03-procedimientos
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2022/2022-12-12-02-grabar-y-modificar
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2023
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2023/2023-01-09-06-funciones-iterativas-estructuras-repetitivas-o-bucles
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2023
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2023/2023-06-05-separando-hojas-de-excel-en-documentos-individuales
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2023
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2023/2023-04-03-buscar-reemplazar-en-libreoffice
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2021
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2021/2021-01-11-02-introduccion-a-los-algoritmos
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2019
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2019/2019-08-13-organizando-tipos-de-archivos-de-softwares
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2021
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2021/2021-01-04-01-pensamiento-logico
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2018
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2018/2018-06-09-typografia
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2021
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2021/2021-01-18-03-programacion-basica-en-html
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2022/2022-07-04-06-series-de-tiempo
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2022/2022-05-30-01-introduccion-al-programa
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2022/2022-06-13-03-data-visualization
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2022/2022-07-18-08-modelos-de-evaluacion-de-impacto
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2022/2022-07-11-07-paneles-de-datos
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2022/2022-06-06-02-manipulando-los-datos
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2022/2022-06-20-04-regresiones
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2022/2022-06-27-05-modelos-de-seleccion-discreta
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2022/2022-10-10-05-inteligencia-de-tiempo-dimension-de-tiempo
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2022/2022-09-19-02-power-query-proceso-etl
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2022/2022-10-24-08-vizualizacion-de-datos
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2022/2022-09-26-03-proceso-etl-2
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2022/2022-10-17-06-lenguaje-de-analisis-de-datos-dax-columnas-campos-calculados
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2022/2022-10-03-04-power-pivot-modelo-de-datos
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2022/2022-09-12-01-introduccion-al-mundo-de-bi-y-la-suite-power
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2022/2022-02-21-07-modelacion
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2022/2022-02-14-06-empleo-de-subrutinas
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2021
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2021/2021-09-13-03-metodos-de-estimacion-objeto-equatio-objeto-table
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2022/2022-02-07-05-objetos-avanzados
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2021
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2021/2021-08-30-01-introduccion-a-la-programacion-con-eviews
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2021
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2021/2021-09-06-02-empleo-de-bucles-y-variables-temporales
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2021
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2021/2021-06-14-04-ejecucion-condicional-con-python
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2022/2022-10-31-11-validacion-cruzada-y-composicion-del-modelo-con-python
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2021
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2021/2021-08-23-07-dataframes-con-python
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2021
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2021/2021-06-07-03-objetos-de-python
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2020
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2020/2020-06-19-instalacion-de-anaconda
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2021
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2021/2021-08-16-06-funciones-con-python
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2025
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2025/2025-05-10-visualizacion-de-datos-con-python
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2021
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2021/2021-06-21-05-iteraciones-con-python
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2021
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2021/2021-11-29-08-prediccion-y-metrica-de-performance-con-python
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2021
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2021/2021-12-13-10-metodos-de-machine-learning-para-regresion-con-python
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2021
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2021/2021-12-06-09-metodos-de-machine-learning-para-clasificacion-con-python
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2020
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2020/2020-06-20-configurar-entorno-virtual-python-anaconda
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2021
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2021/2021-05-31-02-variables-expresiones-y-statements-con-python
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2021
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2021/2021-04-17-01-introducion-a-la-programacion-con-python
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2015
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2015/2015-07-16-05-presentaciones-en-beamer
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2015
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2015/2015-07-14-03-latex-como-editor-de-texto
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2015
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2015/2015-07-15-04-latex-y-referencias
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2015
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2015/2015-07-12-01-introduccion-al-latex
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2015
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2015/2015-07-13-02-latex-y-matematica
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2015
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2015/2015-07-17-06-tikz
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2022/2022-08-01-02-elementos-basicos-en-matlab-i
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2022/2022-10-03-11-aplicaciones
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2022/2022-08-15-04-programacion-en-matlab
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2022/2022-08-29-06-sentencias-de-control
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2022/2022-07-25-01-primeros-pasos-en-matlab
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2022/2022-09-12-08-tipos-de-datos-heterogeneos
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2022/2022-08-08-03-elementos-basicos-en-matlab-ii
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2022/2022-09-26-10-toolbox-optimization
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2022/2022-08-22-05-visualizacion-de-datos-en-matlab
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2022/2022-09-19-09-funciones-avanzadas
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2022/2022-09-05-07-metodos-numericos
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2023
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2023/2023-05-12-la-economia-peruana-entre-1970-1990
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2020
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2020/2020-05-23-comandos-de-google-assistant
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2022/2022-06-02-impacto-del-cambio-climatico
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2023
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2023/2023-05-16-economia-regional
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2017
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2017/2017-04-23-sitios-web-asombrosos
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2022
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2022/2022-04-22-economia-agraria
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2025
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2025/2025-01-07-sesion-01-monografia-e-informe
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2025
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2025/2025-02-05-sesion-07-estilo-vancouver
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2025
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2025/2025-01-14-sesion-03-citas-y-referencias
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2025
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía symlink: 2025/2025-01-15-sesion-04-practica-de-apa
+[2026-06-21 18:24:41] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2025
+[2026-06-21 18:24:42] [INFO] [dry-run] Crearía symlink: 2025/2025-01-29-sesion-06-formato
+[2026-06-21 18:24:42] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2025
+[2026-06-21 18:24:42] [INFO] [dry-run] Crearía symlink: 2025/2025-02-19-sesion-09-practica-estructura-y-citas-apa
+[2026-06-21 18:24:42] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2025
+[2026-06-21 18:24:42] [INFO] [dry-run] Crearía symlink: 2025/2025-02-12-sesion-08-tablas-figuras-y-notas
+[2026-06-21 18:24:42] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2025
+[2026-06-21 18:24:42] [INFO] [dry-run] Crearía symlink: 2025/2025-01-22-sesion-05-tecnicas-de-parafraseo
+[2026-06-21 18:24:42] [INFO] [dry-run] Crearía carpeta de año: /home/achalmaedison/Documents/04 index/2025
+[2026-06-21 18:24:42] [INFO] [dry-run] Crearía symlink: 2025/2025-01-08-sesion-02-estructura-en-word
+[2026-06-21 18:24:42] [SECTION] Resultado de la sincronización
+[2026-06-21 18:24:42] [INFO] Creados:    237
+[2026-06-21 18:24:42] [INFO] Actualizados: 0
+[2026-06-21 18:24:42] [INFO] Omitidos (ya existían): 0
+[2026-06-21 18:24:42] [SECTION] Verificando symlinks rotos
+[2026-06-21 18:24:42] [OK] No se encontraron symlinks rotos.
+[2026-06-21 18:24:42] [SECTION] Resumen de '04 index' por año
+[2026-06-21 18:24:42] [INFO] Log guardado en: /home/achalmaedison/Documents/scripts_for_quarto/script_pub_index_symlink/logs/2026-06-21.log
+[2026-06-21 18:27:44] [INFO] Documents detectado en: /home/achalmaedison/Documents
+[2026-06-21 18:27:44] [INFO] Carpeta índice: /home/achalmaedison/Documents/04 index
+[2026-06-21 18:27:44] [SECTION] Escaneando proyectos pub_* y website-achalma
+[2026-06-21 18:27:44] [INFO] Publicaciones encontradas: 237
+[2026-06-21 18:27:44] [SECTION] Sincronizando symlinks en '04 index'
+[2026-06-21 18:27:44] [OK] Symlink creado: 2023/2023-06-23-balanza-pagos
+[2026-06-21 18:27:44] [OK] Symlink creado: 2023/2023-06-17-sistema-monetario-internacional
+[2026-06-21 18:27:45] [OK] Symlink creado: 2023/2023-06-16-la-globalizacion
+[2026-06-21 18:27:45] [OK] Symlink creado: 2022/2022-08-22-04-renta-fija
+[2026-06-21 18:27:45] [OK] Symlink creado: 2022/2022-08-01-01-conceptos-basicos
+[2026-06-21 18:27:45] [OK] Symlink creado: 2022/2022-08-15-03-renta-variable
+[2026-06-21 18:27:45] [OK] Symlink creado: 2022/2022-08-29-05-derivados-financieros
+[2026-06-21 18:27:45] [OK] Symlink creado: 2022/2022-09-05-06-teoria-de-portafolio
+[2026-06-21 18:27:45] [OK] Symlink creado: 2022/2022-08-08-02-finanzas-corporativas
+[2026-06-21 18:27:45] [OK] Symlink creado: 2025/2025-05-15-herramientas-y-plataformas-de-comercio-internacional
+[2026-06-21 18:27:45] [OK] Symlink creado: 2017/2017-10-23-costeo-de-la-empresa-dulce-deleite-srl
+[2026-06-21 18:27:45] [OK] Symlink creado: 2021/2021-07-13-plan-de-negocio-exportacion-de-tuna
+[2026-06-21 18:27:45] [OK] Symlink creado: 2020/2020-09-15-plan-de-negocio-exportacion-de-trucha-arcoires
+[2026-06-21 18:27:45] [OK] Symlink creado: 2022/2022-01-23-cadena-de-suministros
+[2026-06-21 18:27:45] [OK] Symlink creado: 2021/2021-07-26-05-monopolio-y-modelos-de-oligopolio
+[2026-06-21 18:27:45] [OK] Symlink creado: 2021/2021-07-19-04-equilibrio-parcial-y-competitivo
+[2026-06-21 18:27:45] [OK] Symlink creado: 2021/2021-08-02-06-modelo-de-intercambio-puro
+[2026-06-21 18:27:45] [OK] Symlink creado: 2021/2021-07-05-02-teoria-del-productor
+[2026-06-21 18:27:45] [OK] Symlink creado: 2021/2021-08-09-07-fallas-de-mercado
+[2026-06-21 18:27:45] [OK] Symlink creado: 2021/2021-06-28-01-teoria-del-consumidor
+[2026-06-21 18:27:45] [OK] Symlink creado: 2021/2021-07-12-03-decisiones-de-consumo-y-produccion-en-el-tiempo
+[2026-06-21 18:27:45] [OK] Symlink creado: 2023/2023-06-13-empresa-como-organizacion
+[2026-06-21 18:27:45] [OK] Symlink creado: 2023/2023-06-13-sistemas-economicos
+[2026-06-21 18:27:45] [OK] Symlink creado: 2023/2023-06-17-estructura-del-mercado
+[2026-06-21 18:27:45] [OK] Symlink creado: 2023/2023-06-23-elasticidad
+[2026-06-21 18:27:45] [OK] Symlink creado: 2023/2023-06-15-mercado-relevante
+[2026-06-21 18:27:45] [OK] Symlink creado: 2023/2023-06-12-introducion-a-organizacion-industrial
+[2026-06-21 18:27:45] [OK] Symlink creado: 2023/2023-06-16-medidas-concentracion-desempeño
+[2026-06-21 18:27:45] [OK] Symlink creado: 2021/2021-08-09-04-tipo-de-cambio
+[2026-06-21 18:27:45] [OK] Symlink creado: 2022/2022-01-31-11-modelos-de-empleo
+[2026-06-21 18:27:45] [OK] Symlink creado: 2021/2021-07-26-02-teoria-de-consumo
+[2026-06-21 18:27:45] [OK] Symlink creado: 2022/2022-01-10-08-ciclos-economicos-reales-rbc
+[2026-06-21 18:27:45] [OK] Symlink creado: 2021/2021-12-20-05-modelo-de-mundell-fleming
+[2026-06-21 18:27:45] [OK] Symlink creado: 2022/2022-01-17-09-crecimiento-economico
+[2026-06-21 18:27:45] [OK] Symlink creado: 2021/2021-07-19-01-conceptos-basicos
+[2026-06-21 18:27:45] [OK] Symlink creado: 2017/2017-12-30-comportamiento-de-la-inflacion-1980-a-2017
+[2026-06-21 18:27:45] [OK] Symlink creado: 2022/2022-01-03-07-fluctuaciones-de-corto-plazo
+[2026-06-21 18:27:45] [OK] Symlink creado: 2021/2021-08-02-03-teoria-de-la-inversion
+[2026-06-21 18:27:45] [OK] Symlink creado: 2021/2021-12-27-06-sector-externo
+[2026-06-21 18:27:45] [OK] Symlink creado: 2022/2022-01-24-10-economia-monetaria
+[2026-06-21 18:27:45] [OK] Symlink creado: 2025/2025-05-11-teoria-y-politica-monetaria-bcrp
+[2026-06-21 18:27:45] [OK] Symlink creado: 2025/2025-06-01-proporcionalidad-de-magnitudes-en-ciencias-de-la-comunicacion
+[2026-06-21 18:27:45] [OK] Symlink creado: 2025/2025-04-14-economia-matematica-I
+[2026-06-21 18:27:45] [OK] Symlink creado: 2018/2018-04-23-aparicion-pensamiento-socialista
+[2026-06-21 18:27:45] [OK] Symlink creado: 2023/2023-06-09-entendiendo-a-mariategui
+[2026-06-21 18:27:45] [OK] Symlink creado: 2023/2023-05-19-seminario-de-filosofia-marxista
+[2026-06-21 18:27:45] [OK] Symlink creado: 2023/2023-10-23-tres-fuentes-tres-partes-del-marxismo
+[2026-06-21 18:27:45] [OK] Symlink creado: 2023/2023-06-09-naturaleza-humana
+[2026-06-21 18:27:45] [OK] Symlink creado: 2017/2017-05-23-el-mercantilismo
+[2026-06-21 18:27:45] [OK] Symlink creado: 2023/2023-03-03-el-capitalismo
+[2026-06-21 18:27:45] [OK] Symlink creado: 2015/2015-05-14-el-aborto
+[2026-06-21 18:27:45] [OK] Symlink creado: 2023/2023-04-29-primero-de-mayo
+[2026-06-21 18:27:45] [OK] Symlink creado: 2018/2018-05-16-estadigrafos
+[2026-06-21 18:27:45] [OK] Symlink creado: 2018/2018-12-26-factores-que-influyen-rendimiento-academico
+[2026-06-21 18:27:45] [OK] Symlink creado: 2022/2022-04-04-01-introduccion-a-la-evaluacion-de-impacto
+[2026-06-21 18:27:45] [OK] Symlink creado: 2022/2022-04-18-03-modelo-de-emparejamiento
+[2026-06-21 18:27:45] [OK] Symlink creado: 2022/2022-05-16-07-metodo-de-control-sintetico-mcs
+[2026-06-21 18:27:45] [OK] Symlink creado: 2022/2022-04-11-02-introduccion-a-los-experimentos-aleatorios
+[2026-06-21 18:27:45] [OK] Symlink creado: 2022/2022-05-02-05-regresion-discontinua-sharp-vs-fuzzy
+[2026-06-21 18:27:45] [OK] Symlink creado: 2022/2022-04-25-04-regresion-discontinua-rd
+[2026-06-21 18:27:45] [OK] Symlink creado: 2022/2022-05-09-06-analizando-papers-con-rdd-usando-stata-y-r
+[2026-06-21 18:27:45] [OK] Symlink creado: 2022/2022-03-21-04-simulacion-y-estimacion-bayesiana
+[2026-06-21 18:27:45] [OK] Symlink creado: 2022/2022-03-14-02-modelo-de-regresion-lineal
+[2026-06-21 18:27:45] [OK] Symlink creado: 2022/2022-03-18-03-familia-de-distribuciones-prior
+[2026-06-21 18:27:45] [OK] Symlink creado: 2022/2022-03-28-05-aplicaciones-econometricas
+[2026-06-21 18:27:45] [OK] Symlink creado: 2022/2022-03-07-01-introduccion-a-la-econometria-bayesiana
+[2026-06-21 18:27:45] [OK] Symlink creado: 2021/2021-09-20-01-analisis-univariado
+[2026-06-21 18:27:45] [OK] Symlink creado: 2021/2021-10-11-06-modelos-no-lineales-en-la-media
+[2026-06-21 18:27:45] [OK] Symlink creado: 2021/2021-09-27-03-analisis-multivariado
+[2026-06-21 18:27:45] [OK] Symlink creado: 2021/2021-10-04-05-modelos-de-factores-latentes
+[2026-06-21 18:27:45] [OK] Symlink creado: 2021/2021-12-06-08-panel-data-dinamico
+[2026-06-21 18:27:45] [OK] Symlink creado: 2021/2021-10-25-02-modelos-fraccionados
+[2026-06-21 18:27:45] [OK] Symlink creado: 2021/2021-11-29-07-panel-data-estatico
+[2026-06-21 18:27:45] [OK] Symlink creado: 2021/2021-11-22-06-modelos-de-ecuaciones-simultaneas
+[2026-06-21 18:27:45] [OK] Symlink creado: 2021/2021-11-15-05-sesgo-de-seleccion
+[2026-06-21 18:27:45] [OK] Symlink creado: 2021/2021-11-08-04-modelos-con-variables-censuradas-y-truncadas
+[2026-06-21 18:27:45] [OK] Symlink creado: 2021/2021-10-18-01-modelos-de-eleccion-discreta-probit-y-logit
+[2026-06-21 18:27:45] [OK] Symlink creado: 2021/2021-11-01-03-modelos-multinomiales-y-ordenados
+[2026-06-21 18:27:45] [OK] Symlink creado: 2022/2022-06-13-07-event-studies-en-economia
+[2026-06-21 18:27:45] [OK] Symlink creado: 2022/2022-05-09-02-metodos-experimentales-en-economia
+[2026-06-21 18:27:45] [OK] Symlink creado: 2022/2022-06-20-08-miscelanea
+[2026-06-21 18:27:45] [OK] Symlink creado: 2022/2022-06-06-06-efectos-fijos-diferencias-en-diferencias-y-datos-de-panel
+[2026-06-21 18:27:45] [OK] Symlink creado: 2022/2022-05-16-03-la-herramienta-fundamental-regresiones
+[2026-06-21 18:27:45] [OK] Symlink creado: 2022/2022-05-02-01-introduccion-a-la-econometria
+[2026-06-21 18:27:45] [OK] Symlink creado: 2022/2022-05-23-04-variables-instrumentales
+[2026-06-21 18:27:45] [OK] Symlink creado: 2022/2022-05-30-05-diseño-de-regresion-discontinua-rdd
+[2026-06-21 18:27:45] [OK] Symlink creado: 2022/2022-01-11-recaudacion-de-impuestos-y-crecimiento-economico-2017-2019
+[2026-06-21 18:27:45] [OK] Symlink creado: 2019/2019-12-30-rendimiento-academico-y-genero-de-ingresantes-a-unsch
+[2026-06-21 18:27:45] [OK] Symlink creado: 2022/2022-02-28-01-volatilidad-en-las-series-de-tiempo
+[2026-06-21 18:27:45] [OK] Symlink creado: 2021/2021-03-01-01-modelo-clasico-de-regresion-lineal
+[2026-06-21 18:27:45] [OK] Symlink creado: 2021/2021-05-17-11-problemas-de-endogeneidad
+[2026-06-21 18:27:45] [OK] Symlink creado: 2021/2021-05-24-12-perturbaciones-no-esfericas
+[2026-06-21 18:27:45] [OK] Symlink creado: 2021/2021-03-15-03-algebra-y-geometria-de-mco
+[2026-06-21 18:27:45] [OK] Symlink creado: 2021/2021-04-26-08-multicolinealidad
+[2026-06-21 18:27:45] [OK] Symlink creado: 2021/2021-05-10-10-el-modelo-general-de-regresion-lineal-permitiendo-heterocedasticidad-en-los-errores
+[2026-06-21 18:27:45] [OK] Symlink creado: 2021/2021-04-19-07-bondad-de-ajuste
+[2026-06-21 18:27:46] [OK] Symlink creado: 2021/2021-03-22-04-propiedades-en-muestras-finitas-del-estimador-mco
+[2026-06-21 18:27:46] [OK] Symlink creado: 2021/2021-03-29-05-propiedades-en-muestras-infinitas-del-estimador-mco
+[2026-06-21 18:27:46] [OK] Symlink creado: 2021/2021-03-08-02-el-estimador-de-minimos-cuadrados-ordinarios-mco
+[2026-06-21 18:27:46] [OK] Symlink creado: 2021/2021-04-10-06-el-trade-off-sesgo-varianza
+[2026-06-21 18:27:46] [OK] Symlink creado: 2021/2021-05-03-09-inferencia
+[2026-06-21 18:27:46] [OK] Symlink creado: 2025/2025-02-09-recursos-para-traducción-y-correccion
+[2026-06-21 18:27:46] [OK] Symlink creado: 2026/2026-01-02-configuracion-de-quarto-yml
+[2026-06-21 18:27:46] [OK] Symlink creado: 2025/2025-04-23-tipos-de-elementos-en-zotero
+[2026-06-21 18:27:46] [OK] Symlink creado: 2023/2023-06-03-ideas-de-investigacion-para-economia
+[2026-06-21 18:27:46] [OK] Symlink creado: 2026/2026-01-02-guia-practica-de-metadata-en-quarto
+[2026-06-21 18:27:46] [OK] Symlink creado: 2023/2023-06-03-pautas-de-presentacion-del-informe-de-investigacion
+[2026-06-21 18:27:46] [OK] Symlink creado: 2025/2025-01-12-recursos-de-bibliografia-y-documentacion
+[2026-06-21 18:27:46] [OK] Symlink creado: 2021/2021-10-01-gestion-publica-y-administracion-publica
+[2026-06-21 18:27:46] [OK] Symlink creado: 2023/2023-05-11-cualidades-de-los-servidores-publicos
+[2026-06-21 18:27:46] [OK] Symlink creado: 2021/2021-10-01-reformas-y-modernizacion-de-la-gestion-publica
+[2026-06-21 18:27:46] [OK] Symlink creado: 2020/2020-02-16-guia-de-instalacion-y-configuracion-de-i3wm
+[2026-06-21 18:27:46] [OK] Symlink creado: 2020/2020-02-17-atajos-de-teclado-y-comandos-esenciales-de-i3wm
+[2026-06-21 18:27:46] [OK] Symlink creado: 2020/2020-02-21-integracion-de-i3wm-en-tu-entorno-de-trabajo
+[2026-06-21 18:27:46] [OK] Symlink creado: 2020/2020-02-18-personalizando-de-i3wm
+[2026-06-21 18:27:46] [OK] Symlink creado: 2020/2020-02-15-introduccion-a-i3wm
+[2026-06-21 18:27:46] [OK] Symlink creado: 2020/2020-02-18-trabajando-con-ventanas-en-i3wm
+[2026-06-21 18:27:46] [OK] Symlink creado: 2020/2020-02-23-solucion-de-problemas-comunes-en-i3wm
+[2026-06-21 18:27:46] [OK] Symlink creado: 2020/2020-02-19-aumenta-tu-productividad-con-i3wm
+[2026-06-21 18:27:46] [OK] Symlink creado: 2020/2020-02-20-i3wm-vs-otros-gestores-de-ventanas
+[2026-06-21 18:27:46] [OK] Symlink creado: 2020/2020-02-22-casos-de-uso-avanzados-de-i3wm
+[2026-06-21 18:27:46] [OK] Symlink creado: 2023/2023-06-18-02-distribuciones-linux
+[2026-06-21 18:27:46] [OK] Symlink creado: 2023/2023-06-19-03-instalacion-linux
+[2026-06-21 18:27:46] [OK] Symlink creado: 2024/2024-07-15-instalando-specitify
+[2026-06-21 18:27:46] [OK] Symlink creado: 2023/2023-07-01-atajos-de-teclado-y-comandos-para-usar-vim
+[2026-06-21 18:27:46] [OK] Symlink creado: 2025/2025-12-31-guia-de-kitty-terminal
+[2026-06-21 18:27:46] [OK] Symlink creado: 2025/2025-12-31-guia-de-positron-ide
+[2026-06-21 18:27:46] [OK] Symlink creado: 2021/2021-08-17-limpieza-y-optimizacion-de-pc
+[2026-06-21 18:27:46] [OK] Symlink creado: 2022/2022-09-27-comandos-vim
+[2026-06-21 18:27:46] [OK] Symlink creado: 2021/2021-10-21-scrcpy
+[2026-06-21 18:27:46] [OK] Symlink creado: 2023/2023-05-02-00-primeros-pasos-en-linux
+[2026-06-21 18:27:46] [OK] Symlink creado: 2023/2023-06-20-04-administracion-particiones-volumenes
+[2026-06-21 18:27:46] [OK] Symlink creado: 2019/2019-06-19-adb
+[2026-06-21 18:27:46] [OK] Symlink creado: 2025/2025-12-30-guia-de-ranger
+[2026-06-21 18:27:46] [OK] Symlink creado: 2023/2023-06-17-01-introduccion-linux
+[2026-06-21 18:27:46] [OK] Symlink creado: 2025/2025-07-10-gestiona-tus-dotfiles-con-gnu-stow
+[2026-06-21 18:27:46] [OK] Symlink creado: 2022/2022-08-14-crear-enlaces-duros-o-hard-link-en-linux
+[2026-06-21 18:27:46] [OK] Symlink creado: 2023/2023-02-16-guia-de-git-y-github
+[2026-06-21 18:27:46] [OK] Symlink creado: 2022/2022-05-12-gestionar-versiones-de-jdk-en-kubuntu
+[2026-06-21 18:27:46] [OK] Symlink creado: 2017/2017-05-21-comandos-de-informacion-windows
+[2026-06-21 18:27:46] [OK] Symlink creado: 2022/2022-07-21-instalar-tor-browser
+[2026-06-21 18:27:46] [OK] Symlink creado: 2026/2026-04-23-guia-de-rsync
+[2026-06-21 18:27:46] [OK] Symlink creado: 2024/2024-09-03-ejecutando-payload
+[2026-06-21 18:27:46] [OK] Symlink creado: 2022/2022-11-21-06-modelo-de-machine-learning-iii-modelo-de-regresion
+[2026-06-21 18:27:46] [OK] Symlink creado: 2022/2022-11-28-07-modelo-de-machine-learning-iv-tex-mining
+[2026-06-21 18:27:46] [OK] Symlink creado: 2022/2022-11-07-04-modelo-de-machine-learning-i-analisis-exploratorio
+[2026-06-21 18:27:46] [OK] Symlink creado: 2020/2020-06-10-011-instalacion-de-r
+[2026-06-21 18:27:46] [OK] Symlink creado: 2022/2022-11-14-05-modelo-de-machine-learning-ii-modelo-de-clasificacion
+[2026-06-21 18:27:46] [OK] Symlink creado: 2021/2021-04-12-03-visualizacion-de-datos
+[2026-06-21 18:27:46] [OK] Symlink creado: 2021/2021-04-05-02-manipulacion-de-datos
+[2026-06-21 18:27:46] [OK] Symlink creado: 2020/2020-06-10-013-lo-que-debemos-saber-de-r
+[2026-06-21 18:27:46] [OK] Symlink creado: 2020/2020-06-10-012-configurar-entorno-virtual-r
+[2026-06-21 18:27:46] [OK] Symlink creado: 2022/2022-12-05-01-introduccion-al-lenguaje-y-editor-vba
+[2026-06-21 18:27:46] [OK] Symlink creado: 2023/2023-01-02-05-funciones-condicionales-estructuras-condicionales
+[2026-06-21 18:27:46] [OK] Symlink creado: 2023/2023-03-17-comando-para-convertir-docx-a-odt
+[2026-06-21 18:27:46] [OK] Symlink creado: 2022/2022-12-26-04-funciones-en-vba
+[2026-06-21 18:27:46] [OK] Symlink creado: 2023/2023-01-23-08-eventos
+[2026-06-21 18:27:46] [OK] Symlink creado: 2023/2023-05-31-combinando-hojas-de-excel-con-vba
+[2026-06-21 18:27:46] [OK] Symlink creado: 2023/2023-01-16-07-formularios
+[2026-06-21 18:27:46] [OK] Symlink creado: 2023/2023-05-21-anclaje-envoltura-alineacion-y-organizacion-de-objetos-en-llibreoffice
+[2026-06-21 18:27:46] [OK] Symlink creado: 2022/2022-12-19-03-procedimientos
+[2026-06-21 18:27:46] [OK] Symlink creado: 2022/2022-12-12-02-grabar-y-modificar
+[2026-06-21 18:27:46] [OK] Symlink creado: 2023/2023-01-09-06-funciones-iterativas-estructuras-repetitivas-o-bucles
+[2026-06-21 18:27:46] [OK] Symlink creado: 2023/2023-06-05-separando-hojas-de-excel-en-documentos-individuales
+[2026-06-21 18:27:46] [OK] Symlink creado: 2023/2023-04-03-buscar-reemplazar-en-libreoffice
+[2026-06-21 18:27:46] [OK] Symlink creado: 2021/2021-01-11-02-introduccion-a-los-algoritmos
+[2026-06-21 18:27:46] [OK] Symlink creado: 2019/2019-08-13-organizando-tipos-de-archivos-de-softwares
+[2026-06-21 18:27:46] [OK] Symlink creado: 2021/2021-01-04-01-pensamiento-logico
+[2026-06-21 18:27:46] [OK] Symlink creado: 2018/2018-06-09-typografia
+[2026-06-21 18:27:46] [OK] Symlink creado: 2021/2021-01-18-03-programacion-basica-en-html
+[2026-06-21 18:27:46] [OK] Symlink creado: 2022/2022-07-04-06-series-de-tiempo
+[2026-06-21 18:27:46] [OK] Symlink creado: 2022/2022-05-30-01-introduccion-al-programa
+[2026-06-21 18:27:46] [OK] Symlink creado: 2022/2022-06-13-03-data-visualization
+[2026-06-21 18:27:46] [OK] Symlink creado: 2022/2022-07-18-08-modelos-de-evaluacion-de-impacto
+[2026-06-21 18:27:46] [OK] Symlink creado: 2022/2022-07-11-07-paneles-de-datos
+[2026-06-21 18:27:46] [OK] Symlink creado: 2022/2022-06-06-02-manipulando-los-datos
+[2026-06-21 18:27:46] [OK] Symlink creado: 2022/2022-06-20-04-regresiones
+[2026-06-21 18:27:46] [OK] Symlink creado: 2022/2022-06-27-05-modelos-de-seleccion-discreta
+[2026-06-21 18:27:46] [OK] Symlink creado: 2022/2022-10-10-05-inteligencia-de-tiempo-dimension-de-tiempo
+[2026-06-21 18:27:46] [OK] Symlink creado: 2022/2022-09-19-02-power-query-proceso-etl
+[2026-06-21 18:27:46] [OK] Symlink creado: 2022/2022-10-24-08-vizualizacion-de-datos
+[2026-06-21 18:27:47] [OK] Symlink creado: 2022/2022-09-26-03-proceso-etl-2
+[2026-06-21 18:27:47] [OK] Symlink creado: 2022/2022-10-17-06-lenguaje-de-analisis-de-datos-dax-columnas-campos-calculados
+[2026-06-21 18:27:47] [OK] Symlink creado: 2022/2022-10-03-04-power-pivot-modelo-de-datos
+[2026-06-21 18:27:47] [OK] Symlink creado: 2022/2022-09-12-01-introduccion-al-mundo-de-bi-y-la-suite-power
+[2026-06-21 18:27:47] [OK] Symlink creado: 2022/2022-02-21-07-modelacion
+[2026-06-21 18:27:47] [OK] Symlink creado: 2022/2022-02-14-06-empleo-de-subrutinas
+[2026-06-21 18:27:47] [OK] Symlink creado: 2021/2021-09-13-03-metodos-de-estimacion-objeto-equatio-objeto-table
+[2026-06-21 18:27:47] [OK] Symlink creado: 2022/2022-02-07-05-objetos-avanzados
+[2026-06-21 18:27:47] [OK] Symlink creado: 2021/2021-08-30-01-introduccion-a-la-programacion-con-eviews
+[2026-06-21 18:27:47] [OK] Symlink creado: 2021/2021-09-06-02-empleo-de-bucles-y-variables-temporales
+[2026-06-21 18:27:47] [OK] Symlink creado: 2021/2021-06-14-04-ejecucion-condicional-con-python
+[2026-06-21 18:27:47] [OK] Symlink creado: 2022/2022-10-31-11-validacion-cruzada-y-composicion-del-modelo-con-python
+[2026-06-21 18:27:47] [OK] Symlink creado: 2021/2021-08-23-07-dataframes-con-python
+[2026-06-21 18:27:47] [OK] Symlink creado: 2021/2021-06-07-03-objetos-de-python
+[2026-06-21 18:27:47] [OK] Symlink creado: 2020/2020-06-19-instalacion-de-anaconda
+[2026-06-21 18:27:47] [OK] Symlink creado: 2021/2021-08-16-06-funciones-con-python
+[2026-06-21 18:27:47] [OK] Symlink creado: 2025/2025-05-10-visualizacion-de-datos-con-python
+[2026-06-21 18:27:47] [OK] Symlink creado: 2021/2021-06-21-05-iteraciones-con-python
+[2026-06-21 18:27:47] [OK] Symlink creado: 2021/2021-11-29-08-prediccion-y-metrica-de-performance-con-python
+[2026-06-21 18:27:47] [OK] Symlink creado: 2021/2021-12-13-10-metodos-de-machine-learning-para-regresion-con-python
+[2026-06-21 18:27:47] [OK] Symlink creado: 2021/2021-12-06-09-metodos-de-machine-learning-para-clasificacion-con-python
+[2026-06-21 18:27:47] [OK] Symlink creado: 2020/2020-06-20-configurar-entorno-virtual-python-anaconda
+[2026-06-21 18:27:47] [OK] Symlink creado: 2021/2021-05-31-02-variables-expresiones-y-statements-con-python
+[2026-06-21 18:27:47] [OK] Symlink creado: 2021/2021-04-17-01-introducion-a-la-programacion-con-python
+[2026-06-21 18:27:47] [OK] Symlink creado: 2015/2015-07-16-05-presentaciones-en-beamer
+[2026-06-21 18:27:47] [OK] Symlink creado: 2015/2015-07-14-03-latex-como-editor-de-texto
+[2026-06-21 18:27:47] [OK] Symlink creado: 2015/2015-07-15-04-latex-y-referencias
+[2026-06-21 18:27:47] [OK] Symlink creado: 2015/2015-07-12-01-introduccion-al-latex
+[2026-06-21 18:27:47] [OK] Symlink creado: 2015/2015-07-13-02-latex-y-matematica
+[2026-06-21 18:27:47] [OK] Symlink creado: 2015/2015-07-17-06-tikz
+[2026-06-21 18:27:47] [OK] Symlink creado: 2022/2022-08-01-02-elementos-basicos-en-matlab-i
+[2026-06-21 18:27:47] [OK] Symlink creado: 2022/2022-10-03-11-aplicaciones
+[2026-06-21 18:27:47] [OK] Symlink creado: 2022/2022-08-15-04-programacion-en-matlab
+[2026-06-21 18:27:47] [OK] Symlink creado: 2022/2022-08-29-06-sentencias-de-control
+[2026-06-21 18:27:47] [OK] Symlink creado: 2022/2022-07-25-01-primeros-pasos-en-matlab
+[2026-06-21 18:27:47] [OK] Symlink creado: 2022/2022-09-12-08-tipos-de-datos-heterogeneos
+[2026-06-21 18:27:47] [OK] Symlink creado: 2022/2022-08-08-03-elementos-basicos-en-matlab-ii
+[2026-06-21 18:27:47] [OK] Symlink creado: 2022/2022-09-26-10-toolbox-optimization
+[2026-06-21 18:27:47] [OK] Symlink creado: 2022/2022-08-22-05-visualizacion-de-datos-en-matlab
+[2026-06-21 18:27:47] [OK] Symlink creado: 2022/2022-09-19-09-funciones-avanzadas
+[2026-06-21 18:27:47] [OK] Symlink creado: 2022/2022-09-05-07-metodos-numericos
+[2026-06-21 18:27:47] [OK] Symlink creado: 2023/2023-05-12-la-economia-peruana-entre-1970-1990
+[2026-06-21 18:27:47] [OK] Symlink creado: 2020/2020-05-23-comandos-de-google-assistant
+[2026-06-21 18:27:47] [OK] Symlink creado: 2022/2022-06-02-impacto-del-cambio-climatico
+[2026-06-21 18:27:47] [OK] Symlink creado: 2023/2023-05-16-economia-regional
+[2026-06-21 18:27:47] [OK] Symlink creado: 2017/2017-04-23-sitios-web-asombrosos
+[2026-06-21 18:27:47] [OK] Symlink creado: 2022/2022-04-22-economia-agraria
+[2026-06-21 18:27:47] [OK] Symlink creado: 2025/2025-01-07-sesion-01-monografia-e-informe
+[2026-06-21 18:27:47] [OK] Symlink creado: 2025/2025-02-05-sesion-07-estilo-vancouver
+[2026-06-21 18:27:47] [OK] Symlink creado: 2025/2025-01-14-sesion-03-citas-y-referencias
+[2026-06-21 18:27:47] [OK] Symlink creado: 2025/2025-01-15-sesion-04-practica-de-apa
+[2026-06-21 18:27:47] [OK] Symlink creado: 2025/2025-01-29-sesion-06-formato
+[2026-06-21 18:27:47] [OK] Symlink creado: 2025/2025-02-19-sesion-09-practica-estructura-y-citas-apa
+[2026-06-21 18:27:47] [OK] Symlink creado: 2025/2025-02-12-sesion-08-tablas-figuras-y-notas
+[2026-06-21 18:27:47] [OK] Symlink creado: 2025/2025-01-22-sesion-05-tecnicas-de-parafraseo
+[2026-06-21 18:27:47] [OK] Symlink creado: 2025/2025-01-08-sesion-02-estructura-en-word
+[2026-06-21 18:27:47] [SECTION] Resultado de la sincronización
+[2026-06-21 18:27:47] [INFO] Creados:    237
+[2026-06-21 18:27:47] [INFO] Actualizados: 0
+[2026-06-21 18:27:47] [INFO] Omitidos (ya existían): 0
+[2026-06-21 18:27:47] [SECTION] Verificando symlinks rotos
+[2026-06-21 18:27:47] [OK] No se encontraron symlinks rotos.
+[2026-06-21 18:27:47] [SECTION] Resumen de '04 index' por año
+[2026-06-21 18:27:47] [INFO] Log guardado en: /home/achalmaedison/Documents/scripts_for_quarto/script_pub_index_symlink/logs/2026-06-21.log

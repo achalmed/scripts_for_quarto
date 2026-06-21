@@ -9,12 +9,14 @@ Has recibido la versión **2.0** completamente renovada del Gestor de Publicacio
 #### 1. Creación de Posts con APAQuarto (¡NUEVA!)
 
 **Antes (v1.0):**
+
 ```bash
 ./build.sh new-post mi-blog "Título"
 # Creaba solo un archivo básico
 ```
 
 **Ahora (v2.0):**
+
 ```bash
 ./build.sh new-post mi-blog
 # Formulario interactivo completo:
@@ -30,6 +32,7 @@ Has recibido la versión **2.0** completamente renovada del Gestor de Publicacio
 **Antes:** Texto plano sin colores
 
 **Ahora:** Interfaz moderna con:
+
 - ✅ Emojis contextuales (🚀📖📄🔧)
 - ✅ Colores para mejor legibilidad
 - ✅ Cajas y separadores visuales
@@ -38,6 +41,7 @@ Has recibido la versión **2.0** completamente renovada del Gestor de Publicacio
 #### 3. Gestión Inteligente de Blogs
 
 **Nuevo:** Excluye automáticamente blogs innecesarios:
+
 - borradores
 - notas
 - apa
@@ -46,6 +50,7 @@ Has recibido la versión **2.0** completamente renovada del Gestor de Publicacio
 - taller unsch como elaborar tesis de pregrado
 
 **Nuevo:** Listado mejorado muestra:
+
 - Título del blog
 - Cantidad de posts
 - Estado de Git
@@ -55,6 +60,7 @@ Has recibido la versión **2.0** completamente renovada del Gestor de Publicacio
 **Antes:** Mostraba 200+ líneas de código Lua
 
 **Ahora:** Solo información relevante:
+
 - Type, Engine, Formats, Output
 - Máximo 50 líneas
 - Sin código innecesario
@@ -62,15 +68,18 @@ Has recibido la versión **2.0** completamente renovada del Gestor de Publicacio
 ## 📋 Archivos Incluidos
 
 ### Scripts
+
 - ✅ **build.sh** (v2.0) - Script principal con todas las mejoras
 
 ### Documentación
+
 - ✅ **README.md** - Guía completa actualizada
 - ✅ **INSTALL.md** - Instalación paso a paso
 - ✅ **CHANGELOG.md** - Historial detallado de cambios
 - ✅ **ACTUALIZACION.md** - Este archivo
 
 ### Scripts Auxiliares (de v1.0 - aún funcionales)
+
 - ✅ **init-blog.sh** - Crear nuevos blogs
 - ✅ **check-structure.sh** - Verificar estructura
 - ✅ **backup-blogs.sh** - Sistema de backups
@@ -106,30 +115,32 @@ cat INSTALL.md
 
 ### 1. Tipos de Documento APAQuarto
 
-| Tipo | Descripción | Ideal Para |
-|------|-------------|------------|
-| **doc** | Documento flexible | Ensayos, reportes generales |
-| **jou** | Formato revista (2 col) | Artículos publicados |
-| **man** | Manuscrito formal | Envío a revistas |
-| **stu** | Trabajo estudiantil | Tareas, tesis |
+| Tipo    | Descripción             | Ideal Para                  |
+| ------- | ----------------------- | --------------------------- |
+| **doc** | Documento flexible      | Ensayos, reportes generales |
+| **jou** | Formato revista (2 col) | Artículos publicados        |
+| **man** | Manuscrito formal       | Envío a revistas            |
+| **stu** | Trabajo estudiantil     | Tareas, tesis               |
 
 ### 2. Detección Automática de Carpetas
 
 El script detecta automáticamente carpetas como:
+
 - python, r, matlab, stata
 - eviews, latex, ofimatica
 - Cualquier carpeta con estructura de posts
 
-### 3. Integración con _metadata.yml
+### 3. Integración con \_metadata.yml
 
 **Inteligente:** No duplica información
 
-- **En _metadata.yml:** Configuración compartida (autor, formatos, ejecución)
+- **En \_metadata.yml:** Configuración compartida (autor, formatos, ejecución)
 - **En index.qmd:** Específico del post (título, tags, fecha)
 
 ### 4. Formulario Guiado
 
 El script te guía paso a paso:
+
 1. ✅ Seleccionar carpeta de posts
 2. ✅ Ingresar información básica
 3. ✅ Elegir tipo de documento
@@ -139,17 +150,17 @@ El script te guía paso a paso:
 
 ## 📊 Comparativa de Versiones
 
-| Característica | v1.0 | v2.0 |
-|----------------|------|------|
-| Crear posts básicos | ✅ | ✅ |
-| APAQuarto | ❌ | ✅ |
-| Formulario interactivo | ❌ | ✅ |
-| Detección de carpetas | ❌ | ✅ |
-| _metadata.yml | ❌ | ✅ |
-| Interfaz con colores | ❌ | ✅ |
-| Excluir blogs | ❌ | ✅ |
-| Inspección optimizada | ❌ | ✅ |
-| Listado mejorado | ❌ | ✅ |
+| Característica         | v1.0 | v2.0 |
+| ---------------------- | ---- | ---- |
+| Crear posts básicos    | ✅   | ✅   |
+| APAQuarto              | ❌   | ✅   |
+| Formulario interactivo | ❌   | ✅   |
+| Detección de carpetas  | ❌   | ✅   |
+| \_metadata.yml         | ❌   | ✅   |
+| Interfaz con colores   | ❌   | ✅   |
+| Excluir blogs          | ❌   | ✅   |
+| Inspección optimizada  | ❌   | ✅   |
+| Listado mejorado       | ❌   | ✅   |
 
 ## 🎯 Casos de Uso Principales
 
@@ -198,6 +209,7 @@ $ build.sh new-post [blog]
 ### Blogs Soportados
 
 **Activos (12):**
+
 - actus-mercator
 - aequilibria
 - axiomata
@@ -212,6 +224,7 @@ $ build.sh new-post [blog]
 - website-achalma
 
 **Excluidos (6):**
+
 - apa, borradores, notas
 - practicas preprofesionales
 - propuesta bicentenario
@@ -220,6 +233,7 @@ $ build.sh new-post [blog]
 ### Configuración Existente
 
 ✅ **Totalmente compatible** con:
+
 - Blogs creados en v1.0
 - Scripts auxiliares (init-blog, check-structure, backup)
 - Aliases configurados
@@ -228,6 +242,7 @@ $ build.sh new-post [blog]
 ## 📚 Documentación Actualizada
 
 ### README.md
+
 - ✅ Reescrito completamente
 - ✅ Sección nueva: APAQuarto
 - ✅ Ejemplos visuales
@@ -235,12 +250,14 @@ $ build.sh new-post [blog]
 - ✅ Interfaz documentada
 
 ### INSTALL.md
+
 - ✅ Guía paso a paso actualizada
 - ✅ Troubleshooting ampliado
 - ✅ Configuración avanzada
 - ✅ Tutoriales incluidos
 
 ### CHANGELOG.md
+
 - ✅ Historial completo de cambios
 - ✅ Detalles técnicos
 - ✅ Comparativas de comportamiento
@@ -299,6 +316,7 @@ grep -A 20 "Ejemplo" README.md
 ## 💡 Tips y Trucos
 
 ### Tip 1: Usar Alias
+
 ```bash
 # Crear alias cortos
 alias qnew="build.sh new-post"
@@ -310,12 +328,15 @@ qlist
 ```
 
 ### Tip 2: Tipo de Documento por Defecto
+
 Si siempre usas `jou`, simplemente presiona Enter cuando pregunte el tipo.
 
 ### Tip 3: Autor Predeterminado
+
 Si usas el mismo autor, responde "s" cuando pregunte por autor predeterminado.
 
 ### Tip 4: Ver Posts por Carpeta
+
 ```bash
 build.sh list-posts [blog]
 # Ahora agrupa por carpeta (python, r, matlab, etc.)
@@ -358,6 +379,7 @@ R: Restaura el backup: `mv build.sh.v1.backup build.sh`
 ### Reportar Bugs
 
 Envía email con:
+
 - Versión de Quarto (`quarto --version`)
 - Comando ejecutado
 - Error recibido
@@ -366,6 +388,7 @@ Envía email con:
 ## 🎉 ¡Gracias por Actualizar!
 
 La versión 2.0 representa una mejora significativa en:
+
 - **Usabilidad** - Interfaz más amigable
 - **Funcionalidad** - APAQuarto completo
 - **Eficiencia** - Procesos optimizados

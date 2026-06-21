@@ -1,6 +1,7 @@
 # Gestor de Publicaciones Quarto
-#readme 
-Script completo para gestionar múltiples blogs y sitios web creados con Quarto. 
+#readme
+
+Script completo para gestionar múltiples blogs y sitios web creados con Quarto.
 
 # Tabla de Contenidos
 
@@ -18,6 +19,7 @@ Script completo para gestionar múltiples blogs y sitios web creados con Quarto.
 # Características
 
 ## Gestión de Blogs
+
 - Listar todos los blogs disponibles
 - Renderizar blogs completos o individuales
 - Preview local con servidor integrado
@@ -26,23 +28,27 @@ Script completo para gestionar múltiples blogs y sitios web creados con Quarto.
 - Verificación e inspección de proyectos
 
 ## Gestión de Posts
+
 - Crear nuevos posts con plantilla automática
 - Listar posts de cualquier blog
 - Renderizar posts individuales
 - Estructura de nombres automática basada en fecha
 
 ## Operaciones Múltiples
+
 - Renderizar todos los blogs en batch
 - Limpiar todos los proyectos simultáneamente
 - Operaciones en paralelo para mayor eficiencia
 
 ## Integración Git
+
 - Inicialización de repositorios
 - Commit y push automatizado
 - Verificación de estado
 - Creación automática de .gitignore
 
 ## Interfaz
+
 - Modo interactivo con menú intuitivo
 - Modo línea de comandos para automatización
 - Colores y formato para mejor visualización
@@ -53,13 +59,16 @@ Script completo para gestionar múltiples blogs y sitios web creados con Quarto.
 ## Software Necesario
 
 1. **Quarto** (versión 1.3 o superior)
+
    ```bash
    # Verificar instalación
    quarto --version
    ```
+
    Descargar desde: https://quarto.org/docs/get-started/
 
 2. **Bash** (incluido en Linux/macOS)
+
    ```bash
    bash --version
    ```
@@ -86,7 +95,6 @@ Script completo para gestionar múltiples blogs y sitios web creados con Quarto.
         ├── build.sh        # Este script
         └── README.md
 ```
-
 
 # Instalación
 
@@ -202,6 +210,7 @@ Para automatización o uso rápido:
 ## Gestión de Blogs
 
 ## `list`
+
 Lista todos los blogs disponibles con sus títulos.
 
 ```bash
@@ -209,6 +218,7 @@ Lista todos los blogs disponibles con sus títulos.
 ```
 
 **Salida:**
+
 ```
 ═══════════════════════════════════════════════════════════════
   Blogs Disponibles
@@ -223,6 +233,7 @@ Lista todos los blogs disponibles con sus títulos.
 ```
 
 ## `render BLOG`
+
 Renderiza un blog completo.
 
 ```bash
@@ -231,11 +242,13 @@ Renderiza un blog completo.
 ```
 
 **Proceso:**
+
 1. Navega al directorio del blog
 2. Ejecuta `quarto render`
 3. Genera el sitio en `_site/`
 
 ## `preview BLOG [PUERTO]`
+
 Inicia servidor de preview local.
 
 ```bash
@@ -247,11 +260,13 @@ Inicia servidor de preview local.
 ```
 
 **Características:**
+
 - Servidor local con recarga automática
 - No abre navegador automáticamente
 - Ctrl+C para detener
 
 ## `preview-browser BLOG [PUERTO]`
+
 Preview con apertura automática del navegador.
 
 ```bash
@@ -259,6 +274,7 @@ Preview con apertura automática del navegador.
 ```
 
 ## `clean BLOG`
+
 Elimina archivos generados.
 
 ```bash
@@ -266,11 +282,13 @@ Elimina archivos generados.
 ```
 
 **Elimina:**
+
 - `_site/` - Sitio generado
 - `_freeze/` - Cache de ejecución
 - `.quarto/` - Archivos temporales de Quarto
 
 ## `publish BLOG [TARGET]`
+
 Publica el blog en plataforma seleccionada.
 
 ```bash
@@ -288,12 +306,14 @@ Publica el blog en plataforma seleccionada.
 ```
 
 **Targets disponibles:**
+
 - `gh-pages` - GitHub Pages
 - `netlify` - Netlify
 - `quarto-pub` - Quarto Pub
 - `confluence` - Confluence
 
 ## `check BLOG`
+
 Verifica configuración del blog.
 
 ```bash
@@ -301,12 +321,14 @@ Verifica configuración del blog.
 ```
 
 **Verifica:**
+
 - Instalación de Quarto
 - Dependencias de R/Python
 - Configuración YAML
 - Extensiones
 
 ## `inspect BLOG`
+
 Inspecciona estructura del proyecto.
 
 ```bash
@@ -314,6 +336,7 @@ Inspecciona estructura del proyecto.
 ```
 
 **Muestra:**
+
 - Archivos del proyecto
 - Configuración detectada
 - Outputs esperados
@@ -321,6 +344,7 @@ Inspecciona estructura del proyecto.
 ## Gestión de Posts
 
 ## `list-posts BLOG`
+
 Lista todos los posts de un blog.
 
 ```bash
@@ -328,6 +352,7 @@ Lista todos los posts de un blog.
 ```
 
 **Salida:**
+
 ```
 ═══════════════════════════════════════════════════════════════
   Posts en epsilon-y-beta
@@ -343,6 +368,7 @@ Lista todos los posts de un blog.
 ```
 
 ## `render-post RUTA_POST`
+
 Renderiza un post específico.
 
 ```bash
@@ -350,6 +376,7 @@ Renderiza un post específico.
 ```
 
 ## `new-post BLOG [TITULO]`
+
 Crea un nuevo post con plantilla.
 
 ```bash
@@ -361,12 +388,14 @@ Crea un nuevo post con plantilla.
 ```
 
 **Crea:**
+
 ```
 posts/2025-12-28-tutorial-de-algebra-lineal/
 └── index.qmd
 ```
 
 **Plantilla generada:**
+
 ```yaml
 ---
 title: "Tutorial de Álgebra Lineal"
@@ -376,7 +405,6 @@ categories: []
 description: ""
 draft: true
 ---
-
 # Introducción
 
 Tu contenido aquí...
@@ -386,13 +414,12 @@ Tu contenido aquí...
 
 ### Tipos de Documento
 
-| Tipo | Uso | Formato |
-|------|-----|---------|
-| **doc** | Documentos generales | 1 columna, flexible |
-| **jou** | Artículos tipo revista | 2 columnas, pulido |
-| **man** | Manuscritos formales | 1 columna, APA completo |
-| **stu** | Trabajos estudiantiles | 1 columna, con curso |
-
+| Tipo    | Uso                    | Formato                 |
+| ------- | ---------------------- | ----------------------- |
+| **doc** | Documentos generales   | 1 columna, flexible     |
+| **jou** | Artículos tipo revista | 2 columnas, pulido      |
+| **man** | Manuscritos formales   | 1 columna, APA completo |
+| **stu** | Trabajos estudiantiles | 1 columna, con curso    |
 
 ### Características Principales
 
@@ -438,23 +465,27 @@ Tu contenido aquí...
 - **Resumen final**: Muestra configuración completa
 
 ### Ejemplos en Cada Campo
+
 ```bash
 Ejemplo: "Análisis Econométrico Avanzado: Modelos ARIMA"
 read -p "Title (título principal): " post_title
 ```
 
 ### Valores por Defecto
+
 ```bash
 read -p "Floatsintext (s/n, default: n): " floatsintext
 floatsintext=${floatsintext:-n}
 ```
 
 ### Opciones de Omitir
+
 ```bash
 read -p "Impact-statement (Enter para omitir): " impact_statement
 ```
 
 ### Progress Tracking
+
 ```bash
 print_header "📝 Sección 1/6: Opciones Generales"
 ```
@@ -554,6 +585,7 @@ Resumen de configuración:
 # Operaciones Múltiples
 
 ## `render-all`
+
 Renderiza todos los blogs.
 
 ```bash
@@ -561,11 +593,13 @@ Renderiza todos los blogs.
 ```
 
 **Proceso:**
+
 - Recorre todos los directorios en `/publicaciones/`
 - Renderiza cada blog encontrado
 - Muestra resumen al final
 
 **Salida:**
+
 ```
 ═══════════════════════════════════════════════════════════════
   Renderizando TODOS los blogs
@@ -585,6 +619,7 @@ Renderiza todos los blogs.
 ```
 
 ## `clean-all`
+
 Limpia todos los blogs (con confirmación).
 
 ```bash
@@ -592,6 +627,7 @@ Limpia todos los blogs (con confirmación).
 ```
 
 **Solicita confirmación:**
+
 ```
 ¿Estás seguro? Esta acción eliminará todos los archivos generados (s/n):
 ```
@@ -599,6 +635,7 @@ Limpia todos los blogs (con confirmación).
 # Integración Git
 
 ## `git-init BLOG`
+
 Inicializa repositorio Git.
 
 ```bash
@@ -606,10 +643,12 @@ Inicializa repositorio Git.
 ```
 
 **Crea:**
+
 - Repositorio Git
 - `.gitignore` con exclusiones apropiadas
 
 **`.gitignore` generado:**
+
 ```
 /.quarto/
 /_site/
@@ -621,6 +660,7 @@ Inicializa repositorio Git.
 ```
 
 ## `git-status BLOG`
+
 Muestra estado de Git.
 
 ```bash
@@ -628,6 +668,7 @@ Muestra estado de Git.
 ```
 
 ## `git-commit BLOG [MENSAJE]`
+
 Commit y push de cambios.
 
 ```bash
@@ -639,6 +680,7 @@ Commit y push de cambios.
 ```
 
 **Proceso:**
+
 1. `git add .`
 2. `git commit -m "MENSAJE"`
 3. `git push`
@@ -646,6 +688,7 @@ Commit y push de cambios.
 # Utilidades
 
 ## `convert ARCHIVO [FORMATO]`
+
 Convierte documento a otro formato.
 
 ```bash
@@ -660,6 +703,7 @@ Convierte documento a otro formato.
 ```
 
 **Formatos soportados:**
+
 - `html`
 - `pdf`
 - `docx`
@@ -667,6 +711,7 @@ Convierte documento a otro formato.
 - `beamer` (presentaciones PDF)
 
 ## `help`, `-h`, `--help`
+
 Muestra ayuda completa.
 
 ```bash
@@ -674,6 +719,7 @@ Muestra ayuda completa.
 ```
 
 ## `version`, `-v`
+
 Muestra versión de Quarto.
 
 ```bash
@@ -823,6 +869,7 @@ blog-name/
 ## Archivos Clave
 
 ## `_quarto.yml`
+
 ```yaml
 project:
   type: website
@@ -843,6 +890,7 @@ format:
 ```
 
 ## `index.qmd`
+
 ```yaml
 ---
 title: "Mi Blog"
@@ -859,12 +907,14 @@ listing:
 ## Problema: Script no ejecuta
 
 **Síntomas:**
+
 ```bash
 $ ./build.sh
 bash: ./build.sh: Permission denied
 ```
 
 **Solución:**
+
 ```bash
 chmod +x build.sh
 ```
@@ -872,11 +922,13 @@ chmod +x build.sh
 ## Problema: Quarto no encontrado
 
 **Síntomas:**
+
 ```
 ✗ Quarto no está instalado
 ```
 
 **Solución:**
+
 ```bash
 # Verificar instalación
 which quarto
@@ -894,11 +946,13 @@ export PATH="$PATH:/opt/quarto/bin"
 ## Problema: Blog no encontrado
 
 **Síntomas:**
+
 ```
 ✗ Blog no encontrado: mi-blog
 ```
 
 **Solución:**
+
 ```bash
 # Verificar nombre exacto
 ./build.sh list
@@ -910,6 +964,7 @@ export PATH="$PATH:/opt/quarto/bin"
 ## Problema: Error al renderizar
 
 **Síntomas:**
+
 ```
 ✗ Error al renderizar el blog
 ```
@@ -917,22 +972,26 @@ export PATH="$PATH:/opt/quarto/bin"
 **Verificaciones:**
 
 1. **Verificar sintaxis YAML:**
+
 ```bash
 ./build.sh check nombre-blog
 ```
 
 2. **Verificar estructura:**
+
 ```bash
 ./build.sh inspect nombre-blog
 ```
 
 3. **Revisar logs:**
+
 ```bash
 cd /home/achalmaedison/Documents/publicaciones/nombre-blog
 quarto render --verbose
 ```
 
 4. **Limpiar cache:**
+
 ```bash
 ./build.sh clean nombre-blog
 ./build.sh render nombre-blog
@@ -941,11 +1000,13 @@ quarto render --verbose
 ## Problema: Git push falla
 
 **Síntomas:**
+
 ```
 ⚠ No se pudo hacer push. ¿Necesitas configurar el remote?
 ```
 
 **Solución:**
+
 ```bash
 cd /home/achalmaedison/Documents/publicaciones/nombre-blog
 
@@ -962,11 +1023,13 @@ git push -u origin main
 ## Problema: Puerto en uso
 
 **Síntomas:**
+
 ```
 Error: Port 4200 already in use
 ```
 
 **Solución:**
+
 ```bash
 # Usar puerto diferente
 ./build.sh preview nombre-blog 4300
@@ -996,11 +1059,11 @@ SCRIPT_DIR="/ruta/personalizada/scripts"
 mi_comando() {
     local blog_path="$1"
     print_header "Mi Comando Personalizado"
-    
+
     # Tu código aquí
     cd "$blog_path"
     # ...
-    
+
     print_success "Comando ejecutado"
 }
 ```
@@ -1010,7 +1073,7 @@ mi_comando() {
 ```bash
 case "$1" in
     # ... casos existentes ...
-    
+
     mi-comando)
         if [ -z "$2" ]; then
             print_error "Especifica el nombre del blog"
