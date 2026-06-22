@@ -1,4 +1,5 @@
-# Ejemplos de configuración de Excel 
+# Ejemplos de configuración de Excel
+
 **Autor:** Edison Achalma  
 **Fecha:** Diciembre 2024
 
@@ -22,6 +23,7 @@ draft: FALSE
 ```
 
 Para borradores que no quieres publicar aún:
+
 ```
 draft: TRUE
 ```
@@ -68,6 +70,7 @@ citation_pdf_url: https://achalmaedison.netlify.app/blog/posts/2024-12-19-analis
 ```
 
 Otros tipos de citación:
+
 - `article-journal` - Artículo de revista
 - `book` - Libro
 - `chapter` - Capítulo de libro
@@ -78,12 +81,14 @@ Otros tipos de citación:
 ### Enlaces Adicionales
 
 Sin enlaces:
+
 ```
 links_enabled: FALSE
 links_data: (dejar vacío)
 ```
 
 Con enlaces:
+
 ```
 links_enabled: TRUE
 links_data: [{"icon": "github", "name": "Repositorio", "url": "https://github.com/achalmed/proyecto"}, {"icon": "file-pdf", "name": "Slides", "url": "https://ejemplo.com/slides.pdf"}]
@@ -96,6 +101,7 @@ bibliography: referencias.bib
 ```
 
 Para múltiples archivos:
+
 ```
 bibliography: referencias.bib, extra.bib
 ```
@@ -138,6 +144,7 @@ author_3_roles: methodology, validation, editing
 ```
 
 **Roles CRediT comunes:**
+
 - conceptualization
 - methodology
 - software
@@ -214,6 +221,7 @@ mask: FALSE
 ```
 
 **Configuración típica para envío a revista:**
+
 - `floatsintext: FALSE` - Figuras al final
 - `numbered_lines: TRUE` - Facilita revisión
 - `mask: FALSE` - Información completa de autores
@@ -299,6 +307,7 @@ draft: FALSE
 Para mantener consistencia en una serie:
 
 **Artículo 1:**
+
 ```
 title: Series de Tiempo en Economía: Parte I - Fundamentos
 categories: Series Temporales, Tutorial
@@ -306,6 +315,7 @@ tags: series-de-tiempo, parte-1
 ```
 
 **Artículo 2:**
+
 ```
 title: Series de Tiempo en Economía: Parte II - Modelos ARIMA
 categories: Series Temporales, Tutorial
@@ -367,12 +377,14 @@ date: Dec 19, 2025   # Usar formato numérico
 ### 1. Palabras Clave (Keywords)
 
 **Buenas prácticas:**
+
 - 3-5 keywords principales
 - Usar términos específicos de tu campo
 - Incluir términos de búsqueda comunes
 - Considerar sinónimos importantes
 
 **Ejemplo:**
+
 ```
 keywords: desarrollo económico regional, indicadores socioeconómicos, Ayacucho Perú, políticas de desarrollo, análisis cuantitativo
 ```
@@ -380,11 +392,13 @@ keywords: desarrollo económico regional, indicadores socioeconómicos, Ayacucho
 ### 2. Tags
 
 **Buenas prácticas:**
+
 - Mezclar tags generales y específicos
 - Incluir tecnologías usadas
 - Agregar tags de nivel (básico, intermedio, avanzado)
 
 **Ejemplo:**
+
 ```
 tags: economía, R, ggplot2, análisis-datos, tutorial, intermedio, visualización
 ```
@@ -392,6 +406,7 @@ tags: economía, R, ggplot2, análisis-datos, tutorial, intermedio, visualizaci�
 ### 3. Abstract
 
 **Buenas prácticas:**
+
 - Primera oración: problema/pregunta
 - Segunda parte: metodología
 - Tercera parte: resultados principales
@@ -399,6 +414,7 @@ tags: economía, R, ggplot2, análisis-datos, tutorial, intermedio, visualizaci�
 - Máximo 250 palabras
 
 **Ejemplo:**
+
 ```
 abstract: La región Ayacucho ha experimentado transformaciones económicas significativas en la última década. Este estudio analiza los factores determinantes del crecimiento económico regional utilizando datos panel de 11 provincias durante 2014-2024. Empleamos modelos de efectos fijos y análisis de series temporales para identificar patrones de desarrollo. Los resultados muestran que la inversión pública en infraestructura y educación tiene efectos positivos significativos (p < 0.01) en el PIB regional. Las implicaciones sugieren que políticas focalizadas en estos sectores pueden acelerar el desarrollo económico sostenible.
 ```
@@ -417,6 +433,7 @@ date: Siempre MM/DD/YYYY
 ### 5. Preparación para Publicación
 
 Antes de cambiar `draft: FALSE`:
+
 - Revisar ortografía
 - Verificar links
 - Comprobar que imágenes existen
@@ -430,6 +447,7 @@ Antes de cambiar `draft: FALSE`:
 ### Problema: Cambios no se aplican
 
 **Solución:** Verificar:
+
 1. Formato de booleanos (TRUE/FALSE en mayúsculas)
 2. Archivo Excel guardado como .xlsx
 3. Sin celdas fusionadas en el Excel
@@ -437,7 +455,8 @@ Antes de cambiar `draft: FALSE`:
 
 ### Problema: Error en YAML generado
 
-**Solución:** 
+**Solución:**
+
 1. Ejecutar con `--dry-run` para ver vista previa
 2. Verificar caracteres especiales en texto
 3. Usar comillas para textos con dos puntos
@@ -445,6 +464,7 @@ Antes de cambiar `draft: FALSE`:
 ### Problema: Autores no se actualizan
 
 **Solución:**
+
 1. Verificar que `author_N_name` no esté vacío
 2. Solo UN autor puede tener `corresponding: TRUE`
 3. ORCID debe tener formato: 0000-0000-0000-0000

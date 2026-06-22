@@ -1,567 +1,348 @@
-#!/bin/bash
+#!/usr/bin/env bash
+################################################################################
+# quick_start.sh — Inicio rápido del Sistema de Metadatos Quarto v2.0
+# Autor: Edison Achalma  |  Ayacucho, Perú
+################################################################################
 
-################################################################################
-# Script de Inicio Rápido - Sistema de Gestión de Metadatos Quarto
-# Versión: 1.2.0
-# Autor: Edison Achalma
-# Fecha: Diciembre 2024
-################################################################################
+set -euo pipefail
 
 # Colores
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-BLUE='\033[0;34m'
-PURPLE='\033[0;35m'
-CYAN='\033[0;36m'
-NC='\033[0m'
+RED='\033[0;31m'; GREEN='\033[0;32m'; YELLOW='\033[1;33m'
+BLUE='\033[0;34m'; PURPLE='\033[0;35m'; CYAN='\033[0;36m'; NC='\033[0m'
 
-# Funciones
-print_header() {
-    echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-    echo -e "${CYAN}$1${NC}"
-    echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-}
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+MAIN_PY="$SCRIPT_DIR/main.py"
+CONFIG_FILE="$SCRIPT_DIR/metadata_config.yml"
 
-print_success() {
-    echo -e "${GREEN}✅ $1${NC}"
-}
+print_header()  { echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"; echo -e "${CYAN}$1${NC}"; echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"; }
+print_success() { echo -e "${GREEN}✅ $1${NC}"; }
+print_error()   { echo -e "${RED}❌ $1${NC}"; }
+print_warning() { echo -e "${YELLOW}⚠️  $1${NC}"; }
+print_info()    { echo -e "${PURPLE}ℹ️  $1${NC}"; }
+print_step()    { echo -e "${CYAN}▶ $1${NC}"; }
 
-print_error() {
-    echo -e "${RED}❌ $1${NC}"
-}
+# ---------------------------------------------------------------------------
+# Verificar entorno conda y dependencias
+# ---------------------------------------------------------------------------
 
-print_warning() {
-    echo -e "${YELLOW}⚠️  $1${NC}"
-}
-
-print_info() {
-    echo -e "${PURPLE}ℹ️  $1${NC}"
-}
-
-print_step() {
-    echo -e "${CYAN}▶ $1${NC}"
-}
-
-# Verificar entorno conda
 check_conda() {
-    if command -v conda &> /dev/null; then
-        if [ -n "$CONDA_DEFAULT_ENV" ]; then
-            if [ "$CONDA_DEFAULT_ENV" = "metadata_manager" ]; then
-                return 0
-            else
-                print_warning "Entorno actual: $CONDA_DEFAULT_ENV"
-                print_info "Cambiando a metadata_manager..."
-                eval "$(conda shell.bash hook)"
-                conda activate metadata_manager
-                return 0
-            fi
-        else
-            print_warning "Entorno conda no activado"
-            print_info "Activando metadata_manager..."
-            eval "$(conda shell.bash hook)"
-            conda activate metadata_manager
-            return 0
-        fi
+    command -v conda &>/dev/null || return 1
+    if [ "${CONDA_DEFAULT_ENV:-}" != "metadata_manager" ]; then
+        print_info "Activando entorno conda metadata_manager..."
+        eval "$(conda shell.bash hook)"
+        conda activate metadata_manager || true
     fi
-    return 1
-}
-
-# Verificar Python y dependencias
-check_dependencies() {
-    if ! command -v python3 &> /dev/null; then
-        print_error "Python 3 no encontrado"
-        return 1
-    fi
-    
-    if ! python3 -c "import pandas, openpyxl, yaml" 2>/dev/null; then
-        print_error "Dependencias faltantes"
-        print_info "Ejecuta: ./install.sh"
-        return 1
-    fi
-    
     return 0
 }
 
-# Banner
-show_banner() {
-    clear
-    print_header "🚀 INICIO RÁPIDO - GESTIÓN DE METADATOS QUARTO v1.2"
-    echo ""
-    echo -e "${CYAN}Autor:${NC} Edison Achalma"
-    echo -e "${CYAN}Versión:${NC} 1.2.0"
-    echo ""
+check_dependencies() {
+    command -v python3 &>/dev/null || { print_error "Python 3 no encontrado"; return 1; }
+    python3 -c "import pandas, openpyxl, yaml" 2>/dev/null || {
+        print_error "Dependencias faltantes (pandas, openpyxl, pyyaml)"
+        print_info  "Ejecuta: bash install.sh"
+        return 1
+    }
+    return 0
 }
 
-# Menú principal
-show_menu() {
-    print_header "📋 MENÚ PRINCIPAL"
-    echo ""
-    echo -e "${GREEN}CREAR BASES DE DATOS${NC}"
-    echo -e "  ${CYAN}1)${NC} Crear base general (todos los blogs)"
-    echo -e "  ${CYAN}2)${NC} Crear base de un blog específico"
-    echo ""
-    echo -e "${YELLOW}ACTUALIZAR METADATOS${NC}"
-    echo -e "  ${CYAN}3)${NC} Simular actualización (--dry-run)"
-    echo -e "  ${CYAN}4)${NC} Actualizar desde Excel"
-    echo -e "  ${CYAN}5)${NC} Actualizar solo un blog"
-    echo -e "  ${CYAN}6)${NC} Actualizar con filtro de ruta"
-    echo ""
-    echo -e "${PURPLE}UTILIDADES${NC}"
-    echo -e "  ${CYAN}7)${NC} Crear configuración"
-    echo -e "  ${CYAN}8)${NC} Ver ayuda"
-    echo -e "  ${CYAN}9)${NC} Abrir Excel generado"
-    echo ""
-    echo -e "${BLUE}0)${NC} Salir"
-    echo ""
-}
+# ---------------------------------------------------------------------------
+# Ruta base de los blogs
+# ---------------------------------------------------------------------------
 
-# Obtener ruta base
 get_base_path() {
-    if [ -f "metadata_config.yml" ]; then
-        BASE_PATH=$(grep "excel_output_dir" metadata_config.yml | cut -d':' -f2- | xargs | sed 's|/excel_databases||' | sed "s|~|$HOME|")
-        if [ -z "$BASE_PATH" ]; then
-            BASE_PATH="$HOME/Documents/publicaciones"
-        fi
+    # Intentar leer desde el config
+    if [ -f "$CONFIG_FILE" ]; then
+        BASE_PATH=$(python3 -c "
+import yaml, os
+with open('$CONFIG_FILE') as f:
+    c = yaml.safe_load(f)
+out = c.get('excel_output_dir','').replace('excel_databases','').replace('~',os.environ['HOME']).rstrip('/')
+print(out or os.environ['HOME'] + '/Documents')
+" 2>/dev/null || echo "$HOME/Documents")
     else
-        BASE_PATH="$HOME/Documents/publicaciones"
+        BASE_PATH="$HOME/Documents"
     fi
-    
-    echo -e "${PURPLE}Ruta actual:${NC} $BASE_PATH"
-    read -p "¿Usar esta ruta? (S/n): " USE_DEFAULT
-    
-    if [ "$USE_DEFAULT" = "n" ] || [ "$USE_DEFAULT" = "N" ]; then
-        read -p "Ingresa la ruta: " CUSTOM_PATH
-        if [ -n "$CUSTOM_PATH" ]; then
-            BASE_PATH="${CUSTOM_PATH/#\~/$HOME}"
-        fi
+
+    print_info "Ruta detectada: $BASE_PATH"
+    read -rp "¿Usar esta ruta? (S/n): " USE_DEFAULT
+    if [[ "${USE_DEFAULT:-}" =~ ^[Nn]$ ]]; then
+        read -rp "Ingresa la ruta: " CUSTOM
+        [ -n "$CUSTOM" ] && BASE_PATH="${CUSTOM/#\~/$HOME}"
     fi
-    
+
     if [ ! -d "$BASE_PATH" ]; then
-        print_error "La ruta no existe: $BASE_PATH"
-        read -p "¿Crear directorio? (s/N): " CREATE_DIR
-        if [ "$CREATE_DIR" = "s" ] || [ "$CREATE_DIR" = "S" ]; then
+        print_warning "La ruta no existe: $BASE_PATH"
+        read -rp "¿Crear directorio? (s/N): " CREATE
+        if [[ "${CREATE:-}" =~ ^[Ss]$ ]]; then
             mkdir -p "$BASE_PATH"
             print_success "Directorio creado"
         else
             return 1
         fi
     fi
-    
     return 0
 }
 
-# Opción 1: Crear base general
-option_create_all() {
-    print_header "📊 CREAR BASE GENERAL"
+# ---------------------------------------------------------------------------
+# Selección del Excel
+# ---------------------------------------------------------------------------
+
+get_excel_file() {
+    local out_dir="$SCRIPT_DIR/excel_databases"
     echo ""
-    
-    get_base_path || return
-    
-    print_step "Creando base de datos de todos los blogs..."
-    echo ""
-    
-    if [ -f "metadata_config.yml" ]; then
-        python3 quarto_metadata_manager.py create-template "$BASE_PATH" \
-            --config metadata_config.yml
+    echo "Archivos Excel disponibles:"
+    if ls "$out_dir"/*.xlsx 2>/dev/null | nl; then
+        :
     else
-        python3 quarto_metadata_manager.py create-template "$BASE_PATH"
+        print_error "No hay archivos Excel en $out_dir"
+        read -rp "Presiona Enter para continuar..."
+        return 1
     fi
-    
     echo ""
-    print_success "Base de datos creada"
-    read -p "Presiona Enter para continuar..."
+    read -rp "Nombre del archivo Excel (Enter = quarto_metadata.xlsx): " EXCEL_FILE
+    EXCEL_FILE="${EXCEL_FILE:-quarto_metadata.xlsx}"
+    [[ "$EXCEL_FILE" != "$out_dir/"* ]] && EXCEL_FILE="$out_dir/$EXCEL_FILE"
+    [ -f "$EXCEL_FILE" ] || { print_error "Archivo no encontrado: $EXCEL_FILE"; read -rp "Presiona Enter..."; return 1; }
+    return 0
 }
 
-# Opción 2: Crear base de blog específico
+config_arg() {
+    [ -f "$CONFIG_FILE" ] && echo "--config $CONFIG_FILE" || echo ""
+}
+
+# ---------------------------------------------------------------------------
+# Opciones del menú
+# ---------------------------------------------------------------------------
+
+option_create_all() {
+    print_header "📊 CREAR BASE GENERAL (todos los blogs)"
+    get_base_path || return
+    print_step "Ejecutando create-template..."
+    python3 "$MAIN_PY" create-template "$BASE_PATH" $(config_arg)
+    print_success "Base de datos creada"
+    read -rp "Presiona Enter para continuar..."
+}
+
 option_create_blog() {
     print_header "📁 CREAR BASE DE BLOG ESPECÍFICO"
-    echo ""
-    
     get_base_path || return
-    
     echo ""
-    read -p "Nombre del blog (ej: axiomata): " BLOG_NAME
-    
-    if [ -z "$BLOG_NAME" ]; then
-        print_error "Nombre de blog requerido"
-        read -p "Presiona Enter para continuar..."
-        return
-    fi
-    
-    print_step "Creando base de datos de '$BLOG_NAME'..."
-    echo ""
-    
-    if [ -f "metadata_config.yml" ]; then
-        python3 quarto_metadata_manager.py create-template "$BASE_PATH" \
-            --blog "$BLOG_NAME" \
-            --config metadata_config.yml
-    else
-        python3 quarto_metadata_manager.py create-template "$BASE_PATH" \
-            --blog "$BLOG_NAME"
-    fi
-    
-    echo ""
+    read -rp "Nombre del blog (ej: pub_axiomata o website-achalma): " BLOG_NAME
+    [ -z "$BLOG_NAME" ] && { print_error "Nombre requerido"; read -rp "Presiona Enter..."; return; }
+    python3 "$MAIN_PY" create-template "$BASE_PATH" --blog "$BLOG_NAME" $(config_arg)
     print_success "Base de datos creada"
-    read -p "Presiona Enter para continuar..."
+    read -rp "Presiona Enter para continuar..."
 }
 
-# Opción 3: Simular actualización
-option_dry_run() {
-    print_header "🔍 SIMULAR ACTUALIZACIÓN"
-    echo ""
-    
+option_incremental() {
+    print_header "🔄 AGREGAR SOLO ARTÍCULOS NUEVOS (modo incremental)"
     get_base_path || return
-    
-    echo ""
-    echo "Archivos Excel disponibles:"
-    ls -1 excel_databases/*.xlsx 2>/dev/null | nl || {
-        print_error "No hay archivos Excel"
-        read -p "Presiona Enter para continuar..."
-        return
-    }
-    
-    echo ""
-    read -p "Nombre del archivo Excel: " EXCEL_FILE
-    
-    if [ -z "$EXCEL_FILE" ]; then
-        EXCEL_FILE="excel_databases/quarto_metadata.xlsx"
-    elif [[ ! "$EXCEL_FILE" =~ ^excel_databases/ ]]; then
-        EXCEL_FILE="excel_databases/$EXCEL_FILE"
-    fi
-    
-    if [ ! -f "$EXCEL_FILE" ]; then
-        print_error "Archivo no encontrado: $EXCEL_FILE"
-        read -p "Presiona Enter para continuar..."
-        return
-    fi
-    
-    print_step "Simulando actualización..."
-    echo ""
-    
-    if [ -f "metadata_config.yml" ]; then
-        python3 quarto_metadata_manager.py update "$BASE_PATH" "$EXCEL_FILE" \
-            --config metadata_config.yml \
-            --dry-run
-    else
-        python3 quarto_metadata_manager.py update "$BASE_PATH" "$EXCEL_FILE" \
-            --dry-run
-    fi
-    
-    echo ""
-    print_success "Simulación completada"
-    read -p "Presiona Enter para continuar..."
+    python3 "$MAIN_PY" create-template "$BASE_PATH" --incremental $(config_arg)
+    print_success "Modo incremental completado"
+    read -rp "Presiona Enter para continuar..."
 }
 
-# Opción 4: Actualizar desde Excel
+option_dry_run() {
+    print_header "🔍 SIMULAR ACTUALIZACIÓN (dry-run)"
+    get_base_path || return
+    get_excel_file || return
+    python3 "$MAIN_PY" update "$BASE_PATH" "$EXCEL_FILE" --dry-run $(config_arg)
+    print_success "Simulación completada"
+    read -rp "Presiona Enter para continuar..."
+}
+
 option_update() {
     print_header "✅ ACTUALIZAR DESDE EXCEL"
-    echo ""
-    
     print_warning "Esta acción modificará los archivos index.qmd"
-    read -p "¿Continuar? (s/N): " CONFIRM
-    
-    if [ "$CONFIRM" != "s" ] && [ "$CONFIRM" != "S" ]; then
-        print_info "Actualización cancelada"
-        read -p "Presiona Enter para continuar..."
-        return
-    fi
-    
+    read -rp "¿Continuar? (s/N): " CONFIRM
+    [[ "${CONFIRM:-}" =~ ^[Ss]$ ]] || { print_info "Cancelado"; read -rp "Presiona Enter..."; return; }
     get_base_path || return
-    
-    echo ""
-    echo "Archivos Excel disponibles:"
-    ls -1 excel_databases/*.xlsx 2>/dev/null | nl || {
-        print_error "No hay archivos Excel"
-        read -p "Presiona Enter para continuar..."
-        return
-    }
-    
-    echo ""
-    read -p "Nombre del archivo Excel: " EXCEL_FILE
-    
-    if [ -z "$EXCEL_FILE" ]; then
-        EXCEL_FILE="excel_databases/quarto_metadata.xlsx"
-    elif [[ ! "$EXCEL_FILE" =~ ^excel_databases/ ]]; then
-        EXCEL_FILE="excel_databases/$EXCEL_FILE"
-    fi
-    
-    if [ ! -f "$EXCEL_FILE" ]; then
-        print_error "Archivo no encontrado: $EXCEL_FILE"
-        read -p "Presiona Enter para continuar..."
-        return
-    fi
-    
-    print_step "Actualizando desde Excel..."
-    echo ""
-    
-    if [ -f "metadata_config.yml" ]; then
-        python3 quarto_metadata_manager.py update "$BASE_PATH" "$EXCEL_FILE" \
-            --config metadata_config.yml
-    else
-        python3 quarto_metadata_manager.py update "$BASE_PATH" "$EXCEL_FILE"
-    fi
-    
-    echo ""
+    get_excel_file || return
+    python3 "$MAIN_PY" update "$BASE_PATH" "$EXCEL_FILE" $(config_arg)
     print_success "Actualización completada"
-    read -p "Presiona Enter para continuar..."
+    read -rp "Presiona Enter para continuar..."
 }
 
-# Opción 5: Actualizar solo un blog
 option_update_blog() {
     print_header "📁 ACTUALIZAR SOLO UN BLOG"
-    echo ""
-    
     get_base_path || return
-    
-    echo ""
-    read -p "Nombre del blog: " BLOG_NAME
-    
-    if [ -z "$BLOG_NAME" ]; then
-        print_error "Nombre de blog requerido"
-        read -p "Presiona Enter para continuar..."
-        return
-    fi
-    
-    echo ""
-    echo "Archivos Excel disponibles:"
-    ls -1 excel_databases/*.xlsx 2>/dev/null | nl
-    
-    echo ""
-    read -p "Nombre del archivo Excel: " EXCEL_FILE
-    
-    if [ -z "$EXCEL_FILE" ]; then
-        EXCEL_FILE="excel_databases/quarto_metadata.xlsx"
-    elif [[ ! "$EXCEL_FILE" =~ ^excel_databases/ ]]; then
-        EXCEL_FILE="excel_databases/$EXCEL_FILE"
-    fi
-    
-    if [ ! -f "$EXCEL_FILE" ]; then
-        print_error "Archivo no encontrado"
-        read -p "Presiona Enter para continuar..."
-        return
-    fi
-    
-    print_step "Actualizando blog '$BLOG_NAME'..."
-    echo ""
-    
-    if [ -f "metadata_config.yml" ]; then
-        python3 quarto_metadata_manager.py update "$BASE_PATH" "$EXCEL_FILE" \
-            --blog "$BLOG_NAME" \
-            --config metadata_config.yml
-    else
-        python3 quarto_metadata_manager.py update "$BASE_PATH" "$EXCEL_FILE" \
-            --blog "$BLOG_NAME"
-    fi
-    
-    echo ""
+    read -rp "Nombre del blog: " BLOG_NAME
+    [ -z "$BLOG_NAME" ] && { print_error "Nombre requerido"; read -rp "Presiona Enter..."; return; }
+    get_excel_file || return
+    python3 "$MAIN_PY" update "$BASE_PATH" "$EXCEL_FILE" --blog "$BLOG_NAME" $(config_arg)
     print_success "Actualización completada"
-    read -p "Presiona Enter para continuar..."
+    read -rp "Presiona Enter para continuar..."
 }
 
-# Opción 6: Actualizar con filtro
 option_update_filter() {
     print_header "🔍 ACTUALIZAR CON FILTRO DE RUTA"
-    echo ""
-    
     get_base_path || return
-    
-    echo ""
-    read -p "Filtro de ruta (ej: 2025, posts, python): " PATH_FILTER
-    
-    if [ -z "$PATH_FILTER" ]; then
-        print_error "Filtro requerido"
-        read -p "Presiona Enter para continuar..."
-        return
-    fi
-    
-    echo ""
-    echo "Archivos Excel disponibles:"
-    ls -1 excel_databases/*.xlsx 2>/dev/null | nl
-    
-    echo ""
-    read -p "Nombre del archivo Excel: " EXCEL_FILE
-    
-    if [ -z "$EXCEL_FILE" ]; then
-        EXCEL_FILE="excel_databases/quarto_metadata.xlsx"
-    elif [[ ! "$EXCEL_FILE" =~ ^excel_databases/ ]]; then
-        EXCEL_FILE="excel_databases/$EXCEL_FILE"
-    fi
-    
-    if [ ! -f "$EXCEL_FILE" ]; then
-        print_error "Archivo no encontrado"
-        read -p "Presiona Enter para continuar..."
-        return
-    fi
-    
-    print_step "Actualizando con filtro '$PATH_FILTER'..."
-    echo ""
-    
-    if [ -f "metadata_config.yml" ]; then
-        python3 quarto_metadata_manager.py update "$BASE_PATH" "$EXCEL_FILE" \
-            --filter-path "$PATH_FILTER" \
-            --config metadata_config.yml
-    else
-        python3 quarto_metadata_manager.py update "$BASE_PATH" "$EXCEL_FILE" \
-            --filter-path "$PATH_FILTER"
-    fi
-    
-    echo ""
+    read -rp "Filtro de ruta (ej: 2025, posts, python): " PATH_FILTER
+    [ -z "$PATH_FILTER" ] && { print_error "Filtro requerido"; read -rp "Presiona Enter..."; return; }
+    get_excel_file || return
+    python3 "$MAIN_PY" update "$BASE_PATH" "$EXCEL_FILE" --filter-path "$PATH_FILTER" $(config_arg)
     print_success "Actualización completada"
-    read -p "Presiona Enter para continuar..."
+    read -rp "Presiona Enter para continuar..."
 }
 
-# Opción 7: Crear configuración
+option_find_diff() {
+    print_header "🔍 ENCONTRAR DIFERENCIAS"
+    get_base_path || return
+    get_excel_file || return
+    read -rp "Filtrar por blog (Enter para todos): " BLOG_F
+    BLOG_ARG="${BLOG_F:+--blog $BLOG_F}"
+    python3 "$MAIN_PY" find-differences "$BASE_PATH" "$EXCEL_FILE" $BLOG_ARG $(config_arg)
+    read -rp "Presiona Enter para continuar..."
+}
+
+option_sync_batch() {
+    print_header "🔄 SINCRONIZACIÓN MASIVA INTERACTIVA"
+    get_base_path || return
+    get_excel_file || return
+    python3 "$MAIN_PY" sync-batch "$BASE_PATH" "$EXCEL_FILE" $(config_arg)
+    print_success "Sincronización completada"
+    read -rp "Presiona Enter para continuar..."
+}
+
+option_detect_fields() {
+    print_header "🔎 DETECTAR CAMPOS NUEVOS"
+    get_base_path || return
+    python3 "$MAIN_PY" detect-new-fields "$BASE_PATH" $(config_arg)
+    read -rp "Presiona Enter para continuar..."
+}
+
 option_create_config() {
     print_header "⚙️  CREAR CONFIGURACIÓN"
-    echo ""
-    
-    if [ -f "metadata_config.yml" ]; then
+    [ -f "$CONFIG_FILE" ] && {
         print_warning "metadata_config.yml ya existe"
-        read -p "¿Sobrescribir? (s/N): " OVERWRITE
-        
-        if [ "$OVERWRITE" != "s" ] && [ "$OVERWRITE" != "S" ]; then
-            print_info "Operación cancelada"
-            read -p "Presiona Enter para continuar..."
-            return
-        fi
-    fi
-    
-    read -p "Ruta base de publicaciones: " BASE_PATH
-    
-    if [ -z "$BASE_PATH" ]; then
-        print_error "Ruta requerida"
-        read -p "Presiona Enter para continuar..."
-        return
-    fi
-    
-    print_step "Creando configuración..."
-    python3 quarto_metadata_manager.py create-config "$BASE_PATH"
-    
-    echo ""
-    print_success "Configuración creada"
-    print_info "Edita metadata_config.yml para personalizar"
-    read -p "Presiona Enter para continuar..."
+        read -rp "¿Sobrescribir? (s/N): " OW
+        [[ "${OW:-}" =~ ^[Ss]$ ]] || { print_info "Cancelado"; read -rp "Presiona Enter..."; return; }
+    }
+    read -rp "Ruta base de los blogs: " BP
+    [ -z "$BP" ] && { print_error "Ruta requerida"; read -rp "Presiona Enter..."; return; }
+    python3 "$MAIN_PY" create-config "${BP/#\~/$HOME}" -o "$CONFIG_FILE"
+    print_success "Configuración creada: $CONFIG_FILE"
+    print_info "Edita allowed_blogs y excluded_folders según tu entorno"
+    read -rp "Presiona Enter para continuar..."
 }
 
-# Opción 8: Ayuda
 option_help() {
     print_header "📖 AYUDA"
     echo ""
-    echo -e "${CYAN}Documentación disponible:${NC}"
+    echo -e "${CYAN}Ver ayuda completa:${NC}"
+    echo "   python3 main.py --help"
     echo ""
-    echo "  📄 README completo:"
-    echo "     cat README.md"
+    echo -e "${CYAN}Documentación:${NC}"
+    echo "   cat README.md"
     echo ""
-    echo "  📝 Ejemplos de configuración:"
-    echo "     cat EJEMPLOS_CONFIGURACION.md"
+    echo -e "${CYAN}Ejemplos de campos Excel:${NC}"
+    echo "   cat Guia_de_Configuracion_para_Excel.md"
     echo ""
-    echo "  🔄 Historial de cambios:"
-    echo "     cat CHANGELOG.md"
+    echo -e "${CYAN}Comandos disponibles:${NC}"
+    echo "   create-config      Crear metadata_config.yml"
+    echo "   create-template    Generar plantilla Excel"
+    echo "   update             Aplicar Excel → archivos .qmd"
+    echo "   detect-new-fields  Detectar campos YAML nuevos"
+    echo "   add-columns        Agregar columnas al Excel"
+    echo "   find-differences   Ver diferencias"
+    echo "   sync-article       Sincronizar un artículo"
+    echo "   sync-batch         Sincronización masiva"
     echo ""
-    echo -e "${CYAN}Comandos manuales:${NC}"
-    echo ""
-    echo "  Crear base general:"
-    echo "     python quarto_metadata_manager.py create-template ~/Documents/publicaciones"
-    echo ""
-    echo "  Actualizar:"
-    echo "     python quarto_metadata_manager.py update ~/Documents/publicaciones excel.xlsx"
-    echo ""
-    echo "  Ver todas las opciones:"
-    echo "     python quarto_metadata_manager.py --help"
-    echo ""
-    echo -e "${CYAN}Soporte:${NC}"
-    echo "  Email: achalmaedison@gmail.com"
-    echo ""
-    read -p "Presiona Enter para continuar..."
+    read -rp "Presiona Enter para continuar..."
 }
 
-# Opción 9: Abrir Excel
 option_open_excel() {
     print_header "📊 ABRIR EXCEL"
-    echo ""
-    
-    echo "Archivos Excel disponibles:"
-    ls -1 excel_databases/*.xlsx 2>/dev/null | nl || {
-        print_error "No hay archivos Excel"
-        read -p "Presiona Enter para continuar..."
-        return
+    local out_dir="$SCRIPT_DIR/excel_databases"
+    echo "Archivos disponibles:"
+    ls -1 "$out_dir"/*.xlsx 2>/dev/null | nl || {
+        print_error "No hay archivos Excel en $out_dir"
+        read -rp "Presiona Enter..."; return
     }
-    
     echo ""
-    read -p "Número o nombre del archivo: " EXCEL_CHOICE
-    
-    if [[ "$EXCEL_CHOICE" =~ ^[0-9]+$ ]]; then
-        EXCEL_FILE=$(ls -1 excel_databases/*.xlsx 2>/dev/null | sed -n "${EXCEL_CHOICE}p")
+    read -rp "Número o nombre: " CHOICE
+    if [[ "$CHOICE" =~ ^[0-9]+$ ]]; then
+        EXCEL_FILE=$(ls -1 "$out_dir"/*.xlsx 2>/dev/null | sed -n "${CHOICE}p")
     else
-        if [[ "$EXCEL_CHOICE" =~ ^excel_databases/ ]]; then
-            EXCEL_FILE="$EXCEL_CHOICE"
-        else
-            EXCEL_FILE="excel_databases/$EXCEL_CHOICE"
-        fi
+        EXCEL_FILE="$out_dir/$CHOICE"
     fi
-    
-    if [ -z "$EXCEL_FILE" ] || [ ! -f "$EXCEL_FILE" ]; then
-        print_error "Archivo no encontrado"
-        read -p "Presiona Enter para continuar..."
-        return
-    fi
-    
-    print_step "Abriendo $EXCEL_FILE..."
-    
-    if command -v libreoffice &> /dev/null; then
+    [ -f "$EXCEL_FILE" ] || { print_error "Archivo no encontrado"; read -rp "Presiona Enter..."; return; }
+    if command -v libreoffice &>/dev/null; then
         libreoffice "$EXCEL_FILE" &
-    elif command -v open &> /dev/null; then
-        open "$EXCEL_FILE"
-    elif command -v xdg-open &> /dev/null; then
+    elif command -v xdg-open &>/dev/null; then
         xdg-open "$EXCEL_FILE"
+    elif command -v open &>/dev/null; then
+        open "$EXCEL_FILE"
     else
-        print_error "No se encontró programa para abrir Excel"
         print_info "Abre manualmente: $EXCEL_FILE"
     fi
-    
-    echo ""
     print_success "Excel abierto"
-    read -p "Presiona Enter para continuar..."
+    read -rp "Presiona Enter para continuar..."
 }
 
+# ---------------------------------------------------------------------------
+# Menú principal
+# ---------------------------------------------------------------------------
+
+show_menu() {
+    print_header "📋 MENÚ PRINCIPAL — Gestión de Metadatos Quarto v2.0"
+    echo ""
+    echo -e "${GREEN}CREAR BASES DE DATOS${NC}"
+    echo -e "  ${CYAN}1)${NC} Crear base general (todos los blogs)"
+    echo -e "  ${CYAN}2)${NC} Crear base de un blog específico"
+    echo -e "  ${CYAN}3)${NC} Modo incremental (solo artículos nuevos)"
+    echo ""
+    echo -e "${YELLOW}ACTUALIZAR METADATOS${NC}"
+    echo -e "  ${CYAN}4)${NC} Simular actualización (--dry-run)"
+    echo -e "  ${CYAN}5)${NC} Actualizar desde Excel (todos)"
+    echo -e "  ${CYAN}6)${NC} Actualizar solo un blog"
+    echo -e "  ${CYAN}7)${NC} Actualizar con filtro de ruta"
+    echo ""
+    echo -e "${PURPLE}SINCRONIZACIÓN${NC}"
+    echo -e "  ${CYAN}8)${NC} Encontrar diferencias"
+    echo -e "  ${CYAN}9)${NC} Sincronización masiva interactiva"
+    echo -e "  ${CYAN}10)${NC} Detectar campos YAML nuevos"
+    echo ""
+    echo -e "${BLUE}UTILIDADES${NC}"
+    echo -e "  ${CYAN}11)${NC} Crear configuración (metadata_config.yml)"
+    echo -e "  ${CYAN}12)${NC} Abrir Excel generado"
+    echo -e "  ${CYAN}13)${NC} Ver ayuda"
+    echo ""
+    echo -e "  ${RED}0)${NC} Salir"
+    echo ""
+}
+
+# ---------------------------------------------------------------------------
 # Main loop
+# ---------------------------------------------------------------------------
+
 main() {
-    # Verificar dependencias
-    check_conda
-    
-    if ! check_dependencies; then
-        print_error "Dependencias faltantes"
-        print_info "Ejecuta: ./install.sh"
-        exit 1
-    fi
-    
+    check_conda || true
+    check_dependencies || exit 1
+
     while true; do
-        show_banner
+        clear
         show_menu
-        read -p "Selecciona una opción: " OPTION
-        
-        case $OPTION in
-            1) option_create_all ;;
-            2) option_create_blog ;;
-            3) option_dry_run ;;
-            4) option_update ;;
-            5) option_update_blog ;;
-            6) option_update_filter ;;
-            7) option_create_config ;;
-            8) option_help ;;
-            9) option_open_excel ;;
-            0)
-                print_info "Saliendo..."
-                exit 0
-                ;;
-            *)
-                print_error "Opción inválida"
-                sleep 1
-                ;;
+        read -rp "Selecciona una opción: " OPT
+
+        case "${OPT:-}" in
+            1)  option_create_all ;;
+            2)  option_create_blog ;;
+            3)  option_incremental ;;
+            4)  option_dry_run ;;
+            5)  option_update ;;
+            6)  option_update_blog ;;
+            7)  option_update_filter ;;
+            8)  option_find_diff ;;
+            9)  option_sync_batch ;;
+            10) option_detect_fields ;;
+            11) option_create_config ;;
+            12) option_open_excel ;;
+            13) option_help ;;
+            0)  print_info "Saliendo..."; exit 0 ;;
+            *)  print_error "Opción inválida"; sleep 1 ;;
         esac
     done
 }
 
-# Ejecutar
 main

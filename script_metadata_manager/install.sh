@@ -4,7 +4,7 @@
 # Script de Instalación - Sistema de Gestión de Metadatos Quarto
 # Versión: 1.2.0
 # Autor: Edison Achalma
-# Fecha: Diciembre 2024
+# Fecha: junio 2026
 ################################################################################
 
 set -e  # Salir si hay errores
@@ -50,7 +50,7 @@ clear
 print_header "🚀 INSTALADOR - SISTEMA DE GESTIÓN DE METADATOS QUARTO v1.2"
 echo ""
 echo -e "${CYAN}Autor:${NC} Edison Achalma"
-echo -e "${CYAN}Email:${NC} achalmaedison@gmail.com"
+echo -e "${CYAN}Email:${NC} achalmed.18@gmail.com"
 echo -e "${CYAN}Ubicación:${NC} Ayacucho, Perú"
 echo ""
 print_header "📋 VERIFICACIÓN DE REQUISITOS"
