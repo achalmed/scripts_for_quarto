@@ -1,1179 +1,461 @@
-# Gestor de Publicaciones Quarto
-#readme
+# 🚀 Gestor de Publicaciones Quarto (blog-manager) — v3.0
+
+Herramienta de línea de comandos para gestionar todos tus proyectos Quarto
+(`pub_*` + `website-achalma`) dentro de `~/Documents`: renderizar, hacer
+preview, limpiar, publicar, crear posts APAQuarto completos, gestionar Git,
+crear blogs nuevos, verificar su integridad y hacer backups — todo desde un
+único punto de entrada: `main.sh`.
+
+Esta es la versión 3.0, reescrita en módulos a partir del antiguo
+`build.sh` monolítico (v2.0) + sus scripts auxiliares (`init-blog.sh`,
+`check-structure.sh`, `backup-blogs.sh`, `config.sh`). **Toda la
+funcionalidad original se conserva**; solo cambia cómo está organizado el
+código y cómo se detectan los proyectos.
 
-Script completo para gestionar múltiples blogs y sitios web creados con Quarto.
-
-# Tabla de Contenidos
-
-- [Características](#características)
-- [Requisitos](#requisitos)
-- [Instalación](#instalación)
-- [Uso](#uso)
-  - [Modo Interactivo](#modo-interactivo)
-  - [Línea de Comandos](#línea-de-comandos)
-- [Comandos Disponibles](#comandos-disponibles)
-- [Ejemplos Prácticos](#ejemplos-prácticos)
-- [Estructura de Directorios](#estructura-de-directorios)
-- [Solución de Problemas](#solución-de-problemas)
-
-# Características
-
-## Gestión de Blogs
-
-- Listar todos los blogs disponibles
-- Renderizar blogs completos o individuales
-- Preview local con servidor integrado
-- Publicación a múltiples plataformas (GitHub Pages, Netlify, Quarto Pub)
-- Limpieza de archivos generados
-- Verificación e inspección de proyectos
-
-## Gestión de Posts
-
-- Crear nuevos posts con plantilla automática
-- Listar posts de cualquier blog
-- Renderizar posts individuales
-- Estructura de nombres automática basada en fecha
-
-## Operaciones Múltiples
-
-- Renderizar todos los blogs en batch
-- Limpiar todos los proyectos simultáneamente
-- Operaciones en paralelo para mayor eficiencia
-
-## Integración Git
-
-- Inicialización de repositorios
-- Commit y push automatizado
-- Verificación de estado
-- Creación automática de .gitignore
-
-## Interfaz
-
-- Modo interactivo con menú intuitivo
-- Modo línea de comandos para automatización
-- Colores y formato para mejor visualización
-- Mensajes claros de éxito/error
-
-# Requisitos
-
-## Software Necesario
-
-1. **Quarto** (versión 1.3 o superior)
-
-   ```bash
-   # Verificar instalación
-   quarto --version
-   ```
-
-   Descargar desde: https://quarto.org/docs/get-started/
-
-2. **Bash** (incluido en Linux/macOS)
-
-   ```bash
-   bash --version
-   ```
-
-3. **Git** (opcional, para funciones de Git)
-   ```bash
-   git --version
-   ```
-
-## Estructura de Directorios Requerida
-
-```
-/home/achalmaedison/Documents/
-├── publicaciones/          # Directorio principal de blogs
-│   ├── actus-mercator/
-│   │   ├── index.qmd
-│   │   ├── _quarto.yml
-│   │   └── posts/
-│   ├── aequilibria/
-│   ├── axiomata/
-│   └── ...
-└── scripts/
-    └── scripts_for_quarto/
-        ├── build.sh        # Este script
-        └── README.md
-```
-
-# Instalación
-
-## Instalación Rápida
-
-```bash
-# Copiar y dar permisos
-cp build.sh /home/achalmaedison/Documents/scripts/scripts_for_quarto/
-chmod +x /home/achalmaedison/Documents/scripts/scripts_for_quarto/build.sh
-
-# Crear alias (opcional)
-echo 'alias qbuild="build.sh"' >> ~/.bashrc
-source ~/.bashrc
-```
-
-## 1. Descargar el Script
-
-```bash
-# Crear directorio de scripts si no existe
-mkdir -p /home/achalmaedison/Documents/scripts/scripts_for_quarto
-
-# Navegar al directorio
-cd /home/achalmaedison/Documents/scripts/scripts_for_quarto
-
-# Descargar o copiar el script build.sh aquí
-```
-
-## 2. Dar Permisos de Ejecución
-
-```bash
-chmod +x build.sh
-```
-
-## 3. (Opcional) Añadir al PATH
-
-Para ejecutar el script desde cualquier ubicación:
-
-```bash
-# Añadir al ~/.bashrc o ~/.zshrc
-echo 'export PATH="$PATH:/home/achalmaedison/Documents/scripts/scripts_for_quarto"' >> ~/.bashrc
-
-# Recargar configuración
-source ~/.bashrc
-
-# Ahora puedes ejecutar simplemente:
-build.sh
-```
-
-## 4. (Opcional) Crear Alias
-
-```bash
-# Añadir al ~/.bashrc o ~/.zshrc
-echo 'alias qbuild="/home/achalmaedison/Documents/scripts/scripts_for_quarto/build.sh"' >> ~/.bashrc
-
-# Recargar
-source ~/.bashrc
-
-# Usar alias
-qbuild list
-```
-
-# Uso
-
-## Modo Interactivo
-
-La forma más sencilla de usar el script es en modo interactivo:
-
-```bash
-./build.sh
-# o simplemente
-./build.sh -i
-# o
-./build.sh interactive
-
-# Modo interactivo
-./build.sh
-
-# Comandos directos
-./build.sh list                      # Listar blogs
-./build.sh new-post numerus-scriptum # Crear post
-./build.sh render epsilon-y-beta     # Renderizar
-./build.sh preview website-achalma   # Preview
-```
-
-Esto mostrará un menú con todas las opciones disponibles:
-
-```
-═══════════════════════════════════════════════════════════════
-  🚀 Gestor de Publicaciones Quarto
-═══════════════════════════════════════════════════════════════
-
-Directorio: /home/achalmaedison/Documents/publicaciones
-
-Opciones principales:
-  1) Listar todos los blogs
-  2) Renderizar blog específico
-  3) Preview de blog
-  4) Limpiar archivos generados
-  5) Publicar blog
-  ...
-```
-
-## Línea de Comandos
-
-Para automatización o uso rápido:
-
-```bash
-./build.sh [COMANDO] [OPCIONES]
-```
-
-# Comandos Disponibles
-
-## Gestión de Blogs
-
-## `list`
-
-Lista todos los blogs disponibles con sus títulos.
-
-```bash
-./build.sh list
-```
-
-**Salida:**
-
-```
-═══════════════════════════════════════════════════════════════
-  Blogs Disponibles
-═══════════════════════════════════════════════════════════════
-
-1. actus-mercator
-   📖 Blog de Comercio Internacional
-
-2. aequilibria
-   📖 Economía y Equilibrio
-...
-```
-
-## `render BLOG`
-
-Renderiza un blog completo.
-
-```bash
-./build.sh render website-achalma
-./build.sh render epsilon-y-beta
-```
-
-**Proceso:**
-
-1. Navega al directorio del blog
-2. Ejecuta `quarto render`
-3. Genera el sitio en `_site/`
-
-## `preview BLOG [PUERTO]`
-
-Inicia servidor de preview local.
-
-```bash
-# Puerto por defecto (4200)
-./build.sh preview axiomata
-
-# Puerto personalizado
-./build.sh preview numerus-scriptum 4300
-```
-
-**Características:**
-
-- Servidor local con recarga automática
-- No abre navegador automáticamente
-- Ctrl+C para detener
-
-## `preview-browser BLOG [PUERTO]`
-
-Preview con apertura automática del navegador.
-
-```bash
-./build.sh preview-browser chaska 4500
-```
-
-## `clean BLOG`
-
-Elimina archivos generados.
-
-```bash
-./build.sh clean actus-mercator
-```
-
-**Elimina:**
-
-- `_site/` - Sitio generado
-- `_freeze/` - Cache de ejecución
-- `.quarto/` - Archivos temporales de Quarto
-
-## `publish BLOG [TARGET]`
-
-Publica el blog en plataforma seleccionada.
-
-```bash
-# GitHub Pages (por defecto)
-./build.sh publish website-achalma
-
-# Netlify
-./build.sh publish website-achalma netlify
-
-# Quarto Pub
-./build.sh publish epsilon-y-beta quarto-pub
-
-# Confluence
-./build.sh publish methodica confluence
-```
-
-**Targets disponibles:**
-
-- `gh-pages` - GitHub Pages
-- `netlify` - Netlify
-- `quarto-pub` - Quarto Pub
-- `confluence` - Confluence
-
-## `check BLOG`
-
-Verifica configuración del blog.
-
-```bash
-./build.sh check aequilibria
-```
-
-**Verifica:**
-
-- Instalación de Quarto
-- Dependencias de R/Python
-- Configuración YAML
-- Extensiones
-
-## `inspect BLOG`
-
-Inspecciona estructura del proyecto.
-
-```bash
-./build.sh inspect optimums
-```
-
-**Muestra:**
-
-- Archivos del proyecto
-- Configuración detectada
-- Outputs esperados
-
-## Gestión de Posts
-
-## `list-posts BLOG`
-
-Lista todos los posts de un blog.
-
-```bash
-./build.sh list-posts epsilon-y-beta
-```
-
-**Salida:**
-
-```
-═══════════════════════════════════════════════════════════════
-  Posts en epsilon-y-beta
-═══════════════════════════════════════════════════════════════
-
-1. 2021-03-01-01-modelo-clasico-de-regresion-lineal
-   📄 Modelo Clásico de Regresión Lineal
-   📂 /home/.../epsilon-y-beta/posts/2021-03-01-01-modelo-clasico...
-
-2. 2021-03-08-02-el-estimador-de-minimos-cuadrados-ordinarios-mco
-   📄 El Estimador de Mínimos Cuadrados Ordinarios
-...
-```
-
-## `render-post RUTA_POST`
-
-Renderiza un post específico.
-
-```bash
-./build.sh render-post /home/achalmaedison/Documents/publicaciones/numerus-scriptum/python/2021-04-17-01-introducion-a-la-programacion-con-python/index.qmd
-```
-
-## `new-post BLOG [TITULO]`
-
-Crea un nuevo post con plantilla.
-
-```bash
-# Con título en comando
-./build.sh new-post axiomata "Tutorial de Álgebra Lineal"
-
-# Sin título (pedirá interactivamente)
-./build.sh new-post chaska
-```
-
-**Crea:**
-
-```
-posts/2025-12-28-tutorial-de-algebra-lineal/
-└── index.qmd
-```
-
-**Plantilla generada:**
-
-```yaml
 ---
-title: "Tutorial de Álgebra Lineal"
-author: "Edison Achalma"
-date: "2025-12-28"
-categories: []
-description: ""
-draft: true
+
+## 📋 Índice
+
+1. [Qué cambió respecto a la versión anterior](#-qué-cambió-respecto-a-la-versión-anterior)
+2. [Estructura del proyecto](#-estructura-del-proyecto)
+3. [Instalación](#-instalación)
+4. [Uso rápido](#-uso-rápido)
+5. [Comandos completos](#-comandos-completos)
+6. [El asistente de creación de posts (APAQuarto)](#-el-asistente-de-creación-de-posts-apaquarto)
+7. [Modo interactivo (menú)](#-modo-interactivo-menú)
+8. [Configuración y personalización](#-configuración-y-personalización)
+9. [Bugs corregidos respecto al script original](#-bugs-corregidos-respecto-al-script-original)
+10. [Resolución de problemas](#-resolución-de-problemas)
+
 ---
-# Introducción
 
-Tu contenido aquí...
-```
+## 🔄 Qué cambió respecto a la versión anterior
 
-## Crear Posts con APAQuarto
+| Aspecto | v2.0 (build.sh) | v3.0 (blog-manager) |
+|---|---|---|
+| Organización | 1 archivo de ~2000 líneas | `main.sh` + 13 módulos en `lib/` |
+| Scripts auxiliares | 4 archivos sueltos (`init-blog.sh`, `check-structure.sh`, `backup-blogs.sh`, `config.sh`) | Integrados como comandos de `main.sh` |
+| Ubicación de proyectos | Carpeta contenedora `publicaciones/` | Directo en `~/Documents`, detectando `pub_*` + `website-achalma` |
+| Detección de Documents | Ruta fija hardcodeada | Autodetección (o `QBLOG_DOCS_DIR` si la fuerzas) |
+| Nombres de blog | Nombre exacto de carpeta | Nombre exacto **o** corto sin el prefijo `pub_` (ej: `axiomata`) |
+| Documentación | `README.md` + `INSTALL.md` + `CHANGELOG.md` + `ACTUALIZACION.md` separados | Este único `README.md` |
 
-### Tipos de Documento
+Tu flujo de trabajo diario (comandos, menú interactivo, wizard de posts) es
+el mismo; solo cambia la instalación y de dónde lee tus blogs.
 
-| Tipo    | Uso                    | Formato                 |
-| ------- | ---------------------- | ----------------------- |
-| **doc** | Documentos generales   | 1 columna, flexible     |
-| **jou** | Artículos tipo revista | 2 columnas, pulido      |
-| **man** | Manuscritos formales   | 1 columna, APA completo |
-| **stu** | Trabajos estudiantiles | 1 columna, con curso    |
-
-### Características Principales
-
-### Seis Secciones Completas del Formulario
-
-1. **Opciones Generales** (3 subsecciones)
-   - Información del Título
-   - Opciones del Documento
-   - Suprimir Elementos
-
-2. **Opciones de Formato**
-   - Tipo de documento (doc/jou/man/stu)
-   - Formatos de salida
-   - Configuración específica por tipo
-
-3. **Autores y Afiliaciones**
-   - Información del autor
-   - Roles CRediT completos
-   - Afiliación institucional detallada
-
-4. **Author Note**
-   - Cambios de estado
-   - Disclosures completos
-
-5. **Abstract y Keywords**
-   - Abstract multilinea
-   - Keywords
-   - Impact statement
-   - Word count
-
-6. **Opciones de Idioma**
-   - Idioma principal
-   - Personalizaciones específicas
-
-### Características del Asistente
-
-- **Paso a paso**: Pantalla limpia en cada sección
-- **Ejemplos claros**: Cada campo muestra un ejemplo
-- **Opción de omitir**: Enter para usar defaults u omitir
-- **Interfaz visual**: Colores, emojis, progress tracking
-- **Metadata limpia**: Sin comentarios en el YAML generado
-- **Validaciones**: Verifica campos obligatorios
-- **Resumen final**: Muestra configuración completa
-
-### Ejemplos en Cada Campo
-
-```bash
-Ejemplo: "Análisis Econométrico Avanzado: Modelos ARIMA"
-read -p "Title (título principal): " post_title
-```
-
-### Valores por Defecto
-
-```bash
-read -p "Floatsintext (s/n, default: n): " floatsintext
-floatsintext=${floatsintext:-n}
-```
-
-### Opciones de Omitir
-
-```bash
-read -p "Impact-statement (Enter para omitir): " impact_statement
-```
-
-### Progress Tracking
-
-```bash
-print_header "📝 Sección 1/6: Opciones Generales"
-```
-
-### Metadata Generada
-
-```yaml
 ---
-title: "Mi Título"
-subtitle: "Mi Subtítulo"
-shorttitle: "Mi Título"
-date: "2025-01-28"
-date-modified: "today"
-tags: ["tag1", "tag2"]
-categories: ["cat1"]
-image: ../featured.jpg
-bibliography: references.bib
-jupyter: python3
-```
 
-### Flujo del Asistente
+## 📁 Estructura del proyecto
 
 ```
-🚀 Inicio
-    ↓
-📁 Paso 0: Seleccionar carpeta
-    ↓
-📝 Sección 1/6: Opciones Generales
-    → 1.1 Título
-    → 1.2 Opciones documento
-    → 1.3 Suprimir elementos
-    ↓
-🎨 Sección 2/6: Formato
-    → Tipo documento
-    → Formatos salida
-    → Config específica
-    ↓
-👤 Sección 3/6: Autores
-    → Información autor
-    → Roles CRediT
-    → Afiliación
-    ↓
-📋 Sección 4/6: Author Note
-    → Cambios estado
-    → Disclosures
-    ↓
-📄 Sección 5/6: Abstract
-    → Abstract
-    → Keywords
-    → Impact
-    ↓
-🌍 Sección 6/6: Idioma
-    → Lang
-    → Personalizaciones
-    ↓
-🏷️ Info Adicional
-    → Tags
-    → Categorías
-    ↓
-⚙️ Generación
-    ↓
-✅ Resumen y Abrir
+blog-manager/
+├── main.sh                      ⭐ Punto de entrada único
+├── README.md                    📖 Este archivo
+└── lib/
+    ├── 00-config.sh              Rutas, colores, emojis, listas configurables
+    ├── 01-printing.sh            Funciones de salida visual (headers, cajas, etc.)
+    ├── 02-utils.sh                Autodetección, listado y resolución de proyectos
+    ├── 03-listing.sh              list_blogs, list_posts
+    ├── 04-quarto-ops.sh           render, preview, clean, publish, check, inspect, convert
+    ├── 05-batch-ops.sh            render-all, clean-all
+    ├── 06-git-ops.sh              git-status, git-commit, git-init
+    ├── 07-post-creator.sh         Asistente interactivo de posts APAQuarto (6 secciones)
+    ├── 08-init-blog.sh            Creación de blogs nuevos
+    ├── 09-structure-check.sh      Verificación de integridad de blogs
+    ├── 10-backup.sh                Sistema de backups (individual/completo/incremental)
+    ├── 11-interactive-menu.sh     Menú interactivo (modo -i)
+    └── 12-help.sh                 Texto de ayuda (help/-h/--help)
 ```
 
-### Ejemplo de Uso
+Ningún módulo necesita ejecutarse por separado: `main.sh` los carga todos en
+orden (`source`) y expone un único comando.
 
-```bash
-$ ./build.sh new-post numerus-scriptum
-
-═══════════════════════════════════════════════════════════════
-  🚀 Asistente de Creación de Posts - numerus-scriptum
-═══════════════════════════════════════════════════════════════
-
-Este asistente te guiará paso a paso para crear un post APAQuarto completo.
-Presiona Enter para usar valores por defecto | Escribe 'omitir' para saltar
-
-[Proceso guiado con 6 secciones completas]
-
-═══════════════════════════════════════════════════════════════
-  ✅ Post Creado Exitosamente
-═══════════════════════════════════════════════════════════════
-
-ℹ️ Ubicación: .../python/2025-01-28-analisis-datos
-ℹ️ Archivo: index.qmd
-ℹ️ Tipo: APAQuarto jou
-
-Resumen de configuración:
-  • Título: Análisis de Datos con Pandas
-  • Tipo de documento: jou
-  • Tags: 3
-  • Categorías: 2
-  • Autor: Edison Achalma
-
-¿Deseas abrir el archivo para editar? (s/n):
-```
-
-# Operaciones Múltiples
-
-## `render-all`
-
-Renderiza todos los blogs.
-
-```bash
-./build.sh render-all
-```
-
-**Proceso:**
-
-- Recorre todos los directorios en `/publicaciones/`
-- Renderiza cada blog encontrado
-- Muestra resumen al final
-
-**Salida:**
-
-```
-═══════════════════════════════════════════════════════════════
-  Renderizando TODOS los blogs
-═══════════════════════════════════════════════════════════════
-
-ℹ Procesando: actus-mercator
-✓ Blog renderizado exitosamente
-
-ℹ Procesando: aequilibria
-✓ Blog renderizado exitosamente
-...
-
-═══════════════════════════════════════════════════════════════
-  Resumen
-═══════════════════════════════════════════════════════════════
-✓ Exitosos: 15
-```
-
-## `clean-all`
-
-Limpia todos los blogs (con confirmación).
-
-```bash
-./build.sh clean-all
-```
-
-**Solicita confirmación:**
-
-```
-¿Estás seguro? Esta acción eliminará todos los archivos generados (s/n):
-```
-
-# Integración Git
-
-## `git-init BLOG`
-
-Inicializa repositorio Git.
-
-```bash
-./build.sh git-init pecunia-fluxus
-```
-
-**Crea:**
-
-- Repositorio Git
-- `.gitignore` con exclusiones apropiadas
-
-**`.gitignore` generado:**
-
-```
-/.quarto/
-/_site/
-/_freeze/
-/.Rproj.user/
-.Rhistory
-.RData
-.DS_Store
-```
-
-## `git-status BLOG`
-
-Muestra estado de Git.
-
-```bash
-./build.sh git-status dialectica-y-mercado
-```
-
-## `git-commit BLOG [MENSAJE]`
-
-Commit y push de cambios.
-
-```bash
-# Con mensaje personalizado
-./build.sh git-commit res-publica "Actualización de posts sobre administración pública"
-
-# Mensaje por defecto
-./build.sh git-commit methodica
-```
-
-**Proceso:**
-
-1. `git add .`
-2. `git commit -m "MENSAJE"`
-3. `git push`
-
-# Utilidades
-
-## `convert ARCHIVO [FORMATO]`
-
-Convierte documento a otro formato.
-
-```bash
-# HTML (por defecto)
-./build.sh convert documento.qmd
-
-# PDF
-./build.sh convert documento.qmd pdf
-
-# Word
-./build.sh convert documento.qmd docx
-```
-
-**Formatos soportados:**
-
-- `html`
-- `pdf`
-- `docx`
-- `revealjs` (presentaciones)
-- `beamer` (presentaciones PDF)
-
-## `help`, `-h`, `--help`
-
-Muestra ayuda completa.
-
-```bash
-./build.sh help
-```
-
-## `version`, `-v`
-
-Muestra versión de Quarto.
-
-```bash
-./build.sh version
-```
-
-# Ejemplos Prácticos
-
-## Flujo de Trabajo Típico
-
-## 1. Crear y Desarrollar Nuevo Post
-
-```bash
-# Crear nuevo post
-./build.sh new-post epsilon-y-beta "Análisis de Series Temporales"
-
-# El script abre el editor y comienzas a escribir...
-
-# Preview mientras escribes
-./build.sh preview epsilon-y-beta
-
-# Renderizar cuando termines
-./build.sh render epsilon-y-beta
-```
-
-## 2. Actualizar Blog Existente
-
-```bash
-# Ver estado actual
-./build.sh git-status website-achalma
-
-# Limpiar archivos antiguos
-./build.sh clean website-achalma
-
-# Renderizar versión fresca
-./build.sh render website-achalma
-
-# Commit y publicar
-./build.sh git-commit website-achalma "Actualización de diciembre"
-./build.sh publish website-achalma
-```
-
-## 3. Mantenimiento General
-
-```bash
-# Listar todos los blogs
-./build.sh list
-
-# Verificar configuración de un blog específico
-./build.sh check axiomata
-
-# Renderizar todos los blogs (útil para verificación)
-./build.sh render-all
-
-# Limpiar todo antes de backup
-./build.sh clean-all
-```
-
-## 4. Trabajo en Post Específico
-
-```bash
-# Listar posts de un blog
-./build.sh list-posts numerus-scriptum
-
-# Renderizar solo ese post
-./build.sh render-post /home/achalmaedison/Documents/publicaciones/numerus-scriptum/python/2021-04-17-01-introducion-a-la-programacion-con-python/index.qmd
-```
-
-## Casos de Uso Avanzados
-
-## Publicación Multi-Plataforma
-
-```bash
-# Publicar en GitHub Pages
-./build.sh publish website-achalma gh-pages
-
-# Publicar en Netlify para staging
-./build.sh publish website-achalma netlify
-
-# Publicar versión final en Quarto Pub
-./build.sh publish website-achalma quarto-pub
-```
-
-## Automatización con Cron
-
-```bash
-# Editar crontab
-crontab -e
-
-# Renderizar todos los blogs diariamente a las 2 AM
-0 2 * * * /home/achalmaedison/Documents/scripts/scripts_for_quarto/build.sh render-all >> /tmp/quarto-render.log 2>&1
-
-# Limpiar archivos temporales semanalmente
-0 3 * * 0 /home/achalmaedison/Documents/scripts/scripts_for_quarto/build.sh clean-all
-```
-
-## Scripts de Integración Continua
-
-```bash
-#!/bin/bash
-# deploy.sh - Script de despliegue
-
-SCRIPT="/home/achalmaedison/Documents/scripts/scripts_for_quarto/build.sh"
-
-# Limpiar y renderizar
-$SCRIPT clean website-achalma
-$SCRIPT render website-achalma
-
-# Verificar que no hay errores
-if [ $? -eq 0 ]; then
-    # Commit y publicar
-    $SCRIPT git-commit website-achalma "Deploy automático $(date)"
-    $SCRIPT publish website-achalma gh-pages
-else
-    echo "Error en renderizado, abortando deploy"
-    exit 1
-fi
-```
-
-# Estructura de Directorios
-
-## Estructura Esperada de un Blog
-
-```
-blog-name/
-├── index.qmd                    # Página principal
-├── _quarto.yml                  # Configuración del blog
-├── _metadata.yml               # (Opcional) Metadatos globales
-├── about.qmd                   # (Opcional) Página sobre
-├── assets/                     # Recursos estáticos
-│   ├── fonts/
-│   └── img/
-├── _extensions/                # Extensiones de Quarto
-│   └── quarto-ext/
-├── posts/                      # Directorio de posts
-│   ├── YYYY-MM-DD-titulo-post-1/
-│   │   ├── index.qmd
-│   │   └── images/
-│   └── YYYY-MM-DD-titulo-post-2/
-│       └── index.qmd
-├── _site/                      # Sitio generado (ignorar)
-├── _freeze/                    # Cache (ignorar)
-├── .quarto/                    # Temporal (ignorar)
-└── .gitignore
-```
-
-## Archivos Clave
-
-## `_quarto.yml`
-
-```yaml
-project:
-  type: website
-  output-dir: _site
-
-website:
-  title: "Mi Blog"
-  navbar:
-    left:
-      - href: index.qmd
-        text: Inicio
-      - about.qmd
-
-format:
-  html:
-    theme: cosmo
-    css: styles.css
-```
-
-## `index.qmd`
-
-```yaml
 ---
-title: "Mi Blog"
-listing:
-  contents: posts
-  sort: "date desc"
-  type: default
-  categories: true
+
+## ⚡ Instalación
+
+### 1. Copiar la carpeta a tu ubicación de scripts
+
+```bash
+cp -r blog-manager /home/achalmaedison/Documents/scripts_for_quarto/
+cd /home/achalmaedison/Documents/scripts_for_quarto/script_blogs_manager
+chmod +x main.sh
+```
+
+### 2. Probar que detecta tus blogs
+
+```bash
+./main.sh list
+```
+
+Si todo está bien instalado, deberías ver tus proyectos `pub_*` y
+`website-achalma` listados automáticamente — **no necesitas editar ninguna
+ruta**, `main.sh` sube desde su propia ubicación buscando la carpeta
+`Documents` que contiene tus proyectos.
+
+Si por algún motivo la autodetección no encuentra tu carpeta `Documents`
+(por ejemplo, si mueves el script muy lejos de tus proyectos), puedes
+forzar la ruta:
+
+```bash
+QBLOG_DOCS_DIR="/home/achalmaedison/Documents" ./main.sh list
+```
+
+### 3. (Opcional) Crear un alias para acceso rápido
+
+Añade a tu `~/.zshrc` o `~/.bashrc`:
+
+```bash
+alias qblog="/home/achalmaedison/Documents/scripts/scripts_for_quarto/blog-manager/main.sh"
+```
+
+Recarga la configuración:
+
+```bash
+source ~/.zshrc   # o ~/.bashrc
+```
+
+Ahora puedes usar simplemente:
+
+```bash
+qblog list
+qblog render pub_axiomata
+```
+
+### 4. (Opcional) Añadir al PATH para acceso global
+
+```bash
+echo 'export PATH="$PATH:/home/achalmaedison/Documents/scripts/scripts_for_quarto/blog-manager"' >> ~/.zshrc
+source ~/.zshrc
+```
+
+Y luego renombrar o symlinkear `main.sh` como `qblog` si prefieres un
+nombre más corto:
+
+```bash
+ln -s /home/achalmaedison/Documents/scripts/scripts_for_quarto/blog-manager/main.sh \
+      /home/achalmaedison/Documents/scripts/scripts_for_quarto/blog-manager/qblog
+```
+
+### Requisitos
+
+- **Quarto** ≥ 1.3.0 (recomendado 1.4.0+) — `quarto --version` para verificar
+- **Bash** ≥ 4.0
+- **Git** (opcional, solo para las funciones `git-*`)
+- **yq** (opcional, solo para validar sintaxis YAML en `check-structure`)
+
 ---
-```
 
-# Solución de Problemas
-
-## Problema: Script no ejecuta
-
-**Síntomas:**
+## 🎯 Uso rápido
 
 ```bash
-$ ./build.sh
-bash: ./build.sh: Permission denied
+# Modo interactivo (menú completo, recomendado para empezar)
+./main.sh
+
+# Listar todos tus blogs
+./main.sh list
+
+# Crear un post nuevo (asistente completo paso a paso)
+./main.sh new-post pub_epsilon-y-beta
+
+# Preview en vivo mientras escribes
+./main.sh preview pub_epsilon-y-beta
+
+# Renderizar versión final
+./main.sh render pub_epsilon-y-beta
+
+# Verificar que todos tus blogs estén bien estructurados
+./main.sh check-structure
+
+# Backup antes de hacer cambios grandes
+./main.sh backup
 ```
 
-**Solución:**
+### Sobre los nombres de blog
+
+En todos los comandos que piden `BLOG`, puedes usar:
+
+- El nombre **exacto** de la carpeta: `pub_axiomata`, `website-achalma`
+- O el nombre **corto**, sin el prefijo `pub_`: `axiomata` (se resuelve
+  automáticamente a `pub_axiomata` si existe)
 
 ```bash
-chmod +x build.sh
+./main.sh render axiomata          # equivalente a:
+./main.sh render pub_axiomata
 ```
 
-## Problema: Quarto no encontrado
+`website-achalma` no lleva prefijo `pub_` y se usa siempre con su nombre
+exacto.
 
-**Síntomas:**
+---
 
-```
-✗ Quarto no está instalado
-```
+## 📚 Comandos completos
 
-**Solución:**
+### Gestión de blogs
+
+| Comando | Descripción |
+|---|---|
+| `list` | Lista todos los blogs disponibles (título, posts, estado Git) |
+| `render BLOG` | Renderiza un blog completo |
+| `preview BLOG [PORT]` | Inicia preview local (puerto opcional, default 4200) |
+| `preview-browser BLOG [PORT]` | Igual que `preview`, abriendo el navegador automáticamente |
+| `clean BLOG` | Elimina `_site`, `_freeze`, `.quarto` de ese blog |
+| `publish BLOG [TARGET]` | Publica (`gh-pages`, `netlify`, `quarto-pub`, `confluence`) |
+| `check BLOG` | Ejecuta `quarto check` sobre el blog |
+| `inspect BLOG` | Muestra Type/Engine/Formats/Output del blog (sin ruido) |
+
+### Gestión de posts
+
+| Comando | Descripción |
+|---|---|
+| `list-posts BLOG` | Lista todos los posts agrupados por carpeta temática |
+| `render-post RUTA` | Renderiza un solo post (ruta completa al `index.qmd`) |
+| `new-post BLOG` | Lanza el asistente interactivo completo de creación de posts |
+
+### Operaciones múltiples
+
+| Comando | Descripción |
+|---|---|
+| `render-all` | Renderiza todos los blogs gestionables, uno por uno |
+| `clean-all` | Limpia todos los blogs (pide confirmación antes de proceder) |
+
+### Git
+
+| Comando | Descripción |
+|---|---|
+| `git-init BLOG` | Inicializa un repositorio Git en ese blog (crea `.gitignore` si falta) |
+| `git-status BLOG` | Muestra `git status` del blog |
+| `git-commit BLOG [MSG]` | `git add .` + `commit` + `push` (mensaje opcional, default "Update blog") |
+
+### Otras utilidades
+
+| Comando | Descripción |
+|---|---|
+| `convert ARCHIVO [FORMATO]` | Convierte un documento con `quarto convert` (default html) |
+| `init-blog NOMBRE [TITULO]` | Crea un blog nuevo (estructura completa, prefijo `pub_` automático) |
+| `check-structure` | Verifica integridad de todos los blogs (archivos, Git, YAML) |
+| `backup` | Sistema de backups interactivo (individual / completo / incremental) |
+| `interactive`, `-i` | Abre el menú interactivo |
+| `help`, `-h`, `--help` | Muestra la ayuda completa |
+| `version`, `-v` | Muestra la versión de Quarto instalada |
+
+### Ejemplos de uso encadenado
 
 ```bash
-# Verificar instalación
+# Limpiar y volver a renderizar
+./main.sh clean pub_axiomata && ./main.sh render pub_axiomata
+
+# Crear un blog nuevo, inicializar Git y crear el primer post
+./main.sh init-blog mi-nuevo-blog "Mi Nuevo Blog"
+./main.sh git-init mi-nuevo-blog
+./main.sh new-post mi-nuevo-blog
+
+# Mantenimiento semanal típico
+./main.sh check-structure
+./main.sh render-all
+./main.sh backup
+./main.sh clean-all
+```
+
+---
+
+## ✍️ El asistente de creación de posts (APAQuarto)
+
+`new-post BLOG` lanza el mismo formulario interactivo completo de la
+versión anterior, sin recortar nada. Te guía por 6 secciones:
+
+1. **Opciones generales** — título, subtítulo, shorttitle, bibliografía,
+   floatsintext, numbered-lines, mask, nocite, meta-analysis,
+   impact-statement, supresión de elementos (title-page, author, orcid,
+   abstract, keywords, etc.)
+2. **Opciones de formato** — tipo de documento (`doc`/`jou`/`man`/`stu`),
+   formatos de salida (docx/html/pdf/typst), fontsize, a4paper, y campos
+   específicos según el tipo (revista para `jou`, curso/profesor/fecha de
+   entrega para `stu`)
+3. **Autores y afiliaciones** — autor por defecto o personalizado, ORCID,
+   email, los 14 roles CRediT (conceptualization, methodology,
+   investigation, etc.), afiliación institucional completa
+4. **Author note** — cambios de estado, conflicto de intereses,
+   financiamiento, registro de estudio, data sharing, agradecimientos,
+   acuerdos de autoría
+5. **Abstract y keywords** — resumen multilínea, palabras clave, impact
+   statement, conteo de palabras
+6. **Idioma** — código de idioma y, si no es inglés, personalizaciones
+   (separador de autores en citas, textos de citas enmascaradas, títulos de
+   bloques, etc.)
+
+Al finalizar genera el `index.qmd` con todo el YAML correspondiente más
+contenido boilerplate (Introducción/Desarrollo/Conclusiones/Referencias) y
+un `references.bib` vacío, y te pregunta si quieres abrirlo de inmediato en
+tu editor.
+
+Antes de empezar el formulario, el asistente detecta automáticamente las
+carpetas de posts existentes en el blog (`python`, `r`, `posts`, etc., y en
+`website-achalma` también reconoce el caso especial `blog/posts` y
+`talk`), o te permite crear una nueva. Si la carpeta es nueva, genera
+también su `_metadata.yml` compartido con tu configuración institucional
+real (UNSCH, ORCID, email) para que no tengas que repetirla en cada post.
+
+> **Nota práctica:** el formulario tiene decenas de preguntas
+> condicionales (algunas solo aparecen según el tipo de documento o si usas
+> autor por defecto). Está pensado para uso interactivo real — si alguna
+> vez necesitas automatizarlo con un archivo de input, asegúrate de que
+> cada línea responda exactamente a la pregunta que le corresponde, o el
+> YAML resultante quedará desalineado.
+
+---
+
+## 🖥️ Modo interactivo (menú)
+
+Ejecutar `./main.sh` sin argumentos (o `./main.sh -i`) abre un menú
+numerado con las mismas 16 opciones del script original, más 3 nuevas
+(antes scripts separados):
+
+```
+Gestión de Blogs:        1-5
+Gestión de Posts:        6-8
+Operaciones Múltiples:   9-10
+Git:                     11-13
+Utilidades:              14-16
+Otras herramientas:      17) init-blog   18) check-structure   19) backup
+0) Salir
+```
+
+---
+
+## ⚙️ Configuración y personalización
+
+Toda la configuración vive en `lib/00-config.sh`. No deberías necesitar
+tocar ningún otro archivo para personalizar el comportamiento.
+
+### Excluir un blog puntual de las operaciones masivas
+
+Por defecto **todos** tus `pub_*` + `website-achalma` se gestionan. Si en
+algún momento quieres excluir uno (por ejemplo, mientras lo tienes en
+borrador y no quieres que aparezca en `list`, `render-all`, `clean-all`,
+`check-structure` o `backup`), edita:
+
+```bash
+# lib/00-config.sh
+QBLOG_EXCLUDED_PROJECTS=("pub_borradores")
+```
+
+### Cambiar puerto de preview, target de publicación, autor por defecto, etc.
+
+```bash
+# lib/00-config.sh
+QBLOG_DEFAULT_PREVIEW_PORT=4200
+QBLOG_DEFAULT_PUBLISH_TARGET="gh-pages"
+QBLOG_DEFAULT_AUTHOR="Edison Achalma"
+QBLOG_DEFAULT_AUTHOR_ORCID="0000-0001-6996-3364"
+QBLOG_DEFAULT_AUTHOR_EMAIL="elmer.achalma.09@unsch.edu.pe"
+QBLOG_DEFAULT_INSTITUTION="Universidad Nacional de San Cristóbal de Huamanga"
+```
+
+### Forzar la ubicación de Documents o de los backups
+
+Si alguna vez mueves el script a un lugar muy alejado de tus proyectos
+(más de 6 niveles de profundidad) y la autodetección falla, usa variables
+de entorno (no necesitas editar el código):
+
+```bash
+QBLOG_DOCS_DIR="/ruta/a/Documents" ./main.sh list
+QBLOG_BACKUP_DIR="/ruta/a/backups" ./main.sh backup
+```
+
+### Añadir un comando nuevo
+
+1. Escribe la función en el módulo `lib/` que corresponda temáticamente
+   (o crea uno nuevo, ej. `lib/13-mi-funcion.sh`).
+2. Si creaste un archivo nuevo, agrégalo al bloque de `source` en `main.sh`.
+3. Añade un `case` nuevo en la función `main()` de `main.sh`.
+4. Documéntalo en `lib/12-help.sh` y, si aplica, en el menú
+   (`lib/11-interactive-menu.sh`).
+
+---
+
+## 🐛 Bugs corregidos respecto al script original
+
+Durante la migración se identificaron y corrigieron dos bugs reales que
+existían en `build.sh` v2.0:
+
+1. **`clean-all` rota.** El menú interactivo (opción 10) y el comando CLI
+   `build.sh clean-all` invocaban una función `clean_all_blogs` que
+   **nunca llegó a definirse** en el script — el comando fallaba con
+   `command not found`. En `blog-manager` esta función existe
+   (`lib/05-batch-ops.sh`), sigue el mismo patrón que `render_all_blogs`,
+   y pide confirmación antes de borrar archivos en todos tus blogs.
+
+2. **`new-post` roto desde línea de comandos.** El comando CLI
+   `build.sh new-post BLOG "Título"` invocaba una función `create_post`
+   que tampoco existía (la función real siempre se llamó
+   `create_post_interactive`, y no toma un título como argumento — todo se
+   pregunta dentro del asistente). Por eso, ejecutar `new-post` desde
+   terminal siempre fallaba con `command not found`; solo funcionaba
+   entrando al menú interactivo y eligiendo la opción 6. En
+   `blog-manager`, `new-post BLOG` ya invoca correctamente el asistente
+   completo tanto desde el menú como desde la línea de comandos.
+
+Ambas correcciones no cambian ningún comportamiento que ya funcionara — el
+resto del wizard, el formato del `index.qmd` generado, y todas las demás
+funciones, son una traducción fiel de tu script original.
+
+---
+
+## 🔧 Resolución de problemas
+
+### "No se pudo autodetectar la carpeta Documents"
+
+El script sube hasta 6 niveles desde su propia ubicación buscando una
+carpeta con al menos un `pub_*` o `website-achalma`. Si la mueves muy lejos
+de tus proyectos, fuerza la ruta:
+
+```bash
+QBLOG_DOCS_DIR="/home/achalmaedison/Documents" ./main.sh list
+```
+
+### "Quarto no está instalado"
+
+```bash
 which quarto
-
-# Si no está instalado, descargar de:
-# https://quarto.org/docs/get-started/
-
-# Verificar que está en PATH
-echo $PATH
-
-# Añadir al PATH si es necesario
-export PATH="$PATH:/opt/quarto/bin"
+quarto --version
 ```
 
-## Problema: Blog no encontrado
+Si no aparece nada, instala Quarto desde
+[quarto.org/docs/get-started](https://quarto.org/docs/get-started/).
 
-**Síntomas:**
+### "Blog no encontrado: nombre-blog"
 
-```
-✗ Blog no encontrado: mi-blog
-```
+Verifica el nombre exacto con `./main.sh list`. Recuerda que puedes usar el
+nombre corto (sin `pub_`) o el exacto, pero debe coincidir con una carpeta
+real dentro de tu `Documents` detectado.
 
-**Solución:**
+### "Permission denied" al ejecutar `./main.sh`
 
 ```bash
-# Verificar nombre exacto
-./build.sh list
-
-# Usar el nombre exacto del directorio
-./build.sh render nombre-exacto-del-blog
+chmod +x main.sh
 ```
 
-## Problema: Error al renderizar
-
-**Síntomas:**
-
-```
-✗ Error al renderizar el blog
-```
-
-**Verificaciones:**
-
-1. **Verificar sintaxis YAML:**
-
-```bash
-./build.sh check nombre-blog
-```
-
-2. **Verificar estructura:**
-
-```bash
-./build.sh inspect nombre-blog
-```
-
-3. **Revisar logs:**
-
-```bash
-cd /home/achalmaedison/Documents/publicaciones/nombre-blog
-quarto render --verbose
-```
-
-4. **Limpiar cache:**
-
-```bash
-./build.sh clean nombre-blog
-./build.sh render nombre-blog
-```
-
-## Problema: Git push falla
-
-**Síntomas:**
-
-```
-⚠ No se pudo hacer push. ¿Necesitas configurar el remote?
-```
-
-**Solución:**
-
-```bash
-cd /home/achalmaedison/Documents/publicaciones/nombre-blog
-
-# Verificar remote
-git remote -v
-
-# Si no hay remote, añadir
-git remote add origin https://github.com/usuario/repo.git
-
-# Configurar upstream
-git push -u origin main
-```
-
-## Problema: Puerto en uso
-
-**Síntomas:**
-
-```
-Error: Port 4200 already in use
-```
-
-**Solución:**
-
-```bash
-# Usar puerto diferente
-./build.sh preview nombre-blog 4300
-
-# O matar proceso en puerto 4200
-lsof -ti:4200 | xargs kill -9
-```
-
-# Personalización
-
-## Cambiar Directorios por Defecto
-
-Editar variables al inicio del script:
-
-```bash
-# En build.sh, líneas 15-16
-PUBLICACIONES_DIR="/ruta/personalizada/publicaciones"
-SCRIPT_DIR="/ruta/personalizada/scripts"
-```
-
-## Añadir Nuevos Comandos
-
-1. Crear función en sección de funciones:
-
-```bash
-# Nueva función
-mi_comando() {
-    local blog_path="$1"
-    print_header "Mi Comando Personalizado"
-
-    # Tu código aquí
-    cd "$blog_path"
-    # ...
-
-    print_success "Comando ejecutado"
-}
-```
-
-2. Añadir caso en la función `main`:
-
-```bash
-case "$1" in
-    # ... casos existentes ...
-
-    mi-comando)
-        if [ -z "$2" ]; then
-            print_error "Especifica el nombre del blog"
-            exit 1
-        fi
-        mi_comando "$PUBLICACIONES_DIR/$2"
-        ;;
-```
-
-3. Actualizar ayuda y menú interactivo.
-
-## Cambiar Plantilla de Posts
-
-Modificar la función `create_post`:
-
-```bash
-# Línea ~450 en build.sh
-cat > "$post_dir/index.qmd" << EOF
----
-title: "$post_title"
-author: "Tu Nombre"
-date: "$date"
-categories: [tutorial, programación]
-description: "Descripción automática"
-image: "thumbnail.jpg"
-draft: false
----
-
-# Resumen
-
-Resumen del post...
-
-# Contenido Principal
-
-Tu contenido aquí...
-
-# Conclusiones
-
-Conclusiones del post...
-
-# Referencias
-EOF
-```
-
-# Referencias
-
-- [Documentación Quarto](https://quarto.org/docs/guide/)
-- [Quarto Publishing](https://quarto.org/docs/publishing/)
-- [Quarto CLI Reference](https://quarto.org/docs/reference/)
-- [GitHub Pages con Quarto](https://quarto.org/docs/publishing/github-pages.html)
-- [Bash Scripting Guide](https://www.gnu.org/software/bash/manual/)
-
-# Notas Adicionales
-
-## Compatibilidad
-
-- **Linux:** Totalmente compatible
-- **macOS:** Totalmente compatible
-- **Windows:** Requiere Git Bash o WSL
-
-## Rendimiento
-
-- Renderizado individual: ~5-30 segundos por blog
-- Renderizado completo: Varía según cantidad de posts
-- Preview: Inicio instantáneo
-
-## Seguridad
-
-- No ejecuta comandos remotos
-- No modifica archivos fuera de directorios configurados
-- Pide confirmación en operaciones destructivas
-
-## Actualizaciones
-
-Para actualizar el script:
-
-```bash
-cd /home/achalmaedison/Documents/scripts/scripts_for_quarto
-# Descargar nueva versión
-# Verificar cambios
-./build.sh version
-```
-
-# Contribuciones
-
-Este script es de uso personal pero puede ser adaptado según necesidades.
-
-## Sugerencias de Mejora
-
-- Añadir soporte para más formatos de exportación
-- Integración con más plataformas de publicación
-- Generación automática de thumbnails
-- Análisis de métricas del sitio
-- Optimización de imágenes automática
+### El YAML del post generado por `new-post` salió mal formado
+
+Esto ocurre si las respuestas al asistente no coincidieron exactamente con
+las preguntas (por ejemplo, si automatizaste el input con un archivo de
+texto que no estaba perfectamente alineado con las preguntas
+condicionales). Usando el asistente de forma interactiva normal (tecleando
+tus respuestas en pantalla) no debería pasar, ya que cada pregunta se
+muestra antes de pedir su respuesta. Si te ocurre en uso interactivo
+normal, bórralo y vuelve a correr `new-post` con más cuidado en las
+respuestas s/n.
 
 ---
 
-**Versión:** 2.0.0  
-**Fecha:** Diciembre 2025  
-**Autor:** Edison Achalma  
-**Licencia:** Uso personal
+## 📞 Autor
 
-Para reportar problemas o sugerencias, crear un issue en el repositorio correspondiente.
+**Edison Achalma**
+Economista — Universidad Nacional de San Cristóbal de Huamanga (UNSCH)
+ORCID: 0000-0001-6996-3364
+GitHub: [@achalmed](https://github.com/achalmed)
+Ayacucho, Perú
+
+Para más información sobre Quarto: [quarto.org/docs](https://quarto.org/docs/)
+Para APAQuarto: [wjschne.github.io/apaquarto](https://wjschne.github.io/apaquarto/)
