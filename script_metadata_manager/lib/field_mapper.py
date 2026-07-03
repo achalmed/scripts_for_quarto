@@ -169,8 +169,12 @@ def _to_bool(value) -> Optional[bool]:
     return None
 
 
-def _reorder_yaml(yaml_data: Dict) -> Dict:
-    """Reconstruye el dict YAML siguiendo YAML_FIELD_ORDER."""
+def reorder_yaml(yaml_data: Dict) -> Dict:
+    """
+    Reconstruye el dict YAML siguiendo YAML_FIELD_ORDER.
+    Público: también lo usa tag_operations para mantener el orden
+    canónico al reescribir archivos.
+    """
     ordered: Dict = {}
     for field in YAML_FIELD_ORDER:
         if field in yaml_data:
@@ -198,7 +202,7 @@ def apply_row_to_yaml(
     - Registra cada cambio real en la lista `changes`.
     """
     # Reordenar antes de modificar
-    yaml_data = _reorder_yaml(yaml_data)
+    yaml_data = reorder_yaml(yaml_data)
 
     # --- Campos simples ---
     for excel_field, yaml_key in _SIMPLE_YAML_TO_EXCEL.items():

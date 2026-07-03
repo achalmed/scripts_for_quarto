@@ -18,21 +18,22 @@ title: Mi título
 date: "05/15/2025"
 draft: false
 ---
-
 ## Mi contenido empieza aquí
 ```
+
 ## Uso de entorno conda (opcional)
 
 ### 1. Creamos el entorno para el script
+
 ```bash
-conda create --name script_tag_manager python=3.14 pyyaml 
+conda create --name script_tag_manager python=3.14 pyyaml
 ```
 
 ### 2. Activamos el entorno
+
 ```bash
 conda activate script_tag_manager
 ```
-
 
 ## 🚀 Uso Rápido
 
@@ -63,6 +64,7 @@ python fix_qmd_files.py --file mi_archivo.qmd
 ### Ejemplo 1: Archivo con `---` pegado
 
 **Antes:**
+
 ```yaml
 ---
 title: Mi título
@@ -71,40 +73,36 @@ draft: false---
 ```
 
 **Después de ejecutar el script:**
+
 ```yaml
 ---
 title: Mi título
 draft: false
 ---
-
 ## Contenido
 ```
 
 ### Ejemplo 2: Archivo con múltiples líneas en blanco
 
 **Antes:**
+
 ```yaml
 ---
-
 title: Mi título
 draft: false
 
-
 ---
-
-
 ## Contenido
 ```
 
 **Después:**
+
 ```yaml
 ---
 title: Mi título
 draft: false
 
-
 ---
-
 ## Contenido
 ```
 
@@ -113,6 +111,7 @@ draft: false
 ## ✅ Características clave
 
 ### 1. Idempotente
+
 Puedes ejecutarlo 1, 2, 3, 10 veces y siempre produce el mismo resultado:
 
 ```bash
@@ -130,6 +129,7 @@ python fix_qmd_files.py --file archivo.qmd
 ```
 
 ### 2. Seguro con --dry-run
+
 Siempre puedes verificar qué cambiará antes de aplicarlo:
 
 ```bash
@@ -137,6 +137,7 @@ python fix_qmd_files.py --directory ./posts --recursive --dry-run
 ```
 
 ### 3. Verbose para más detalles
+
 ```bash
 python fix_qmd_files.py --directory ./posts --verbose
 ```
@@ -166,6 +167,7 @@ git commit -m "Corregir formato YAML en archivos .qmd"
 ### El script dice "No se encontró bloque YAML válido"
 
 **Posibles causas:**
+
 1. El archivo no empieza con `---`
 2. El archivo no tiene un segundo `---`
 3. El formato está muy corrupto
@@ -175,6 +177,7 @@ git commit -m "Corregir formato YAML en archivos .qmd"
 ### El script no hace cambios pero mi archivo se ve mal
 
 Si tu archivo tiene este formato:
+
 ```yaml
 ---
 title: Test
@@ -185,6 +188,7 @@ title: Test
 El script NO lo modificará porque ya tiene el formato correcto (hay una línea en blanco implícita después de `---`).
 
 Para verificar, usa:
+
 ```bash
 cat -A mi_archivo.qmd | head -10
 ```
@@ -202,8 +206,6 @@ Opciones:
   -v, --verbose          Mostrar información detallada
   -h, --help             Mostrar ayuda
 ```
-
-
 
 ---
 
@@ -229,7 +231,7 @@ git restore .
 git restore archivo.qmd
 
 # Luego usar el script corregido
-python qmd_tag_manager.py --normalize --recursive
+python ../script_metadata_manager/main.py normalize-tags ~/Documents
 ```
 
 #### Opción B: Usar el script de reparación
@@ -257,16 +259,17 @@ python fix_qmd_files.py --remove-unwanted-tags --recursive
 3. Agregar salto de línea después de `---`:
 
 **Antes:**
+
 ```yaml
 draft: false---
 ## Contenido
 ```
 
 **Después:**
+
 ```yaml
 draft: false
 ---
-
 ## Contenido
 ```
 
@@ -306,13 +309,13 @@ grep -l "draft: false---" *.qmd
 
 ```bash
 # Normalizar (solo archivos con tags)
-python qmd_tag_manager.py --normalize --recursive
+python ../script_metadata_manager/main.py normalize-tags ~/Documents
 
 # Agregar tags (solo a archivos que YA tienen tags)
-python qmd_tag_manager.py --add "nuevo_tag" --recursive
+python ../script_metadata_manager/main.py add-tags ~/Documents nuevo_tag
 
 # Reemplazar tags
-python qmd_tag_manager.py --replace "viejo:nuevo" --recursive
+python ../script_metadata_manager/main.py replace-tags ~/Documents "viejo:nuevo"
 ```
 
 ---
@@ -322,13 +325,15 @@ python qmd_tag_manager.py --replace "viejo:nuevo" --recursive
 ### Antes de ejecutar operaciones masivas:
 
 1. **SIEMPRE hacer backup:**
+
    ```bash
-   ./qmd_helper.sh backup ./posts
+   git add -A && git commit -m "backup antes de operación masiva"
    ```
 
 2. **SIEMPRE usar dry-run primero:**
+
    ```bash
-   python qmd_tag_manager.py --normalize --recursive --dry-run
+   python ../script_metadata_manager/main.py normalize-tags ~/Documents --dry-run
    ```
 
 3. **Revisar manualmente algunos archivos:**
@@ -336,6 +341,7 @@ python qmd_tag_manager.py --replace "viejo:nuevo" --recursive
    - Verifica que los cambios son los esperados
 
 4. **Usar Git:**
+
    ```bash
    git add .
    git commit -m "Estado antes de normalizar tags"
@@ -353,6 +359,7 @@ python qmd_tag_manager.py --replace "viejo:nuevo" --recursive
 ### Si algo salió muy mal:
 
 #### Si tienes Git:
+
 ```bash
 # Ver el último commit
 git log --oneline -5
@@ -365,6 +372,7 @@ git reset --hard [hash_del_commit]
 ```
 
 #### Si tienes backup:
+
 ```bash
 # Restaurar desde backup
 rm -rf ./posts
@@ -372,6 +380,7 @@ cp -r ./posts_backup_20251217 ./posts
 ```
 
 #### Si no tienes nada:
+
 1. Usar el script de reparación `fix_qmd_files.py`
 2. Reparar manualmente los archivos más importantes
 3. Para el resto, considerar recrear el YAML header
@@ -409,7 +418,6 @@ tags:
   - economia_internacional
   - gestion_empresarial
 ---
-
 ## Mi contenido empieza aquí
 
 Con el salto de línea correcto después de ---
@@ -422,7 +430,7 @@ Con el salto de línea correcto después de ---
 Si encuentras más problemas:
 
 1. Revisa el README.md para ejemplos adicionales
-2. Usa `python qmd_tag_manager.py --help`
+2. Usa `python ../script_metadata_manager/main.py --help`
 3. Prueba primero con `--dry-run`
 4. Reporta el problema con un ejemplo del archivo afectado
 
@@ -437,12 +445,12 @@ Si encuentras más problemas:
 
 ## ✨ Diferencia con fix_qmd_files.py (versión anterior)
 
-| Característica | v1 (fix_qmd_files.py) | v2 (fix_qmd_files_v2.py) |
-|----------------|----------------------|--------------------------|
-| Idempotente | ❌ No (agrega líneas cada vez) | ✅ Sí |
-| Línea después de primer `---` | ❌ Agregaba línea | ✅ No agrega línea |
-| Línea antes de segundo `---` | ❌ Agregaba múltiples | ✅ Solo normaliza después |
-| Simplicidad | Complejo | Simple y claro |
+| Característica                | v1 (fix_qmd_files.py)          | v2 (fix_qmd_files_v2.py)  |
+| ----------------------------- | ------------------------------ | ------------------------- |
+| Idempotente                   | ❌ No (agrega líneas cada vez) | ✅ Sí                     |
+| Línea después de primer `---` | ❌ Agregaba línea              | ✅ No agrega línea        |
+| Línea antes de segundo `---`  | ❌ Agregaba múltiples          | ✅ Solo normaliza después |
+| Simplicidad                   | Complejo                       | Simple y claro            |
 
 ---
 

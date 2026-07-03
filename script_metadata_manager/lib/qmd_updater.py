@@ -27,10 +27,13 @@ from .field_mapper import apply_row_to_yaml
 # ESCRITURA DE UN SOLO ARCHIVO
 # =============================================================================
 
-def _write_yaml_to_qmd(file_path: Path, updated_yaml: dict, original_content: str, match_end: int):
+def write_yaml_to_qmd(file_path: Path, updated_yaml: dict, original_content: str, match_end: int):
     """
     Serializa el YAML actualizado y reconstruye el archivo .qmd,
     preservando el contenido del documento (todo lo que viene después del ---).
+
+    Es EL único escritor de YAML del proyecto: qmd_updater, sync y
+    tag_operations escriben siempre a través de esta función.
     """
     new_yaml_str = yaml.dump(
         updated_yaml,
@@ -116,7 +119,7 @@ def update_single_qmd(
     if dry_run:
         return True
 
-    _write_yaml_to_qmd(file_path, updated_yaml, content, match.end())
+    write_yaml_to_qmd(file_path, updated_yaml, content, match.end())
     return True
 
 

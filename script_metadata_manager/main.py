@@ -17,6 +17,18 @@ Comandos disponibles:
     find-differences   Muestra artículos con datos desincronizados
     sync-article       Sincroniza un artículo de forma interactiva
     sync-batch         Sincronización masiva interactiva
+
+Comandos de tags (destino: un Excel .xlsx O un directorio de blogs):
+    normalize-tags     Normaliza tags (minúsculas, sin tildes, snake_case)
+    replace-tags       Reemplaza tags ("viejo:nuevo", admite varios)
+    remove-tags        Elimina tags (alias: remove-tag)
+    add-tags           Agrega tags (sin duplicados, respeta el orden)
+    tag-stats          Estadísticas de tags de la colección
+    audit-tags         Auditoría de taxonomía con recomendaciones
+
+Comandos de sincronización desde la ruta (mismo doble destino):
+    sync-dates         date desde la carpeta YYYY-MM-DD-titulo
+    sync-pdf-urls      citation.pdf-url desde la ruta + URL base del blog
 """
 
 import os
@@ -43,6 +55,20 @@ from lib.sync import (
     sync_batch_interactive,
     detect_new_fields,
 )
+from lib.tag_utils import parse_replacement_args
+from lib.tag_operations import apply_tag_ops_to_files, apply_tag_ops_to_excel
+from lib.tag_reports import (
+    collect_tag_data_from_files,
+    collect_tag_data_from_excel,
+    print_tag_stats,
+    print_tag_audit,
+)
+from lib.path_sync import (
+    sync_dates_files,
+    sync_dates_excel,
+    sync_pdf_urls_files,
+    sync_pdf_urls_excel,
+)
 
 
 # =============================================================================
@@ -68,6 +94,72 @@ def _make_manager_config(base_path: str, config_file: str = None):
     excel_output_dir.mkdir(parents=True, exist_ok=True)
 
     return bp, allowed_blogs, user_excluded, excel_output_dir
+
+
+def _resolve_tag_target(target: str):
+    """
+    Determina el destino de un comando de tags:
+      ('excel', Path)  si es un archivo .xlsx/.xlsm existente
+      ('files', Path)  si es un directorio (raíz de blogs)
+    Sale con error claro en cualquier otro caso.
+    """
+    path = Path(target).expanduser()
+    if path.suffix.lower() in (".xlsx", ".xlsm"):
+        if not path.exists():
+            print(f"❌ El Excel no existe: {target}")
+            sys.exit(1)
+        return "excel", path
+    if path.is_dir():
+        return "files", path
+    print(f"❌ Destino inválido: '{target}' (se espera un .xlsx o un directorio)")
+    sys.exit(2)
+
+
+def _run_tag_operation(args, replacements=None, to_remove=None, to_add=None):
+    """
+    Despacha una operación de tags al backend correcto (Excel o archivos).
+    Toda la lógica vive en lib/tag_operations; aquí solo se enruta.
+    """
+    mode, target = _resolve_tag_target(args.target)
+
+    if mode == "excel":
+        apply_tag_ops_to_excel(
+            str(target),
+            replacements=replacements,
+            to_remove=to_remove,
+            to_add=to_add,
+            blog_filter=getattr(args, "blog", None),
+            path_filter=getattr(args, "filter_path", None),
+            dry_run=args.dry_run,
+        )
+    else:
+        bp, allowed, excluded, _ = _make_manager_config(
+            str(target), getattr(args, "config", None)
+        )
+        apply_tag_ops_to_files(
+            bp, allowed, excluded,
+            replacements=replacements,
+            to_remove=to_remove,
+            to_add=to_add,
+            blog_filter=getattr(args, "blog", None),
+            path_filter=getattr(args, "filter_path", None),
+            dry_run=args.dry_run,
+        )
+
+
+def _collect_tag_data(args):
+    """Obtiene el DataFrame de tags desde el destino (Excel o archivos)."""
+    mode, target = _resolve_tag_target(args.target)
+    if mode == "excel":
+        return collect_tag_data_from_excel(
+            str(target), blog_filter=getattr(args, "blog", None)
+        )
+    bp, allowed, excluded, _ = _make_manager_config(
+        str(target), getattr(args, "config", None)
+    )
+    return collect_tag_data_from_files(
+        bp, allowed, excluded, blog_filter=getattr(args, "blog", None)
+    )
 
 
 # =============================================================================
@@ -237,6 +329,94 @@ def cmd_sync_batch(args):
 
 
 # =============================================================================
+# COMANDOS DE TAGS
+# =============================================================================
+
+def cmd_normalize_tags(args):
+    _run_tag_operation(args)
+
+
+def cmd_replace_tags(args):
+    try:
+        replacements = parse_replacement_args(args.replacements)
+    except ValueError as e:
+        print(f"❌ {e}")
+        sys.exit(2)
+    _run_tag_operation(args, replacements=replacements)
+
+
+def cmd_remove_tags(args):
+    _run_tag_operation(args, to_remove=args.tags)
+
+
+def cmd_add_tags(args):
+    _run_tag_operation(args, to_add=args.tags)
+
+
+def cmd_tag_stats(args):
+    df = _collect_tag_data(args)
+    print_tag_stats(df, top=args.top)
+
+
+def cmd_audit_tags(args):
+    df = _collect_tag_data(args)
+    print_tag_audit(df, threshold=args.threshold)
+
+
+# =============================================================================
+# COMANDOS DE SINCRONIZACIÓN DESDE LA RUTA
+# =============================================================================
+
+def cmd_sync_dates(args):
+    mode, target = _resolve_tag_target(args.target)
+    if mode == "excel":
+        sync_dates_excel(
+            str(target),
+            blog_filter=getattr(args, "blog", None),
+            path_filter=getattr(args, "filter_path", None),
+            dry_run=args.dry_run,
+        )
+    else:
+        bp, allowed, excluded, _ = _make_manager_config(
+            str(target), getattr(args, "config", None)
+        )
+        sync_dates_files(
+            bp, allowed, excluded,
+            blog_filter=getattr(args, "blog", None),
+            path_filter=getattr(args, "filter_path", None),
+            dry_run=args.dry_run,
+        )
+
+
+def cmd_sync_pdf_urls(args):
+    # blog_base_urls es opcional: sin él, la URL base de cada blog se
+    # resuelve por mayoría de los pdf-url existentes
+    cfg = load_config(getattr(args, "config", None))
+    configured_urls = cfg.get("blog_base_urls", {})
+
+    mode, target = _resolve_tag_target(args.target)
+    if mode == "excel":
+        sync_pdf_urls_excel(
+            str(target),
+            configured_urls=configured_urls,
+            blog_filter=getattr(args, "blog", None),
+            path_filter=getattr(args, "filter_path", None),
+            dry_run=args.dry_run,
+        )
+    else:
+        bp, allowed, excluded, _ = _make_manager_config(
+            str(target), getattr(args, "config", None)
+        )
+        sync_pdf_urls_files(
+            bp, allowed, excluded,
+            configured_urls=configured_urls,
+            blog_filter=getattr(args, "blog", None),
+            path_filter=getattr(args, "filter_path", None),
+            dry_run=args.dry_run,
+        )
+
+
+# =============================================================================
 # CLI PARSER
 # =============================================================================
 
@@ -283,6 +463,35 @@ Ejemplos:
 
   # Sincronización masiva interactiva
   python main.py sync-batch ~/Documents excel.xlsx --blog pub_axiomata
+
+  # --- TAGS (destino: Excel .xlsx O directorio de blogs) ---
+
+  # Normalizar la columna tags del Excel (los archivos no se tocan)
+  python main.py normalize-tags excel_databases/quarto_metadata.xlsx --dry-run
+
+  # Normalizar tags directamente en los index.qmd
+  python main.py normalize-tags ~/Documents --config metadata_config.yml --dry-run
+
+  # Reemplazos masivos (varios a la vez)
+  python main.py replace-tags excel.xlsx "gestion:administracion" "python:data_science"
+
+  # Eliminar y agregar tags
+  python main.py remove-tags excel.xlsx tag_obsoleto otro_tag
+  python main.py add-tags ~/Documents nuevo_tag --blog pub_axiomata --dry-run
+
+  # Estadísticas y auditoría de taxonomía
+  python main.py tag-stats ~/Documents --top 30
+  python main.py audit-tags excel.xlsx --threshold 0.85
+
+  # --- SINCRONIZACIÓN DESDE LA RUTA ---
+
+  # Fechas: date = carpeta YYYY-MM-DD-titulo (formato MM/DD/YYYY)
+  python main.py sync-dates ~/Documents --config metadata_config.yml --dry-run
+  python main.py sync-dates excel_databases/quarto_metadata.xlsx --dry-run
+
+  # PDF: citation.pdf-url = URL base del blog + ruta del artículo
+  python main.py sync-pdf-urls ~/Documents --config metadata_config.yml --dry-run
+  python main.py sync-pdf-urls excel.xlsx --blog chaska
 
 Versión: {VERSION}
 Autor:   {AUTHOR}
@@ -356,6 +565,80 @@ Email:   {EMAIL}
     p.add_argument("-c", "--config")
     p.add_argument("--dry-run", action="store_true")
 
+    # --- Comandos de tags ----------------------------------------------------
+    # Todos aceptan como destino un Excel (.xlsx → modifica solo el Excel)
+    # o un directorio de blogs (→ modifica los index.qmd directamente)
+
+    def _add_tag_common_args(sp):
+        sp.add_argument(
+            "target",
+            help="Destino: archivo .xlsx (modo Excel) o directorio de blogs (modo archivos)",
+        )
+        sp.add_argument("-b", "--blog", help="Filtrar por blog")
+        sp.add_argument("-p", "--filter-path", help="Filtrar por substring en ruta")
+        sp.add_argument("-c", "--config", help="Archivo de configuración (modo archivos)")
+
+    p = sub.add_parser(
+        "normalize-tags",
+        help="Normalizar tags (minúsculas, sin tildes, snake_case, sin duplicados)",
+    )
+    _add_tag_common_args(p)
+    p.add_argument("--dry-run", action="store_true", help="Simular sin aplicar")
+
+    p = sub.add_parser(
+        "replace-tags", help="Reemplazar tags masivamente (viejo:nuevo ...)"
+    )
+    _add_tag_common_args(p)
+    p.add_argument(
+        "replacements", nargs="+", metavar="VIEJO:NUEVO",
+        help='Reemplazos, p.ej. "gestion:administracion" (admite varios)',
+    )
+    p.add_argument("--dry-run", action="store_true", help="Simular sin aplicar")
+
+    p = sub.add_parser(
+        "remove-tags", aliases=["remove-tag"],
+        help="Eliminar tags en toda la colección",
+    )
+    _add_tag_common_args(p)
+    p.add_argument("tags", nargs="+", metavar="TAG", help="Tags a eliminar")
+    p.add_argument("--dry-run", action="store_true", help="Simular sin aplicar")
+
+    p = sub.add_parser(
+        "add-tags",
+        help="Agregar tags (solo a artículos que ya tienen tags; sin duplicados)",
+    )
+    _add_tag_common_args(p)
+    p.add_argument("tags", nargs="+", metavar="TAG", help="Tags a agregar")
+    p.add_argument("--dry-run", action="store_true", help="Simular sin aplicar")
+
+    p = sub.add_parser("tag-stats", help="Estadísticas de tags de la colección")
+    _add_tag_common_args(p)
+    p.add_argument("--top", type=int, default=20, help="Cuántos tags mostrar en el top")
+
+    p = sub.add_parser(
+        "audit-tags", help="Auditoría de taxonomía (variantes, typos, formato)"
+    )
+    _add_tag_common_args(p)
+    p.add_argument(
+        "--threshold", type=float, default=0.8,
+        help="Umbral de similitud para detectar tags casi iguales (0-1)",
+    )
+
+    # --- Sincronización desde la ruta (mismo doble destino que tags) --------
+    p = sub.add_parser(
+        "sync-dates",
+        help="Sincronizar date con la carpeta YYYY-MM-DD-titulo de cada artículo",
+    )
+    _add_tag_common_args(p)
+    p.add_argument("--dry-run", action="store_true", help="Simular sin aplicar")
+
+    p = sub.add_parser(
+        "sync-pdf-urls",
+        help="Sincronizar citation.pdf-url con la ruta real (URL base por blog)",
+    )
+    _add_tag_common_args(p)
+    p.add_argument("--dry-run", action="store_true", help="Simular sin aplicar")
+
     return parser
 
 
@@ -372,6 +655,17 @@ COMMAND_MAP = {
     "find-differences":   cmd_find_differences,
     "sync-article":       cmd_sync_article,
     "sync-batch":         cmd_sync_batch,
+    # Gestión de tags (absorbe el antiguo script_tag_manager)
+    "normalize-tags":     cmd_normalize_tags,
+    "replace-tags":       cmd_replace_tags,
+    "remove-tags":        cmd_remove_tags,
+    "remove-tag":         cmd_remove_tags,   # alias
+    "add-tags":           cmd_add_tags,
+    "tag-stats":          cmd_tag_stats,
+    "audit-tags":         cmd_audit_tags,
+    # Sincronización desde la ruta (absorbe los scripts legacy 1_ y 3_)
+    "sync-dates":         cmd_sync_dates,
+    "sync-pdf-urls":      cmd_sync_pdf_urls,
 }
 
 

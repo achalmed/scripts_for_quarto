@@ -18,7 +18,7 @@ from .yaml_parser import (
     is_article_index,
     flatten_yaml_keys,
 )
-from .field_mapper import extract_value, apply_row_to_yaml
+from .field_mapper import extract_value, apply_row_to_yaml, reorder_yaml
 from .excel_writer import (
     build_metadata_sheet,
     build_instructions_sheet,
@@ -31,4 +31,25 @@ from .sync import (
     sync_single_interactive,
     sync_batch_interactive,
     detect_new_fields,
+)
+from .tag_utils import (
+    normalize_tag,
+    normalize_tag_list,
+    transform_tags,
+    parse_replacement_args,
+    find_similar_pairs,
+)
+from .tag_operations import apply_tag_ops_to_files, apply_tag_ops_to_excel
+from .path_sync import (
+    sync_dates_files,
+    sync_dates_excel,
+    sync_pdf_urls_files,
+    sync_pdf_urls_excel,
+    resolve_blog_base_urls,
+)
+from .tag_reports import (
+    collect_tag_data_from_files,
+    collect_tag_data_from_excel,
+    print_tag_stats,
+    print_tag_audit,
 )

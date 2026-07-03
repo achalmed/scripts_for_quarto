@@ -1,9 +1,20 @@
-# Sistema de Gestión de Metadatos Quarto — v2.0
+# Sistema de Gestión de Metadatos Quarto — v2.2
 
-Herramienta modular para administrar de forma centralizada los metadatos YAML
-de todos tus proyectos Quarto (`pub_*` + `website-achalma`) usando hojas de
-cálculo Excel. Un solo archivo Excel puede contener cientos de artículos;
-editas los campos en la hoja y actualizas todos los `.qmd` con un comando.
+Sistema integral de administración de publicaciones Quarto: metadatos,
+tags, autores, categorías, keywords, taxonomía y sincronización, para todos
+tus proyectos (`pub_*` + `website-achalma`), usando Excel como base de datos.
+Un solo archivo Excel puede contener cientos de artículos; editas los campos
+en la hoja y actualizas todos los `.qmd` con un comando.
+
+> **v2.1** absorbe por completo el antiguo `script_tag_manager`: toda la
+> gestión de tags (normalización, reemplazos, altas/bajas, estadísticas y
+> auditoría) vive ahora aquí, con una única implementación de parsing y
+> escritura YAML. Ver [§8 Gestión de tags](#8-gestión-de-tags-v21).
+>
+> **v2.2** absorbe además los scripts legacy de la raíz del repositorio
+> (`1_sincronizar_fecha...` y `3_actualizar_enlace_pdf...`) como los
+> comandos `sync-dates` y `sync-pdf-urls` (ver final de
+> [§7 Comandos completos](#7-comandos-completos)).
 
 **Autor:** Edison Achalma — UNSCH, Ayacucho, Perú  
 **Email:** elmer.achalma.09@unsch.edu.pe  
@@ -20,13 +31,14 @@ editas los campos en la hoja y actualizas todos los `.qmd` con un comando.
 5. [Configuración inicial](#5-configuración-inicial)
 6. [Uso rápido](#6-uso-rápido)
 7. [Comandos completos](#7-comandos-completos)
-8. [Formato de datos en Excel](#8-formato-de-datos-en-excel)
-9. [Ejemplos de configuración de campos](#9-ejemplos-de-configuración-de-campos)
-10. [Filtros avanzados](#10-filtros-avanzados)
-11. [Casos de uso comunes](#11-casos-de-uso-comunes)
-12. [Fórmulas de Excel útiles](#12-fórmulas-de-excel-útiles)
-13. [Añadir funcionalidades nuevas](#13-añadir-funcionalidades-nuevas)
-14. [Resolución de problemas](#14-resolución-de-problemas)
+8. [Gestión de tags (v2.1)](#8-gestión-de-tags-v21)
+9. [Formato de datos en Excel](#9-formato-de-datos-en-excel)
+10. [Ejemplos de configuración de campos](#10-ejemplos-de-configuración-de-campos)
+11. [Filtros avanzados](#11-filtros-avanzados)
+12. [Casos de uso comunes](#12-casos-de-uso-comunes)
+13. [Fórmulas de Excel útiles](#13-fórmulas-de-excel-útiles)
+14. [Añadir funcionalidades nuevas](#14-añadir-funcionalidades-nuevas)
+15. [Resolución de problemas](#15-resolución-de-problemas)
 
 ---
 
@@ -78,7 +90,11 @@ metadata-manager/
     ├── field_mapper.py        Conversión YAML ↔ Excel (extracción y aplicación)
     ├── excel_writer.py        Creación de plantilla, modo incremental, instrucciones
     ├── qmd_updater.py         Escritura de cambios en archivos .qmd
-    └── sync.py                Comparación, sync-article, sync-batch, detect-new-fields
+    ├── sync.py                Comparación, sync-article, sync-batch, detect-new-fields
+    ├── tag_utils.py           Funciones puras de tags: normalización, dedup, similitud
+    ├── tag_operations.py      Operaciones de tags sobre archivos y sobre Excel
+    ├── tag_reports.py         Estadísticas (tag-stats) y auditoría (audit-tags)
+    └── path_sync.py           sync-dates y sync-pdf-urls (metadatos derivados de la ruta)
 ```
 
 **Cada módulo tiene una responsabilidad única**, lo que facilita extender el
@@ -344,9 +360,152 @@ python3 main.py sync-batch ~/Documents excel_databases/quarto_metadata.xlsx \
     --blog pub_axiomata --dry-run
 ```
 
+### `sync-dates` — Fecha desde el nombre de la carpeta (v2.2)
+
+Sincroniza el campo `date` con la fecha de la carpeta del artículo
+(`2023-05-12-titulo` → `date: 05/12/2023`, el formato canónico del
+proyecto). Acepta el mismo doble destino que los comandos de tags:
+un `.xlsx` (solo actualiza la columna `date`) o un directorio (edita
+los `index.qmd` directamente).
+
+```bash
+# Sobre los archivos (simular primero)
+python3 main.py sync-dates ~/Documents --config metadata_config.yml --dry-run
+python3 main.py sync-dates ~/Documents --config metadata_config.yml
+
+# Sobre el Excel (luego aplicar con update)
+python3 main.py sync-dates excel_databases/quarto_metadata.xlsx --dry-run
+```
+
+### `sync-pdf-urls` — citation.pdf-url desde la ruta real (v2.2)
+
+Reconstruye `citation.pdf-url` como `<URL base del blog>/<ruta>/index.pdf`.
+Corrige errores de copy-paste (pdf-url apuntando a otro blog/artículo) y
+enlaces rotos por carpetas renombradas.
+
+```bash
+python3 main.py sync-pdf-urls ~/Documents --config metadata_config.yml --dry-run
+python3 main.py sync-pdf-urls excel_databases/quarto_metadata.xlsx --blog chaska
+```
+
+La URL base de cada blog se resuelve así:
+
+1. `blog_base_urls` en `metadata_config.yml` (si el blog figura ahí), p.ej.:
+   ```yaml
+   blog_base_urls:
+     pub_chaska: https://chaska-x.netlify.app # no derivable del nombre
+     website-achalma: https://achalmaedison.netlify.app
+   ```
+2. Si no, **voto por mayoría** de los pdf-url ya existentes en ese blog
+   (un pdf-url erróneo aislado no contamina la detección).
+
+Notas:
+
+- Solo actualiza artículos que **ya tienen** bloque `citation`; nunca lo crea.
+- La parte del script legacy que reescribía enlaces a PDF en el cuerpo del
+  documento no se migró: ningún artículo actual los usa.
+
 ---
 
-## 8. Formato de datos en Excel
+## 8. Gestión de tags (v2.1)
+
+Todos los comandos de tags aceptan **dos tipos de destino**:
+
+| Destino                    | Efecto                                                                                                |
+| -------------------------- | ----------------------------------------------------------------------------------------------------- |
+| Archivo `.xlsx`            | Modifica **solo la columna `tags`** del Excel; los `.qmd` no se tocan hasta ejecutar `update`         |
+| Directorio (`~/Documents`) | Modifica los `index.qmd` **directamente** (usa el mismo collector y filtros que el resto del sistema) |
+
+Todos soportan `--dry-run`, `--blog` y `--filter-path`. En modo directorio
+acepta además `--config` (mismo `metadata_config.yml` de siempre).
+
+> **Regla heredada del Tag Manager:** toda operación normaliza la lista
+> completa (minúsculas, sin tildes, snake_case) y elimina duplicados, y los
+> artículos **sin** campo `tags` se omiten siempre (nunca se crean tags
+> donde no existían).
+
+### `normalize-tags` — Normalizar y deduplicar
+
+```bash
+# Sobre el Excel (recomendado: revisar primero con --dry-run)
+python3 main.py normalize-tags excel_databases/quarto_metadata.xlsx --dry-run
+python3 main.py normalize-tags excel_databases/quarto_metadata.xlsx
+
+# Directamente sobre los archivos
+python3 main.py normalize-tags ~/Documents --config metadata_config.yml --dry-run
+```
+
+`"Gestión Empresarial"` → `gestion_empresarial`;
+`economia, Economía, ECONOMIA` → `economia` (un solo tag).
+
+### `replace-tags` — Reemplazo masivo
+
+```bash
+# Uno o varios reemplazos "viejo:nuevo" a la vez
+python3 main.py replace-tags excel.xlsx "gestion:administracion" \
+    "economia:economia_aplicada" "python:data_science" --dry-run
+```
+
+La comparación es insensible a mayúsculas/tildes (`"Gestión"` también
+matchea `gestion`).
+
+### `remove-tags` — Eliminación masiva
+
+```bash
+python3 main.py remove-tags excel.xlsx tag_obsoleto otro_tag --dry-run
+# (también disponible como remove-tag)
+```
+
+### `add-tags` — Agregar tags
+
+```bash
+python3 main.py add-tags ~/Documents nuevo_tag --blog pub_axiomata --dry-run
+```
+
+Evita duplicados automáticamente y respeta el orden existente. Solo agrega
+a artículos que ya tienen tags.
+
+### `tag-stats` — Estadísticas de la colección
+
+```bash
+python3 main.py tag-stats ~/Documents --top 30
+python3 main.py tag-stats excel.xlsx --blog pub_chaska
+```
+
+Reporta: totales, tags únicos, promedio por artículo, top N con histograma,
+tags huérfanos (usados una sola vez), distribución por blog y por año.
+
+### `audit-tags` — Auditoría de taxonomía
+
+```bash
+python3 main.py audit-tags excel.xlsx
+python3 main.py audit-tags ~/Documents --threshold 0.85
+```
+
+Detecta: variantes de escritura que colapsan al normalizar, problemas de
+formato (mayúsculas, tildes, espacios, kebab-case, tags muy largos), pares
+singular/plural y tags casi iguales por similitud de cadenas (typos como
+`expotacion` ~ `exportacion`). Al final imprime los comandos
+`normalize-tags` / `replace-tags` listos para ejecutar las correcciones.
+
+### Flujo recomendado (Excel como fuente de verdad)
+
+```bash
+# 1. Auditar
+python3 main.py audit-tags excel_databases/quarto_metadata.xlsx
+
+# 2. Corregir el Excel (sin tocar archivos)
+python3 main.py normalize-tags excel_databases/quarto_metadata.xlsx
+python3 main.py replace-tags excel_databases/quarto_metadata.xlsx "expotacion:exportacion"
+
+# 3. Revisar y aplicar a los .qmd
+python3 main.py update ~/Documents excel_databases/quarto_metadata.xlsx --dry-run
+python3 main.py update ~/Documents excel_databases/quarto_metadata.xlsx
+```
+
+---
+
+## 9. Formato de datos en Excel
 
 ### Ordena la hoja antes de trabajar (RECOMENDADO)
 
@@ -478,7 +637,7 @@ Para cada autor N (1, 2, 3):
 
 ---
 
-## 9. Ejemplos de configuración de campos
+## 10. Ejemplos de configuración de campos
 
 ### Campos comunes
 
@@ -586,7 +745,7 @@ bibliography: referencias.bib, extra.bib
 
 ---
 
-## 10. Filtros avanzados
+## 11. Filtros avanzados
 
 ```bash
 # Solo un blog
@@ -607,7 +766,7 @@ bibliography: referencias.bib, extra.bib
 
 ---
 
-## 11. Casos de uso comunes
+## 12. Casos de uso comunes
 
 ### Publicar artículos (draft: TRUE → FALSE)
 
@@ -698,7 +857,7 @@ git commit -m "Backup metadatos $(date +%Y-%m-%d)"
 
 ---
 
-## 12. Fórmulas de Excel útiles
+## 13. Fórmulas de Excel útiles
 
 Esta sección recoge fórmulas prácticas para generar y transformar datos
 directamente en el Excel de metadatos, sin necesidad de editar manualmente
@@ -1097,7 +1256,7 @@ End Sub
 
 ---
 
-## 13. Añadir funcionalidades nuevas
+## 14. Añadir funcionalidades nuevas
 
 La arquitectura modular facilita extender el sistema. Cada módulo tiene una
 responsabilidad clara:
@@ -1129,7 +1288,7 @@ responsabilidad clara:
 
 ---
 
-## 14. Resolución de problemas
+## 15. Resolución de problemas
 
 ### "La ruta base no existe"
 

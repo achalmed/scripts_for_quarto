@@ -41,6 +41,25 @@ def _style_header_cell(cell):
 
 
 # =============================================================================
+# APERTURA LECTURA/ESCRITURA
+# =============================================================================
+
+def open_metadata_sheets(excel_path):
+    """
+    Abre la hoja METADATOS en dos vistas del mismo archivo:
+      ws        → para escribir (preserva las fórmulas del usuario)
+      ws_values → para leer valores CALCULADOS (data_only) en vez del
+                  texto de la fórmula (p.ej. blog_nombre derivado)
+
+    Devuelve (wb, ws, ws_values). Lanza la excepción original si falla.
+    """
+    wb = load_workbook(excel_path)
+    ws = wb["METADATOS"]
+    ws_values = load_workbook(excel_path, data_only=True)["METADATOS"]
+    return wb, ws, ws_values
+
+
+# =============================================================================
 # RELLENO DE FILAS
 # =============================================================================
 
@@ -351,6 +370,24 @@ def build_instructions_sheet(wb: Workbook):
         ["   python main.py detect-new-fields ~/Documents"],
         ["   python main.py find-differences ~/Documents excel.xlsx"],
         ["   python main.py sync-batch ~/Documents excel.xlsx --dry-run"],
+        [""],
+        ["🏷️  GESTION DE TAGS (destino: este Excel o el directorio de blogs)"],
+        [""],
+        ["   python main.py normalize-tags excel.xlsx --dry-run"],
+        ["   python main.py replace-tags excel.xlsx viejo:nuevo otro:nuevo2"],
+        ["   python main.py remove-tags excel.xlsx tag_obsoleto"],
+        ["   python main.py add-tags excel.xlsx nuevo_tag --blog pub_axiomata"],
+        ["   python main.py tag-stats ~/Documents --top 30"],
+        ["   python main.py audit-tags ~/Documents"],
+        [""],
+        ["   Nota: sobre el Excel solo cambia la columna tags; luego"],
+        ["   ejecutar 'update' para escribir los cambios en los .qmd"],
+        [""],
+        ["📅 SINCRONIZACION DESDE LA RUTA"],
+        [""],
+        ["   python main.py sync-dates excel.xlsx --dry-run"],
+        ["   python main.py sync-pdf-urls excel.xlsx --dry-run"],
+        ["   (date desde la carpeta YYYY-MM-DD; pdf-url desde la ruta real)"],
         [""],
         ["=" * 72],
         [""],

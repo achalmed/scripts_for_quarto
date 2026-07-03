@@ -15,15 +15,14 @@ Python dependencies: `pyyaml`, `pandas`, `openpyxl` (typically in a conda env, e
 | Directory                               | Language | Entry point          | Purpose                                                                                                            |
 | --------------------------------------- | -------- | -------------------- | ------------------------------------------------------------------------------------------------------------------ |
 | `script_blogs_manager/`                 | Bash     | `main.sh`            | Blog manager v3.0: list/render/preview/publish blogs, create posts (APAQuarto), git ops, backups, interactive menu |
-| `script_metadata_manager/`              | Python   | `main.py`            | Manage YAML metadata of hundreds of articles via an Excel database                                                 |
+| `script_metadata_manager/`              | Python   | `main.py`            | Manage YAML metadata AND tags of hundreds of articles via an Excel database (v2.1 absorbed the old tag manager)    |
 | `script_pub_index_symlink/`             | Bash     | `main.sh`            | Maintain "04 index" symlinks (organized by year) to all publication folders                                        |
-| `script_tag_manager/`                   | Python   | `qmd_tag_manager.py` | Normalize/replace/add/remove tags in `.qmd` YAML                                                                   |
 | `script_format_yaml/`                   | Python   | `fix_qmd_files.py`   | Idempotent YAML block formatter for `.qmd` files                                                                   |
 | `script_generador_publicacion_similar/` | Bash     | `main.sh`            | Generate publication index files (`_contenido_*.qmd`)                                                              |
 
-The two root-level scripts (`1_sincronizar_fecha_carpeta_en_index_qmd.py`, `3_actualizar_enlace_pdf_en_qmd.py`) are legacy one-offs with hardcoded relative paths (`../tecnologia-seguridad`, `../blog`) that must be edited before running.
+The old root-level one-off scripts (`1_sincronizar_fecha_carpeta_en_index_qmd.py`, `3_actualizar_enlace_pdf_en_qmd.py`) were absorbed into the metadata manager as `sync-dates` and `sync-pdf-urls` (v2.2) and deleted.
 
-**Note:** the root `README.md` examples for the metadata manager still reference the old `quarto_metadata_manager.py`; the actual entry point since v2.0 is `main.py` with the same subcommands.
+**Note:** the old standalone `script_tag_manager/` was removed in favor of the tag commands inside `script_metadata_manager/` (v2.1); if docs or scripts mention `qmd_tag_manager.py`, they are stale.
 
 ## Common commands
 
@@ -38,6 +37,18 @@ python main.py update ~/Documents excel.xlsx --blog pub_axiomata --filter-path "
 python main.py find-differences ~/Documents excel.xlsx
 python main.py detect-new-fields ~/Documents --config metadata_config.yml
 
+# Tag management (target = .xlsx file → edits only the Excel; directory → edits .qmd files directly)
+python main.py normalize-tags <excel.xlsx | ~/Documents> [--dry-run]
+python main.py replace-tags <target> "viejo:nuevo" ["otro:nuevo2" ...]
+python main.py remove-tags <target> tag1 [tag2 ...]      # alias: remove-tag
+python main.py add-tags <target> tag1 [tag2 ...]         # only adds to articles that already have tags
+python main.py tag-stats <target> [--top N]
+python main.py audit-tags <target> [--threshold 0.8]
+
+# Path-derived sync (same dual target; absorbed the old root scripts 1_ and 3_)
+python main.py sync-dates <target> [--dry-run]        # date ← YYYY-MM-DD folder name (as MM/DD/YYYY)
+python main.py sync-pdf-urls <target> [--dry-run]     # citation.pdf-url ← per-blog base URL + article path
+
 # Blog manager
 ./script_blogs_manager/main.sh            # interactive menu
 ./script_blogs_manager/main.sh list       # list all blogs
@@ -45,10 +56,6 @@ python main.py detect-new-fields ~/Documents --config metadata_config.yml
 
 # Publication index symlinks
 ./script_pub_index_symlink/main.sh [--dry-run | --check-broken | --clean-broken | --summary]
-
-# Tag manager (run from script_tag_manager/)
-python qmd_tag_manager.py --normalize --recursive --directory <path>
-python qmd_tag_manager.py --replace "viejo:nuevo" --recursive
 
 # YAML formatter
 python script_format_yaml/fix_qmd_files.py --directory <path> --recursive [--dry-run]
@@ -77,4 +84,6 @@ python script_format_yaml/fix_qmd_files.py --directory <path> --recursive [--dry
 
 The Excel file is the source of truth for bulk edits: generate template → edit in Excel → `update` applies changes back to the `.qmd` files.
 
-**Tag manager**: `tag_config.py` holds user-editable dictionaries (`COMMON_REPLACEMENTS`, etc.) consumed by `qmd_tag_manager.py`; tag normalization lowercases, strips accents, and converts spaces to underscores (`Gestión Empresarial` → `gestion_empresarial`).
+**Path-derived sync** (inside `script_metadata_manager/`, since v2.2): `path_sync.py` derives `date` from the article's `YYYY-MM-DD-titulo` folder and `citation.pdf-url` from the per-blog base URL + article path. Base URLs are resolved by majority vote over each blog's existing pdf-urls (so one bad copy-pasted URL can't poison detection — note `pub_chaska` → `chaska-x.netlify.app`, not derivable from the folder name), overridable via `blog_base_urls` in `metadata_config.yml`. It never creates a `citation` block, only updates existing ones.
+
+**Tag management** (inside `script_metadata_manager/`, since v2.1): `tag_utils.py` has the pure functions (normalization lowercases, strips accents, converts spaces to underscores: `Gestión Empresarial` → `gestion_empresarial`; dedup, string similarity); `tag_operations.py` applies operations to either the Excel `tags` column or directly to `.qmd` files (through the same `collector` + `write_yaml_to_qmd` used by `update`); `tag_reports.py` builds `tag-stats` and `audit-tags` reports. Every tag operation normalizes the full list, and articles without a `tags` field are always skipped. There is exactly ONE YAML writer (`qmd_updater.write_yaml_to_qmd`) and ONE field reorderer (`field_mapper.reorder_yaml`) — do not introduce parallel implementations.

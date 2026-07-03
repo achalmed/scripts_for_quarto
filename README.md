@@ -72,7 +72,8 @@ python fix_qmd_files.py --directory ~/Documents/publicaciones --recursive
 
 ```bash
 cd script_generador_publicacion_similar
-./generar_indices.sh
+./main.sh ~/Documents/pub_actus-mercator --base-url https://actus-mercator.netlify.app
+./main.sh ~/Documents/website-achalma/teching
 ```
 
 **Estructuras soportadas:**
@@ -119,17 +120,17 @@ actus-mercator/
 cd script_metadata_manager
 
 # 1. Crear configuración
-python quarto_metadata_manager.py create-config ~/Documents/publicaciones
+python main.py create-config ~/Documents
 
 # 2. Generar base de datos Excel
-python quarto_metadata_manager.py create-template ~/Documents/publicaciones \
+python main.py create-template ~/Documents \
     --config metadata_config.yml
 
 # 3. Editar metadatos en Excel
 libreoffice excel_databases/quarto_metadata.xlsx
 
 # 4. Actualizar archivos
-python quarto_metadata_manager.py update ~/Documents/publicaciones \
+python main.py update ~/Documents \
     excel_databases/quarto_metadata.xlsx --config metadata_config.yml
 ```
 
@@ -144,17 +145,22 @@ python quarto_metadata_manager.py update ~/Documents/publicaciones \
 
 ---
 
-### 4. 🏷️ **Gestor de Tags** (`script_tag_manager/`)
+### 4. 🏷️ **Gestión de Tags** (integrada en `script_metadata_manager/` desde v2.1)
 
-**Problema que resuelve:** Normaliza, reemplaza y gestiona tags en archivos `.qmd`.
+> ℹ️ El antiguo `script_tag_manager/` fue **absorbido por el Metadata
+> Manager**: una sola herramienta, un solo parser YAML, una sola CLI.
+
+**Problema que resuelve:** Normaliza, reemplaza, elimina, agrega y audita tags — sobre el Excel o directamente sobre los archivos `.qmd`.
 
 **Características principales:**
 
-- 🔄 **Normalización automática** - Convierte a minúsculas, elimina tildes
-- 🔁 **Reemplazo masivo** - Cambia tags obsoletos por nuevos
+- 🔄 **Normalización automática** - Minúsculas, sin tildes, snake_case
+- 🔁 **Reemplazo masivo** - Varios `"viejo:nuevo"` a la vez
 - 🗑️ **Eliminación selectiva** - Remueve tags no deseados
 - ➕ **Adición inteligente** - Solo agrega tags a archivos que ya los tienen
-- 🔍 **Detección de duplicados** - Evita tags repetidos
+- 🔍 **Detección de duplicados** - `economia, Economía, ECONOMIA` → `economia`
+- 📊 **Estadísticas** - Top tags, huérfanos, distribución por blog/año
+- 🔬 **Auditoría de taxonomía** - Detecta typos y variantes por similitud
 
 **Ejemplos de normalización:**
 
@@ -165,7 +171,7 @@ tags:
   - Economía Internacional
   - Cadena de suministros
 
-# Después (con --normalize)
+# Después (con normalize-tags)
 tags:
   - gestion_empresarial
   - economia_internacional
@@ -175,19 +181,25 @@ tags:
 **Uso rápido:**
 
 ```bash
-cd script_tag_manager
+cd script_metadata_manager
 
-# Normalizar todos los tags
-python qmd_tag_manager.py --normalize --recursive
+# Normalizar la columna tags del Excel (los archivos no se tocan)
+python main.py normalize-tags excel_databases/quarto_metadata.xlsx --dry-run
 
-# Reemplazar tags específicos
-python qmd_tag_manager.py --replace "viejo:nuevo" --recursive
+# Normalizar directamente los archivos .qmd
+python main.py normalize-tags ~/Documents --config metadata_config.yml
 
-# Agregar tags nuevos
-python qmd_tag_manager.py --add "nuevo_tag" --recursive
+# Reemplazar, eliminar, agregar
+python main.py replace-tags excel.xlsx "viejo:nuevo" "otro:nuevo2"
+python main.py remove-tags excel.xlsx tag_obsoleto
+python main.py add-tags ~/Documents nuevo_tag --blog pub_axiomata
+
+# Estadísticas y auditoría de taxonomía
+python main.py tag-stats ~/Documents --top 30
+python main.py audit-tags excel_databases/quarto_metadata.xlsx
 ```
 
-**📖 [README completo](script_tag_manager/README.md)**
+**📖 [README completo](script_metadata_manager/README.md)**
 
 ---
 
@@ -215,9 +227,8 @@ conda activate scripts_quarto
 pip install pyyaml pandas openpyxl
 
 # 4. Dar permisos de ejecución
-chmod +x script_generador_publicacion_similar/generar_indices.sh
+chmod +x script_generador_publicacion_similar/main.sh
 chmod +x script_metadata_manager/*.sh
-chmod +x script_tag_manager/*.sh
 ```
 
 ### Instalación por Script
@@ -233,13 +244,9 @@ cd script_format_yaml
 cd script_generador_publicacion_similar
 # Ver README.md
 
-# Gestor de Metadatos
+# Gestor de Metadatos y Tags
 cd script_metadata_manager
 bash install.sh  # Instalación automática
-
-# Gestor de Tags
-cd script_tag_manager
-# Ver README.md
 ```
 
 ---
@@ -257,20 +264,20 @@ cd script_format_yaml
 python fix_qmd_files.py --directory ~/Documents/publicaciones --recursive
 
 # 3. Normalizar tags
-cd ../script_tag_manager
-python qmd_tag_manager.py --normalize --recursive --directory ~/Documents/publicaciones
+cd ../script_metadata_manager
+python main.py normalize-tags ~/Documents --config metadata_config.yml --dry-run
+python main.py normalize-tags ~/Documents --config metadata_config.yml
 
 # 4. Actualizar metadatos desde Excel
-cd ../script_metadata_manager
-python quarto_metadata_manager.py update ~/Documents/publicaciones \
+python main.py update ~/Documents \
     excel_databases/quarto_metadata.xlsx
 
 # 5. Generar índices
 cd ../script_generador_publicacion_similar
-./generar_indices.sh
+./main.sh ~/Documents/pub_axiomata
 
 # 6. Renderizar con Quarto
-cd ~/Documents/publicaciones/mi-blog
+cd ~/Documents/pub_axiomata
 quarto render
 ```
 
@@ -286,10 +293,10 @@ quarto create project blog mi-blog
 
 # 2. Configurar gestor de metadatos
 cd scripts_for_quarto/script_metadata_manager
-python quarto_metadata_manager.py create-config ~/Documents/mi-blog
+python main.py create-config ~/Documents/mi-blog
 
 # 3. Generar primera base de datos
-python quarto_metadata_manager.py create-template ~/Documents/mi-blog
+python main.py create-template ~/Documents/mi-blog
 ```
 
 ### Escenario 2: Migrar Blog Existente
@@ -300,12 +307,12 @@ cd script_format_yaml
 python fix_qmd_files.py --directory ~/Documents/blog-viejo --recursive
 
 # 2. Normalizar tags
-cd ../script_tag_manager
-python qmd_tag_manager.py --normalize --recursive --directory ~/Documents/blog-viejo
+cd ../script_metadata_manager
+python main.py normalize-tags ~/Documents/blog-viejo --dry-run
+python main.py normalize-tags ~/Documents/blog-viejo
 
 # 3. Crear base de datos de metadatos
-cd ../script_metadata_manager
-python quarto_metadata_manager.py create-template ~/Documents/blog-viejo
+python main.py create-template ~/Documents/blog-viejo
 ```
 
 ### Escenario 3: Publicación Masiva
@@ -313,18 +320,18 @@ python quarto_metadata_manager.py create-template ~/Documents/blog-viejo
 ```bash
 # 1. Crear Excel con todos los artículos
 cd script_metadata_manager
-python quarto_metadata_manager.py create-template ~/Documents/publicaciones
+python main.py create-template ~/Documents
 
 # 2. Editar en Excel (cambiar draft: FALSE)
 libreoffice excel_databases/quarto_metadata.xlsx
 
 # 3. Aplicar cambios
-python quarto_metadata_manager.py update ~/Documents/publicaciones \
+python main.py update ~/Documents \
     excel_databases/quarto_metadata.xlsx
 
 # 4. Generar índices
 cd ../script_generador_publicacion_similar
-./generar_indices.sh
+./main.sh ~/Documents/pub_axiomata
 
 # 5. Renderizar
 cd ~/Documents/publicaciones
@@ -336,15 +343,18 @@ quarto render
 ```bash
 # 1. Actualizar metadatos
 cd script_metadata_manager
-python quarto_metadata_manager.py create-template ~/Documents/publicaciones
+python main.py create-template ~/Documents --incremental
 
 # 2. Revisar y editar Excel
 # (Actualizar keywords, categorías, etc.)
 
-# 3. Aplicar cambios
-python quarto_metadata_manager.py update ~/Documents/publicaciones \
+# 3. Auditar la taxonomía de tags
+python main.py audit-tags excel_databases/quarto_metadata.xlsx
+
+# 4. Aplicar cambios
+python main.py update ~/Documents \
     excel_databases/quarto_metadata.xlsx --dry-run  # Simular primero
-python quarto_metadata_manager.py update ~/Documents/publicaciones \
+python main.py update ~/Documents \
     excel_databases/quarto_metadata.xlsx  # Aplicar
 ```
 
@@ -352,12 +362,11 @@ python quarto_metadata_manager.py update ~/Documents/publicaciones \
 
 ## 📊 Comparación de Scripts
 
-| Script                | Propósito        | Input              | Output                  | Mejor Para            |
-| --------------------- | ---------------- | ------------------ | ----------------------- | --------------------- |
-| **Format YAML**       | Corregir formato | `.qmd`             | `.qmd` corregidos       | Normalización inicial |
-| **Generador Índices** | Crear listas     | Carpetas con posts | `_contenido_*.qmd`      | Navegación en blogs   |
-| **Metadata Manager**  | Gestión masiva   | `.qmd`             | Excel → `.qmd`          | Edición de metadatos  |
-| **Tag Manager**       | Normalizar tags  | `.qmd`             | `.qmd` con tags limpios | Taxonomía consistente |
+| Script                | Propósito                          | Input              | Output             | Mejor Para                                   |
+| --------------------- | ---------------------------------- | ------------------ | ------------------ | -------------------------------------------- |
+| **Format YAML**       | Corregir formato                   | `.qmd`             | `.qmd` corregidos  | Normalización inicial                        |
+| **Generador Índices** | Crear listas                       | Carpetas con posts | `_contenido_*.qmd` | Navegación en blogs                          |
+| **Metadata Manager**  | Gestión masiva de metadatos y tags | `.qmd` / Excel     | Excel ↔ `.qmd`     | Edición de metadatos y taxonomía consistente |
 
 ---
 

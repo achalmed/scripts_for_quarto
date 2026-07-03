@@ -16,7 +16,7 @@ import yaml
 # =============================================================================
 # VERSIÓN
 # =============================================================================
-VERSION = "2.0.0"
+VERSION = "2.2.0"
 AUTHOR  = "Edison Achalma"
 EMAIL   = "elmer.achalma.09@unsch.edu.pe"
 
@@ -143,6 +143,15 @@ def create_default_config(base_path: str, output_path: str = "metadata_config.ym
             "~/Documents/scripts/scripts_for_quarto/"
             "script_metadata_manager/excel_databases"
         ),
+        # URL base de cada blog para sync-pdf-urls. Opcional: si un blog no
+        # figura aquí, se resuelve por mayoría de sus pdf-url existentes.
+        # Imprescindible solo cuando el dominio no coincide con el nombre
+        # de la carpeta (ej. pub_chaska → chaska-x) Y el blog aún no tiene
+        # ningún pdf-url del que deducirlo.
+        "blog_base_urls": {
+            "pub_chaska": "https://chaska-x.netlify.app",
+            "website-achalma": "https://achalmaedison.netlify.app",
+        },
     }
 
     with open(output_path, "w", encoding="utf-8") as f:
