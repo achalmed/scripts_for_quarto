@@ -3,11 +3,13 @@
 ## Instalación en 3 pasos
 
 ### 1️⃣ Instalar dependencias
+
 ```bash
 pip install pyyaml
 ```
 
 ### 2️⃣ Verificar instalación
+
 ```bash
 python qmd_tag_manager.py --help
 ```
@@ -29,6 +31,7 @@ python qmd_tag_manager.py --normalize --dry-run
 ```
 
 **¿Qué hace esto?**
+
 - Escanea todos los archivos .qmd en el directorio actual
 - Muestra qué tags se normalizarían
 - NO modifica ningún archivo (porque usamos `--dry-run`)
@@ -40,6 +43,7 @@ python qmd_tag_manager.py --normalize
 ```
 
 **¿Qué hace esto?**
+
 - Normaliza todos los tags (minúsculas, sin tildes, con guiones bajos)
 - Elimina duplicados automáticamente
 - Guarda los cambios en los archivos
@@ -67,6 +71,7 @@ python qmd_tag_manager.py --replace "Gestión Empresarial:gestion_empresarial"
 ```
 
 El script es inteligente: encontrará todas las variaciones:
+
 - "Gestión Empresarial"
 - "gestión empresarial"
 - "GESTIÓN EMPRESARIAL"
@@ -108,6 +113,7 @@ python qmd_tag_manager.py [opciones]
 ### Opción 2: Personalizar configuración (recomendado)
 
 1. Edita `tag_config.py`:
+
 ```python
 COMMON_REPLACEMENTS = {
     "Gestión Empresarial": "gestion_empresarial",
@@ -117,6 +123,7 @@ COMMON_REPLACEMENTS = {
 ```
 
 2. Genera comandos automáticamente:
+
 ```bash
 python tag_config.py
 ```
@@ -140,6 +147,7 @@ python tag_config.py
 ### "No se encontraron archivos .qmd"
 
 **Solución**: Verifica que estás en el directorio correcto o usa:
+
 ```bash
 python qmd_tag_manager.py --directory "/ruta/completa/a/tus/posts"
 ```
@@ -147,6 +155,7 @@ python qmd_tag_manager.py --directory "/ruta/completa/a/tus/posts"
 ### "ModuleNotFoundError: No module named 'yaml'"
 
 **Solución**: Instala PyYAML:
+
 ```bash
 pip install pyyaml
 ```
@@ -160,26 +169,31 @@ pip install pyyaml
 ## 📚 Comandos útiles para copiar y pegar
 
 ### Normalizar todo en el directorio actual
+
 ```bash
 python qmd_tag_manager.py --normalize
 ```
 
 ### Normalizar todo recursivamente
+
 ```bash
 python qmd_tag_manager.py --normalize --recursive
 ```
 
 ### Ver ayuda completa
+
 ```bash
 python qmd_tag_manager.py --help
 ```
 
 ### Procesar un archivo específico
+
 ```bash
 python qmd_tag_manager.py --file "mi_archivo.qmd" --normalize
 ```
 
 ### Operación completa (normalizar + reemplazar + limpiar)
+
 ```bash
 python qmd_tag_manager.py \
   --normalize \
@@ -196,17 +210,20 @@ python qmd_tag_manager.py \
 ### Primera vez usando el script:
 
 1. **Backup primero**
+
    ```bash
    git add .
    git commit -m "Backup antes de normalizar tags"
    ```
 
 2. **Probar en un archivo**
+
    ```bash
    python qmd_tag_manager.py --file "test.qmd" --normalize --dry-run
    ```
 
 3. **Si se ve bien, aplicar al archivo**
+
    ```bash
    python qmd_tag_manager.py --file "test.qmd" --normalize
    ```
@@ -216,6 +233,7 @@ python qmd_tag_manager.py \
    - Verifica que todo se ve correcto
 
 5. **Aplicar a todos los archivos**
+
    ```bash
    python qmd_tag_manager.py --normalize --recursive --dry-run
    python qmd_tag_manager.py --normalize --recursive
@@ -243,6 +261,7 @@ python qmd_tag_manager.py \
 ```
 
 **Leyenda:**
+
 - 📄 = Archivo siendo procesado
 - 🔄 = Tag reemplazado
 - 🗑️ = Tags eliminados

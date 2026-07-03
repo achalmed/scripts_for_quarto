@@ -1,240 +1,282 @@
 # Generador de Índices de Contenido para Blogs Quarto
-#readme
 
-## 📋 Descripción
+> Genera automáticamente archivos `_contenido_<subblog>.qmd` con enlaces
+> numerados (artículo + PDF) a las publicaciones de un blog Quarto,
+> soportando blogs independientes (`pub_*`) y secciones de página web
+> (`website-achalma/blog`, `/teching`, etc.).
 
-Script Bash que genera automáticamente archivos de índice (.qmd) para blogs Quarto. **Soporta dos estructuras diferentes**:
+**Versión:** 4.0.0 · **Autor:** Edison Achalma
 
-1. **Página web completa** (con nivel blog/)
-2. **Blog independiente** (sin nivel blog/)
+## 📋 Tabla de Contenidos
 
-## 🎯 Estructuras Soportadas
+- [Descripción](#-descripción)
+- [Requisitos](#️-requisitos)
+- [Instalación](#-instalación)
+- [Uso](#-uso)
+- [Arquitectura](#️-arquitectura)
+- [Bugs Corregidos](#-bugs-corregidos)
+- [Solución de Problemas](#-solución-de-problemas)
+- [Cómo Contribuir](#-cómo-contribuir--agregar-nuevas-funcionalidades)
+- [Notas y Advertencias](#️-notas-y-advertencias)
 
-### Estructura 1: Página Web Completa
-```
-mi-sitio/
-├── blog/                          # ← Nivel extra
-│   ├── posts/
-│   │   ├── 2023-05-12-titulo/
-│   │   │   └── index.qmd
-│   │   └── _contenido_posts.qmd  # ← Generado
-│   ├── index.qmd
-│   └── sidebar.jpg
-└── ...
-```
+## 📖 Descripción
 
-**URL generada:** `https://dominio.com/blog/posts/2023-05-12-titulo/`
+Recorre los subblogs (subcarpetas) de un blog Quarto, localiza las carpetas
+de publicación con formato `YYYY-MM-DD-titulo/` que contengan un `index.qmd`,
+y genera en cada subblog un índice Markdown listo para incluir con
+`{{< include >}}`:
 
-### Estructura 2: Blog Independiente
-```
-actus-mercator/
-├── posts/                         # ← Directo, sin blog/
-│   ├── 2022-01-23-titulo/
-│   │   └── index.qmd
-│   └── _contenido_posts.qmd      # ← Generado
-├── inteligencia-comercial/
-│   ├── 2025-05-15-titulo/
-│   │   └── index.qmd
-│   └── _contenido_inteligencia-comercial.qmd  # ← Generado
-└── index.qmd
+```markdown
+1. [{{< fa regular file-pdf >}}](https://dominio.com/posts/2022-01-23-titulo/index.pdf) [Titulo](https://dominio.com/posts/2022-01-23-titulo)
+2. ...
 ```
 
-**URL generada:** `https://dominio.com/posts/2022-01-23-titulo/`
+### Estructuras soportadas
 
-## 🚀 Instalación y Configuración
+| Tipo                              | Ejemplo de directorio                 | URL generada                       |
+| --------------------------------- | ------------------------------------- | ---------------------------------- |
+| `blog` (proyecto independiente)   | `~/Documents/pub_actus-mercator`      | `base/<subblog>/<post>/`           |
+| `website` (sección de página web) | `~/Documents/website-achalma/teching` | `base/<seccion>/<subblog>/<post>/` |
 
-### 1. Descargar el Script
+Con `--type auto` (por defecto) la estructura se detecta por la ubicación del
+`_quarto.yml`: si está en el propio directorio es un proyecto independiente;
+si está en el directorio padre, se trata de una sección de la página web.
+
+## ⚙️ Requisitos
+
+### Sistema Operativo
+
+- Linux (usa `sed` GNU para capitalizar títulos; no compatible con BSD/macOS sin ajustes)
+
+### Dependencias
+
+- Bash >= 4.x
+- Coreutils estándar: `sed`, `tr`, `date`, `basename`, `dirname`
+
+No requiere Python ni paquetes externos.
+
+## 🚀 Instalación
+
+### Paso 1: Obtener el código
+
 ```bash
-# Crear directorio para scripts
-mkdir -p ~/scripts
-
-# Descargar o crear el script
-cd ~/scripts
-nano generar_indices.sh
-# [Pegar el contenido del script]
-
-# Dar permisos de ejecución
-chmod +x generar_indices.sh
+git clone https://github.com/achalmed/scripts_for_quarto.git
+cd scripts_for_quarto/script_generador_publicacion_similar
 ```
 
-### 2. Configurar Variables
+### Paso 2: Dar permisos de ejecución
 
-Editar las siguientes líneas según tu proyecto:
 ```bash
-# CONFIGURACIÓN PARA PÁGINA WEB
-main_blog="/home/usuario/proyectos/mi-sitio/blog"
-base_url="https://achalmaedison.netlify.app"
-blog_type="auto"  # Detecta automáticamente
-
-# CONFIGURACIÓN PARA BLOG INDEPENDIENTE
-main_blog="/home/usuario/proyectos/actus-mercator"
-base_url="https://actus-mercator.netlify.app"
-blog_type="auto"  # Detecta automáticamente
+chmod +x main.sh
 ```
 
-**Opciones para `blog_type`:**
-- `"auto"` - Detecta automáticamente (recomendado)
-- `"website"` - Fuerza estructura de página web (blog/posts/)
-- `"blog"` - Fuerza estructura de blog independiente (posts/)
+### Paso 3 (opcional): Crear alias
 
-### 3. Crear Alias (Opcional)
-
-Para ejecutar desde cualquier directorio:
 ```bash
-# Agregar al .bashrc o .zshrc
-echo 'alias generar-indices="~/scripts/generar_indices.sh"' >> ~/.bashrc
-source ~/.bashrc
+echo 'alias generar-indices="~/Documents/scripts_for_quarto/script_generador_publicacion_similar/main.sh"' >> ~/.zshrc
+source ~/.zshrc
 ```
 
 ## 💻 Uso
 
-### Uso Básico
+### Sintaxis
+
 ```bash
-# Ejecutar directamente
-cd ~/scripts
-./generar_indices.sh
+./main.sh BLOG_DIR [OPCIONES]
 ```
 
-### Uso con Alias
+### Opciones disponibles
+
+| Flag                 | Descripción                                                                        | Requerido |
+| -------------------- | ---------------------------------------------------------------------------------- | --------- |
+| `BLOG_DIR`           | Directorio del blog a procesar (posicional)                                        | Sí        |
+| `-u, --base-url URL` | URL base del sitio, sin barra final (default: `https://achalmaedison.netlify.app`) | No        |
+| `-t, --type TIPO`    | `auto` \| `website` \| `blog` (default: `auto`)                                    | No        |
+| `-n, --dry-run`      | Simula sin escribir ni borrar archivos                                             | No        |
+| `-h, --help`         | Muestra la ayuda                                                                   | No        |
+| `--version`          | Muestra la versión                                                                 | No        |
+
+### Ejemplos de uso
+
 ```bash
-# Desde cualquier directorio
-generar-indices
+# Blog independiente (URL base propia)
+./main.sh ~/Documents/pub_actus-mercator --base-url https://actus-mercator.netlify.app
+
+# Sección de la página web (URL base por defecto)
+./main.sh ~/Documents/website-achalma/teching
+
+# Simular primero (recomendado antes de cambios masivos)
+./main.sh ~/Documents/pub_axiomata --dry-run
+./main.sh ~/Documents/website-achalma/teching          # usa la URL base por defecto
+
+# Forzar tipo de estructura si la autodetección no aplica
+./main.sh ~/Documents/mi-blog-nuevo --type blog
 ```
 
-### Procesar Múltiples Blogs
+### Códigos de salida
 
-**Opción 1: Cambiar configuración**
-```bash
-# Editar el script antes de ejecutar
-nano ~/scripts/generar_indices.sh
-# Cambiar main_blog y base_url
-# Guardar y ejecutar
-./generar_indices.sh
-```
+| Código | Significado                        |
+| ------ | ---------------------------------- |
+| 0      | Éxito                              |
+| 1      | Error general (fallo de escritura) |
+| 2      | Error de argumentos / uso          |
+| 3      | Directorio de blog no encontrado   |
 
-**Opción 2: Crear scripts específicos**
-```bash
-cd ~/scripts
+### Integración con Quarto
 
-# Para página web
-cp generar_indices.sh generar_indices_web.sh
-nano generar_indices_web.sh
-# Configurar: main_blog="/ruta/a/sitio/blog"
-#            base_url="https://achalmaedison.netlify.app"
-
-# Para blog independiente
-cp generar_indices.sh generar_indices_actus.sh
-nano generar_indices_actus.sh
-# Configurar: main_blog="/ruta/a/actus-mercator"
-#            base_url="https://actus-mercator.netlify.app"
-
-# Crear alias
-echo 'alias indices-web="~/scripts/generar_indices_web.sh"' >> ~/.bashrc
-echo 'alias indices-actus="~/scripts/generar_indices_actus.sh"' >> ~/.bashrc
-source ~/.bashrc
-```
-
-## 📖 Ejemplos de Salida
-
-### Para Página Web (`blog/posts/`)
-
-**Archivo generado:** `blog/posts/_contenido_posts.qmd`
 ```markdown
-1. [{{< fa regular file-pdf >}}](https://achalmaedison.netlify.app/blog/posts/2023-05-12-la-economia-peruana-entre-1970-1990/index.pdf) [La Economia Peruana Entre 1970 1990](https://achalmaedison.netlify.app/blog/posts/2023-05-12-la-economia-peruana-entre-1970-1990)
-2. [{{< fa regular file-pdf >}}](https://achalmaedison.netlify.app/blog/posts/2023-05-16-economia-regional/index.pdf) [Economia Regional](https://achalmaedison.netlify.app/blog/posts/2023-05-16-economia-regional)
-```
-
-### Para Blog Independiente (`posts/`)
-
-**Archivo generado:** `posts/_contenido_posts.qmd`
-```markdown
-1. [{{< fa regular file-pdf >}}](https://actus-mercator.netlify.app/posts/2022-01-23-cadena-de-suministros/index.pdf) [Cadena De Suministros](https://actus-mercator.netlify.app/posts/2022-01-23-cadena-de-suministros)
-2. [{{< fa regular file-pdf >}}](https://actus-mercator.netlify.app/posts/2021-07-13-plan-de-negocio-exportacion-de-tuna/index.pdf) [Plan De Negocio Exportacion De Tuna](https://actus-mercator.netlify.app/posts/2021-07-13-plan-de-negocio-exportacion-de-tuna)
-```
-
-## 📊 Log de Ejecución
-```
-[2025-01-19 15:30:00] ℹ️  Estructura detectada automáticamente: blog
-[2025-01-19 15:30:00] ℹ️  Iniciando procesamiento del blog: /home/usuario/actus-mercator
-[2025-01-19 15:30:00] ℹ️  URL base configurada: https://actus-mercator.netlify.app
-[2025-01-19 15:30:00] ℹ️  Tipo de estructura: blog
-[2025-01-19 15:30:00] ℹ️  Procesando subblog: posts
-[2025-01-19 15:30:00] ✅ Generado: /home/usuario/actus-mercator/posts/_contenido_posts.qmd (15 publicaciones)
-[2025-01-19 15:30:00] ℹ️  Procesando subblog: inteligencia-comercial
-[2025-01-19 15:30:00] ✅ Generado: /home/usuario/actus-mercator/inteligencia-comercial/_contenido_inteligencia-comercial.qmd (8 publicaciones)
-
-════════════════════════════════════════════════════════════════
-[2025-01-19 15:30:00] ✅ Proceso completado exitosamente
-[2025-01-19 15:30:00] ℹ️  Total de archivos de índice generados: 2
-[2025-01-19 15:30:00] ℹ️  Total de publicaciones procesadas: 23
-[2025-01-19 15:30:00] ℹ️  Estructura utilizada: blog
-════════════════════════════════════════════════════════════════
-```
-
-## ❓ Solución de Problemas
-
-### El script no detecta la estructura correctamente
-```bash
-# Forzar el tipo manualmente
-blog_type="blog"      # Para blogs independientes
-# o
-blog_type="website"   # Para páginas web
-```
-
-### Las URLs no son correctas
-
-1. Verificar que `base_url` NO tenga barra final
-2. Confirmar el valor de `blog_type`
-3. Revisar la estructura real de tu sitio
-
-### Carpetas ignoradas
-
-El script ignora automáticamente:
-- Carpetas que empiezan con `_` o `.`
-- `site_libs`, `_partials`, etc.
-
-Para ajustar, edita la sección:
-```bash
-if [[ "$subblog_name" =~ ^[._] ]] || \
-   [[ "$subblog_name" == "tu_carpeta_a_ignorar" ]]; then
-    continue
-fi
-```
-
-## 🔄 Integración con Quarto
-
-### Incluir el índice en otro archivo
-```markdown
----
-title: "Mi Blog"
----
-
 ## Publicaciones Recientes
 
 {{< include posts/_contenido_posts.qmd >}}
 ```
 
-### Workflow automatizado
-```bash
-#!/bin/bash
-# Script para regenerar índices y renderizar
+## 🗂️ Arquitectura
 
-# Generar índices
-~/scripts/generar_indices.sh
+Sigue el mismo patrón modular que `script_blogs_manager` y
+`script_pub_index_symlink`: un `main.sh` delgado que carga módulos
+numerados desde `lib/` en orden de dependencia.
 
-# Renderizar el sitio
-quarto render
-
-echo "✅ Sitio actualizado con nuevos índices"
 ```
+script_generador_publicacion_similar/
+├── main.sh                  # Punto de entrada — orquesta los módulos
+├── README.md                # Esta documentación
+└── lib/
+    ├── 00-config.sh         # Versión, defaults, carpetas ignoradas
+    ├── 01-logging.sh        # log_info/success/warn/error con timestamp
+    ├── 02-cli.sh            # Parsing de argumentos y ayuda
+    ├── 03-validator.sh      # Validación y normalización de entradas
+    ├── 04-detector.sh       # Autodetección website/blog vía _quarto.yml
+    ├── 05-linker.sh         # Título, URL y línea Markdown de cada post
+    └── 06-generator.sh      # Recorrido de subblogs, escritura y resumen
+```
+
+### Descripción de módulos
+
+| Archivo               | Responsabilidad                                                             |
+| --------------------- | --------------------------------------------------------------------------- |
+| `main.sh`             | Carga módulos, resuelve el tipo de estructura y ejecuta el flujo            |
+| `lib/00-config.sh`    | Única fuente de configuración (`GENIDX_*`); nada se hardcodea fuera         |
+| `lib/01-logging.sh`   | Formato de log consistente; WARN/ERROR a stderr                             |
+| `lib/02-cli.sh`       | `parse_arguments` + `show_help`; valida presencia de valores en flags       |
+| `lib/03-validator.sh` | Directorio existente → ruta absoluta; URL sin barra final; tipo válido      |
+| `lib/04-detector.sh`  | `detect_blog_structure`: `_quarto.yml` propio = blog, en el padre = website |
+| `lib/05-linker.sh`    | `format_post_title`, `build_post_url`, `convert_folder_to_link`             |
+| `lib/06-generator.sh` | Acumula el índice en memoria y escribe una sola vez; totales y resumen      |
+
+Convenciones: prefijo `GENIDX_` para todos los globales, guardas
+`GENIDX_*_LOADED` contra doble carga, y `set -uo pipefail` con chequeos de
+error explícitos (igual que el resto de herramientas del repositorio).
+
+## 🐛 Bugs Corregidos
+
+### Bug #1: Ruta hardcodeada obsoleta e inexistente
+
+- **Ubicación**: `generar_indices.sh:23` (variable `main_blog`)
+- **Descripción**: Apuntaba a `/home/achalmaedison/Documents/publicaciones/website-achalma/teching`, ruta que ya no existe (los blogs viven ahora directamente en `~/Documents`). Además obligaba a editar el script para cada blog.
+- **Impacto**: El script terminaba con error en toda ejecución; procesar otro blog requería modificar el código fuente.
+- **Corrección**: El directorio del blog es ahora un argumento posicional obligatorio; la URL base y el tipo son flags con defaults en `lib/00-config.sh`.
+
+### Bug #2: Detección de estructura incorrecta para secciones web
+
+- **Ubicación**: `generar_indices.sh:48-66` (`detect_blog_structure`)
+- **Descripción**: Solo reconocía la estructura `website` si la carpeta se llamaba literalmente `blog`. Secciones como `teching/` o `talk/` se clasificaban como blog independiente.
+- **Impacto**: URLs generadas sin el segmento de sección (`base/subblog/post` en vez de `base/teching/subblog/post`) → todos los enlaces del índice rotos.
+- **Corrección**: La detección usa la ubicación del `_quarto.yml` (raíz real del sitio Quarto); la heurística por nombre se conserva solo como fallback. Verificado: `teching` ahora se detecta como `website`.
+
+### Bug #3: Truncado prematuro del índice existente
+
+- **Ubicación**: `generar_indices.sh:213` (`> "$output_file"`)
+- **Descripción**: El archivo de índice se vaciaba _antes_ de saber si había publicaciones, y se escribía línea a línea durante el bucle.
+- **Impacto**: Una interrupción (Ctrl+C, error a mitad de bucle) dejaba el índice vacío o incompleto, destruyendo el contenido anterior. También imposibilitaba un modo de simulación.
+- **Corrección**: El contenido se acumula en memoria y se escribe de una sola vez, solo si hay publicaciones. Esto habilitó además el flag `--dry-run`. Se conserva el comportamiento original de eliminar índices obsoletos (ahora con `rm -f` en lugar de `rm`, que podía quedar interactivo por alias).
+
+### Bug #4: Rotura con rutas que contienen espacios
+
+- **Ubicación**: `generar_indices.sh:120` (`dirname "$path" | xargs basename`)
+- **Descripción**: `xargs` divide su entrada por espacios, por lo que rutas como `~/Documents/01 notes/...` producían un nombre de subblog incorrecto.
+- **Impacto**: URLs y nombres de archivo corruptos para cualquier ruta con espacios.
+- **Corrección**: `basename "$(dirname "$path")"` — sustitución de comandos anidada, inmune a espacios.
+
+### Bug #5: URL base con barra final sin normalizar
+
+- **Ubicación**: Configuración (`base_url`)
+- **Descripción**: El README advertía "sin barra final" pero el script no lo validaba ni corregía.
+- **Impacto**: URLs con doble barra (`https://dominio.com//posts/...`) en todos los enlaces generados.
+- **Corrección**: `lib/03-validator.sh` elimina la barra final automáticamente y avisa si la URL no empieza con `http(s)://`.
+
+### Bug #6: `echo -e` sobre contenido variable
+
+- **Ubicación**: `generar_indices.sh:130` y `227`
+- **Descripción**: `echo -e` interpreta secuencias de escape (`\n`, `\t`) presentes en los datos, y el título pasaba dos veces por él.
+- **Impacto**: Un título de carpeta con secuencias tipo `\n` corrompería el índice generado.
+- **Corrección**: Toda la salida usa `printf` con formato explícito.
+
+## 🔧 Solución de Problemas
+
+### Error: "Permission denied"
+
+```bash
+chmod +x main.sh
+```
+
+### La estructura no se detecta correctamente
+
+La autodetección requiere que el proyecto tenga `_quarto.yml`. Si el blog
+está en construcción y aún no lo tiene, fuerza el tipo manualmente:
+
+```bash
+./main.sh ~/ruta/al/blog --type blog      # proyecto independiente
+./main.sh ~/ruta/al/blog --type website   # sección de página web
+```
+
+### Las URLs generadas son incorrectas
+
+1. Verifica el tipo detectado en la primera línea del log.
+2. Confirma la `--base-url` (el script ya tolera la barra final).
+3. Ejecuta con `--dry-run` y revisa qué archivos se generarían.
+
+### Un subblog aparece como "sin publicaciones"
+
+- Las carpetas de posts deben llamarse `YYYY-MM-DD-titulo/` y contener `index.qmd`.
+- Las carpetas que empiezan con `.` o `_` y las listadas en `GENIDX_IGNORE_DIRS` se omiten siempre.
+
+## 🤝 Cómo Contribuir / Agregar Nuevas Funcionalidades
+
+### Para agregar un nuevo módulo
+
+1. Crea `lib/NN-nombre.sh` con el siguiente número disponible y la guarda `GENIDX_<NOMBRE>_LOADED`.
+2. Define funciones con responsabilidad única y prefijo coherente.
+3. Añade el `source` correspondiente en `main.sh` respetando el orden numérico.
+4. Si agrega flags, decláralas en `lib/02-cli.sh` y documéntalas en `show_help` y en este README.
+
+### Estándares de código
+
+- Máximo ~30 líneas por función.
+- Toda configuración vive en `lib/00-config.sh`; ningún módulo hardcodea rutas ni valores.
+- Toda salida a consola pasa por `lib/01-logging.sh`.
+- Comenta el "por qué", no el "qué".
+- Prueba con `--dry-run` y `bash -n` antes de hacer commit.
+
+## ⚠️ Notas y Advertencias
+
+- **Cambio de interfaz respecto a v3.0**: ya no se edita el script para
+  configurarlo; el directorio se pasa como argumento. Si usabas alias del
+  estilo `generar_indices_web.sh` (copias del script con distinta
+  configuración), reemplázalos por alias con argumentos:
+  `alias indices-actus='main.sh ~/Documents/pub_actus-mercator -u https://actus-mercator.netlify.app'`.
+- La capitalización de títulos usa `sed 's/\b\(.\)/\u\1/g'` (extensión GNU):
+  en macOS/BSD requeriría `gsed`.
+- Los índices se generan **sin encabezado YAML** (comportamiento original),
+  pensados para usarse vía `{{< include >}}`.
+- El orden de las publicaciones es el alfabético del glob, que con el
+  prefijo `YYYY-MM-DD-` equivale a orden cronológico ascendente.
+- Si un subblog se queda sin publicaciones válidas, su índice previo se
+  **elimina** (comportamiento original preservado); `--dry-run` lo anuncia
+  sin borrarlo.
 
 ## 👤 Autor
 
 **Edison Achalma**
+
 - Website: [achalmaedison.netlify.app](https://achalmaedison.netlify.app)
-- Blog: [actus-mercator.netlify.app](https://actus-mercator.netlify.app)
 - GitHub: [@achalmed](https://github.com/achalmed)
-
----
-
-⭐ **Tip**: Ejecuta este script cada vez que agregues nuevas publicaciones para mantener tus índices actualizados automáticamente.

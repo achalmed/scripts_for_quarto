@@ -1,4 +1,5 @@
 # 🛠️ Scripts for Quarto
+
 #readme
 
 **Colección de herramientas para optimizar y automatizar la gestión de blogs Quarto**
@@ -39,12 +40,14 @@ Este conjunto de scripts es ideal para:
 **Problema que resuelve:** Corrige automáticamente el formato del bloque YAML en archivos `.qmd`.
 
 **Características principales:**
+
 - ✅ Normaliza el espaciado después de los delimitadores `---`
 - ✅ Elimina líneas en blanco innecesarias
 - ✅ Es **idempotente** (puedes ejecutarlo múltiples veces)
 - ✅ Modo `--dry-run` para simular cambios
 
 **Uso rápido:**
+
 ```bash
 cd script_format_yaml
 python fix_qmd_files.py --directory ~/Documents/publicaciones --recursive
@@ -59,12 +62,14 @@ python fix_qmd_files.py --directory ~/Documents/publicaciones --recursive
 **Problema que resuelve:** Genera automáticamente archivos de índice para tus publicaciones.
 
 **Características principales:**
+
 - 📁 Soporta **dos estructuras**: página web completa (`blog/posts/`) y blog independiente (`posts/`)
 - 🔗 Crea enlaces a PDFs y artículos
 - 🎨 Usa iconos de Font Awesome
 - 🔄 Procesamiento automático de subdirectorios
 
 **Uso rápido:**
+
 ```bash
 cd script_generador_publicacion_similar
 ./generar_indices.sh
@@ -73,6 +78,7 @@ cd script_generador_publicacion_similar
 **Estructuras soportadas:**
 
 **Página Web:**
+
 ```
 mi-sitio/
 └── blog/
@@ -82,6 +88,7 @@ mi-sitio/
 ```
 
 **Blog Independiente:**
+
 ```
 actus-mercator/
 └── posts/
@@ -98,6 +105,7 @@ actus-mercator/
 **Problema que resuelve:** Administra metadatos YAML de **cientos de artículos** desde un solo archivo Excel.
 
 **Características principales:**
+
 - 📊 **Excel como base de datos** - Edita metadatos en Excel
 - 🎯 Filtra por blog, ruta o criterios personalizados
 - 🔄 Solo actualiza cuando hay diferencias
@@ -106,6 +114,7 @@ actus-mercator/
 - ⚡ Modo simulación con `--dry-run`
 
 **Flujo de trabajo:**
+
 ```bash
 cd script_metadata_manager
 
@@ -125,6 +134,7 @@ python quarto_metadata_manager.py update ~/Documents/publicaciones \
 ```
 
 **Casos de uso comunes:**
+
 - ✅ Publicar 20+ artículos cambiando `draft: FALSE`
 - ✅ Actualizar keywords de forma masiva
 - ✅ Cambiar tipo de documento (JOU → STU)
@@ -139,6 +149,7 @@ python quarto_metadata_manager.py update ~/Documents/publicaciones \
 **Problema que resuelve:** Normaliza, reemplaza y gestiona tags en archivos `.qmd`.
 
 **Características principales:**
+
 - 🔄 **Normalización automática** - Convierte a minúsculas, elimina tildes
 - 🔁 **Reemplazo masivo** - Cambia tags obsoletos por nuevos
 - 🗑️ **Eliminación selectiva** - Remueve tags no deseados
@@ -146,6 +157,7 @@ python quarto_metadata_manager.py update ~/Documents/publicaciones \
 - 🔍 **Detección de duplicados** - Evita tags repetidos
 
 **Ejemplos de normalización:**
+
 ```yaml
 # Antes
 tags:
@@ -161,6 +173,7 @@ tags:
 ```
 
 **Uso rápido:**
+
 ```bash
 cd script_tag_manager
 
@@ -339,12 +352,12 @@ python quarto_metadata_manager.py update ~/Documents/publicaciones \
 
 ## 📊 Comparación de Scripts
 
-| Script | Propósito | Input | Output | Mejor Para |
-|--------|-----------|-------|--------|------------|
-| **Format YAML** | Corregir formato | `.qmd` | `.qmd` corregidos | Normalización inicial |
-| **Generador Índices** | Crear listas | Carpetas con posts | `_contenido_*.qmd` | Navegación en blogs |
-| **Metadata Manager** | Gestión masiva | `.qmd` | Excel → `.qmd` | Edición de metadatos |
-| **Tag Manager** | Normalizar tags | `.qmd` | `.qmd` con tags limpios | Taxonomía consistente |
+| Script                | Propósito        | Input              | Output                  | Mejor Para            |
+| --------------------- | ---------------- | ------------------ | ----------------------- | --------------------- |
+| **Format YAML**       | Corregir formato | `.qmd`             | `.qmd` corregidos       | Normalización inicial |
+| **Generador Índices** | Crear listas     | Carpetas con posts | `_contenido_*.qmd`      | Navegación en blogs   |
+| **Metadata Manager**  | Gestión masiva   | `.qmd`             | Excel → `.qmd`          | Edición de metadatos  |
+| **Tag Manager**       | Normalizar tags  | `.qmd`             | `.qmd` con tags limpios | Taxonomía consistente |
 
 ---
 
@@ -411,6 +424,7 @@ Este proyecto está licenciado bajo la licencia MIT - ver el archivo [LICENSE](L
 ### Tutoriales y Guías
 
 Cada script incluye:
+
 - 📖 **README.md** - Documentación completa
 - 📝 **EJEMPLOS.md** - Casos de uso detallados
 - 🔄 **CHANGELOG.md** - Historial de versiones (donde aplica)
@@ -423,6 +437,7 @@ Cada script incluye:
 Gracias a todos los que han contribuido con ideas, reportes de bugs y sugerencias para mejorar estos scripts.
 
 Especial agradecimiento a:
+
 - La comunidad de **Quarto**
 - Los usuarios beta que probaron las primeras versiones
 - Todos los que reportaron bugs y sugirieron mejoras
@@ -475,6 +490,6 @@ Si estos scripts te han sido útiles:
 
 **Hecho con ❤️ en Ayacucho, Perú**
 
-*Last Updated: December 2024*
+_Last Updated: December 2024_
 
 </div>
