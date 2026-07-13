@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this repository is
 
-A collection of **independent tools** (Python 3.8+ and Bash) for managing the author's Quarto blogs. Each `script_*/` directory is a self-contained tool with its own README. There is no build system, no test suite, and no linting configuration. All code comments, CLI output, and documentation are written in **Spanish** — keep new code and docs in Spanish to match.
+A collection of **independent tools** (Python 3.8+ and Bash) for managing the author's Quarto blogs. Each `script_*/` directory under `quarto_studio/backend/` is a self-contained tool with its own README; `quarto_studio/` is the desktop GUI that drives them. There is no build system, no test suite, and no linting configuration. All code comments, CLI output, and documentation are written in **Spanish** — keep new code and docs in Spanish to match.
 
 The tools operate on Quarto blog projects that live in `~/Documents` as sibling directories: `pub_*` projects (e.g. `pub_axiomata`, `pub_chaska`) plus `website-achalma`. Posts follow the convention `<blog>/posts/YYYY-MM-DD-titulo/index.qmd`. The Bash tools autodetect the Documents directory by walking up from their own location; this can be overridden with env vars (`QBLOG_DOCS_DIR`, `PUBINDEX_DOCS_DIR`).
 
@@ -12,13 +12,18 @@ Python dependencies: `pyyaml`, `pandas`, `openpyxl` (typically in a conda env, e
 
 ## The tools
 
-| Directory                               | Language | Entry point          | Purpose                                                                                                            |
-| --------------------------------------- | -------- | -------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| `script_blogs_manager/`                 | Bash     | `main.sh`            | Blog manager v3.0: list/render/preview/publish blogs, create posts (APAQuarto), git ops, backups, interactive menu |
-| `script_metadata_manager/`              | Python   | `main.py`            | Manage YAML metadata AND tags of hundreds of articles via an Excel database (v2.1 absorbed the old tag manager)    |
-| `script_pub_index_symlink/`             | Bash     | `main.sh`            | Maintain "04 index" symlinks (organized by year) to all publication folders                                        |
-| `script_format_yaml/`                   | Python   | `fix_qmd_files.py`   | Idempotent YAML block formatter for `.qmd` files                                                                   |
-| `script_generador_publicacion_similar/` | Bash     | `main.sh`            | Generate publication index files (`_contenido_*.qmd`)                                                              |
+The backend scripts live in `quarto_studio/backend/`:
+
+| Directory                                               | Language | Entry point          | Purpose                                                                                                            |
+| -------------------------------------------------------- | -------- | -------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `quarto_studio/backend/script_blogs_manager/`                 | Bash     | `main.sh`            | Blog manager v3.0: list/render/preview/publish blogs, create posts (APAQuarto), git ops, backups, interactive menu |
+| `quarto_studio/backend/script_metadata_manager/`              | Python   | `main.py`            | Manage YAML metadata AND tags of hundreds of articles via an Excel database (v2.1 absorbed the old tag manager)    |
+| `quarto_studio/backend/script_pub_index_symlink/`             | Bash     | `main.sh`            | Maintain "04 index" symlinks (organized by year) to all publication folders                                        |
+| `quarto_studio/backend/script_format_yaml/`                   | Python   | `fix_qmd_files.py`   | Idempotent YAML block formatter for `.qmd` files                                                                   |
+| `quarto_studio/backend/script_generador_publicacion_similar/` | Bash     | `main.sh`            | Generate publication index files (`_contenido_*.qmd`)                                                              |
+| `quarto_studio/`                                          | Python   | `main.py`            | Quarto Studio: desktop GUI (PySide6/Qt6) that unifies all the tools above; the scripts are its backend (see its README) |
+
+The GUI resolves every backend entry point through `quarto_studio/app/services/paths.py` — if a script moves, update only that file.
 
 The old root-level one-off scripts (`1_sincronizar_fecha_carpeta_en_index_qmd.py`, `3_actualizar_enlace_pdf_en_qmd.py`) were absorbed into the metadata manager as `sync-dates` and `sync-pdf-urls` (v2.2) and deleted.
 
@@ -29,7 +34,7 @@ The old root-level one-off scripts (`1_sincronizar_fecha_carpeta_en_index_qmd.py
 Most tools that modify files support `--dry-run` — always suggest a dry run before applying bulk changes.
 
 ```bash
-# Metadata manager (run from script_metadata_manager/)
+# Metadata manager (run from quarto_studio/backend/script_metadata_manager/)
 python main.py create-config ~/Documents                 # create metadata_config.yml
 python main.py create-template ~/Documents --config metadata_config.yml [--incremental]
 python main.py update ~/Documents excel_databases/quarto_metadata.xlsx --dry-run
@@ -50,18 +55,18 @@ python main.py sync-dates <target> [--dry-run]        # date ← YYYY-MM-DD fold
 python main.py sync-pdf-urls <target> [--dry-run]     # citation.pdf-url ← per-blog base URL + article path
 
 # Blog manager
-./script_blogs_manager/main.sh            # interactive menu
-./script_blogs_manager/main.sh list       # list all blogs
-./script_blogs_manager/main.sh help
+./quarto_studio/backend/script_blogs_manager/main.sh            # interactive menu
+./quarto_studio/backend/script_blogs_manager/main.sh list       # list all blogs
+./quarto_studio/backend/script_blogs_manager/main.sh help
 
 # Publication index symlinks
-./script_pub_index_symlink/main.sh [--dry-run | --check-broken | --clean-broken | --summary]
+./quarto_studio/backend/script_pub_index_symlink/main.sh [--dry-run | --check-broken | --clean-broken | --summary]
 
 # YAML formatter
-python script_format_yaml/fix_qmd_files.py --directory <path> --recursive [--dry-run]
+python quarto_studio/backend/script_format_yaml/fix_qmd_files.py --directory <path> --recursive [--dry-run]
 
 # Publication index generator
-./script_generador_publicacion_similar/main.sh <blog-dir> [--base-url <url>] [--type auto|website|blog] [--dry-run]
+./quarto_studio/backend/script_generador_publicacion_similar/main.sh <blog-dir> [--base-url <url>] [--type auto|website|blog] [--dry-run]
 ```
 
 ## Architecture

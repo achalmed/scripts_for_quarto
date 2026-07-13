@@ -1,0 +1,142 @@
+[2026-07-13 04:42:31] [INFO] Documents detectado en: /home/achalmaedison/Documents
+[2026-07-13 04:42:31] [INFO] Carpeta índice: /home/achalmaedison/Documents/04 index
+[2026-07-13 04:42:31] [SECTION] Buscando symlinks rotos en '04 index'
+[2026-07-13 04:42:31] [WARN] Symlink roto: 2025/2025-01-07-sesion-01-monografia-e-informe (apuntaba a: /home/achalmaedison/Documents/website-achalma/talk/2025-01-07-sesion-01-monografia-e-informe)
+[2026-07-13 04:42:31] [WARN] Symlink roto: 2025/2025-02-05-sesion-07-estilo-vancouver (apuntaba a: /home/achalmaedison/Documents/website-achalma/talk/2025-02-05-sesion-07-estilo-vancouver)
+[2026-07-13 04:42:31] [WARN] Symlink roto: 2025/2025-01-14-sesion-03-citas-y-referencias (apuntaba a: /home/achalmaedison/Documents/website-achalma/talk/2025-01-14-sesion-03-citas-y-referencias)
+[2026-07-13 04:42:31] [WARN] Symlink roto: 2025/2025-01-15-sesion-04-practica-de-apa (apuntaba a: /home/achalmaedison/Documents/website-achalma/talk/2025-01-15-sesion-04-practica-de-apa)
+[2026-07-13 04:42:31] [WARN] Symlink roto: 2025/2025-01-29-sesion-06-formato (apuntaba a: /home/achalmaedison/Documents/website-achalma/talk/2025-01-29-sesion-06-formato)
+[2026-07-13 04:42:31] [WARN] Symlink roto: 2025/2025-02-19-sesion-09-practica-estructura-y-citas-apa (apuntaba a: /home/achalmaedison/Documents/website-achalma/talk/2025-02-19-sesion-09-practica-estructura-y-citas-apa)
+[2026-07-13 04:42:31] [WARN] Symlink roto: 2025/2025-02-12-sesion-08-tablas-figuras-y-notas (apuntaba a: /home/achalmaedison/Documents/website-achalma/talk/2025-02-12-sesion-08-tablas-figuras-y-notas)
+[2026-07-13 04:42:31] [WARN] Symlink roto: 2025/2025-01-22-sesion-05-tecnicas-de-parafraseo (apuntaba a: /home/achalmaedison/Documents/website-achalma/talk/2025-01-22-sesion-05-tecnicas-de-parafraseo)
+[2026-07-13 04:42:31] [WARN] Symlink roto: 2025/2025-01-08-sesion-02-estructura-en-word (apuntaba a: /home/achalmaedison/Documents/website-achalma/talk/2025-01-08-sesion-02-estructura-en-word)
+[2026-07-13 04:42:31] [INFO] Total de symlinks rotos: 9
+[2026-07-13 04:42:31] [INFO] Log guardado en: /home/achalmaedison/Documents/scripts_for_quarto/script_pub_index_symlink/logs/2026-07-13.log
+[2026-07-13 04:45:47] [INFO] Documents detectado en: /home/achalmaedison/Documents
+[2026-07-13 04:45:47] [INFO] Carpeta índice: /home/achalmaedison/Documents/04 index
+[2026-07-13 04:45:47] [SECTION] Resumen de '04 index' por año
+[2026-07-13 04:45:47] [INFO] Log guardado en: /home/achalmaedison/Documents/scripts_for_quarto/script_pub_index_symlink/logs/2026-07-13.log
+[2026-07-13 04:46:04] [INFO] Documents detectado en: /home/achalmaedison/Documents
+[2026-07-13 04:46:04] [INFO] Carpeta índice: /home/achalmaedison/Documents/04 index
+[2026-07-13 04:46:04] [SECTION] Buscando symlinks rotos en '04 index'
+[2026-07-13 04:46:04] [WARN] Symlink roto: 2025/2025-01-07-sesion-01-monografia-e-informe (apuntaba a: /home/achalmaedison/Documents/website-achalma/talk/2025-01-07-sesion-01-monografia-e-informe)
+[2026-07-13 04:46:04] [WARN] Symlink roto: 2025/2025-02-05-sesion-07-estilo-vancouver (apuntaba a: /home/achalmaedison/Documents/website-achalma/talk/2025-02-05-sesion-07-estilo-vancouver)
+[2026-07-13 04:46:04] [WARN] Symlink roto: 2025/2025-01-14-sesion-03-citas-y-referencias (apuntaba a: /home/achalmaedison/Documents/website-achalma/talk/2025-01-14-sesion-03-citas-y-referencias)
+[2026-07-13 04:46:04] [WARN] Symlink roto: 2025/2025-01-15-sesion-04-practica-de-apa (apuntaba a: /home/achalmaedison/Documents/website-achalma/talk/2025-01-15-sesion-04-practica-de-apa)
+[2026-07-13 04:46:04] [WARN] Symlink roto: 2025/2025-01-29-sesion-06-formato (apuntaba a: /home/achalmaedison/Documents/website-achalma/talk/2025-01-29-sesion-06-formato)
+[2026-07-13 04:46:04] [WARN] Symlink roto: 2025/2025-02-19-sesion-09-practica-estructura-y-citas-apa (apuntaba a: /home/achalmaedison/Documents/website-achalma/talk/2025-02-19-sesion-09-practica-estructura-y-citas-apa)
+[2026-07-13 04:46:04] [WARN] Symlink roto: 2025/2025-02-12-sesion-08-tablas-figuras-y-notas (apuntaba a: /home/achalmaedison/Documents/website-achalma/talk/2025-02-12-sesion-08-tablas-figuras-y-notas)
+[2026-07-13 04:46:04] [WARN] Symlink roto: 2025/2025-01-22-sesion-05-tecnicas-de-parafraseo (apuntaba a: /home/achalmaedison/Documents/website-achalma/talk/2025-01-22-sesion-05-tecnicas-de-parafraseo)
+[2026-07-13 04:46:04] [WARN] Symlink roto: 2025/2025-01-08-sesion-02-estructura-en-word (apuntaba a: /home/achalmaedison/Documents/website-achalma/talk/2025-01-08-sesion-02-estructura-en-word)
+[2026-07-13 04:46:04] [INFO] Total de symlinks rotos: 9
+[2026-07-13 04:46:04] [INFO] Log guardado en: /home/achalmaedison/Documents/scripts_for_quarto/script_pub_index_symlink/logs/2026-07-13.log
+[2026-07-13 05:32:14] [INFO] Documents detectado en: /home/achalmaedison/Documents
+[2026-07-13 05:32:14] [INFO] Carpeta índice: /home/achalmaedison/Documents/04 index
+[2026-07-13 05:32:14] [WARN] Modo dry-run activado: no se escribirá ni borrará nada.
+[2026-07-13 05:32:14] [SECTION] Escaneando proyectos pub_* y website-achalma
+[2026-07-13 05:32:14] [INFO] Publicaciones encontradas: 228
+[2026-07-13 05:32:14] [SECTION] Sincronizando symlinks en '04 index'
+[2026-07-13 05:32:18] [SECTION] Resultado de la sincronización
+[2026-07-13 05:32:18] [INFO] Creados:    0
+[2026-07-13 05:32:18] [INFO] Actualizados: 0
+[2026-07-13 05:32:18] [INFO] Omitidos (ya existían): 228
+[2026-07-13 05:32:18] [SECTION] Verificando symlinks rotos
+[2026-07-13 05:32:18] [WARN] Symlink roto: 2025/2025-01-07-sesion-01-monografia-e-informe (apuntaba a: /home/achalmaedison/Documents/website-achalma/talk/2025-01-07-sesion-01-monografia-e-informe)
+[2026-07-13 05:32:18] [WARN] Symlink roto: 2025/2025-02-05-sesion-07-estilo-vancouver (apuntaba a: /home/achalmaedison/Documents/website-achalma/talk/2025-02-05-sesion-07-estilo-vancouver)
+[2026-07-13 05:32:18] [WARN] Symlink roto: 2025/2025-01-14-sesion-03-citas-y-referencias (apuntaba a: /home/achalmaedison/Documents/website-achalma/talk/2025-01-14-sesion-03-citas-y-referencias)
+[2026-07-13 05:32:18] [WARN] Symlink roto: 2025/2025-01-15-sesion-04-practica-de-apa (apuntaba a: /home/achalmaedison/Documents/website-achalma/talk/2025-01-15-sesion-04-practica-de-apa)
+[2026-07-13 05:32:18] [WARN] Symlink roto: 2025/2025-01-29-sesion-06-formato (apuntaba a: /home/achalmaedison/Documents/website-achalma/talk/2025-01-29-sesion-06-formato)
+[2026-07-13 05:32:18] [WARN] Symlink roto: 2025/2025-02-19-sesion-09-practica-estructura-y-citas-apa (apuntaba a: /home/achalmaedison/Documents/website-achalma/talk/2025-02-19-sesion-09-practica-estructura-y-citas-apa)
+[2026-07-13 05:32:18] [WARN] Symlink roto: 2025/2025-02-12-sesion-08-tablas-figuras-y-notas (apuntaba a: /home/achalmaedison/Documents/website-achalma/talk/2025-02-12-sesion-08-tablas-figuras-y-notas)
+[2026-07-13 05:32:18] [WARN] Symlink roto: 2025/2025-01-22-sesion-05-tecnicas-de-parafraseo (apuntaba a: /home/achalmaedison/Documents/website-achalma/talk/2025-01-22-sesion-05-tecnicas-de-parafraseo)
+[2026-07-13 05:32:18] [WARN] Symlink roto: 2025/2025-01-08-sesion-02-estructura-en-word (apuntaba a: /home/achalmaedison/Documents/website-achalma/talk/2025-01-08-sesion-02-estructura-en-word)
+[2026-07-13 05:32:18] [SECTION] Resumen de '04 index' por año
+[2026-07-13 05:32:18] [INFO] Log guardado en: /home/achalmaedison/Documents/scripts_for_quarto/script_pub_index_symlink/logs/2026-07-13.log
+[2026-07-13 05:33:06] [INFO] Documents detectado en: /home/achalmaedison/Documents
+[2026-07-13 05:33:06] [INFO] Carpeta índice: /home/achalmaedison/Documents/04 index
+[2026-07-13 05:33:06] [SECTION] Buscando symlinks rotos en '04 index'
+[2026-07-13 05:33:06] [WARN] Symlink roto: 2025/2025-01-07-sesion-01-monografia-e-informe (apuntaba a: /home/achalmaedison/Documents/website-achalma/talk/2025-01-07-sesion-01-monografia-e-informe)
+[2026-07-13 05:33:06] [WARN] Symlink roto: 2025/2025-02-05-sesion-07-estilo-vancouver (apuntaba a: /home/achalmaedison/Documents/website-achalma/talk/2025-02-05-sesion-07-estilo-vancouver)
+[2026-07-13 05:33:06] [WARN] Symlink roto: 2025/2025-01-14-sesion-03-citas-y-referencias (apuntaba a: /home/achalmaedison/Documents/website-achalma/talk/2025-01-14-sesion-03-citas-y-referencias)
+[2026-07-13 05:33:06] [WARN] Symlink roto: 2025/2025-01-15-sesion-04-practica-de-apa (apuntaba a: /home/achalmaedison/Documents/website-achalma/talk/2025-01-15-sesion-04-practica-de-apa)
+[2026-07-13 05:33:06] [WARN] Symlink roto: 2025/2025-01-29-sesion-06-formato (apuntaba a: /home/achalmaedison/Documents/website-achalma/talk/2025-01-29-sesion-06-formato)
+[2026-07-13 05:33:06] [WARN] Symlink roto: 2025/2025-02-19-sesion-09-practica-estructura-y-citas-apa (apuntaba a: /home/achalmaedison/Documents/website-achalma/talk/2025-02-19-sesion-09-practica-estructura-y-citas-apa)
+[2026-07-13 05:33:06] [WARN] Symlink roto: 2025/2025-02-12-sesion-08-tablas-figuras-y-notas (apuntaba a: /home/achalmaedison/Documents/website-achalma/talk/2025-02-12-sesion-08-tablas-figuras-y-notas)
+[2026-07-13 05:33:06] [WARN] Symlink roto: 2025/2025-01-22-sesion-05-tecnicas-de-parafraseo (apuntaba a: /home/achalmaedison/Documents/website-achalma/talk/2025-01-22-sesion-05-tecnicas-de-parafraseo)
+[2026-07-13 05:33:06] [WARN] Symlink roto: 2025/2025-01-08-sesion-02-estructura-en-word (apuntaba a: /home/achalmaedison/Documents/website-achalma/talk/2025-01-08-sesion-02-estructura-en-word)
+[2026-07-13 05:33:06] [INFO] Total de symlinks rotos: 9
+[2026-07-13 05:33:06] [INFO] Log guardado en: /home/achalmaedison/Documents/scripts_for_quarto/script_pub_index_symlink/logs/2026-07-13.log
+[2026-07-13 05:33:29] [INFO] Documents detectado en: /home/achalmaedison/Documents
+[2026-07-13 05:33:29] [INFO] Carpeta índice: /home/achalmaedison/Documents/04 index
+[2026-07-13 05:33:29] [SECTION] Resumen de '04 index' por año
+[2026-07-13 05:33:29] [INFO] Log guardado en: /home/achalmaedison/Documents/scripts_for_quarto/script_pub_index_symlink/logs/2026-07-13.log
+[2026-07-13 05:33:35] [INFO] Documents detectado en: /home/achalmaedison/Documents
+[2026-07-13 05:33:35] [INFO] Carpeta índice: /home/achalmaedison/Documents/04 index
+[2026-07-13 05:33:35] [SECTION] Buscando symlinks rotos en '04 index'
+[2026-07-13 05:33:35] [WARN] Symlink roto: 2025/2025-01-07-sesion-01-monografia-e-informe (apuntaba a: /home/achalmaedison/Documents/website-achalma/talk/2025-01-07-sesion-01-monografia-e-informe)
+[2026-07-13 05:33:35] [WARN] Symlink roto: 2025/2025-02-05-sesion-07-estilo-vancouver (apuntaba a: /home/achalmaedison/Documents/website-achalma/talk/2025-02-05-sesion-07-estilo-vancouver)
+[2026-07-13 05:33:35] [WARN] Symlink roto: 2025/2025-01-14-sesion-03-citas-y-referencias (apuntaba a: /home/achalmaedison/Documents/website-achalma/talk/2025-01-14-sesion-03-citas-y-referencias)
+[2026-07-13 05:33:35] [WARN] Symlink roto: 2025/2025-01-15-sesion-04-practica-de-apa (apuntaba a: /home/achalmaedison/Documents/website-achalma/talk/2025-01-15-sesion-04-practica-de-apa)
+[2026-07-13 05:33:35] [WARN] Symlink roto: 2025/2025-01-29-sesion-06-formato (apuntaba a: /home/achalmaedison/Documents/website-achalma/talk/2025-01-29-sesion-06-formato)
+[2026-07-13 05:33:35] [WARN] Symlink roto: 2025/2025-02-19-sesion-09-practica-estructura-y-citas-apa (apuntaba a: /home/achalmaedison/Documents/website-achalma/talk/2025-02-19-sesion-09-practica-estructura-y-citas-apa)
+[2026-07-13 05:33:35] [WARN] Symlink roto: 2025/2025-02-12-sesion-08-tablas-figuras-y-notas (apuntaba a: /home/achalmaedison/Documents/website-achalma/talk/2025-02-12-sesion-08-tablas-figuras-y-notas)
+[2026-07-13 05:33:35] [WARN] Symlink roto: 2025/2025-01-22-sesion-05-tecnicas-de-parafraseo (apuntaba a: /home/achalmaedison/Documents/website-achalma/talk/2025-01-22-sesion-05-tecnicas-de-parafraseo)
+[2026-07-13 05:33:35] [WARN] Symlink roto: 2025/2025-01-08-sesion-02-estructura-en-word (apuntaba a: /home/achalmaedison/Documents/website-achalma/talk/2025-01-08-sesion-02-estructura-en-word)
+[2026-07-13 05:33:35] [WARN] Se encontraron 9 symlinks rotos.
+[2026-07-13 05:33:35] [OK] Symlink roto eliminado: 2025/2025-01-07-sesion-01-monografia-e-informe
+[2026-07-13 05:33:35] [OK] Symlink roto eliminado: 2025/2025-02-05-sesion-07-estilo-vancouver
+[2026-07-13 05:33:35] [OK] Symlink roto eliminado: 2025/2025-01-14-sesion-03-citas-y-referencias
+[2026-07-13 05:33:35] [OK] Symlink roto eliminado: 2025/2025-01-15-sesion-04-practica-de-apa
+[2026-07-13 05:33:35] [OK] Symlink roto eliminado: 2025/2025-01-29-sesion-06-formato
+[2026-07-13 05:33:35] [OK] Symlink roto eliminado: 2025/2025-02-19-sesion-09-practica-estructura-y-citas-apa
+[2026-07-13 05:33:35] [OK] Symlink roto eliminado: 2025/2025-02-12-sesion-08-tablas-figuras-y-notas
+[2026-07-13 05:33:35] [OK] Symlink roto eliminado: 2025/2025-01-22-sesion-05-tecnicas-de-parafraseo
+[2026-07-13 05:33:35] [OK] Symlink roto eliminado: 2025/2025-01-08-sesion-02-estructura-en-word
+[2026-07-13 05:33:35] [OK] Symlinks rotos eliminados: 9
+[2026-07-13 05:33:35] [SECTION] Limpiando carpetas de año vacías
+[2026-07-13 05:33:36] [INFO] Carpetas de año eliminadas: 0
+[2026-07-13 05:33:36] [INFO] Log guardado en: /home/achalmaedison/Documents/scripts_for_quarto/script_pub_index_symlink/logs/2026-07-13.log
+[2026-07-13 05:33:51] [INFO] Documents detectado en: /home/achalmaedison/Documents
+[2026-07-13 05:33:51] [INFO] Carpeta índice: /home/achalmaedison/Documents/04 index
+[2026-07-13 05:33:51] [WARN] Modo dry-run activado: no se escribirá ni borrará nada.
+[2026-07-13 05:33:51] [SECTION] Escaneando proyectos pub_* y website-achalma
+[2026-07-13 05:33:51] [INFO] Publicaciones encontradas: 228
+[2026-07-13 05:33:51] [SECTION] Sincronizando symlinks en '04 index'
+[2026-07-13 05:33:54] [SECTION] Resultado de la sincronización
+[2026-07-13 05:33:54] [INFO] Creados:    0
+[2026-07-13 05:33:54] [INFO] Actualizados: 0
+[2026-07-13 05:33:55] [INFO] Omitidos (ya existían): 228
+[2026-07-13 05:33:55] [SECTION] Verificando symlinks rotos
+[2026-07-13 05:33:55] [OK] No se encontraron symlinks rotos.
+[2026-07-13 05:33:55] [SECTION] Resumen de '04 index' por año
+[2026-07-13 05:33:55] [INFO] Log guardado en: /home/achalmaedison/Documents/scripts_for_quarto/script_pub_index_symlink/logs/2026-07-13.log
+[2026-07-13 05:34:59] [INFO] Documents detectado en: /home/achalmaedison/Documents
+[2026-07-13 05:34:59] [INFO] Carpeta índice: /home/achalmaedison/Documents/04 index
+[2026-07-13 05:34:59] [WARN] Modo dry-run activado: no se escribirá ni borrará nada.
+[2026-07-13 05:34:59] [SECTION] Escaneando proyectos pub_* y website-achalma
+[2026-07-13 05:34:59] [INFO] Publicaciones encontradas: 228
+[2026-07-13 05:34:59] [SECTION] Sincronizando symlinks en '04 index'
+[2026-07-13 05:35:03] [SECTION] Resultado de la sincronización
+[2026-07-13 05:35:03] [INFO] Creados:    0
+[2026-07-13 05:35:03] [INFO] Actualizados: 0
+[2026-07-13 05:35:03] [INFO] Omitidos (ya existían): 228
+[2026-07-13 05:35:03] [SECTION] Verificando symlinks rotos
+[2026-07-13 05:35:03] [OK] No se encontraron symlinks rotos.
+[2026-07-13 05:35:03] [SECTION] Resumen de '04 index' por año
+[2026-07-13 05:35:03] [INFO] Log guardado en: /home/achalmaedison/Documents/scripts_for_quarto/script_pub_index_symlink/logs/2026-07-13.log
+[2026-07-13 05:35:09] [INFO] Documents detectado en: /home/achalmaedison/Documents
+[2026-07-13 05:35:09] [INFO] Carpeta índice: /home/achalmaedison/Documents/04 index
+[2026-07-13 05:35:09] [SECTION] Buscando symlinks rotos en '04 index'
+[2026-07-13 05:35:09] [OK] No se encontraron symlinks rotos.
+[2026-07-13 05:35:09] [INFO] Total de symlinks rotos: 0
+[2026-07-13 05:35:09] [INFO] Log guardado en: /home/achalmaedison/Documents/scripts_for_quarto/script_pub_index_symlink/logs/2026-07-13.log
+[2026-07-13 08:39:07] [INFO] Documents detectado en: /home/achalmaedison/Documents
+[2026-07-13 08:39:07] [INFO] Carpeta índice: /home/achalmaedison/Documents/04 index
+[2026-07-13 08:39:07] [SECTION] Buscando symlinks rotos en '04 index'
+[2026-07-13 08:39:07] [OK] No se encontraron symlinks rotos.
+[2026-07-13 08:39:07] [INFO] Total de symlinks rotos: 0
+[2026-07-13 08:39:07] [INFO] Log guardado en: /home/achalmaedison/Documents/scripts_quarto_studio/script_pub_index_symlink/logs/2026-07-13.log
+[2026-07-13 13:30:31] [INFO] Documents detectado en: /home/achalmaedison/Documents
+[2026-07-13 13:30:31] [INFO] Carpeta índice: /home/achalmaedison/Documents/04 index
+[2026-07-13 13:30:31] [SECTION] Resumen de '04 index' por año
+[2026-07-13 13:30:31] [INFO] Log guardado en: /home/achalmaedison/Documents/scripts_quarto_studio/quarto_studio/backend/script_pub_index_symlink/logs/2026-07-13.log

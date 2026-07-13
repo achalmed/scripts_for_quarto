@@ -1,0 +1,8 @@
+# Quarto Studio — dependencias de la GUI
+PySide6>=6.5
+
+# Backend (script_metadata_manager); normalmente ya presentes en el
+# entorno conda scripts_quarto
+pyyaml
+pandas
+openpyxl

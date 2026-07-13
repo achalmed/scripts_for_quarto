@@ -1,0 +1,151 @@
+/* =============================================================================
+   oscuro.qss — Tema oscuro de Quarto Studio (referencia: VS Code / Qt Creator)
+   ============================================================================= */
+
+QWidget {
+    background-color: #1e2227;
+    color: #d7dae0;
+    font-size: 13px;
+}
+
+QMainWindow, QDialog { background-color: #1e2227; }
+
+/* --- Menú y toolbar ---------------------------------------------------------- */
+QMenuBar { background-color: #22262c; border-bottom: 1px solid #333842; }
+QMenuBar::item { padding: 5px 10px; background: transparent; }
+QMenuBar::item:selected { background: #333842; border-radius: 4px; }
+QMenu { background-color: #262b33; border: 1px solid #3a404c; padding: 4px; }
+QMenu::item { padding: 5px 24px; border-radius: 4px; }
+QMenu::item:selected { background-color: #3d68b0; }
+QToolBar { background-color: #22262c; border: none; padding: 3px; spacing: 2px; }
+QToolButton { border-radius: 4px; padding: 5px; }
+QToolButton:hover { background-color: #333842; }
+
+/* --- Sidebar de navegación ------------------------------------------------------ */
+#sidebar {
+    background-color: #22262c;
+    border: none;
+    border-right: 1px solid #333842;
+    outline: none;
+    padding-top: 6px;
+}
+#sidebar::item { padding: 6px 10px; border-radius: 6px; margin: 0 6px; }
+#sidebar::item:hover { background-color: #2d323b; }
+#sidebar::item:selected { background-color: #3d68b0; color: #ffffff; }
+
+/* --- Páginas ------------------------------------------------------------------- */
+#tituloPagina { font-size: 21px; font-weight: 600; color: #f0f2f5; }
+#descripcionPagina { color: #8a919e; }
+
+QGroupBox {
+    border: 1px solid #333842;
+    border-radius: 8px;
+    margin-top: 12px;
+    padding-top: 6px;
+    font-weight: 600;
+}
+QGroupBox::title { subcontrol-origin: margin; left: 10px; padding: 0 4px; color: #9aa3b2; }
+
+/* --- Tarjetas del dashboard ------------------------------------------------------ */
+#tarjeta {
+    background-color: #262b33;
+    border: 1px solid #333842;
+    border-radius: 10px;
+}
+#tarjetaValor { font-size: 26px; font-weight: 700; color: #4f9cf5; }
+#tarjetaEtiqueta { color: #8a919e; }
+
+/* --- Controles -------------------------------------------------------------------- */
+QPushButton {
+    background-color: #2d323b;
+    border: 1px solid #3a404c;
+    border-radius: 6px;
+    padding: 6px 12px;
+}
+QPushButton:hover { background-color: #3a404c; }
+QPushButton:pressed { background-color: #3d68b0; }
+QPushButton:disabled { color: #5c6370; }
+
+QLineEdit, QPlainTextEdit, QComboBox, QSpinBox {
+    background-color: #262b33;
+    border: 1px solid #3a404c;
+    border-radius: 6px;
+    padding: 5px 8px;
+    selection-background-color: #3d68b0;
+}
+QLineEdit:focus, QPlainTextEdit:focus, QComboBox:focus, QSpinBox:focus {
+    border-color: #4f9cf5;
+}
+QComboBox::drop-down { border: none; width: 22px; }
+QComboBox QAbstractItemView {
+    background-color: #262b33;
+    border: 1px solid #3a404c;
+    selection-background-color: #3d68b0;
+}
+
+QCheckBox::indicator {
+    width: 15px; height: 15px;
+    border: 1px solid #3a404c;
+    border-radius: 4px;
+    background: #262b33;
+}
+QCheckBox::indicator:checked { background-color: #4f9cf5; border-color: #4f9cf5; }
+
+/* --- Tablas, listas y árboles -------------------------------------------------------- */
+QTableWidget, QTreeView, QListWidget {
+    background-color: #22262c;
+    alternate-background-color: #262b33;
+    border: 1px solid #333842;
+    border-radius: 6px;
+    gridline-color: #333842;
+}
+QHeaderView::section {
+    background-color: #262b33;
+    border: none;
+    border-bottom: 1px solid #3a404c;
+    padding: 6px;
+    font-weight: 600;
+}
+QTableWidget::item:selected, QTreeView::item:selected, QListWidget::item:selected {
+    background-color: #3d68b0;
+    color: #ffffff;
+}
+
+/* --- Panel inferior (consola/logs) ------------------------------------------------------ */
+QTabWidget::pane { border: none; border-top: 1px solid #333842; }
+QTabBar::tab {
+    background: transparent;
+    padding: 6px 14px;
+    border-bottom: 2px solid transparent;
+}
+QTabBar::tab:selected { border-bottom-color: #4f9cf5; color: #f0f2f5; }
+#consolaTexto {
+    background-color: #16191d;
+    border: none;
+    color: #c8ccd4;
+}
+#consolaEstado { color: #8a919e; }
+
+/* --- Barra de estado / progreso -------------------------------------------------------- */
+QStatusBar { background-color: #22262c; border-top: 1px solid #333842; color: #8a919e; }
+QProgressBar {
+    background-color: #262b33;
+    border: 1px solid #3a404c;
+    border-radius: 5px;
+    text-align: center;
+    height: 14px;
+}
+QProgressBar::chunk { background-color: #4f9cf5; border-radius: 4px; }
+
+/* --- Dock y splitter --------------------------------------------------------------------- */
+QDockWidget::title { background-color: #262b33; padding: 6px; }
+QSplitter::handle { background-color: #333842; }
+QSplitter::handle:vertical { height: 2px; }
+QSplitter::handle:horizontal { width: 2px; }
+
+QScrollBar:vertical { background: transparent; width: 10px; }
+QScrollBar::handle:vertical { background: #3a404c; border-radius: 5px; min-height: 30px; }
+QScrollBar::handle:vertical:hover { background: #4a5160; }
+QScrollBar:horizontal { background: transparent; height: 10px; }
+QScrollBar::handle:horizontal { background: #3a404c; border-radius: 5px; min-width: 30px; }
+QScrollBar::add-line, QScrollBar::sub-line { width: 0; height: 0; }

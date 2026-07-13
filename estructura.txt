@@ -1,0 +1,164 @@
+# ============================================================
+# Proyecto : scripts_quarto_studio
+# Ruta     : /home/achalmaedison/Documents/scripts_quarto_studio
+# Generado : 2026-07-13 08:50:45
+# Script   : Filesystem Studio v1.0.0
+# Profund. : 6 niveles
+# Formato  : txt
+# Excluye  : .git .github .vscode .idea .obsidian .quarto _site _freeze _extensions _partials site_libs node_modules __pycache__ .pytest_cache build log output temp .Rproj.user index_cache __MACOSX *.aux *.log *.out *.toc *.bbl *.blg *.synctex.gz *.fff *.ttt *.fls *.fdb_latexmk *.pyc *.pyo *.egg-info *.ipynb_checkpoints .DS_Store Thumbs.db .Rhistory .RData estructura.txt
+# ============================================================
+
+/home/achalmaedison/Documents/scripts_quarto_studio
+├── CLAUDE.md
+├── quarto_studio
+│   ├── app
+│   │   ├── application.py
+│   │   ├── controllers
+│   │   │   ├── blogs_controller.py
+│   │   │   ├── __init__.py
+│   │   │   ├── main_controller.py
+│   │   │   ├── metadata_controller.py
+│   │   │   └── tools_controller.py
+│   │   ├── dialogs
+│   │   │   ├── __init__.py
+│   │   │   ├── new_blog_dialog.py
+│   │   │   ├── new_post_dialog.py
+│   │   │   └── preferences_dialog.py
+│   │   ├── __init__.py
+│   │   ├── models
+│   │   │   ├── blog.py
+│   │   │   ├── __init__.py
+│   │   │   └── operation.py
+│   │   ├── resources
+│   │   │   ├── icons
+│   │   │   │   ├── blogs.svg
+│   │   │   │   ├── carpeta.svg
+│   │   │   │   ├── configuracion.svg
+│   │   │   │   ├── consola.svg
+│   │   │   │   ├── dashboard.svg
+│   │   │   │   ├── detener.svg
+│   │   │   │   ├── indices.svg
+│   │   │   │   ├── logs.svg
+│   │   │   │   ├── metadata.svg
+│   │   │   │   ├── quarto-studio.svg
+│   │   │   │   ├── refrescar.svg
+│   │   │   │   ├── similares.svg
+│   │   │   │   └── yaml.svg
+│   │   │   ├── __init__.py
+│   │   │   ├── resources.qrc
+│   │   │   ├── themes
+│   │   │   │   ├── claro.qss
+│   │   │   │   └── oscuro.qss
+│   │   │   └── ui
+│   │   │       └── new_blog_dialog.ui
+│   │   ├── services
+│   │   │   ├── blog_service.py
+│   │   │   ├── command.py
+│   │   │   ├── index_service.py
+│   │   │   ├── __init__.py
+│   │   │   ├── metadata_service.py
+│   │   │   ├── paths.py
+│   │   │   ├── post_service.py
+│   │   │   ├── project_scanner.py
+│   │   │   ├── similar_service.py
+│   │   │   └── yaml_service.py
+│   │   ├── settings.py
+│   │   ├── ui
+│   │   │   ├── __init__.py
+│   │   │   ├── main_window.py
+│   │   │   └── pages
+│   │   │       ├── blogs_page.py
+│   │   │       ├── dashboard_page.py
+│   │   │       ├── index_page.py
+│   │   │       ├── __init__.py
+│   │   │       ├── metadata_page.py
+│   │   │       ├── similar_page.py
+│   │   │       └── yaml_page.py
+│   │   ├── utils
+│   │   │   ├── ansi.py
+│   │   │   └── __init__.py
+│   │   ├── widgets
+│   │   │   ├── console_widget.py
+│   │   │   ├── file_explorer.py
+│   │   │   ├── __init__.py
+│   │   │   ├── log_panel.py
+│   │   │   ├── page_header.py
+│   │   │   └── sidebar.py
+│   │   └── workers
+│   │       ├── __init__.py
+│   │       ├── process_runner.py
+│   │       └── scan_worker.py
+│   ├── backend
+│   ├── build_resources.sh
+│   ├── main.py
+│   ├── README.md
+│   └── requirements.txt
+├── README.md
+├── script_blogs_manager
+│   ├── lib
+│   │   ├── 00-config.sh
+│   │   ├── 01-printing.sh
+│   │   ├── 02-utils.sh
+│   │   ├── 03-listing.sh
+│   │   ├── 04-quarto-ops.sh
+│   │   ├── 05-batch-ops.sh
+│   │   ├── 06-git-ops.sh
+│   │   ├── 07-post-creator.sh
+│   │   ├── 08-init-blog.sh
+│   │   ├── 09-structure-check.sh
+│   │   ├── 10-backup.sh
+│   │   ├── 11-interactive-menu.sh
+│   │   └── 12-help.sh
+│   ├── main.sh
+│   └── README.md
+├── script_format_yaml
+│   ├── fix_qmd_files.py
+│   └── README.md
+├── script_generador_publicacion_similar
+│   ├── lib
+│   │   ├── 00-config.sh
+│   │   ├── 01-logging.sh
+│   │   ├── 02-cli.sh
+│   │   ├── 03-validator.sh
+│   │   ├── 04-detector.sh
+│   │   ├── 05-linker.sh
+│   │   └── 06-generator.sh
+│   ├── main.sh
+│   └── README.md
+├── script_metadata_manager
+│   ├── excel_databases
+│   │   ├── quarto_metadata_original.xlsx
+│   │   └── quarto_metadata.xlsx
+│   ├── install.sh
+│   ├── lib
+│   │   ├── collector.py
+│   │   ├── config.py
+│   │   ├── excel_writer.py
+│   │   ├── field_mapper.py
+│   │   ├── __init__.py
+│   │   ├── path_sync.py
+│   │   ├── qmd_updater.py
+│   │   ├── sync.py
+│   │   ├── tag_operations.py
+│   │   ├── tag_reports.py
+│   │   ├── tag_utils.py
+│   │   └── yaml_parser.py
+│   ├── {lib,excel_databases}
+│   ├── main.py
+│   ├── metadata_config.yml
+│   ├── quick_start.sh
+│   └── README.md
+└── script_pub_index_symlink
+    ├── lib
+    │   ├── 00-config.sh
+    │   ├── 01-logging.sh
+    │   ├── 02-utils.sh
+    │   ├── 03-scanner.sh
+    │   ├── 04-symlinker.sh
+    │   ├── 05-broken-detector.sh
+    │   └── 06-maintenance.sh
+    ├── logs
+    ├── main.sh
+    └── README.md
+
+29 directories, 123 files

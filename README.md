@@ -33,9 +33,118 @@ Este conjunto de scripts es ideal para:
 
 ---
 
+# Quarto Studio
+
+Aplicación de escritorio (**PySide6 / Qt6**) que unifica todas las herramientas
+de `scripts_for_quarto` en una sola interfaz profesional. Los scripts
+existentes **no se reescriben**: actúan como motor (backend) y la GUI los
+invoca a través de una capa de servicios desacoplada.
+
+```
+┌────────────────────────────────────────────────────────────┐
+│  Menú · Toolbar                                            │
+├──────────┬─────────────────────────────────┬───────────────┤
+│ Sidebar  │  Páginas (QStackedWidget)       │  Explorador   │
+│ Dashboard│  Dashboard / Blogs / Metadata   │  de proyectos │
+│ Blogs    │  YAML / Índices / Contenido     │  (dock)       │
+│ Metadata ├─────────────────────────────────┴───────────────┤
+│ YAML     │  Consola integrada  |  Logs (historial)         │
+│ Índices  ├─────────────────────────────────────────────────┤
+│ Contenido│  Barra de estado · progreso · directorio        │
+└──────────┴─────────────────────────────────────────────────┘
+```
+
+## Ejecución
+
+```bash
+conda activate scripts_quarto        # o cualquier entorno con PySide6
+pip install PySide6                  # solo la primera vez
+python quarto_studio/main.py
+```
+
+Opcional: compilar los recursos Qt (la app funciona sin este paso gracias al
+fallback a disco):
+
+```bash
+./build_resources.sh    # requiere pyside6-rcc funcional
+```
+
+## Arquitectura
+
+```
+quarto_studio/
+├── main.py                  # entrada: QApplication + MainWindow
+├── backend/                 # los script_* (CLI Bash/Python que la GUI invoca)
+│   ├── script_blogs_manager/
+│   ├── script_format_yaml/
+│   ├── script_generador_publicacion_similar/
+│   ├── script_metadata_manager/
+│   └── script_pub_index_symlink/
+└── app/
+    ├── application.py       # tema claro/oscuro (QSS), iconos, QApplication
+    ├── settings.py          # QSettings centralizado (única puerta de acceso)
+    ├── models/              # dominio puro: Blog, Post, Operacion
+    ├── services/            # construyen Command (datos) por herramienta:
+    │   ├── command.py       #   Command = programa + args + cwd + stdin
+    │   ├── paths.py         #   localización de scripts y Documents
+    │   ├── blog_service.py  #   → backend/script_blogs_manager/main.sh
+    │   ├── metadata_service.py  # → backend/script_metadata_manager/main.py
+    │   ├── yaml_service.py  #   → backend/script_format_yaml/fix_qmd_files.py
+    │   ├── index_service.py #   → backend/script_pub_index_symlink/main.sh
+    │   ├── similar_service.py   # → backend/script_generador_publicacion_similar/main.sh
+    │   ├── post_service.py  #   creación de posts APAQuarto (portado, ver abajo)
+    │   └── project_scanner.py   # escaneo de blogs/posts (Python puro)
+    ├── workers/
+    │   ├── process_runner.py    # QProcess asíncrono: señales de salida/progreso
+    │   └── scan_worker.py       # QThread para el escaneo de proyectos
+    ├── controllers/         # vista → servicio → worker (MVC)
+    ├── ui/pages/            # una página por funcionalidad
+    ├── widgets/             # consola, logs, sidebar, explorador, cabeceras
+    ├── dialogs/             # preferencias, nuevo post, nuevo blog (.ui)
+    ├── utils/               # limpieza ANSI
+    └── resources/           # resources.qrc, iconos SVG, temas QSS, .ui
+```
+
+**Regla de dependencias:** `ui → controllers → services → workers`. La UI
+nunca conoce rutas de scripts; los servicios nunca importan Qt Widgets; los
+modelos no importan nada de Qt.
+
+## Decisiones de diseño
+
+- **Reutilización primero.** Todos los subcomandos no interactivos de los
+  scripts se invocan tal cual (QProcess). La consola muestra el comando
+  exacto, stdout, stderr, código de salida y duración — nada se oculta.
+- **Una sola excepción portada a Python:** el asistente de posts APAQuarto
+  (`07-post-creator.sh`, ~50 prompts encadenados de terminal) no puede
+  automatizarse de forma fiable; `post_service.py` genera el mismo
+  `index.qmd` desde el diálogo Qt.
+- **Confirmaciones de los scripts** (`--clean-broken`, backup) se responden
+  por stdin después de que la GUI ya confirmó con el usuario.
+- **`sync-article` / `sync-batch`** (interactivos en terminal) se cubren con
+  el flujo GUI equivalente: *Ver diferencias* → *Aplicar Excel → .qmd* con
+  filtros de blog/ruta.
+- **Dry-run por defecto** en toda operación destructiva, igual que la
+  convención del repositorio.
+- **Una operación a la vez** (el runner rechaza ejecuciones concurrentes):
+  los scripts mutan los mismos árboles de archivos y no son seguros en
+  paralelo. El preview (proceso largo) se detiene con el botón ■.
+
+## Extender la aplicación
+
+Para añadir una herramienta nueva: crear su `*_service.py` (funciones que
+devuelven `Command`), añadir métodos al controlador correspondiente (o uno
+nuevo), crear la página en `ui/pages/` y registrarla en `Sidebar.SECCIONES`
+y `MainWindow`. Ni la consola, ni los logs, ni el progreso necesitan cambios.
+
+
+
+---
+
+
+
 ## 📦 Scripts Incluidos
 
-### 1. 🔧 **Script Format YAML** (`script_format_yaml/`)
+### 1. 🔧 **Script Format YAML** (`quarto_studio/backend/script_format_yaml/`)
 
 **Problema que resuelve:** Corrige automáticamente el formato del bloque YAML en archivos `.qmd`.
 
@@ -49,15 +158,15 @@ Este conjunto de scripts es ideal para:
 **Uso rápido:**
 
 ```bash
-cd script_format_yaml
+cd quarto_studio/backend/script_format_yaml
 python fix_qmd_files.py --directory ~/Documents/publicaciones --recursive
 ```
 
-**📖 [README completo](script_format_yaml/README.md)**
+**📖 [README completo](quarto_studio/backend/script_format_yaml/README.md)**
 
 ---
 
-### 2. 📑 **Generador de Índices de Publicaciones** (`script_generador_publicacion_similar/`)
+### 2. 📑 **Generador de Índices de Publicaciones** (`quarto_studio/backend/script_generador_publicacion_similar/`)
 
 **Problema que resuelve:** Genera automáticamente archivos de índice para tus publicaciones.
 
@@ -71,7 +180,7 @@ python fix_qmd_files.py --directory ~/Documents/publicaciones --recursive
 **Uso rápido:**
 
 ```bash
-cd script_generador_publicacion_similar
+cd quarto_studio/backend/script_generador_publicacion_similar
 ./main.sh ~/Documents/pub_actus-mercator --base-url https://actus-mercator.netlify.app
 ./main.sh ~/Documents/website-achalma/teching
 ```
@@ -97,11 +206,11 @@ actus-mercator/
         └── index.qmd
 ```
 
-**📖 [README completo](script_generador_publicacion_similar/README.md)**
+**📖 [README completo](quarto_studio/backend/script_generador_publicacion_similar/README.md)**
 
 ---
 
-### 3. 📊 **Sistema de Gestión de Metadatos** (`script_metadata_manager/`)
+### 3. 📊 **Sistema de Gestión de Metadatos** (`quarto_studio/backend/script_metadata_manager/`)
 
 **Problema que resuelve:** Administra metadatos YAML de **cientos de artículos** desde un solo archivo Excel.
 
@@ -117,7 +226,7 @@ actus-mercator/
 **Flujo de trabajo:**
 
 ```bash
-cd script_metadata_manager
+cd quarto_studio/backend/script_metadata_manager
 
 # 1. Crear configuración
 python main.py create-config ~/Documents
@@ -141,11 +250,11 @@ python main.py update ~/Documents \
 - ✅ Cambiar tipo de documento (JOU → STU)
 - ✅ Agregar/modificar autores en múltiples artículos
 
-**📖 [README completo](script_metadata_manager/README.md)**
+**📖 [README completo](quarto_studio/backend/script_metadata_manager/README.md)**
 
 ---
 
-### 4. 🏷️ **Gestión de Tags** (integrada en `script_metadata_manager/` desde v2.1)
+### 4. 🏷️ **Gestión de Tags** (integrada en `quarto_studio/backend/script_metadata_manager/` desde v2.1)
 
 > ℹ️ El antiguo `script_tag_manager/` fue **absorbido por el Metadata
 > Manager**: una sola herramienta, un solo parser YAML, una sola CLI.
@@ -181,7 +290,7 @@ tags:
 **Uso rápido:**
 
 ```bash
-cd script_metadata_manager
+cd quarto_studio/backend/script_metadata_manager
 
 # Normalizar la columna tags del Excel (los archivos no se tocan)
 python main.py normalize-tags excel_databases/quarto_metadata.xlsx --dry-run
@@ -199,7 +308,7 @@ python main.py tag-stats ~/Documents --top 30
 python main.py audit-tags excel_databases/quarto_metadata.xlsx
 ```
 
-**📖 [README completo](script_metadata_manager/README.md)**
+**📖 [README completo](quarto_studio/backend/script_metadata_manager/README.md)**
 
 ---
 
@@ -227,8 +336,8 @@ conda activate scripts_quarto
 pip install pyyaml pandas openpyxl
 
 # 4. Dar permisos de ejecución
-chmod +x script_generador_publicacion_similar/main.sh
-chmod +x script_metadata_manager/*.sh
+chmod +x quarto_studio/backend/script_generador_publicacion_similar/main.sh
+chmod +x quarto_studio/backend/script_metadata_manager/*.sh
 ```
 
 ### Instalación por Script
@@ -237,15 +346,15 @@ Cada script tiene su propio directorio con instrucciones específicas:
 
 ```bash
 # Script Format YAML
-cd script_format_yaml
+cd quarto_studio/backend/script_format_yaml
 # Ver README.md
 
 # Generador de Índices
-cd script_generador_publicacion_similar
+cd quarto_studio/backend/script_generador_publicacion_similar
 # Ver README.md
 
 # Gestor de Metadatos y Tags
-cd script_metadata_manager
+cd quarto_studio/backend/script_metadata_manager
 bash install.sh  # Instalación automática
 ```
 
@@ -260,7 +369,7 @@ bash install.sh  # Instalación automática
 conda activate scripts_quarto
 
 # 2. Normalizar formato YAML
-cd script_format_yaml
+cd quarto_studio/backend/script_format_yaml
 python fix_qmd_files.py --directory ~/Documents/publicaciones --recursive
 
 # 3. Normalizar tags
@@ -292,7 +401,7 @@ quarto render
 quarto create project blog mi-blog
 
 # 2. Configurar gestor de metadatos
-cd scripts_for_quarto/script_metadata_manager
+cd scripts_quarto_studio/quarto_studio/backend/script_metadata_manager
 python main.py create-config ~/Documents/mi-blog
 
 # 3. Generar primera base de datos
@@ -303,7 +412,7 @@ python main.py create-template ~/Documents/mi-blog
 
 ```bash
 # 1. Corregir formato YAML
-cd script_format_yaml
+cd quarto_studio/backend/script_format_yaml
 python fix_qmd_files.py --directory ~/Documents/blog-viejo --recursive
 
 # 2. Normalizar tags
@@ -319,7 +428,7 @@ python main.py create-template ~/Documents/blog-viejo
 
 ```bash
 # 1. Crear Excel con todos los artículos
-cd script_metadata_manager
+cd quarto_studio/backend/script_metadata_manager
 python main.py create-template ~/Documents
 
 # 2. Editar en Excel (cambiar draft: FALSE)
@@ -342,7 +451,7 @@ quarto render
 
 ```bash
 # 1. Actualizar metadatos
-cd script_metadata_manager
+cd quarto_studio/backend/script_metadata_manager
 python main.py create-template ~/Documents --incremental
 
 # 2. Revisar y editar Excel

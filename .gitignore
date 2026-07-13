@@ -1,0 +1,3 @@
+__pycache__/
+*.pyc
+app/resources/resources_rc.py
