@@ -36,7 +36,7 @@ init_blog() {
 
     # Los pub_* viven como submódulos del hub (QBLOG_PUBS_SUBDIR); el hub, en Documents.
     local blog_path="$docs_dir/$QBLOG_PUBS_SUBDIR/$blog_name"
-    [[ "$blog_name" == "$QBLOG_WEBSITE_PROJECT" ]] && blog_path="$docs_dir/$blog_name"
+    [[ "$blog_name" == "$QBLOG_WEBSITE_PROJECT" ]] && blog_path="$docs_dir/$QBLOG_WEBSITE_DIR"
 
     if [[ -d "$blog_path" ]]; then
         print_warning "El blog '$blog_name' ya existe"

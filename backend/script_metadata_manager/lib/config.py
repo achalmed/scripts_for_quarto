@@ -29,7 +29,7 @@ EMAIL   = "elmer.achalma.09@unsch.edu.pe"
 SYSTEM_EXCLUDED_FOLDERS = {
     "_site", "_freeze", "site_libs", ".git", ".quarto",
     "node_modules", "__pycache__", "_extensions", ".venv",
-    "venv", "env", "assets", "_partials",
+    "venv", "env", "assets", "_partials", "_indice", "_vault",
     "_pubs",   # submódulos pub_* dentro del hub: se procesan como blogs propios, no al recorrer website-achalma
     "title-block-link-buttons", "Excalidraw",
 }
@@ -52,7 +52,9 @@ SECTION_DIRS = {
 
 # Subcarpeta (relativa a la ruta base ~/Documents) donde viven los blogs pub_*
 # como submódulos git del hub website-achalma (reorganización 2026-09-06).
-PUBS_SUBDIR = "website-achalma/_pubs"
+HUB_DIR = "04 index"          # carpeta del hub (repo website-achalma) desde 2026-09-06
+HUB_ALIASES = {"website-achalma": HUB_DIR}
+PUBS_SUBDIR = f"{HUB_DIR}/_pubs"
 
 
 # =============================================================================
@@ -137,7 +139,7 @@ def create_default_config(base_path: str, output_path: str = "metadata_config.ym
             "pub_chaska", "pub_dialectica-y-mercado", "pub_epsilon-y-beta",
             "pub_methodica", "pub_numerus-scriptum", "pub_optimums",
             "pub_pecunia-fluxus", "pub_res-publica",
-            "website-achalma",
+            "04 index/blog",
         ],
         "excluded_folders": [
             "apa", "notas", "borradores",
@@ -156,7 +158,7 @@ def create_default_config(base_path: str, output_path: str = "metadata_config.ym
         # ningún pdf-url del que deducirlo.
         "blog_base_urls": {
             "pub_chaska": "https://chaska-x.netlify.app",
-            "website-achalma": "https://achalmaedison.netlify.app",
+            "04 index": "https://achalmaedison.netlify.app",
         },
     }
 

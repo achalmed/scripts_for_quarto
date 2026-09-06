@@ -34,7 +34,7 @@ def detectar_docs_dir() -> Path:
     """
     actual = scripts_root()
     for candidato in [actual, *actual.parents]:
-        if (candidato / "website-achalma").is_dir() or any(candidato.glob("pub_*")):
+        if (candidato / "04 index" / "_quarto.yml").is_file() or (candidato / "website-achalma").is_dir() or any(candidato.glob("pub_*")):
             return candidato
     # Último recurso razonable
     return Path.home() / "Documents"

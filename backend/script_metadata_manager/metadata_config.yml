@@ -11,8 +11,9 @@
 # Si está vacía, se procesarán todos los blogs encontrados
 # Útil para excluir carpetas que no son blogs
 
-# Los pub_* se localizan automáticamente como submódulos de website-achalma
-# (website-achalma/_pubs/pub_*); basta el nombre de la carpeta.
+# Los pub_* se localizan automáticamente como submódulos del hub, cuya carpeta es
+# "04 index" desde 2026-09-06 (repo website-achalma): 04 index/_pubs/pub_*.
+# Basta el nombre de la carpeta; "website-achalma" sigue aceptado como alias.
 allowed_blogs:
   - pub_actus-mercator
   - pub_aequilibria
@@ -25,7 +26,7 @@ allowed_blogs:
   - pub_optimums
   - pub_pecunia-fluxus
   - pub_res-publica
-  - website-achalma/blog
+  - 04 index/blog
   # Agregar más blogs según necesidad
 
 # -----------------------------------------------------------------------------
@@ -65,10 +66,10 @@ excluded_folders:
   - spss
   - stata
   - whatsapp chat
-  - website-achalma/about
-  - website-achalma/beschikbaarheid
-  - website-achalma/talk
-  - website-achalma/publication
+  - 04 index/about
+  - 04 index/beschikbaarheid
+  - 04 index/talk
+  - 04 index/publication
   # Agregar más carpetas según necesidad
 
 # -----------------------------------------------------------------------------

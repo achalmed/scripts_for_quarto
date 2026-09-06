@@ -23,17 +23,20 @@ PUBINDEX_CONFIG_LOADED=1
 PUBINDEX_DOCS_DIR="${PUBINDEX_DOCS_DIR:-}"
 
 # --- Carpeta destino donde se crean los symlinks organizados por año --------
-PUBINDEX_TARGET_DIRNAME="04 index"
+# Desde 2026-09-06 "04 index" es también el repo del hub Quarto (website-achalma);
+# los symlinks por año van en su subcarpeta _indice/ (el guion bajo evita que
+# Quarto la renderice y el .gitignore del hub la excluye).
+PUBINDEX_TARGET_DIRNAME="04 index/_indice"
 
 # --- Prefijo de carpetas de proyectos de publicaciones a escanear -----------
 PUBINDEX_PROJECT_PREFIX="pub_"
 
 # --- Proyecto especial (no tiene el prefijo pub_) y sus subcarpetas de posts
-PUBINDEX_WEBSITE_PROJECT="website-achalma"
+PUBINDEX_WEBSITE_PROJECT="04 index"   # carpeta del hub (repo website-achalma)
 
 # --- Subcarpeta (relativa a Documents) con los pub_* como submódulos del hub
 #     (reorganización 2026-09-06). Forzable con PUBINDEX_PUBS_SUBDIR. ---------
-PUBINDEX_PUBS_SUBDIR="${PUBINDEX_PUBS_SUBDIR:-website-achalma/_pubs}"
+PUBINDEX_PUBS_SUBDIR="${PUBINDEX_PUBS_SUBDIR:-$PUBINDEX_WEBSITE_PROJECT/_pubs}"
 PUBINDEX_WEBSITE_SUBDIRS=("blog/posts" "talk")
 
 # --- Carpetas técnicas/generadas que se deben ignorar siempre ---------------
@@ -47,6 +50,8 @@ PUBINDEX_IGNORE_DIRS=(
     ".git"
     "site_libs"
     "node_modules"
+    "_indice"
+    "_vault"
 )
 
 # --- Patrón de fecha que identifica una "publicación" ------------------------

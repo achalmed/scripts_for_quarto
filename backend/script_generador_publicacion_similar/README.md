@@ -35,8 +35,8 @@ y genera en cada subblog un índice Markdown listo para incluir con
 
 | Tipo                              | Ejemplo de directorio                 | URL generada                       |
 | --------------------------------- | ------------------------------------- | ---------------------------------- |
-| `blog` (proyecto independiente)   | `~/Documents/website-achalma/_pubs/pub_actus-mercator`      | `base/<subblog>/<post>/`           |
-| `website` (sección de página web) | `~/Documents/website-achalma/teching` | `base/<seccion>/<subblog>/<post>/` |
+| `blog` (proyecto independiente)   | `~/Documents/04 index/_pubs/pub_actus-mercator`      | `base/<subblog>/<post>/`           |
+| `website` (sección de página web) | `~/Documents/04 index/teching` | `base/<seccion>/<subblog>/<post>/` |
 
 Con `--type auto` (por defecto) la estructura se detecta por la ubicación del
 `_quarto.yml`: si está en el propio directorio es un proyecto independiente;
@@ -100,14 +100,14 @@ source ~/.zshrc
 
 ```bash
 # Blog independiente (URL base propia)
-./main.sh ~/Documents/website-achalma/_pubs/pub_actus-mercator --base-url https://actus-mercator.netlify.app
+./main.sh ~/Documents/04 index/_pubs/pub_actus-mercator --base-url https://actus-mercator.netlify.app
 
 # Sección de la página web (URL base por defecto)
-./main.sh ~/Documents/website-achalma/teching
+./main.sh ~/Documents/04 index/teching
 
 # Simular primero (recomendado antes de cambios masivos)
-./main.sh ~/Documents/website-achalma/_pubs/pub_axiomata --dry-run
-./main.sh ~/Documents/website-achalma/teching          # usa la URL base por defecto
+./main.sh ~/Documents/04 index/_pubs/pub_axiomata --dry-run
+./main.sh ~/Documents/04 index/teching          # usa la URL base por defecto
 
 # Forzar tipo de estructura si la autodetección no aplica
 ./main.sh ~/Documents/mi-blog-nuevo --type blog
@@ -263,7 +263,7 @@ está en construcción y aún no lo tiene, fuerza el tipo manualmente:
   configurarlo; el directorio se pasa como argumento. Si usabas alias del
   estilo `generar_indices_web.sh` (copias del script con distinta
   configuración), reemplázalos por alias con argumentos:
-  `alias indices-actus='main.sh ~/Documents/website-achalma/_pubs/pub_actus-mercator -u https://actus-mercator.netlify.app'`.
+  `alias indices-actus='main.sh ~/Documents/04 index/_pubs/pub_actus-mercator -u https://actus-mercator.netlify.app'`.
 - La capitalización de títulos usa `sed 's/\b\(.\)/\u\1/g'` (extensión GNU):
   en macOS/BSD requeriría `gsed`.
 - Los índices se generan **sin encabezado YAML** (comportamiento original),

@@ -690,3 +690,714 @@
 [2026-09-06 18:02:44] [SECTION] Verificando symlinks rotos
 [2026-09-06 18:02:44] [OK] No se encontraron symlinks rotos.
 [2026-09-06 18:02:44] [INFO] Log guardado en: /home/achalmaedison/Documents/scripts_quarto_studio/backend/script_pub_index_symlink/logs/2026-09-06.log
+[2026-09-06 18:42:53] [INFO] Documents detectado en: /home/achalmaedison/Documents
+[2026-09-06 18:42:53] [INFO] Carpeta índice: /home/achalmaedison/Documents/04 index/_indice
+[2026-09-06 18:42:53] [WARN] Modo dry-run activado: no se escribirá ni borrará nada.
+[2026-09-06 18:42:53] [SECTION] Escaneando proyectos pub_* y website-achalma
+[2026-09-06 18:42:53] [INFO] Publicaciones encontradas: 229
+[2026-09-06 18:42:53] [SECTION] Sincronizando symlinks en '04 index'
+[2026-09-06 18:42:53] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2023/2023-06-23-balanza-pagos -> /home/achalmaedison/Documents/04 index/_pubs/pub_pecunia-fluxus/finanzas-internacionales/2023-06-23-balanza-pagos
+[2026-09-06 18:42:53] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2023/2023-06-17-sistema-monetario-internacional -> /home/achalmaedison/Documents/04 index/_pubs/pub_pecunia-fluxus/finanzas-internacionales/2023-06-17-sistema-monetario-internacional
+[2026-09-06 18:42:53] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2023/2023-06-16-la-globalizacion -> /home/achalmaedison/Documents/04 index/_pubs/pub_pecunia-fluxus/finanzas-internacionales/2023-06-16-la-globalizacion
+[2026-09-06 18:42:53] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-08-22-04-renta-fija -> /home/achalmaedison/Documents/04 index/_pubs/pub_pecunia-fluxus/posts/2022-08-22-04-renta-fija
+[2026-09-06 18:42:53] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-08-01-01-conceptos-basicos -> /home/achalmaedison/Documents/04 index/_pubs/pub_pecunia-fluxus/posts/2022-08-01-01-conceptos-basicos
+[2026-09-06 18:42:53] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-08-15-03-renta-variable -> /home/achalmaedison/Documents/04 index/_pubs/pub_pecunia-fluxus/posts/2022-08-15-03-renta-variable
+[2026-09-06 18:42:53] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-08-29-05-derivados-financieros -> /home/achalmaedison/Documents/04 index/_pubs/pub_pecunia-fluxus/posts/2022-08-29-05-derivados-financieros
+[2026-09-06 18:42:53] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-09-05-06-teoria-de-portafolio -> /home/achalmaedison/Documents/04 index/_pubs/pub_pecunia-fluxus/posts/2022-09-05-06-teoria-de-portafolio
+[2026-09-06 18:42:53] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-08-08-02-finanzas-corporativas -> /home/achalmaedison/Documents/04 index/_pubs/pub_pecunia-fluxus/posts/2022-08-08-02-finanzas-corporativas
+[2026-09-06 18:42:53] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2025/2025-05-15-herramientas-y-plataformas-de-comercio-internacional -> /home/achalmaedison/Documents/04 index/_pubs/pub_actus-mercator/inteligencia-comercial/2025-05-15-herramientas-y-plataformas-de-comercio-internacional
+[2026-09-06 18:42:53] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2017/2017-10-23-costeo-de-la-empresa-dulce-deleite-srl -> /home/achalmaedison/Documents/04 index/_pubs/pub_actus-mercator/posts/2017-10-23-costeo-de-la-empresa-dulce-deleite-srl
+[2026-09-06 18:42:53] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2021/2021-07-13-plan-de-negocio-exportacion-de-tuna -> /home/achalmaedison/Documents/04 index/_pubs/pub_actus-mercator/posts/2021-07-13-plan-de-negocio-exportacion-de-tuna
+[2026-09-06 18:42:53] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2020/2020-09-15-plan-de-negocio-exportacion-de-trucha-arcoires -> /home/achalmaedison/Documents/04 index/_pubs/pub_actus-mercator/posts/2020-09-15-plan-de-negocio-exportacion-de-trucha-arcoires
+[2026-09-06 18:42:53] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-01-23-cadena-de-suministros -> /home/achalmaedison/Documents/04 index/_pubs/pub_actus-mercator/posts/2022-01-23-cadena-de-suministros
+[2026-09-06 18:42:53] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2021/2021-07-26-05-monopolio-y-modelos-de-oligopolio -> /home/achalmaedison/Documents/04 index/_pubs/pub_optimums/posts/2021-07-26-05-monopolio-y-modelos-de-oligopolio
+[2026-09-06 18:42:53] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2021/2021-07-19-04-equilibrio-parcial-y-competitivo -> /home/achalmaedison/Documents/04 index/_pubs/pub_optimums/posts/2021-07-19-04-equilibrio-parcial-y-competitivo
+[2026-09-06 18:42:53] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2021/2021-08-02-06-modelo-de-intercambio-puro -> /home/achalmaedison/Documents/04 index/_pubs/pub_optimums/posts/2021-08-02-06-modelo-de-intercambio-puro
+[2026-09-06 18:42:53] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2021/2021-07-05-02-teoria-del-productor -> /home/achalmaedison/Documents/04 index/_pubs/pub_optimums/posts/2021-07-05-02-teoria-del-productor
+[2026-09-06 18:42:53] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2021/2021-08-09-07-fallas-de-mercado -> /home/achalmaedison/Documents/04 index/_pubs/pub_optimums/posts/2021-08-09-07-fallas-de-mercado
+[2026-09-06 18:42:53] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2021/2021-06-28-01-teoria-del-consumidor -> /home/achalmaedison/Documents/04 index/_pubs/pub_optimums/posts/2021-06-28-01-teoria-del-consumidor
+[2026-09-06 18:42:53] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2021/2021-07-12-03-decisiones-de-consumo-y-produccion-en-el-tiempo -> /home/achalmaedison/Documents/04 index/_pubs/pub_optimums/posts/2021-07-12-03-decisiones-de-consumo-y-produccion-en-el-tiempo
+[2026-09-06 18:42:53] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2023/2023-06-13-empresa-como-organizacion -> /home/achalmaedison/Documents/04 index/_pubs/pub_optimums/organizacion-industrial/2023-06-13-empresa-como-organizacion
+[2026-09-06 18:42:53] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2023/2023-06-13-sistemas-economicos -> /home/achalmaedison/Documents/04 index/_pubs/pub_optimums/organizacion-industrial/2023-06-13-sistemas-economicos
+[2026-09-06 18:42:53] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2023/2023-06-17-estructura-del-mercado -> /home/achalmaedison/Documents/04 index/_pubs/pub_optimums/organizacion-industrial/2023-06-17-estructura-del-mercado
+[2026-09-06 18:42:53] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2023/2023-06-23-elasticidad -> /home/achalmaedison/Documents/04 index/_pubs/pub_optimums/organizacion-industrial/2023-06-23-elasticidad
+[2026-09-06 18:42:53] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2023/2023-06-15-mercado-relevante -> /home/achalmaedison/Documents/04 index/_pubs/pub_optimums/organizacion-industrial/2023-06-15-mercado-relevante
+[2026-09-06 18:42:53] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2023/2023-06-12-introducion-a-organizacion-industrial -> /home/achalmaedison/Documents/04 index/_pubs/pub_optimums/organizacion-industrial/2023-06-12-introducion-a-organizacion-industrial
+[2026-09-06 18:42:54] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2023/2023-06-16-medidas-concentracion-desempeño -> /home/achalmaedison/Documents/04 index/_pubs/pub_optimums/organizacion-industrial/2023-06-16-medidas-concentracion-desempeño
+[2026-09-06 18:42:54] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2021/2021-08-09-04-tipo-de-cambio -> /home/achalmaedison/Documents/04 index/_pubs/pub_aequilibria/posts/2021-08-09-04-tipo-de-cambio
+[2026-09-06 18:42:54] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-01-31-11-modelos-de-empleo -> /home/achalmaedison/Documents/04 index/_pubs/pub_aequilibria/posts/2022-01-31-11-modelos-de-empleo
+[2026-09-06 18:42:54] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2021/2021-07-26-02-teoria-de-consumo -> /home/achalmaedison/Documents/04 index/_pubs/pub_aequilibria/posts/2021-07-26-02-teoria-de-consumo
+[2026-09-06 18:42:54] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-01-10-08-ciclos-economicos-reales-rbc -> /home/achalmaedison/Documents/04 index/_pubs/pub_aequilibria/posts/2022-01-10-08-ciclos-economicos-reales-rbc
+[2026-09-06 18:42:54] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2021/2021-12-20-05-modelo-de-mundell-fleming -> /home/achalmaedison/Documents/04 index/_pubs/pub_aequilibria/posts/2021-12-20-05-modelo-de-mundell-fleming
+[2026-09-06 18:42:54] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-01-17-09-crecimiento-economico -> /home/achalmaedison/Documents/04 index/_pubs/pub_aequilibria/posts/2022-01-17-09-crecimiento-economico
+[2026-09-06 18:42:54] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2021/2021-07-19-01-conceptos-basicos -> /home/achalmaedison/Documents/04 index/_pubs/pub_aequilibria/posts/2021-07-19-01-conceptos-basicos
+[2026-09-06 18:42:54] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2017/2017-12-30-comportamiento-de-la-inflacion-1980-a-2017 -> /home/achalmaedison/Documents/04 index/_pubs/pub_aequilibria/posts/2017-12-30-comportamiento-de-la-inflacion-1980-a-2017
+[2026-09-06 18:42:54] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-01-03-07-fluctuaciones-de-corto-plazo -> /home/achalmaedison/Documents/04 index/_pubs/pub_aequilibria/posts/2022-01-03-07-fluctuaciones-de-corto-plazo
+[2026-09-06 18:42:54] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2021/2021-08-02-03-teoria-de-la-inversion -> /home/achalmaedison/Documents/04 index/_pubs/pub_aequilibria/posts/2021-08-02-03-teoria-de-la-inversion
+[2026-09-06 18:42:54] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2021/2021-12-27-06-sector-externo -> /home/achalmaedison/Documents/04 index/_pubs/pub_aequilibria/posts/2021-12-27-06-sector-externo
+[2026-09-06 18:42:54] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-01-24-10-economia-monetaria -> /home/achalmaedison/Documents/04 index/_pubs/pub_aequilibria/posts/2022-01-24-10-economia-monetaria
+[2026-09-06 18:42:54] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2025/2025-05-11-teoria-y-politica-monetaria-bcrp -> /home/achalmaedison/Documents/04 index/_pubs/pub_aequilibria/posts/2025-05-11-teoria-y-politica-monetaria-bcrp
+[2026-09-06 18:42:54] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2025/2025-06-01-proporcionalidad-de-magnitudes-en-ciencias-de-la-comunicacion -> /home/achalmaedison/Documents/04 index/_pubs/pub_axiomata/posts/2025-06-01-proporcionalidad-de-magnitudes-en-ciencias-de-la-comunicacion
+[2026-09-06 18:42:54] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2025/2025-04-14-economia-matematica-I -> /home/achalmaedison/Documents/04 index/_pubs/pub_axiomata/economia-matematica/2025-04-14-economia-matematica-I
+[2026-09-06 18:42:54] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2018/2018-04-23-aparicion-pensamiento-socialista -> /home/achalmaedison/Documents/04 index/_pubs/pub_dialectica-y-mercado/posts/2018-04-23-aparicion-pensamiento-socialista
+[2026-09-06 18:42:54] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2023/2023-06-09-entendiendo-a-mariategui -> /home/achalmaedison/Documents/04 index/_pubs/pub_dialectica-y-mercado/posts/2023-06-09-entendiendo-a-mariategui
+[2026-09-06 18:42:54] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2023/2023-05-19-seminario-de-filosofia-marxista -> /home/achalmaedison/Documents/04 index/_pubs/pub_dialectica-y-mercado/posts/2023-05-19-seminario-de-filosofia-marxista
+[2026-09-06 18:42:54] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2023/2023-10-23-tres-fuentes-tres-partes-del-marxismo -> /home/achalmaedison/Documents/04 index/_pubs/pub_dialectica-y-mercado/posts/2023-10-23-tres-fuentes-tres-partes-del-marxismo
+[2026-09-06 18:42:54] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2023/2023-06-09-naturaleza-humana -> /home/achalmaedison/Documents/04 index/_pubs/pub_dialectica-y-mercado/posts/2023-06-09-naturaleza-humana
+[2026-09-06 18:42:54] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2017/2017-05-23-el-mercantilismo -> /home/achalmaedison/Documents/04 index/_pubs/pub_dialectica-y-mercado/posts/2017-05-23-el-mercantilismo
+[2026-09-06 18:42:54] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2023/2023-03-03-el-capitalismo -> /home/achalmaedison/Documents/04 index/_pubs/pub_dialectica-y-mercado/posts/2023-03-03-el-capitalismo
+[2026-09-06 18:42:54] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2015/2015-05-14-el-aborto -> /home/achalmaedison/Documents/04 index/_pubs/pub_dialectica-y-mercado/posts/2015-05-14-el-aborto
+[2026-09-06 18:42:54] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2023/2023-04-29-primero-de-mayo -> /home/achalmaedison/Documents/04 index/_pubs/pub_dialectica-y-mercado/posts/2023-04-29-primero-de-mayo
+[2026-09-06 18:42:54] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2018/2018-05-16-estadigrafos -> /home/achalmaedison/Documents/04 index/_pubs/pub_epsilon-y-beta/estadistica/2018-05-16-estadigrafos
+[2026-09-06 18:42:54] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2018/2018-12-26-factores-que-influyen-rendimiento-academico -> /home/achalmaedison/Documents/04 index/_pubs/pub_epsilon-y-beta/estadistica/2018-12-26-factores-que-influyen-rendimiento-academico
+[2026-09-06 18:42:54] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-04-04-01-introduccion-a-la-evaluacion-de-impacto -> /home/achalmaedison/Documents/04 index/_pubs/pub_epsilon-y-beta/06-evaluacion-de-impacto/2022-04-04-01-introduccion-a-la-evaluacion-de-impacto
+[2026-09-06 18:42:54] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-04-18-03-modelo-de-emparejamiento -> /home/achalmaedison/Documents/04 index/_pubs/pub_epsilon-y-beta/06-evaluacion-de-impacto/2022-04-18-03-modelo-de-emparejamiento
+[2026-09-06 18:42:54] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-05-16-07-metodo-de-control-sintetico-mcs -> /home/achalmaedison/Documents/04 index/_pubs/pub_epsilon-y-beta/06-evaluacion-de-impacto/2022-05-16-07-metodo-de-control-sintetico-mcs
+[2026-09-06 18:42:54] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-04-11-02-introduccion-a-los-experimentos-aleatorios -> /home/achalmaedison/Documents/04 index/_pubs/pub_epsilon-y-beta/06-evaluacion-de-impacto/2022-04-11-02-introduccion-a-los-experimentos-aleatorios
+[2026-09-06 18:42:54] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-05-02-05-regresion-discontinua-sharp-vs-fuzzy -> /home/achalmaedison/Documents/04 index/_pubs/pub_epsilon-y-beta/06-evaluacion-de-impacto/2022-05-02-05-regresion-discontinua-sharp-vs-fuzzy
+[2026-09-06 18:42:54] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-04-25-04-regresion-discontinua-rd -> /home/achalmaedison/Documents/04 index/_pubs/pub_epsilon-y-beta/06-evaluacion-de-impacto/2022-04-25-04-regresion-discontinua-rd
+[2026-09-06 18:42:54] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-05-09-06-analizando-papers-con-rdd-usando-stata-y-r -> /home/achalmaedison/Documents/04 index/_pubs/pub_epsilon-y-beta/06-evaluacion-de-impacto/2022-05-09-06-analizando-papers-con-rdd-usando-stata-y-r
+[2026-09-06 18:42:54] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-03-21-04-simulacion-y-estimacion-bayesiana -> /home/achalmaedison/Documents/04 index/_pubs/pub_epsilon-y-beta/05-econometria-bayesiana/2022-03-21-04-simulacion-y-estimacion-bayesiana
+[2026-09-06 18:42:54] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-03-14-02-modelo-de-regresion-lineal -> /home/achalmaedison/Documents/04 index/_pubs/pub_epsilon-y-beta/05-econometria-bayesiana/2022-03-14-02-modelo-de-regresion-lineal
+[2026-09-06 18:42:54] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-03-18-03-familia-de-distribuciones-prior -> /home/achalmaedison/Documents/04 index/_pubs/pub_epsilon-y-beta/05-econometria-bayesiana/2022-03-18-03-familia-de-distribuciones-prior
+[2026-09-06 18:42:54] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-03-28-05-aplicaciones-econometricas -> /home/achalmaedison/Documents/04 index/_pubs/pub_epsilon-y-beta/05-econometria-bayesiana/2022-03-28-05-aplicaciones-econometricas
+[2026-09-06 18:42:54] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-03-07-01-introduccion-a-la-econometria-bayesiana -> /home/achalmaedison/Documents/04 index/_pubs/pub_epsilon-y-beta/05-econometria-bayesiana/2022-03-07-01-introduccion-a-la-econometria-bayesiana
+[2026-09-06 18:42:54] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2021/2021-09-20-01-analisis-univariado -> /home/achalmaedison/Documents/04 index/_pubs/pub_epsilon-y-beta/02-macroeconometria/2021-09-20-01-analisis-univariado
+[2026-09-06 18:42:54] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2021/2021-10-11-06-modelos-no-lineales-en-la-media -> /home/achalmaedison/Documents/04 index/_pubs/pub_epsilon-y-beta/02-macroeconometria/2021-10-11-06-modelos-no-lineales-en-la-media
+[2026-09-06 18:42:54] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2021/2021-09-27-03-analisis-multivariado -> /home/achalmaedison/Documents/04 index/_pubs/pub_epsilon-y-beta/02-macroeconometria/2021-09-27-03-analisis-multivariado
+[2026-09-06 18:42:54] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2021/2021-10-04-05-modelos-de-factores-latentes -> /home/achalmaedison/Documents/04 index/_pubs/pub_epsilon-y-beta/02-macroeconometria/2021-10-04-05-modelos-de-factores-latentes
+[2026-09-06 18:42:54] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2021/2021-12-06-08-panel-data-dinamico -> /home/achalmaedison/Documents/04 index/_pubs/pub_epsilon-y-beta/03-microeconometria/2021-12-06-08-panel-data-dinamico
+[2026-09-06 18:42:54] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2021/2021-10-25-02-modelos-fraccionados -> /home/achalmaedison/Documents/04 index/_pubs/pub_epsilon-y-beta/03-microeconometria/2021-10-25-02-modelos-fraccionados
+[2026-09-06 18:42:54] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2021/2021-11-29-07-panel-data-estatico -> /home/achalmaedison/Documents/04 index/_pubs/pub_epsilon-y-beta/03-microeconometria/2021-11-29-07-panel-data-estatico
+[2026-09-06 18:42:54] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2021/2021-11-22-06-modelos-de-ecuaciones-simultaneas -> /home/achalmaedison/Documents/04 index/_pubs/pub_epsilon-y-beta/03-microeconometria/2021-11-22-06-modelos-de-ecuaciones-simultaneas
+[2026-09-06 18:42:54] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2021/2021-11-15-05-sesgo-de-seleccion -> /home/achalmaedison/Documents/04 index/_pubs/pub_epsilon-y-beta/03-microeconometria/2021-11-15-05-sesgo-de-seleccion
+[2026-09-06 18:42:54] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2021/2021-11-08-04-modelos-con-variables-censuradas-y-truncadas -> /home/achalmaedison/Documents/04 index/_pubs/pub_epsilon-y-beta/03-microeconometria/2021-11-08-04-modelos-con-variables-censuradas-y-truncadas
+[2026-09-06 18:42:54] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2021/2021-10-18-01-modelos-de-eleccion-discreta-probit-y-logit -> /home/achalmaedison/Documents/04 index/_pubs/pub_epsilon-y-beta/03-microeconometria/2021-10-18-01-modelos-de-eleccion-discreta-probit-y-logit
+[2026-09-06 18:42:54] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2021/2021-11-01-03-modelos-multinomiales-y-ordenados -> /home/achalmaedison/Documents/04 index/_pubs/pub_epsilon-y-beta/03-microeconometria/2021-11-01-03-modelos-multinomiales-y-ordenados
+[2026-09-06 18:42:54] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-06-13-07-event-studies-en-economia -> /home/achalmaedison/Documents/04 index/_pubs/pub_epsilon-y-beta/07-topicos-de-econometria/2022-06-13-07-event-studies-en-economia
+[2026-09-06 18:42:54] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-05-09-02-metodos-experimentales-en-economia -> /home/achalmaedison/Documents/04 index/_pubs/pub_epsilon-y-beta/07-topicos-de-econometria/2022-05-09-02-metodos-experimentales-en-economia
+[2026-09-06 18:42:54] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-06-20-08-miscelanea -> /home/achalmaedison/Documents/04 index/_pubs/pub_epsilon-y-beta/07-topicos-de-econometria/2022-06-20-08-miscelanea
+[2026-09-06 18:42:54] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-06-06-06-efectos-fijos-diferencias-en-diferencias-y-datos-de-panel -> /home/achalmaedison/Documents/04 index/_pubs/pub_epsilon-y-beta/07-topicos-de-econometria/2022-06-06-06-efectos-fijos-diferencias-en-diferencias-y-datos-de-panel
+[2026-09-06 18:42:55] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-05-16-03-la-herramienta-fundamental-regresiones -> /home/achalmaedison/Documents/04 index/_pubs/pub_epsilon-y-beta/07-topicos-de-econometria/2022-05-16-03-la-herramienta-fundamental-regresiones
+[2026-09-06 18:42:55] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-05-02-01-introduccion-a-la-econometria -> /home/achalmaedison/Documents/04 index/_pubs/pub_epsilon-y-beta/07-topicos-de-econometria/2022-05-02-01-introduccion-a-la-econometria
+[2026-09-06 18:42:55] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-05-23-04-variables-instrumentales -> /home/achalmaedison/Documents/04 index/_pubs/pub_epsilon-y-beta/07-topicos-de-econometria/2022-05-23-04-variables-instrumentales
+[2026-09-06 18:42:55] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-05-30-05-diseño-de-regresion-discontinua-rdd -> /home/achalmaedison/Documents/04 index/_pubs/pub_epsilon-y-beta/07-topicos-de-econometria/2022-05-30-05-diseño-de-regresion-discontinua-rdd
+[2026-09-06 18:42:55] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-01-11-recaudacion-de-impuestos-y-crecimiento-economico-2017-2019 -> /home/achalmaedison/Documents/04 index/_pubs/pub_epsilon-y-beta/00-econometria-general/2022-01-11-recaudacion-de-impuestos-y-crecimiento-economico-2017-2019
+[2026-09-06 18:42:55] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2019/2019-12-30-rendimiento-academico-y-genero-de-ingresantes-a-unsch -> /home/achalmaedison/Documents/04 index/_pubs/pub_epsilon-y-beta/estadistica-para-economistas/2019-12-30-rendimiento-academico-y-genero-de-ingresantes-a-unsch
+[2026-09-06 18:42:55] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-02-28-01-volatilidad-en-las-series-de-tiempo -> /home/achalmaedison/Documents/04 index/_pubs/pub_epsilon-y-beta/04-econometria-financiera/2022-02-28-01-volatilidad-en-las-series-de-tiempo
+[2026-09-06 18:42:55] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2021/2021-03-01-01-modelo-clasico-de-regresion-lineal -> /home/achalmaedison/Documents/04 index/_pubs/pub_epsilon-y-beta/01-fundamentos-econometria/2021-03-01-01-modelo-clasico-de-regresion-lineal
+[2026-09-06 18:42:55] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2021/2021-05-17-11-problemas-de-endogeneidad -> /home/achalmaedison/Documents/04 index/_pubs/pub_epsilon-y-beta/01-fundamentos-econometria/2021-05-17-11-problemas-de-endogeneidad
+[2026-09-06 18:42:55] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2021/2021-05-24-12-perturbaciones-no-esfericas -> /home/achalmaedison/Documents/04 index/_pubs/pub_epsilon-y-beta/01-fundamentos-econometria/2021-05-24-12-perturbaciones-no-esfericas
+[2026-09-06 18:42:55] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2021/2021-03-15-03-algebra-y-geometria-de-mco -> /home/achalmaedison/Documents/04 index/_pubs/pub_epsilon-y-beta/01-fundamentos-econometria/2021-03-15-03-algebra-y-geometria-de-mco
+[2026-09-06 18:42:55] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2021/2021-04-26-08-multicolinealidad -> /home/achalmaedison/Documents/04 index/_pubs/pub_epsilon-y-beta/01-fundamentos-econometria/2021-04-26-08-multicolinealidad
+[2026-09-06 18:42:55] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2021/2021-05-10-10-el-modelo-general-de-regresion-lineal-permitiendo-heterocedasticidad-en-los-errores -> /home/achalmaedison/Documents/04 index/_pubs/pub_epsilon-y-beta/01-fundamentos-econometria/2021-05-10-10-el-modelo-general-de-regresion-lineal-permitiendo-heterocedasticidad-en-los-errores
+[2026-09-06 18:42:55] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2021/2021-04-19-07-bondad-de-ajuste -> /home/achalmaedison/Documents/04 index/_pubs/pub_epsilon-y-beta/01-fundamentos-econometria/2021-04-19-07-bondad-de-ajuste
+[2026-09-06 18:42:55] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2021/2021-03-22-04-propiedades-en-muestras-finitas-del-estimador-mco -> /home/achalmaedison/Documents/04 index/_pubs/pub_epsilon-y-beta/01-fundamentos-econometria/2021-03-22-04-propiedades-en-muestras-finitas-del-estimador-mco
+[2026-09-06 18:42:55] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2021/2021-03-29-05-propiedades-en-muestras-infinitas-del-estimador-mco -> /home/achalmaedison/Documents/04 index/_pubs/pub_epsilon-y-beta/01-fundamentos-econometria/2021-03-29-05-propiedades-en-muestras-infinitas-del-estimador-mco
+[2026-09-06 18:42:55] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2021/2021-03-08-02-el-estimador-de-minimos-cuadrados-ordinarios-mco -> /home/achalmaedison/Documents/04 index/_pubs/pub_epsilon-y-beta/01-fundamentos-econometria/2021-03-08-02-el-estimador-de-minimos-cuadrados-ordinarios-mco
+[2026-09-06 18:42:55] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2021/2021-04-10-06-el-trade-off-sesgo-varianza -> /home/achalmaedison/Documents/04 index/_pubs/pub_epsilon-y-beta/01-fundamentos-econometria/2021-04-10-06-el-trade-off-sesgo-varianza
+[2026-09-06 18:42:55] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2021/2021-05-03-09-inferencia -> /home/achalmaedison/Documents/04 index/_pubs/pub_epsilon-y-beta/01-fundamentos-econometria/2021-05-03-09-inferencia
+[2026-09-06 18:42:55] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2025/2025-02-09-recursos-para-traducción-y-correccion -> /home/achalmaedison/Documents/04 index/_pubs/pub_methodica/posts/2025-02-09-recursos-para-traducción-y-correccion
+[2026-09-06 18:42:55] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2026/2026-01-02-configuracion-de-quarto-yml -> /home/achalmaedison/Documents/04 index/_pubs/pub_methodica/posts/2026-01-02-configuracion-de-quarto-yml
+[2026-09-06 18:42:55] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2025/2025-04-23-tipos-de-elementos-en-zotero -> /home/achalmaedison/Documents/04 index/_pubs/pub_methodica/posts/2025-04-23-tipos-de-elementos-en-zotero
+[2026-09-06 18:42:55] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2023/2023-06-03-ideas-de-investigacion-para-economia -> /home/achalmaedison/Documents/04 index/_pubs/pub_methodica/posts/2023-06-03-ideas-de-investigacion-para-economia
+[2026-09-06 18:42:55] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2026/2026-01-02-guia-practica-de-metadata-en-quarto -> /home/achalmaedison/Documents/04 index/_pubs/pub_methodica/posts/2026-01-02-guia-practica-de-metadata-en-quarto
+[2026-09-06 18:42:55] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2023/2023-06-03-pautas-de-presentacion-del-informe-de-investigacion -> /home/achalmaedison/Documents/04 index/_pubs/pub_methodica/posts/2023-06-03-pautas-de-presentacion-del-informe-de-investigacion
+[2026-09-06 18:42:55] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2025/2025-01-12-recursos-de-bibliografia-y-documentacion -> /home/achalmaedison/Documents/04 index/_pubs/pub_methodica/posts/2025-01-12-recursos-de-bibliografia-y-documentacion
+[2026-09-06 18:42:55] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2021/2021-10-01-gestion-publica-y-administracion-publica -> /home/achalmaedison/Documents/04 index/_pubs/pub_res-publica/posts/2021-10-01-gestion-publica-y-administracion-publica
+[2026-09-06 18:42:55] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2023/2023-05-11-cualidades-de-los-servidores-publicos -> /home/achalmaedison/Documents/04 index/_pubs/pub_res-publica/posts/2023-05-11-cualidades-de-los-servidores-publicos
+[2026-09-06 18:42:55] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2021/2021-10-01-reformas-y-modernizacion-de-la-gestion-publica -> /home/achalmaedison/Documents/04 index/_pubs/pub_res-publica/posts/2021-10-01-reformas-y-modernizacion-de-la-gestion-publica
+[2026-09-06 18:42:55] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2020/2020-02-16-guia-de-instalacion-y-configuracion-de-i3wm -> /home/achalmaedison/Documents/04 index/_pubs/pub_chaska/i3wm/2020-02-16-guia-de-instalacion-y-configuracion-de-i3wm
+[2026-09-06 18:42:55] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2020/2020-02-17-atajos-de-teclado-y-comandos-esenciales-de-i3wm -> /home/achalmaedison/Documents/04 index/_pubs/pub_chaska/i3wm/2020-02-17-atajos-de-teclado-y-comandos-esenciales-de-i3wm
+[2026-09-06 18:42:55] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2020/2020-02-21-integracion-de-i3wm-en-tu-entorno-de-trabajo -> /home/achalmaedison/Documents/04 index/_pubs/pub_chaska/i3wm/2020-02-21-integracion-de-i3wm-en-tu-entorno-de-trabajo
+[2026-09-06 18:42:55] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2020/2020-02-18-personalizando-de-i3wm -> /home/achalmaedison/Documents/04 index/_pubs/pub_chaska/i3wm/2020-02-18-personalizando-de-i3wm
+[2026-09-06 18:42:55] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2020/2020-02-15-introduccion-a-i3wm -> /home/achalmaedison/Documents/04 index/_pubs/pub_chaska/i3wm/2020-02-15-introduccion-a-i3wm
+[2026-09-06 18:42:55] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2020/2020-02-18-trabajando-con-ventanas-en-i3wm -> /home/achalmaedison/Documents/04 index/_pubs/pub_chaska/i3wm/2020-02-18-trabajando-con-ventanas-en-i3wm
+[2026-09-06 18:42:55] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2020/2020-02-23-solucion-de-problemas-comunes-en-i3wm -> /home/achalmaedison/Documents/04 index/_pubs/pub_chaska/i3wm/2020-02-23-solucion-de-problemas-comunes-en-i3wm
+[2026-09-06 18:42:55] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2020/2020-02-19-aumenta-tu-productividad-con-i3wm -> /home/achalmaedison/Documents/04 index/_pubs/pub_chaska/i3wm/2020-02-19-aumenta-tu-productividad-con-i3wm
+[2026-09-06 18:42:55] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2020/2020-02-20-i3wm-vs-otros-gestores-de-ventanas -> /home/achalmaedison/Documents/04 index/_pubs/pub_chaska/i3wm/2020-02-20-i3wm-vs-otros-gestores-de-ventanas
+[2026-09-06 18:42:55] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2020/2020-02-22-casos-de-uso-avanzados-de-i3wm -> /home/achalmaedison/Documents/04 index/_pubs/pub_chaska/i3wm/2020-02-22-casos-de-uso-avanzados-de-i3wm
+[2026-09-06 18:42:55] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2023/2023-06-18-02-distribuciones-linux -> /home/achalmaedison/Documents/04 index/_pubs/pub_chaska/operating-system/2023-06-18-02-distribuciones-linux
+[2026-09-06 18:42:55] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2023/2023-06-19-03-instalacion-linux -> /home/achalmaedison/Documents/04 index/_pubs/pub_chaska/operating-system/2023-06-19-03-instalacion-linux
+[2026-09-06 18:42:55] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2024/2024-07-15-instalando-specitify -> /home/achalmaedison/Documents/04 index/_pubs/pub_chaska/operating-system/2024-07-15-instalando-specitify
+[2026-09-06 18:42:55] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2023/2023-07-01-atajos-de-teclado-y-comandos-para-usar-vim -> /home/achalmaedison/Documents/04 index/_pubs/pub_chaska/operating-system/2023-07-01-atajos-de-teclado-y-comandos-para-usar-vim
+[2026-09-06 18:42:55] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2025/2025-12-31-guia-de-kitty-terminal -> /home/achalmaedison/Documents/04 index/_pubs/pub_chaska/operating-system/2025-12-31-guia-de-kitty-terminal
+[2026-09-06 18:42:55] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2025/2025-12-31-guia-de-positron-ide -> /home/achalmaedison/Documents/04 index/_pubs/pub_chaska/operating-system/2025-12-31-guia-de-positron-ide
+[2026-09-06 18:42:55] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2021/2021-08-17-limpieza-y-optimizacion-de-pc -> /home/achalmaedison/Documents/04 index/_pubs/pub_chaska/operating-system/2021-08-17-limpieza-y-optimizacion-de-pc
+[2026-09-06 18:42:55] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-09-27-comandos-vim -> /home/achalmaedison/Documents/04 index/_pubs/pub_chaska/operating-system/2022-09-27-comandos-vim
+[2026-09-06 18:42:55] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2021/2021-10-21-scrcpy -> /home/achalmaedison/Documents/04 index/_pubs/pub_chaska/operating-system/2021-10-21-scrcpy
+[2026-09-06 18:42:55] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2023/2023-05-02-00-primeros-pasos-en-linux -> /home/achalmaedison/Documents/04 index/_pubs/pub_chaska/operating-system/2023-05-02-00-primeros-pasos-en-linux
+[2026-09-06 18:42:55] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2023/2023-06-20-04-administracion-particiones-volumenes -> /home/achalmaedison/Documents/04 index/_pubs/pub_chaska/operating-system/2023-06-20-04-administracion-particiones-volumenes
+[2026-09-06 18:42:55] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2019/2019-06-19-adb -> /home/achalmaedison/Documents/04 index/_pubs/pub_chaska/operating-system/2019-06-19-adb
+[2026-09-06 18:42:55] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2025/2025-12-30-guia-de-ranger -> /home/achalmaedison/Documents/04 index/_pubs/pub_chaska/operating-system/2025-12-30-guia-de-ranger
+[2026-09-06 18:42:55] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2023/2023-06-17-01-introduccion-linux -> /home/achalmaedison/Documents/04 index/_pubs/pub_chaska/operating-system/2023-06-17-01-introduccion-linux
+[2026-09-06 18:42:55] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2025/2025-07-10-gestiona-tus-dotfiles-con-gnu-stow -> /home/achalmaedison/Documents/04 index/_pubs/pub_chaska/operating-system/2025-07-10-gestiona-tus-dotfiles-con-gnu-stow
+[2026-09-06 18:42:55] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-08-14-crear-enlaces-duros-o-hard-link-en-linux -> /home/achalmaedison/Documents/04 index/_pubs/pub_chaska/operating-system/2022-08-14-crear-enlaces-duros-o-hard-link-en-linux
+[2026-09-06 18:42:56] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2023/2023-02-16-guia-de-git-y-github -> /home/achalmaedison/Documents/04 index/_pubs/pub_chaska/operating-system/2023-02-16-guia-de-git-y-github
+[2026-09-06 18:42:56] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-05-12-gestionar-versiones-de-jdk-en-kubuntu -> /home/achalmaedison/Documents/04 index/_pubs/pub_chaska/operating-system/2022-05-12-gestionar-versiones-de-jdk-en-kubuntu
+[2026-09-06 18:42:56] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2017/2017-05-21-comandos-de-informacion-windows -> /home/achalmaedison/Documents/04 index/_pubs/pub_chaska/operating-system/2017-05-21-comandos-de-informacion-windows
+[2026-09-06 18:42:56] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-07-21-instalar-tor-browser -> /home/achalmaedison/Documents/04 index/_pubs/pub_chaska/operating-system/2022-07-21-instalar-tor-browser
+[2026-09-06 18:42:56] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2026/2026-04-23-guia-de-rsync -> /home/achalmaedison/Documents/04 index/_pubs/pub_chaska/operating-system/2026-04-23-guia-de-rsync
+[2026-09-06 18:42:56] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2024/2024-09-03-ejecutando-payload -> /home/achalmaedison/Documents/04 index/_pubs/pub_chaska/ciberseguridad-ethical-hacking-ceh/2024-09-03-ejecutando-payload
+[2026-09-06 18:42:56] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-11-21-06-modelo-de-machine-learning-iii-modelo-de-regresion -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/r/2022-11-21-06-modelo-de-machine-learning-iii-modelo-de-regresion
+[2026-09-06 18:42:56] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2021/2021-03-27-01-introduccion-al-programa -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/r/2021-03-27-01-introduccion-al-programa
+[2026-09-06 18:42:56] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-11-28-07-modelo-de-machine-learning-iv-tex-mining -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/r/2022-11-28-07-modelo-de-machine-learning-iv-tex-mining
+[2026-09-06 18:42:56] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-11-07-04-modelo-de-machine-learning-i-analisis-exploratorio -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/r/2022-11-07-04-modelo-de-machine-learning-i-analisis-exploratorio
+[2026-09-06 18:42:56] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2020/2020-06-10-011-instalacion-de-r -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/r/2020-06-10-011-instalacion-de-r
+[2026-09-06 18:42:56] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-11-14-05-modelo-de-machine-learning-ii-modelo-de-clasificacion -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/r/2022-11-14-05-modelo-de-machine-learning-ii-modelo-de-clasificacion
+[2026-09-06 18:42:56] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2021/2021-04-12-03-visualizacion-de-datos -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/r/2021-04-12-03-visualizacion-de-datos
+[2026-09-06 18:42:56] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2021/2021-04-05-02-manipulacion-de-datos -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/r/2021-04-05-02-manipulacion-de-datos
+[2026-09-06 18:42:56] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2020/2020-06-10-013-lo-que-debemos-saber-de-r -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/r/2020-06-10-013-lo-que-debemos-saber-de-r
+[2026-09-06 18:42:56] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2020/2020-06-10-012-configurar-entorno-virtual-r -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/r/2020-06-10-012-configurar-entorno-virtual-r
+[2026-09-06 18:42:56] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-12-05-01-introduccion-al-lenguaje-y-editor-vba -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/ofimatica/2022-12-05-01-introduccion-al-lenguaje-y-editor-vba
+[2026-09-06 18:42:56] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2023/2023-01-02-05-funciones-condicionales-estructuras-condicionales -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/ofimatica/2023-01-02-05-funciones-condicionales-estructuras-condicionales
+[2026-09-06 18:42:56] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2023/2023-03-17-comando-para-convertir-docx-a-odt -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/ofimatica/2023-03-17-comando-para-convertir-docx-a-odt
+[2026-09-06 18:42:56] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-12-26-04-funciones-en-vba -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/ofimatica/2022-12-26-04-funciones-en-vba
+[2026-09-06 18:42:56] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2023/2023-01-23-08-eventos -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/ofimatica/2023-01-23-08-eventos
+[2026-09-06 18:42:56] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2023/2023-05-31-combinando-hojas-de-excel-con-vba -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/ofimatica/2023-05-31-combinando-hojas-de-excel-con-vba
+[2026-09-06 18:42:56] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2023/2023-01-16-07-formularios -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/ofimatica/2023-01-16-07-formularios
+[2026-09-06 18:42:56] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2023/2023-05-21-anclaje-envoltura-alineacion-y-organizacion-de-objetos-en-llibreoffice -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/ofimatica/2023-05-21-anclaje-envoltura-alineacion-y-organizacion-de-objetos-en-llibreoffice
+[2026-09-06 18:42:56] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-12-19-03-procedimientos -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/ofimatica/2022-12-19-03-procedimientos
+[2026-09-06 18:42:56] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-12-12-02-grabar-y-modificar -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/ofimatica/2022-12-12-02-grabar-y-modificar
+[2026-09-06 18:42:56] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2023/2023-01-09-06-funciones-iterativas-estructuras-repetitivas-o-bucles -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/ofimatica/2023-01-09-06-funciones-iterativas-estructuras-repetitivas-o-bucles
+[2026-09-06 18:42:56] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2023/2023-06-05-separando-hojas-de-excel-en-documentos-individuales -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/ofimatica/2023-06-05-separando-hojas-de-excel-en-documentos-individuales
+[2026-09-06 18:42:56] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2023/2023-04-03-buscar-reemplazar-en-libreoffice -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/ofimatica/2023-04-03-buscar-reemplazar-en-libreoffice
+[2026-09-06 18:42:56] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2021/2021-01-11-02-introduccion-a-los-algoritmos -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/fundamentos-programacion/2021-01-11-02-introduccion-a-los-algoritmos
+[2026-09-06 18:42:56] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2019/2019-08-13-organizando-tipos-de-archivos-de-softwares -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/fundamentos-programacion/2019-08-13-organizando-tipos-de-archivos-de-softwares
+[2026-09-06 18:42:56] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2021/2021-01-04-01-pensamiento-logico -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/fundamentos-programacion/2021-01-04-01-pensamiento-logico
+[2026-09-06 18:42:56] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2018/2018-06-09-typografia -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/fundamentos-programacion/2018-06-09-typografia
+[2026-09-06 18:42:56] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2021/2021-01-18-03-programacion-basica-en-html -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/fundamentos-programacion/2021-01-18-03-programacion-basica-en-html
+[2026-09-06 18:42:56] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-07-04-06-series-de-tiempo -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/stata/2022-07-04-06-series-de-tiempo
+[2026-09-06 18:42:56] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-05-30-01-introduccion-al-programa -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/stata/2022-05-30-01-introduccion-al-programa
+[2026-09-06 18:42:56] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-06-13-03-data-visualization -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/stata/2022-06-13-03-data-visualization
+[2026-09-06 18:42:56] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-07-18-08-modelos-de-evaluacion-de-impacto -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/stata/2022-07-18-08-modelos-de-evaluacion-de-impacto
+[2026-09-06 18:42:56] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-07-11-07-paneles-de-datos -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/stata/2022-07-11-07-paneles-de-datos
+[2026-09-06 18:42:56] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-06-06-02-manipulando-los-datos -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/stata/2022-06-06-02-manipulando-los-datos
+[2026-09-06 18:42:56] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-06-20-04-regresiones -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/stata/2022-06-20-04-regresiones
+[2026-09-06 18:42:56] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-06-27-05-modelos-de-seleccion-discreta -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/stata/2022-06-27-05-modelos-de-seleccion-discreta
+[2026-09-06 18:42:56] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-10-10-05-inteligencia-de-tiempo-dimension-de-tiempo -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/power-bi/2022-10-10-05-inteligencia-de-tiempo-dimension-de-tiempo
+[2026-09-06 18:42:56] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-09-19-02-power-query-proceso-etl -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/power-bi/2022-09-19-02-power-query-proceso-etl
+[2026-09-06 18:42:56] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-10-24-08-vizualizacion-de-datos -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/power-bi/2022-10-24-08-vizualizacion-de-datos
+[2026-09-06 18:42:56] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-09-26-03-proceso-etl-2 -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/power-bi/2022-09-26-03-proceso-etl-2
+[2026-09-06 18:42:56] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-10-17-06-lenguaje-de-analisis-de-datos-dax-columnas-campos-calculados -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/power-bi/2022-10-17-06-lenguaje-de-analisis-de-datos-dax-columnas-campos-calculados
+[2026-09-06 18:42:56] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-10-03-04-power-pivot-modelo-de-datos -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/power-bi/2022-10-03-04-power-pivot-modelo-de-datos
+[2026-09-06 18:42:56] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-09-12-01-introduccion-al-mundo-de-bi-y-la-suite-power -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/power-bi/2022-09-12-01-introduccion-al-mundo-de-bi-y-la-suite-power
+[2026-09-06 18:42:56] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-02-21-07-modelacion -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/eviews/2022-02-21-07-modelacion
+[2026-09-06 18:42:56] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-02-14-06-empleo-de-subrutinas -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/eviews/2022-02-14-06-empleo-de-subrutinas
+[2026-09-06 18:42:56] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2021/2021-09-13-03-metodos-de-estimacion-objeto-equatio-objeto-table -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/eviews/2021-09-13-03-metodos-de-estimacion-objeto-equatio-objeto-table
+[2026-09-06 18:42:56] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-02-07-05-objetos-avanzados -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/eviews/2022-02-07-05-objetos-avanzados
+[2026-09-06 18:42:56] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2021/2021-08-30-01-introduccion-a-la-programacion-con-eviews -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/eviews/2021-08-30-01-introduccion-a-la-programacion-con-eviews
+[2026-09-06 18:42:56] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2021/2021-09-06-02-empleo-de-bucles-y-variables-temporales -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/eviews/2021-09-06-02-empleo-de-bucles-y-variables-temporales
+[2026-09-06 18:42:56] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2021/2021-06-14-04-ejecucion-condicional-con-python -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/python/2021-06-14-04-ejecucion-condicional-con-python
+[2026-09-06 18:42:57] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-10-31-11-validacion-cruzada-y-composicion-del-modelo-con-python -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/python/2022-10-31-11-validacion-cruzada-y-composicion-del-modelo-con-python
+[2026-09-06 18:42:57] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2021/2021-08-23-07-dataframes-con-python -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/python/2021-08-23-07-dataframes-con-python
+[2026-09-06 18:42:57] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2021/2021-06-07-03-objetos-de-python -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/python/2021-06-07-03-objetos-de-python
+[2026-09-06 18:42:57] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2020/2020-06-19-instalacion-de-anaconda -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/python/2020-06-19-instalacion-de-anaconda
+[2026-09-06 18:42:57] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2021/2021-08-16-06-funciones-con-python -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/python/2021-08-16-06-funciones-con-python
+[2026-09-06 18:42:57] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2025/2025-05-10-visualizacion-de-datos-con-python -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/python/2025-05-10-visualizacion-de-datos-con-python
+[2026-09-06 18:42:57] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2021/2021-06-21-05-iteraciones-con-python -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/python/2021-06-21-05-iteraciones-con-python
+[2026-09-06 18:42:57] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2021/2021-11-29-08-prediccion-y-metrica-de-performance-con-python -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/python/2021-11-29-08-prediccion-y-metrica-de-performance-con-python
+[2026-09-06 18:42:57] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2021/2021-12-13-10-metodos-de-machine-learning-para-regresion-con-python -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/python/2021-12-13-10-metodos-de-machine-learning-para-regresion-con-python
+[2026-09-06 18:42:57] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2021/2021-12-06-09-metodos-de-machine-learning-para-clasificacion-con-python -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/python/2021-12-06-09-metodos-de-machine-learning-para-clasificacion-con-python
+[2026-09-06 18:42:57] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2020/2020-06-20-configurar-entorno-virtual-python-anaconda -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/python/2020-06-20-configurar-entorno-virtual-python-anaconda
+[2026-09-06 18:42:57] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2021/2021-05-31-02-variables-expresiones-y-statements-con-python -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/python/2021-05-31-02-variables-expresiones-y-statements-con-python
+[2026-09-06 18:42:57] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2021/2021-04-17-01-introducion-a-la-programacion-con-python -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/python/2021-04-17-01-introducion-a-la-programacion-con-python
+[2026-09-06 18:42:57] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2015/2015-07-16-05-presentaciones-en-beamer -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/latex/2015-07-16-05-presentaciones-en-beamer
+[2026-09-06 18:42:57] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2015/2015-07-14-03-latex-como-editor-de-texto -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/latex/2015-07-14-03-latex-como-editor-de-texto
+[2026-09-06 18:42:57] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2015/2015-07-15-04-latex-y-referencias -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/latex/2015-07-15-04-latex-y-referencias
+[2026-09-06 18:42:57] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2015/2015-07-12-01-introduccion-al-latex -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/latex/2015-07-12-01-introduccion-al-latex
+[2026-09-06 18:42:57] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2015/2015-07-13-02-latex-y-matematica -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/latex/2015-07-13-02-latex-y-matematica
+[2026-09-06 18:42:57] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2015/2015-07-17-06-tikz -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/latex/2015-07-17-06-tikz
+[2026-09-06 18:42:57] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-08-01-02-elementos-basicos-en-matlab-i -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/matlab/2022-08-01-02-elementos-basicos-en-matlab-i
+[2026-09-06 18:42:57] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-10-03-11-aplicaciones -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/matlab/2022-10-03-11-aplicaciones
+[2026-09-06 18:42:57] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-08-15-04-programacion-en-matlab -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/matlab/2022-08-15-04-programacion-en-matlab
+[2026-09-06 18:42:57] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-08-29-06-sentencias-de-control -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/matlab/2022-08-29-06-sentencias-de-control
+[2026-09-06 18:42:57] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-07-25-01-primeros-pasos-en-matlab -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/matlab/2022-07-25-01-primeros-pasos-en-matlab
+[2026-09-06 18:42:57] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-09-12-08-tipos-de-datos-heterogeneos -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/matlab/2022-09-12-08-tipos-de-datos-heterogeneos
+[2026-09-06 18:42:57] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-08-08-03-elementos-basicos-en-matlab-ii -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/matlab/2022-08-08-03-elementos-basicos-en-matlab-ii
+[2026-09-06 18:42:57] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-09-26-10-toolbox-optimization -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/matlab/2022-09-26-10-toolbox-optimization
+[2026-09-06 18:42:57] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-08-22-05-visualizacion-de-datos-en-matlab -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/matlab/2022-08-22-05-visualizacion-de-datos-en-matlab
+[2026-09-06 18:42:57] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-09-19-09-funciones-avanzadas -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/matlab/2022-09-19-09-funciones-avanzadas
+[2026-09-06 18:42:57] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-09-05-07-metodos-numericos -> /home/achalmaedison/Documents/04 index/_pubs/pub_numerus-scriptum/matlab/2022-09-05-07-metodos-numericos
+[2026-09-06 18:42:57] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2023/2023-05-12-la-economia-peruana-entre-1970-1990 -> /home/achalmaedison/Documents/04 index/blog/posts/2023-05-12-la-economia-peruana-entre-1970-1990
+[2026-09-06 18:42:57] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2020/2020-05-23-comandos-de-google-assistant -> /home/achalmaedison/Documents/04 index/blog/posts/2020-05-23-comandos-de-google-assistant
+[2026-09-06 18:42:57] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-06-02-impacto-del-cambio-climatico -> /home/achalmaedison/Documents/04 index/blog/posts/2022-06-02-impacto-del-cambio-climatico
+[2026-09-06 18:42:57] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2023/2023-05-16-economia-regional -> /home/achalmaedison/Documents/04 index/blog/posts/2023-05-16-economia-regional
+[2026-09-06 18:42:57] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2017/2017-04-23-sitios-web-asombrosos -> /home/achalmaedison/Documents/04 index/blog/posts/2017-04-23-sitios-web-asombrosos
+[2026-09-06 18:42:57] [INFO] [dry-run] Actualizaría symlink: /home/achalmaedison/Documents/04 index/_indice/2022/2022-04-22-economia-agraria -> /home/achalmaedison/Documents/04 index/blog/posts/2022-04-22-economia-agraria
+[2026-09-06 18:42:57] [SECTION] Resultado de la sincronización
+[2026-09-06 18:42:57] [INFO] Creados:    0
+[2026-09-06 18:42:57] [INFO] Actualizados: 229
+[2026-09-06 18:42:57] [INFO] Omitidos (ya existían): 0
+[2026-09-06 18:42:57] [SECTION] Verificando symlinks rotos
+[2026-09-06 18:42:57] [WARN] Symlink roto: 2018/2018-04-23-aparicion-pensamiento-socialista (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_dialectica-y-mercado/posts/2018-04-23-aparicion-pensamiento-socialista)
+[2026-09-06 18:42:57] [WARN] Symlink roto: 2018/2018-05-16-estadigrafos (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_epsilon-y-beta/estadistica/2018-05-16-estadigrafos)
+[2026-09-06 18:42:57] [WARN] Symlink roto: 2018/2018-06-09-typografia (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/fundamentos-programacion/2018-06-09-typografia)
+[2026-09-06 18:42:57] [WARN] Symlink roto: 2018/2018-12-26-factores-que-influyen-rendimiento-academico (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_epsilon-y-beta/estadistica/2018-12-26-factores-que-influyen-rendimiento-academico)
+[2026-09-06 18:42:57] [WARN] Symlink roto: 2020/2020-02-16-guia-de-instalacion-y-configuracion-de-i3wm (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_chaska/i3wm/2020-02-16-guia-de-instalacion-y-configuracion-de-i3wm)
+[2026-09-06 18:42:57] [WARN] Symlink roto: 2020/2020-05-23-comandos-de-google-assistant (apuntaba a: /home/achalmaedison/Documents/website-achalma/blog/posts/2020-05-23-comandos-de-google-assistant)
+[2026-09-06 18:42:57] [WARN] Symlink roto: 2020/2020-02-17-atajos-de-teclado-y-comandos-esenciales-de-i3wm (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_chaska/i3wm/2020-02-17-atajos-de-teclado-y-comandos-esenciales-de-i3wm)
+[2026-09-06 18:42:57] [WARN] Symlink roto: 2020/2020-06-19-instalacion-de-anaconda (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/python/2020-06-19-instalacion-de-anaconda)
+[2026-09-06 18:42:57] [WARN] Symlink roto: 2020/2020-02-21-integracion-de-i3wm-en-tu-entorno-de-trabajo (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_chaska/i3wm/2020-02-21-integracion-de-i3wm-en-tu-entorno-de-trabajo)
+[2026-09-06 18:42:57] [WARN] Symlink roto: 2020/2020-06-10-011-instalacion-de-r (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/r/2020-06-10-011-instalacion-de-r)
+[2026-09-06 18:42:57] [WARN] Symlink roto: 2020/2020-02-18-personalizando-de-i3wm (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_chaska/i3wm/2020-02-18-personalizando-de-i3wm)
+[2026-09-06 18:42:57] [WARN] Symlink roto: 2020/2020-02-15-introduccion-a-i3wm (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_chaska/i3wm/2020-02-15-introduccion-a-i3wm)
+[2026-09-06 18:42:57] [WARN] Symlink roto: 2020/2020-02-18-trabajando-con-ventanas-en-i3wm (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_chaska/i3wm/2020-02-18-trabajando-con-ventanas-en-i3wm)
+[2026-09-06 18:42:57] [WARN] Symlink roto: 2020/2020-02-23-solucion-de-problemas-comunes-en-i3wm (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_chaska/i3wm/2020-02-23-solucion-de-problemas-comunes-en-i3wm)
+[2026-09-06 18:42:57] [WARN] Symlink roto: 2020/2020-02-19-aumenta-tu-productividad-con-i3wm (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_chaska/i3wm/2020-02-19-aumenta-tu-productividad-con-i3wm)
+[2026-09-06 18:42:57] [WARN] Symlink roto: 2020/2020-09-15-plan-de-negocio-exportacion-de-trucha-arcoires (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_actus-mercator/posts/2020-09-15-plan-de-negocio-exportacion-de-trucha-arcoires)
+[2026-09-06 18:42:57] [WARN] Symlink roto: 2020/2020-06-20-configurar-entorno-virtual-python-anaconda (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/python/2020-06-20-configurar-entorno-virtual-python-anaconda)
+[2026-09-06 18:42:57] [WARN] Symlink roto: 2020/2020-02-20-i3wm-vs-otros-gestores-de-ventanas (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_chaska/i3wm/2020-02-20-i3wm-vs-otros-gestores-de-ventanas)
+[2026-09-06 18:42:57] [WARN] Symlink roto: 2020/2020-06-10-013-lo-que-debemos-saber-de-r (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/r/2020-06-10-013-lo-que-debemos-saber-de-r)
+[2026-09-06 18:42:57] [WARN] Symlink roto: 2020/2020-06-10-012-configurar-entorno-virtual-r (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/r/2020-06-10-012-configurar-entorno-virtual-r)
+[2026-09-06 18:42:57] [WARN] Symlink roto: 2020/2020-02-22-casos-de-uso-avanzados-de-i3wm (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_chaska/i3wm/2020-02-22-casos-de-uso-avanzados-de-i3wm)
+[2026-09-06 18:42:57] [WARN] Symlink roto: 2015/2015-07-16-05-presentaciones-en-beamer (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/latex/2015-07-16-05-presentaciones-en-beamer)
+[2026-09-06 18:42:57] [WARN] Symlink roto: 2015/2015-07-14-03-latex-como-editor-de-texto (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/latex/2015-07-14-03-latex-como-editor-de-texto)
+[2026-09-06 18:42:57] [WARN] Symlink roto: 2015/2015-07-15-04-latex-y-referencias (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/latex/2015-07-15-04-latex-y-referencias)
+[2026-09-06 18:42:57] [WARN] Symlink roto: 2015/2015-07-12-01-introduccion-al-latex (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/latex/2015-07-12-01-introduccion-al-latex)
+[2026-09-06 18:42:57] [WARN] Symlink roto: 2015/2015-07-13-02-latex-y-matematica (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/latex/2015-07-13-02-latex-y-matematica)
+[2026-09-06 18:42:57] [WARN] Symlink roto: 2015/2015-05-14-el-aborto (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_dialectica-y-mercado/posts/2015-05-14-el-aborto)
+[2026-09-06 18:42:57] [WARN] Symlink roto: 2015/2015-07-17-06-tikz (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/latex/2015-07-17-06-tikz)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2024/2024-09-03-ejecutando-payload (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_chaska/ciberseguridad-ethical-hacking-ceh/2024-09-03-ejecutando-payload)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2024/2024-07-15-instalando-specitify (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_chaska/operating-system/2024-07-15-instalando-specitify)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2025/2025-02-09-recursos-para-traducción-y-correccion (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_methodica/posts/2025-02-09-recursos-para-traducción-y-correccion)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2025/2025-04-23-tipos-de-elementos-en-zotero (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_methodica/posts/2025-04-23-tipos-de-elementos-en-zotero)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2025/2025-12-31-guia-de-kitty-terminal (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_chaska/operating-system/2025-12-31-guia-de-kitty-terminal)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2025/2025-05-10-visualizacion-de-datos-con-python (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/python/2025-05-10-visualizacion-de-datos-con-python)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2025/2025-12-31-guia-de-positron-ide (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_chaska/operating-system/2025-12-31-guia-de-positron-ide)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2025/2025-05-15-herramientas-y-plataformas-de-comercio-internacional (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_actus-mercator/inteligencia-comercial/2025-05-15-herramientas-y-plataformas-de-comercio-internacional)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2025/2025-06-01-proporcionalidad-de-magnitudes-en-ciencias-de-la-comunicacion (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_axiomata/posts/2025-06-01-proporcionalidad-de-magnitudes-en-ciencias-de-la-comunicacion)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2025/2025-04-14-economia-matematica-I (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_axiomata/economia-matematica/2025-04-14-economia-matematica-I)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2025/2025-12-30-guia-de-ranger (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_chaska/operating-system/2025-12-30-guia-de-ranger)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2025/2025-07-10-gestiona-tus-dotfiles-con-gnu-stow (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_chaska/operating-system/2025-07-10-gestiona-tus-dotfiles-con-gnu-stow)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2025/2025-01-12-recursos-de-bibliografia-y-documentacion (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_methodica/posts/2025-01-12-recursos-de-bibliografia-y-documentacion)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2025/2025-05-11-teoria-y-politica-monetaria-bcrp (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_aequilibria/posts/2025-05-11-teoria-y-politica-monetaria-bcrp)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2023/2023-06-18-02-distribuciones-linux (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_chaska/operating-system/2023-06-18-02-distribuciones-linux)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2023/2023-05-12-la-economia-peruana-entre-1970-1990 (apuntaba a: /home/achalmaedison/Documents/website-achalma/blog/posts/2023-05-12-la-economia-peruana-entre-1970-1990)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2023/2023-06-09-entendiendo-a-mariategui (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_dialectica-y-mercado/posts/2023-06-09-entendiendo-a-mariategui)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2023/2023-01-02-05-funciones-condicionales-estructuras-condicionales (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/ofimatica/2023-01-02-05-funciones-condicionales-estructuras-condicionales)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2023/2023-06-03-ideas-de-investigacion-para-economia (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_methodica/posts/2023-06-03-ideas-de-investigacion-para-economia)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2023/2023-06-19-03-instalacion-linux (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_chaska/operating-system/2023-06-19-03-instalacion-linux)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2023/2023-05-16-economia-regional (apuntaba a: /home/achalmaedison/Documents/website-achalma/blog/posts/2023-05-16-economia-regional)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2023/2023-07-01-atajos-de-teclado-y-comandos-para-usar-vim (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_chaska/operating-system/2023-07-01-atajos-de-teclado-y-comandos-para-usar-vim)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2023/2023-06-23-balanza-pagos (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_pecunia-fluxus/finanzas-internacionales/2023-06-23-balanza-pagos)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2023/2023-05-11-cualidades-de-los-servidores-publicos (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_res-publica/posts/2023-05-11-cualidades-de-los-servidores-publicos)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2023/2023-05-19-seminario-de-filosofia-marxista (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_dialectica-y-mercado/posts/2023-05-19-seminario-de-filosofia-marxista)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2023/2023-10-23-tres-fuentes-tres-partes-del-marxismo (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_dialectica-y-mercado/posts/2023-10-23-tres-fuentes-tres-partes-del-marxismo)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2023/2023-06-13-empresa-como-organizacion (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_optimums/organizacion-industrial/2023-06-13-empresa-como-organizacion)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2023/2023-06-09-naturaleza-humana (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_dialectica-y-mercado/posts/2023-06-09-naturaleza-humana)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2023/2023-06-13-sistemas-economicos (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_optimums/organizacion-industrial/2023-06-13-sistemas-economicos)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2023/2023-06-17-estructura-del-mercado (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_optimums/organizacion-industrial/2023-06-17-estructura-del-mercado)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2023/2023-03-17-comando-para-convertir-docx-a-odt (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/ofimatica/2023-03-17-comando-para-convertir-docx-a-odt)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2023/2023-01-23-08-eventos (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/ofimatica/2023-01-23-08-eventos)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2023/2023-06-03-pautas-de-presentacion-del-informe-de-investigacion (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_methodica/posts/2023-06-03-pautas-de-presentacion-del-informe-de-investigacion)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2023/2023-05-31-combinando-hojas-de-excel-con-vba (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/ofimatica/2023-05-31-combinando-hojas-de-excel-con-vba)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2023/2023-01-16-07-formularios (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/ofimatica/2023-01-16-07-formularios)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2023/2023-03-03-el-capitalismo (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_dialectica-y-mercado/posts/2023-03-03-el-capitalismo)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2023/2023-05-21-anclaje-envoltura-alineacion-y-organizacion-de-objetos-en-llibreoffice (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/ofimatica/2023-05-21-anclaje-envoltura-alineacion-y-organizacion-de-objetos-en-llibreoffice)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2023/2023-06-23-elasticidad (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_optimums/organizacion-industrial/2023-06-23-elasticidad)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2023/2023-06-17-sistema-monetario-internacional (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_pecunia-fluxus/finanzas-internacionales/2023-06-17-sistema-monetario-internacional)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2023/2023-05-02-00-primeros-pasos-en-linux (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_chaska/operating-system/2023-05-02-00-primeros-pasos-en-linux)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2023/2023-06-20-04-administracion-particiones-volumenes (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_chaska/operating-system/2023-06-20-04-administracion-particiones-volumenes)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2023/2023-06-15-mercado-relevante (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_optimums/organizacion-industrial/2023-06-15-mercado-relevante)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2023/2023-01-09-06-funciones-iterativas-estructuras-repetitivas-o-bucles (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/ofimatica/2023-01-09-06-funciones-iterativas-estructuras-repetitivas-o-bucles)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2023/2023-06-12-introducion-a-organizacion-industrial (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_optimums/organizacion-industrial/2023-06-12-introducion-a-organizacion-industrial)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2023/2023-06-17-01-introduccion-linux (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_chaska/operating-system/2023-06-17-01-introduccion-linux)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2023/2023-04-29-primero-de-mayo (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_dialectica-y-mercado/posts/2023-04-29-primero-de-mayo)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2023/2023-06-05-separando-hojas-de-excel-en-documentos-individuales (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/ofimatica/2023-06-05-separando-hojas-de-excel-en-documentos-individuales)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2023/2023-06-16-medidas-concentracion-desempeño (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_optimums/organizacion-industrial/2023-06-16-medidas-concentracion-desempeño)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2023/2023-04-03-buscar-reemplazar-en-libreoffice (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/ofimatica/2023-04-03-buscar-reemplazar-en-libreoffice)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2023/2023-06-16-la-globalizacion (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_pecunia-fluxus/finanzas-internacionales/2023-06-16-la-globalizacion)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2023/2023-02-16-guia-de-git-y-github (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_chaska/operating-system/2023-02-16-guia-de-git-y-github)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2026/2026-01-02-configuracion-de-quarto-yml (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_methodica/posts/2026-01-02-configuracion-de-quarto-yml)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2026/2026-01-02-guia-practica-de-metadata-en-quarto (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_methodica/posts/2026-01-02-guia-practica-de-metadata-en-quarto)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2026/2026-04-23-guia-de-rsync (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_chaska/operating-system/2026-04-23-guia-de-rsync)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2021/2021-01-11-02-introduccion-a-los-algoritmos (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/fundamentos-programacion/2021-01-11-02-introduccion-a-los-algoritmos)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2021/2021-06-14-04-ejecucion-condicional-con-python (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/python/2021-06-14-04-ejecucion-condicional-con-python)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2021/2021-10-01-gestion-publica-y-administracion-publica (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_res-publica/posts/2021-10-01-gestion-publica-y-administracion-publica)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2021/2021-12-06-08-panel-data-dinamico (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_epsilon-y-beta/03-microeconometria/2021-12-06-08-panel-data-dinamico)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2021/2021-08-23-07-dataframes-con-python (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/python/2021-08-23-07-dataframes-con-python)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2021/2021-08-09-04-tipo-de-cambio (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_aequilibria/posts/2021-08-09-04-tipo-de-cambio)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2021/2021-07-13-plan-de-negocio-exportacion-de-tuna (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_actus-mercator/posts/2021-07-13-plan-de-negocio-exportacion-de-tuna)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2021/2021-03-01-01-modelo-clasico-de-regresion-lineal (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_epsilon-y-beta/01-fundamentos-econometria/2021-03-01-01-modelo-clasico-de-regresion-lineal)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2021/2021-05-17-11-problemas-de-endogeneidad (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_epsilon-y-beta/01-fundamentos-econometria/2021-05-17-11-problemas-de-endogeneidad)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2021/2021-10-25-02-modelos-fraccionados (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_epsilon-y-beta/03-microeconometria/2021-10-25-02-modelos-fraccionados)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2021/2021-05-24-12-perturbaciones-no-esfericas (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_epsilon-y-beta/01-fundamentos-econometria/2021-05-24-12-perturbaciones-no-esfericas)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2021/2021-09-13-03-metodos-de-estimacion-objeto-equatio-objeto-table (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/eviews/2021-09-13-03-metodos-de-estimacion-objeto-equatio-objeto-table)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2021/2021-03-27-01-introduccion-al-programa (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/r/2021-03-27-01-introduccion-al-programa)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2021/2021-11-29-07-panel-data-estatico (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_epsilon-y-beta/03-microeconometria/2021-11-29-07-panel-data-estatico)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2021/2021-11-22-06-modelos-de-ecuaciones-simultaneas (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_epsilon-y-beta/03-microeconometria/2021-11-22-06-modelos-de-ecuaciones-simultaneas)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2021/2021-06-07-03-objetos-de-python (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/python/2021-06-07-03-objetos-de-python)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2021/2021-03-15-03-algebra-y-geometria-de-mco (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_epsilon-y-beta/01-fundamentos-econometria/2021-03-15-03-algebra-y-geometria-de-mco)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2021/2021-07-26-02-teoria-de-consumo (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_aequilibria/posts/2021-07-26-02-teoria-de-consumo)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2021/2021-07-26-05-monopolio-y-modelos-de-oligopolio (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_optimums/posts/2021-07-26-05-monopolio-y-modelos-de-oligopolio)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2021/2021-11-15-05-sesgo-de-seleccion (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_epsilon-y-beta/03-microeconometria/2021-11-15-05-sesgo-de-seleccion)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2021/2021-11-08-04-modelos-con-variables-censuradas-y-truncadas (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_epsilon-y-beta/03-microeconometria/2021-11-08-04-modelos-con-variables-censuradas-y-truncadas)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2021/2021-04-26-08-multicolinealidad (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_epsilon-y-beta/01-fundamentos-econometria/2021-04-26-08-multicolinealidad)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2021/2021-01-04-01-pensamiento-logico (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/fundamentos-programacion/2021-01-04-01-pensamiento-logico)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2021/2021-08-16-06-funciones-con-python (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/python/2021-08-16-06-funciones-con-python)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2021/2021-07-19-04-equilibrio-parcial-y-competitivo (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_optimums/posts/2021-07-19-04-equilibrio-parcial-y-competitivo)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2021/2021-12-20-05-modelo-de-mundell-fleming (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_aequilibria/posts/2021-12-20-05-modelo-de-mundell-fleming)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2021/2021-09-20-01-analisis-univariado (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_epsilon-y-beta/02-macroeconometria/2021-09-20-01-analisis-univariado)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2021/2021-06-21-05-iteraciones-con-python (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/python/2021-06-21-05-iteraciones-con-python)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2021/2021-08-17-limpieza-y-optimizacion-de-pc (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_chaska/operating-system/2021-08-17-limpieza-y-optimizacion-de-pc)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2021/2021-05-10-10-el-modelo-general-de-regresion-lineal-permitiendo-heterocedasticidad-en-los-errores (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_epsilon-y-beta/01-fundamentos-econometria/2021-05-10-10-el-modelo-general-de-regresion-lineal-permitiendo-heterocedasticidad-en-los-errores)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2021/2021-07-19-01-conceptos-basicos (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_aequilibria/posts/2021-07-19-01-conceptos-basicos)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2021/2021-11-29-08-prediccion-y-metrica-de-performance-con-python (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/python/2021-11-29-08-prediccion-y-metrica-de-performance-con-python)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2021/2021-04-19-07-bondad-de-ajuste (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_epsilon-y-beta/01-fundamentos-econometria/2021-04-19-07-bondad-de-ajuste)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2021/2021-10-18-01-modelos-de-eleccion-discreta-probit-y-logit (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_epsilon-y-beta/03-microeconometria/2021-10-18-01-modelos-de-eleccion-discreta-probit-y-logit)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2021/2021-10-11-06-modelos-no-lineales-en-la-media (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_epsilon-y-beta/02-macroeconometria/2021-10-11-06-modelos-no-lineales-en-la-media)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2021/2021-03-22-04-propiedades-en-muestras-finitas-del-estimador-mco (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_epsilon-y-beta/01-fundamentos-econometria/2021-03-22-04-propiedades-en-muestras-finitas-del-estimador-mco)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2021/2021-10-01-reformas-y-modernizacion-de-la-gestion-publica (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_res-publica/posts/2021-10-01-reformas-y-modernizacion-de-la-gestion-publica)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2021/2021-12-13-10-metodos-de-machine-learning-para-regresion-con-python (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/python/2021-12-13-10-metodos-de-machine-learning-para-regresion-con-python)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2021/2021-08-02-03-teoria-de-la-inversion (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_aequilibria/posts/2021-08-02-03-teoria-de-la-inversion)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2021/2021-11-01-03-modelos-multinomiales-y-ordenados (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_epsilon-y-beta/03-microeconometria/2021-11-01-03-modelos-multinomiales-y-ordenados)
+[2026-09-06 18:42:58] [WARN] Symlink roto: 2021/2021-08-02-06-modelo-de-intercambio-puro (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_optimums/posts/2021-08-02-06-modelo-de-intercambio-puro)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2021/2021-09-27-03-analisis-multivariado (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_epsilon-y-beta/02-macroeconometria/2021-09-27-03-analisis-multivariado)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2021/2021-03-29-05-propiedades-en-muestras-infinitas-del-estimador-mco (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_epsilon-y-beta/01-fundamentos-econometria/2021-03-29-05-propiedades-en-muestras-infinitas-del-estimador-mco)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2021/2021-10-21-scrcpy (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_chaska/operating-system/2021-10-21-scrcpy)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2021/2021-12-06-09-metodos-de-machine-learning-para-clasificacion-con-python (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/python/2021-12-06-09-metodos-de-machine-learning-para-clasificacion-con-python)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2021/2021-10-04-05-modelos-de-factores-latentes (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_epsilon-y-beta/02-macroeconometria/2021-10-04-05-modelos-de-factores-latentes)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2021/2021-05-31-02-variables-expresiones-y-statements-con-python (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/python/2021-05-31-02-variables-expresiones-y-statements-con-python)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2021/2021-03-08-02-el-estimador-de-minimos-cuadrados-ordinarios-mco (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_epsilon-y-beta/01-fundamentos-econometria/2021-03-08-02-el-estimador-de-minimos-cuadrados-ordinarios-mco)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2021/2021-04-12-03-visualizacion-de-datos (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/r/2021-04-12-03-visualizacion-de-datos)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2021/2021-04-05-02-manipulacion-de-datos (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/r/2021-04-05-02-manipulacion-de-datos)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2021/2021-04-10-06-el-trade-off-sesgo-varianza (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_epsilon-y-beta/01-fundamentos-econometria/2021-04-10-06-el-trade-off-sesgo-varianza)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2021/2021-07-05-02-teoria-del-productor (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_optimums/posts/2021-07-05-02-teoria-del-productor)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2021/2021-08-30-01-introduccion-a-la-programacion-con-eviews (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/eviews/2021-08-30-01-introduccion-a-la-programacion-con-eviews)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2021/2021-01-18-03-programacion-basica-en-html (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/fundamentos-programacion/2021-01-18-03-programacion-basica-en-html)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2021/2021-04-17-01-introducion-a-la-programacion-con-python (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/python/2021-04-17-01-introducion-a-la-programacion-con-python)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2021/2021-12-27-06-sector-externo (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_aequilibria/posts/2021-12-27-06-sector-externo)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2021/2021-08-09-07-fallas-de-mercado (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_optimums/posts/2021-08-09-07-fallas-de-mercado)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2021/2021-06-28-01-teoria-del-consumidor (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_optimums/posts/2021-06-28-01-teoria-del-consumidor)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2021/2021-09-06-02-empleo-de-bucles-y-variables-temporales (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/eviews/2021-09-06-02-empleo-de-bucles-y-variables-temporales)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2021/2021-05-03-09-inferencia (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_epsilon-y-beta/01-fundamentos-econometria/2021-05-03-09-inferencia)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2021/2021-07-12-03-decisiones-de-consumo-y-produccion-en-el-tiempo (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_optimums/posts/2021-07-12-03-decisiones-de-consumo-y-produccion-en-el-tiempo)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2019/2019-08-13-organizando-tipos-de-archivos-de-softwares (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/fundamentos-programacion/2019-08-13-organizando-tipos-de-archivos-de-softwares)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2019/2019-06-19-adb (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_chaska/operating-system/2019-06-19-adb)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2019/2019-12-30-rendimiento-academico-y-genero-de-ingresantes-a-unsch (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_epsilon-y-beta/estadistica-para-economistas/2019-12-30-rendimiento-academico-y-genero-de-ingresantes-a-unsch)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-02-21-07-modelacion (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/eviews/2022-02-21-07-modelacion)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-06-13-07-event-studies-en-economia (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_epsilon-y-beta/07-topicos-de-econometria/2022-06-13-07-event-studies-en-economia)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-11-21-06-modelo-de-machine-learning-iii-modelo-de-regresion (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/r/2022-11-21-06-modelo-de-machine-learning-iii-modelo-de-regresion)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-08-22-04-renta-fija (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_pecunia-fluxus/posts/2022-08-22-04-renta-fija)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-08-01-02-elementos-basicos-en-matlab-i (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/matlab/2022-08-01-02-elementos-basicos-en-matlab-i)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-02-14-06-empleo-de-subrutinas (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/eviews/2022-02-14-06-empleo-de-subrutinas)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-03-21-04-simulacion-y-estimacion-bayesiana (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_epsilon-y-beta/05-econometria-bayesiana/2022-03-21-04-simulacion-y-estimacion-bayesiana)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-10-31-11-validacion-cruzada-y-composicion-del-modelo-con-python (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/python/2022-10-31-11-validacion-cruzada-y-composicion-del-modelo-con-python)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-05-09-02-metodos-experimentales-en-economia (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_epsilon-y-beta/07-topicos-de-econometria/2022-05-09-02-metodos-experimentales-en-economia)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-12-05-01-introduccion-al-lenguaje-y-editor-vba (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/ofimatica/2022-12-05-01-introduccion-al-lenguaje-y-editor-vba)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-03-14-02-modelo-de-regresion-lineal (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_epsilon-y-beta/05-econometria-bayesiana/2022-03-14-02-modelo-de-regresion-lineal)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-10-03-11-aplicaciones (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/matlab/2022-10-03-11-aplicaciones)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-07-04-06-series-de-tiempo (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/stata/2022-07-04-06-series-de-tiempo)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-08-01-01-conceptos-basicos (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_pecunia-fluxus/posts/2022-08-01-01-conceptos-basicos)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-08-15-03-renta-variable (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_pecunia-fluxus/posts/2022-08-15-03-renta-variable)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-06-02-impacto-del-cambio-climatico (apuntaba a: /home/achalmaedison/Documents/website-achalma/blog/posts/2022-06-02-impacto-del-cambio-climatico)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-08-15-04-programacion-en-matlab (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/matlab/2022-08-15-04-programacion-en-matlab)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-11-28-07-modelo-de-machine-learning-iv-tex-mining (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/r/2022-11-28-07-modelo-de-machine-learning-iv-tex-mining)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-10-10-05-inteligencia-de-tiempo-dimension-de-tiempo (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/power-bi/2022-10-10-05-inteligencia-de-tiempo-dimension-de-tiempo)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-04-04-01-introduccion-a-la-evaluacion-de-impacto (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_epsilon-y-beta/06-evaluacion-de-impacto/2022-04-04-01-introduccion-a-la-evaluacion-de-impacto)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-05-30-01-introduccion-al-programa (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/stata/2022-05-30-01-introduccion-al-programa)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-01-31-11-modelos-de-empleo (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_aequilibria/posts/2022-01-31-11-modelos-de-empleo)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-06-20-08-miscelanea (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_epsilon-y-beta/07-topicos-de-econometria/2022-06-20-08-miscelanea)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-11-07-04-modelo-de-machine-learning-i-analisis-exploratorio (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/r/2022-11-07-04-modelo-de-machine-learning-i-analisis-exploratorio)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-08-29-06-sentencias-de-control (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/matlab/2022-08-29-06-sentencias-de-control)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-04-18-03-modelo-de-emparejamiento (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_epsilon-y-beta/06-evaluacion-de-impacto/2022-04-18-03-modelo-de-emparejamiento)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-09-19-02-power-query-proceso-etl (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/power-bi/2022-09-19-02-power-query-proceso-etl)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-03-18-03-familia-de-distribuciones-prior (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_epsilon-y-beta/05-econometria-bayesiana/2022-03-18-03-familia-de-distribuciones-prior)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-10-24-08-vizualizacion-de-datos (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/power-bi/2022-10-24-08-vizualizacion-de-datos)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-05-16-07-metodo-de-control-sintetico-mcs (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_epsilon-y-beta/06-evaluacion-de-impacto/2022-05-16-07-metodo-de-control-sintetico-mcs)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-07-25-01-primeros-pasos-en-matlab (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/matlab/2022-07-25-01-primeros-pasos-en-matlab)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-03-28-05-aplicaciones-econometricas (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_epsilon-y-beta/05-econometria-bayesiana/2022-03-28-05-aplicaciones-econometricas)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-01-10-08-ciclos-economicos-reales-rbc (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_aequilibria/posts/2022-01-10-08-ciclos-economicos-reales-rbc)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-06-13-03-data-visualization (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/stata/2022-06-13-03-data-visualization)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-04-11-02-introduccion-a-los-experimentos-aleatorios (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_epsilon-y-beta/06-evaluacion-de-impacto/2022-04-11-02-introduccion-a-los-experimentos-aleatorios)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-09-26-03-proceso-etl-2 (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/power-bi/2022-09-26-03-proceso-etl-2)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-12-26-04-funciones-en-vba (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/ofimatica/2022-12-26-04-funciones-en-vba)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-10-17-06-lenguaje-de-analisis-de-datos-dax-columnas-campos-calculados (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/power-bi/2022-10-17-06-lenguaje-de-analisis-de-datos-dax-columnas-campos-calculados)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-01-17-09-crecimiento-economico (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_aequilibria/posts/2022-01-17-09-crecimiento-economico)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-09-12-08-tipos-de-datos-heterogeneos (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/matlab/2022-09-12-08-tipos-de-datos-heterogeneos)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-07-18-08-modelos-de-evaluacion-de-impacto (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/stata/2022-07-18-08-modelos-de-evaluacion-de-impacto)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-06-06-06-efectos-fijos-diferencias-en-diferencias-y-datos-de-panel (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_epsilon-y-beta/07-topicos-de-econometria/2022-06-06-06-efectos-fijos-diferencias-en-diferencias-y-datos-de-panel)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-07-11-07-paneles-de-datos (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/stata/2022-07-11-07-paneles-de-datos)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-11-14-05-modelo-de-machine-learning-ii-modelo-de-clasificacion (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/r/2022-11-14-05-modelo-de-machine-learning-ii-modelo-de-clasificacion)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-08-08-03-elementos-basicos-en-matlab-ii (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/matlab/2022-08-08-03-elementos-basicos-en-matlab-ii)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-03-07-01-introduccion-a-la-econometria-bayesiana (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_epsilon-y-beta/05-econometria-bayesiana/2022-03-07-01-introduccion-a-la-econometria-bayesiana)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-05-16-03-la-herramienta-fundamental-regresiones (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_epsilon-y-beta/07-topicos-de-econometria/2022-05-16-03-la-herramienta-fundamental-regresiones)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-06-06-02-manipulando-los-datos (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/stata/2022-06-06-02-manipulando-los-datos)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-05-02-01-introduccion-a-la-econometria (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_epsilon-y-beta/07-topicos-de-econometria/2022-05-02-01-introduccion-a-la-econometria)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-01-03-07-fluctuaciones-de-corto-plazo (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_aequilibria/posts/2022-01-03-07-fluctuaciones-de-corto-plazo)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-10-03-04-power-pivot-modelo-de-datos (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/power-bi/2022-10-03-04-power-pivot-modelo-de-datos)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-01-11-recaudacion-de-impuestos-y-crecimiento-economico-2017-2019 (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_epsilon-y-beta/00-econometria-general/2022-01-11-recaudacion-de-impuestos-y-crecimiento-economico-2017-2019)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-09-27-comandos-vim (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_chaska/operating-system/2022-09-27-comandos-vim)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-09-12-01-introduccion-al-mundo-de-bi-y-la-suite-power (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/power-bi/2022-09-12-01-introduccion-al-mundo-de-bi-y-la-suite-power)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-06-20-04-regresiones (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/stata/2022-06-20-04-regresiones)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-05-02-05-regresion-discontinua-sharp-vs-fuzzy (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_epsilon-y-beta/06-evaluacion-de-impacto/2022-05-02-05-regresion-discontinua-sharp-vs-fuzzy)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-08-29-05-derivados-financieros (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_pecunia-fluxus/posts/2022-08-29-05-derivados-financieros)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-05-23-04-variables-instrumentales (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_epsilon-y-beta/07-topicos-de-econometria/2022-05-23-04-variables-instrumentales)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-02-07-05-objetos-avanzados (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/eviews/2022-02-07-05-objetos-avanzados)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-09-26-10-toolbox-optimization (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/matlab/2022-09-26-10-toolbox-optimization)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-08-22-05-visualizacion-de-datos-en-matlab (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/matlab/2022-08-22-05-visualizacion-de-datos-en-matlab)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-01-23-cadena-de-suministros (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_actus-mercator/posts/2022-01-23-cadena-de-suministros)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-12-19-03-procedimientos (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/ofimatica/2022-12-19-03-procedimientos)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-05-30-05-diseño-de-regresion-discontinua-rdd (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_epsilon-y-beta/07-topicos-de-econometria/2022-05-30-05-diseño-de-regresion-discontinua-rdd)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-12-12-02-grabar-y-modificar (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/ofimatica/2022-12-12-02-grabar-y-modificar)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-09-19-09-funciones-avanzadas (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/matlab/2022-09-19-09-funciones-avanzadas)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-04-25-04-regresion-discontinua-rd (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_epsilon-y-beta/06-evaluacion-de-impacto/2022-04-25-04-regresion-discontinua-rd)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-09-05-06-teoria-de-portafolio (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_pecunia-fluxus/posts/2022-09-05-06-teoria-de-portafolio)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-08-14-crear-enlaces-duros-o-hard-link-en-linux (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_chaska/operating-system/2022-08-14-crear-enlaces-duros-o-hard-link-en-linux)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-08-08-02-finanzas-corporativas (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_pecunia-fluxus/posts/2022-08-08-02-finanzas-corporativas)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-01-24-10-economia-monetaria (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_aequilibria/posts/2022-01-24-10-economia-monetaria)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-09-05-07-metodos-numericos (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/matlab/2022-09-05-07-metodos-numericos)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-02-28-01-volatilidad-en-las-series-de-tiempo (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_epsilon-y-beta/04-econometria-financiera/2022-02-28-01-volatilidad-en-las-series-de-tiempo)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-05-12-gestionar-versiones-de-jdk-en-kubuntu (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_chaska/operating-system/2022-05-12-gestionar-versiones-de-jdk-en-kubuntu)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-06-27-05-modelos-de-seleccion-discreta (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_numerus-scriptum/stata/2022-06-27-05-modelos-de-seleccion-discreta)
+[2026-09-06 18:42:59] [WARN] Symlink roto: 2022/2022-04-22-economia-agraria (apuntaba a: /home/achalmaedison/Documents/website-achalma/blog/posts/2022-04-22-economia-agraria)
+[2026-09-06 18:43:00] [WARN] Symlink roto: 2022/2022-05-09-06-analizando-papers-con-rdd-usando-stata-y-r (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_epsilon-y-beta/06-evaluacion-de-impacto/2022-05-09-06-analizando-papers-con-rdd-usando-stata-y-r)
+[2026-09-06 18:43:00] [WARN] Symlink roto: 2022/2022-07-21-instalar-tor-browser (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_chaska/operating-system/2022-07-21-instalar-tor-browser)
+[2026-09-06 18:43:00] [WARN] Symlink roto: 2017/2017-10-23-costeo-de-la-empresa-dulce-deleite-srl (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_actus-mercator/posts/2017-10-23-costeo-de-la-empresa-dulce-deleite-srl)
+[2026-09-06 18:43:00] [WARN] Symlink roto: 2017/2017-04-23-sitios-web-asombrosos (apuntaba a: /home/achalmaedison/Documents/website-achalma/blog/posts/2017-04-23-sitios-web-asombrosos)
+[2026-09-06 18:43:00] [WARN] Symlink roto: 2017/2017-05-23-el-mercantilismo (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_dialectica-y-mercado/posts/2017-05-23-el-mercantilismo)
+[2026-09-06 18:43:00] [WARN] Symlink roto: 2017/2017-12-30-comportamiento-de-la-inflacion-1980-a-2017 (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_aequilibria/posts/2017-12-30-comportamiento-de-la-inflacion-1980-a-2017)
+[2026-09-06 18:43:00] [WARN] Symlink roto: 2017/2017-05-21-comandos-de-informacion-windows (apuntaba a: /home/achalmaedison/Documents/website-achalma/_pubs/pub_chaska/operating-system/2017-05-21-comandos-de-informacion-windows)
+[2026-09-06 18:43:00] [INFO] Log guardado en: /home/achalmaedison/Documents/scripts_quarto_studio/backend/script_pub_index_symlink/logs/2026-09-06.log
+[2026-09-06 18:43:00] [INFO] Documents detectado en: /home/achalmaedison/Documents
+[2026-09-06 18:43:00] [INFO] Carpeta índice: /home/achalmaedison/Documents/04 index/_indice
+[2026-09-06 18:43:00] [SECTION] Escaneando proyectos pub_* y website-achalma
+[2026-09-06 18:43:00] [INFO] Publicaciones encontradas: 229
+[2026-09-06 18:43:00] [SECTION] Sincronizando symlinks en '04 index'
+[2026-09-06 18:43:00] [OK] Symlink actualizado: 2023/2023-06-23-balanza-pagos
+[2026-09-06 18:43:00] [OK] Symlink actualizado: 2023/2023-06-17-sistema-monetario-internacional
+[2026-09-06 18:43:00] [OK] Symlink actualizado: 2023/2023-06-16-la-globalizacion
+[2026-09-06 18:43:00] [OK] Symlink actualizado: 2022/2022-08-22-04-renta-fija
+[2026-09-06 18:43:00] [OK] Symlink actualizado: 2022/2022-08-01-01-conceptos-basicos
+[2026-09-06 18:43:00] [OK] Symlink actualizado: 2022/2022-08-15-03-renta-variable
+[2026-09-06 18:43:00] [OK] Symlink actualizado: 2022/2022-08-29-05-derivados-financieros
+[2026-09-06 18:43:00] [OK] Symlink actualizado: 2022/2022-09-05-06-teoria-de-portafolio
+[2026-09-06 18:43:00] [OK] Symlink actualizado: 2022/2022-08-08-02-finanzas-corporativas
+[2026-09-06 18:43:00] [OK] Symlink actualizado: 2025/2025-05-15-herramientas-y-plataformas-de-comercio-internacional
+[2026-09-06 18:43:00] [OK] Symlink actualizado: 2017/2017-10-23-costeo-de-la-empresa-dulce-deleite-srl
+[2026-09-06 18:43:00] [OK] Symlink actualizado: 2021/2021-07-13-plan-de-negocio-exportacion-de-tuna
+[2026-09-06 18:43:00] [OK] Symlink actualizado: 2020/2020-09-15-plan-de-negocio-exportacion-de-trucha-arcoires
+[2026-09-06 18:43:00] [OK] Symlink actualizado: 2022/2022-01-23-cadena-de-suministros
+[2026-09-06 18:43:00] [OK] Symlink actualizado: 2021/2021-07-26-05-monopolio-y-modelos-de-oligopolio
+[2026-09-06 18:43:00] [OK] Symlink actualizado: 2021/2021-07-19-04-equilibrio-parcial-y-competitivo
+[2026-09-06 18:43:00] [OK] Symlink actualizado: 2021/2021-08-02-06-modelo-de-intercambio-puro
+[2026-09-06 18:43:00] [OK] Symlink actualizado: 2021/2021-07-05-02-teoria-del-productor
+[2026-09-06 18:43:00] [OK] Symlink actualizado: 2021/2021-08-09-07-fallas-de-mercado
+[2026-09-06 18:43:00] [OK] Symlink actualizado: 2021/2021-06-28-01-teoria-del-consumidor
+[2026-09-06 18:43:00] [OK] Symlink actualizado: 2021/2021-07-12-03-decisiones-de-consumo-y-produccion-en-el-tiempo
+[2026-09-06 18:43:00] [OK] Symlink actualizado: 2023/2023-06-13-empresa-como-organizacion
+[2026-09-06 18:43:00] [OK] Symlink actualizado: 2023/2023-06-13-sistemas-economicos
+[2026-09-06 18:43:00] [OK] Symlink actualizado: 2023/2023-06-17-estructura-del-mercado
+[2026-09-06 18:43:00] [OK] Symlink actualizado: 2023/2023-06-23-elasticidad
+[2026-09-06 18:43:00] [OK] Symlink actualizado: 2023/2023-06-15-mercado-relevante
+[2026-09-06 18:43:00] [OK] Symlink actualizado: 2023/2023-06-12-introducion-a-organizacion-industrial
+[2026-09-06 18:43:00] [OK] Symlink actualizado: 2023/2023-06-16-medidas-concentracion-desempeño
+[2026-09-06 18:43:00] [OK] Symlink actualizado: 2021/2021-08-09-04-tipo-de-cambio
+[2026-09-06 18:43:00] [OK] Symlink actualizado: 2022/2022-01-31-11-modelos-de-empleo
+[2026-09-06 18:43:00] [OK] Symlink actualizado: 2021/2021-07-26-02-teoria-de-consumo
+[2026-09-06 18:43:00] [OK] Symlink actualizado: 2022/2022-01-10-08-ciclos-economicos-reales-rbc
+[2026-09-06 18:43:00] [OK] Symlink actualizado: 2021/2021-12-20-05-modelo-de-mundell-fleming
+[2026-09-06 18:43:00] [OK] Symlink actualizado: 2022/2022-01-17-09-crecimiento-economico
+[2026-09-06 18:43:01] [OK] Symlink actualizado: 2021/2021-07-19-01-conceptos-basicos
+[2026-09-06 18:43:01] [OK] Symlink actualizado: 2017/2017-12-30-comportamiento-de-la-inflacion-1980-a-2017
+[2026-09-06 18:43:01] [OK] Symlink actualizado: 2022/2022-01-03-07-fluctuaciones-de-corto-plazo
+[2026-09-06 18:43:01] [OK] Symlink actualizado: 2021/2021-08-02-03-teoria-de-la-inversion
+[2026-09-06 18:43:01] [OK] Symlink actualizado: 2021/2021-12-27-06-sector-externo
+[2026-09-06 18:43:01] [OK] Symlink actualizado: 2022/2022-01-24-10-economia-monetaria
+[2026-09-06 18:43:01] [OK] Symlink actualizado: 2025/2025-05-11-teoria-y-politica-monetaria-bcrp
+[2026-09-06 18:43:01] [OK] Symlink actualizado: 2025/2025-06-01-proporcionalidad-de-magnitudes-en-ciencias-de-la-comunicacion
+[2026-09-06 18:43:01] [OK] Symlink actualizado: 2025/2025-04-14-economia-matematica-I
+[2026-09-06 18:43:01] [OK] Symlink actualizado: 2018/2018-04-23-aparicion-pensamiento-socialista
+[2026-09-06 18:43:01] [OK] Symlink actualizado: 2023/2023-06-09-entendiendo-a-mariategui
+[2026-09-06 18:43:01] [OK] Symlink actualizado: 2023/2023-05-19-seminario-de-filosofia-marxista
+[2026-09-06 18:43:01] [OK] Symlink actualizado: 2023/2023-10-23-tres-fuentes-tres-partes-del-marxismo
+[2026-09-06 18:43:01] [OK] Symlink actualizado: 2023/2023-06-09-naturaleza-humana
+[2026-09-06 18:43:01] [OK] Symlink actualizado: 2017/2017-05-23-el-mercantilismo
+[2026-09-06 18:43:01] [OK] Symlink actualizado: 2023/2023-03-03-el-capitalismo
+[2026-09-06 18:43:01] [OK] Symlink actualizado: 2015/2015-05-14-el-aborto
+[2026-09-06 18:43:01] [OK] Symlink actualizado: 2023/2023-04-29-primero-de-mayo
+[2026-09-06 18:43:01] [OK] Symlink actualizado: 2018/2018-05-16-estadigrafos
+[2026-09-06 18:43:01] [OK] Symlink actualizado: 2018/2018-12-26-factores-que-influyen-rendimiento-academico
+[2026-09-06 18:43:01] [OK] Symlink actualizado: 2022/2022-04-04-01-introduccion-a-la-evaluacion-de-impacto
+[2026-09-06 18:43:01] [OK] Symlink actualizado: 2022/2022-04-18-03-modelo-de-emparejamiento
+[2026-09-06 18:43:01] [OK] Symlink actualizado: 2022/2022-05-16-07-metodo-de-control-sintetico-mcs
+[2026-09-06 18:43:01] [OK] Symlink actualizado: 2022/2022-04-11-02-introduccion-a-los-experimentos-aleatorios
+[2026-09-06 18:43:01] [OK] Symlink actualizado: 2022/2022-05-02-05-regresion-discontinua-sharp-vs-fuzzy
+[2026-09-06 18:43:01] [OK] Symlink actualizado: 2022/2022-04-25-04-regresion-discontinua-rd
+[2026-09-06 18:43:01] [OK] Symlink actualizado: 2022/2022-05-09-06-analizando-papers-con-rdd-usando-stata-y-r
+[2026-09-06 18:43:01] [OK] Symlink actualizado: 2022/2022-03-21-04-simulacion-y-estimacion-bayesiana
+[2026-09-06 18:43:01] [OK] Symlink actualizado: 2022/2022-03-14-02-modelo-de-regresion-lineal
+[2026-09-06 18:43:01] [OK] Symlink actualizado: 2022/2022-03-18-03-familia-de-distribuciones-prior
+[2026-09-06 18:43:01] [OK] Symlink actualizado: 2022/2022-03-28-05-aplicaciones-econometricas
+[2026-09-06 18:43:01] [OK] Symlink actualizado: 2022/2022-03-07-01-introduccion-a-la-econometria-bayesiana
+[2026-09-06 18:43:01] [OK] Symlink actualizado: 2021/2021-09-20-01-analisis-univariado
+[2026-09-06 18:43:01] [OK] Symlink actualizado: 2021/2021-10-11-06-modelos-no-lineales-en-la-media
+[2026-09-06 18:43:01] [OK] Symlink actualizado: 2021/2021-09-27-03-analisis-multivariado
+[2026-09-06 18:43:01] [OK] Symlink actualizado: 2021/2021-10-04-05-modelos-de-factores-latentes
+[2026-09-06 18:43:02] [OK] Symlink actualizado: 2021/2021-12-06-08-panel-data-dinamico
+[2026-09-06 18:43:02] [OK] Symlink actualizado: 2021/2021-10-25-02-modelos-fraccionados
+[2026-09-06 18:43:02] [OK] Symlink actualizado: 2021/2021-11-29-07-panel-data-estatico
+[2026-09-06 18:43:02] [OK] Symlink actualizado: 2021/2021-11-22-06-modelos-de-ecuaciones-simultaneas
+[2026-09-06 18:43:02] [OK] Symlink actualizado: 2021/2021-11-15-05-sesgo-de-seleccion
+[2026-09-06 18:43:02] [OK] Symlink actualizado: 2021/2021-11-08-04-modelos-con-variables-censuradas-y-truncadas
+[2026-09-06 18:43:02] [OK] Symlink actualizado: 2021/2021-10-18-01-modelos-de-eleccion-discreta-probit-y-logit
+[2026-09-06 18:43:02] [OK] Symlink actualizado: 2021/2021-11-01-03-modelos-multinomiales-y-ordenados
+[2026-09-06 18:43:02] [OK] Symlink actualizado: 2022/2022-06-13-07-event-studies-en-economia
+[2026-09-06 18:43:02] [OK] Symlink actualizado: 2022/2022-05-09-02-metodos-experimentales-en-economia
+[2026-09-06 18:43:02] [OK] Symlink actualizado: 2022/2022-06-20-08-miscelanea
+[2026-09-06 18:43:02] [OK] Symlink actualizado: 2022/2022-06-06-06-efectos-fijos-diferencias-en-diferencias-y-datos-de-panel
+[2026-09-06 18:43:02] [OK] Symlink actualizado: 2022/2022-05-16-03-la-herramienta-fundamental-regresiones
+[2026-09-06 18:43:02] [OK] Symlink actualizado: 2022/2022-05-02-01-introduccion-a-la-econometria
+[2026-09-06 18:43:02] [OK] Symlink actualizado: 2022/2022-05-23-04-variables-instrumentales
+[2026-09-06 18:43:02] [OK] Symlink actualizado: 2022/2022-05-30-05-diseño-de-regresion-discontinua-rdd
+[2026-09-06 18:43:02] [OK] Symlink actualizado: 2022/2022-01-11-recaudacion-de-impuestos-y-crecimiento-economico-2017-2019
+[2026-09-06 18:43:02] [OK] Symlink actualizado: 2019/2019-12-30-rendimiento-academico-y-genero-de-ingresantes-a-unsch
+[2026-09-06 18:43:02] [OK] Symlink actualizado: 2022/2022-02-28-01-volatilidad-en-las-series-de-tiempo
+[2026-09-06 18:43:02] [OK] Symlink actualizado: 2021/2021-03-01-01-modelo-clasico-de-regresion-lineal
+[2026-09-06 18:43:02] [OK] Symlink actualizado: 2021/2021-05-17-11-problemas-de-endogeneidad
+[2026-09-06 18:43:02] [OK] Symlink actualizado: 2021/2021-05-24-12-perturbaciones-no-esfericas
+[2026-09-06 18:43:02] [OK] Symlink actualizado: 2021/2021-03-15-03-algebra-y-geometria-de-mco
+[2026-09-06 18:43:02] [OK] Symlink actualizado: 2021/2021-04-26-08-multicolinealidad
+[2026-09-06 18:43:02] [OK] Symlink actualizado: 2021/2021-05-10-10-el-modelo-general-de-regresion-lineal-permitiendo-heterocedasticidad-en-los-errores
+[2026-09-06 18:43:02] [OK] Symlink actualizado: 2021/2021-04-19-07-bondad-de-ajuste
+[2026-09-06 18:43:02] [OK] Symlink actualizado: 2021/2021-03-22-04-propiedades-en-muestras-finitas-del-estimador-mco
+[2026-09-06 18:43:02] [OK] Symlink actualizado: 2021/2021-03-29-05-propiedades-en-muestras-infinitas-del-estimador-mco
+[2026-09-06 18:43:02] [OK] Symlink actualizado: 2021/2021-03-08-02-el-estimador-de-minimos-cuadrados-ordinarios-mco
+[2026-09-06 18:43:02] [OK] Symlink actualizado: 2021/2021-04-10-06-el-trade-off-sesgo-varianza
+[2026-09-06 18:43:02] [OK] Symlink actualizado: 2021/2021-05-03-09-inferencia
+[2026-09-06 18:43:02] [OK] Symlink actualizado: 2025/2025-02-09-recursos-para-traducción-y-correccion
+[2026-09-06 18:43:02] [OK] Symlink actualizado: 2026/2026-01-02-configuracion-de-quarto-yml
+[2026-09-06 18:43:02] [OK] Symlink actualizado: 2025/2025-04-23-tipos-de-elementos-en-zotero
+[2026-09-06 18:43:02] [OK] Symlink actualizado: 2023/2023-06-03-ideas-de-investigacion-para-economia
+[2026-09-06 18:43:02] [OK] Symlink actualizado: 2026/2026-01-02-guia-practica-de-metadata-en-quarto
+[2026-09-06 18:43:02] [OK] Symlink actualizado: 2023/2023-06-03-pautas-de-presentacion-del-informe-de-investigacion
+[2026-09-06 18:43:02] [OK] Symlink actualizado: 2025/2025-01-12-recursos-de-bibliografia-y-documentacion
+[2026-09-06 18:43:02] [OK] Symlink actualizado: 2021/2021-10-01-gestion-publica-y-administracion-publica
+[2026-09-06 18:43:02] [OK] Symlink actualizado: 2023/2023-05-11-cualidades-de-los-servidores-publicos
+[2026-09-06 18:43:02] [OK] Symlink actualizado: 2021/2021-10-01-reformas-y-modernizacion-de-la-gestion-publica
+[2026-09-06 18:43:02] [OK] Symlink actualizado: 2020/2020-02-16-guia-de-instalacion-y-configuracion-de-i3wm
+[2026-09-06 18:43:02] [OK] Symlink actualizado: 2020/2020-02-17-atajos-de-teclado-y-comandos-esenciales-de-i3wm
+[2026-09-06 18:43:02] [OK] Symlink actualizado: 2020/2020-02-21-integracion-de-i3wm-en-tu-entorno-de-trabajo
+[2026-09-06 18:43:02] [OK] Symlink actualizado: 2020/2020-02-18-personalizando-de-i3wm
+[2026-09-06 18:43:02] [OK] Symlink actualizado: 2020/2020-02-15-introduccion-a-i3wm
+[2026-09-06 18:43:03] [OK] Symlink actualizado: 2020/2020-02-18-trabajando-con-ventanas-en-i3wm
+[2026-09-06 18:43:03] [OK] Symlink actualizado: 2020/2020-02-23-solucion-de-problemas-comunes-en-i3wm
+[2026-09-06 18:43:03] [OK] Symlink actualizado: 2020/2020-02-19-aumenta-tu-productividad-con-i3wm
+[2026-09-06 18:43:03] [OK] Symlink actualizado: 2020/2020-02-20-i3wm-vs-otros-gestores-de-ventanas
+[2026-09-06 18:43:03] [OK] Symlink actualizado: 2020/2020-02-22-casos-de-uso-avanzados-de-i3wm
+[2026-09-06 18:43:03] [OK] Symlink actualizado: 2023/2023-06-18-02-distribuciones-linux
+[2026-09-06 18:43:03] [OK] Symlink actualizado: 2023/2023-06-19-03-instalacion-linux
+[2026-09-06 18:43:03] [OK] Symlink actualizado: 2024/2024-07-15-instalando-specitify
+[2026-09-06 18:43:03] [OK] Symlink actualizado: 2023/2023-07-01-atajos-de-teclado-y-comandos-para-usar-vim
+[2026-09-06 18:43:03] [OK] Symlink actualizado: 2025/2025-12-31-guia-de-kitty-terminal
+[2026-09-06 18:43:03] [OK] Symlink actualizado: 2025/2025-12-31-guia-de-positron-ide
+[2026-09-06 18:43:03] [OK] Symlink actualizado: 2021/2021-08-17-limpieza-y-optimizacion-de-pc
+[2026-09-06 18:43:03] [OK] Symlink actualizado: 2022/2022-09-27-comandos-vim
+[2026-09-06 18:43:03] [OK] Symlink actualizado: 2021/2021-10-21-scrcpy
+[2026-09-06 18:43:03] [OK] Symlink actualizado: 2023/2023-05-02-00-primeros-pasos-en-linux
+[2026-09-06 18:43:03] [OK] Symlink actualizado: 2023/2023-06-20-04-administracion-particiones-volumenes
+[2026-09-06 18:43:03] [OK] Symlink actualizado: 2019/2019-06-19-adb
+[2026-09-06 18:43:03] [OK] Symlink actualizado: 2025/2025-12-30-guia-de-ranger
+[2026-09-06 18:43:03] [OK] Symlink actualizado: 2023/2023-06-17-01-introduccion-linux
+[2026-09-06 18:43:03] [OK] Symlink actualizado: 2025/2025-07-10-gestiona-tus-dotfiles-con-gnu-stow
+[2026-09-06 18:43:03] [OK] Symlink actualizado: 2022/2022-08-14-crear-enlaces-duros-o-hard-link-en-linux
+[2026-09-06 18:43:03] [OK] Symlink actualizado: 2023/2023-02-16-guia-de-git-y-github
+[2026-09-06 18:43:03] [OK] Symlink actualizado: 2022/2022-05-12-gestionar-versiones-de-jdk-en-kubuntu
+[2026-09-06 18:43:03] [OK] Symlink actualizado: 2017/2017-05-21-comandos-de-informacion-windows
+[2026-09-06 18:43:03] [OK] Symlink actualizado: 2022/2022-07-21-instalar-tor-browser
+[2026-09-06 18:43:03] [OK] Symlink actualizado: 2026/2026-04-23-guia-de-rsync
+[2026-09-06 18:43:03] [OK] Symlink actualizado: 2024/2024-09-03-ejecutando-payload
+[2026-09-06 18:43:03] [OK] Symlink actualizado: 2022/2022-11-21-06-modelo-de-machine-learning-iii-modelo-de-regresion
+[2026-09-06 18:43:03] [OK] Symlink actualizado: 2021/2021-03-27-01-introduccion-al-programa
+[2026-09-06 18:43:03] [OK] Symlink actualizado: 2022/2022-11-28-07-modelo-de-machine-learning-iv-tex-mining
+[2026-09-06 18:43:03] [OK] Symlink actualizado: 2022/2022-11-07-04-modelo-de-machine-learning-i-analisis-exploratorio
+[2026-09-06 18:43:03] [OK] Symlink actualizado: 2020/2020-06-10-011-instalacion-de-r
+[2026-09-06 18:43:03] [OK] Symlink actualizado: 2022/2022-11-14-05-modelo-de-machine-learning-ii-modelo-de-clasificacion
+[2026-09-06 18:43:03] [OK] Symlink actualizado: 2021/2021-04-12-03-visualizacion-de-datos
+[2026-09-06 18:43:03] [OK] Symlink actualizado: 2021/2021-04-05-02-manipulacion-de-datos
+[2026-09-06 18:43:03] [OK] Symlink actualizado: 2020/2020-06-10-013-lo-que-debemos-saber-de-r
+[2026-09-06 18:43:03] [OK] Symlink actualizado: 2020/2020-06-10-012-configurar-entorno-virtual-r
+[2026-09-06 18:43:03] [OK] Symlink actualizado: 2022/2022-12-05-01-introduccion-al-lenguaje-y-editor-vba
+[2026-09-06 18:43:03] [OK] Symlink actualizado: 2023/2023-01-02-05-funciones-condicionales-estructuras-condicionales
+[2026-09-06 18:43:03] [OK] Symlink actualizado: 2023/2023-03-17-comando-para-convertir-docx-a-odt
+[2026-09-06 18:43:03] [OK] Symlink actualizado: 2022/2022-12-26-04-funciones-en-vba
+[2026-09-06 18:43:03] [OK] Symlink actualizado: 2023/2023-01-23-08-eventos
+[2026-09-06 18:43:03] [OK] Symlink actualizado: 2023/2023-05-31-combinando-hojas-de-excel-con-vba
+[2026-09-06 18:43:04] [OK] Symlink actualizado: 2023/2023-01-16-07-formularios
+[2026-09-06 18:43:04] [OK] Symlink actualizado: 2023/2023-05-21-anclaje-envoltura-alineacion-y-organizacion-de-objetos-en-llibreoffice
+[2026-09-06 18:43:04] [OK] Symlink actualizado: 2022/2022-12-19-03-procedimientos
+[2026-09-06 18:43:04] [OK] Symlink actualizado: 2022/2022-12-12-02-grabar-y-modificar
+[2026-09-06 18:43:04] [OK] Symlink actualizado: 2023/2023-01-09-06-funciones-iterativas-estructuras-repetitivas-o-bucles
+[2026-09-06 18:43:04] [OK] Symlink actualizado: 2023/2023-06-05-separando-hojas-de-excel-en-documentos-individuales
+[2026-09-06 18:43:04] [OK] Symlink actualizado: 2023/2023-04-03-buscar-reemplazar-en-libreoffice
+[2026-09-06 18:43:04] [OK] Symlink actualizado: 2021/2021-01-11-02-introduccion-a-los-algoritmos
+[2026-09-06 18:43:04] [OK] Symlink actualizado: 2019/2019-08-13-organizando-tipos-de-archivos-de-softwares
+[2026-09-06 18:43:04] [OK] Symlink actualizado: 2021/2021-01-04-01-pensamiento-logico
+[2026-09-06 18:43:04] [OK] Symlink actualizado: 2018/2018-06-09-typografia
+[2026-09-06 18:43:04] [OK] Symlink actualizado: 2021/2021-01-18-03-programacion-basica-en-html
+[2026-09-06 18:43:04] [OK] Symlink actualizado: 2022/2022-07-04-06-series-de-tiempo
+[2026-09-06 18:43:04] [OK] Symlink actualizado: 2022/2022-05-30-01-introduccion-al-programa
+[2026-09-06 18:43:04] [OK] Symlink actualizado: 2022/2022-06-13-03-data-visualization
+[2026-09-06 18:43:04] [OK] Symlink actualizado: 2022/2022-07-18-08-modelos-de-evaluacion-de-impacto
+[2026-09-06 18:43:04] [OK] Symlink actualizado: 2022/2022-07-11-07-paneles-de-datos
+[2026-09-06 18:43:04] [OK] Symlink actualizado: 2022/2022-06-06-02-manipulando-los-datos
+[2026-09-06 18:43:04] [OK] Symlink actualizado: 2022/2022-06-20-04-regresiones
+[2026-09-06 18:43:04] [OK] Symlink actualizado: 2022/2022-06-27-05-modelos-de-seleccion-discreta
+[2026-09-06 18:43:04] [OK] Symlink actualizado: 2022/2022-10-10-05-inteligencia-de-tiempo-dimension-de-tiempo
+[2026-09-06 18:43:04] [OK] Symlink actualizado: 2022/2022-09-19-02-power-query-proceso-etl
+[2026-09-06 18:43:04] [OK] Symlink actualizado: 2022/2022-10-24-08-vizualizacion-de-datos
+[2026-09-06 18:43:04] [OK] Symlink actualizado: 2022/2022-09-26-03-proceso-etl-2
+[2026-09-06 18:43:04] [OK] Symlink actualizado: 2022/2022-10-17-06-lenguaje-de-analisis-de-datos-dax-columnas-campos-calculados
+[2026-09-06 18:43:04] [OK] Symlink actualizado: 2022/2022-10-03-04-power-pivot-modelo-de-datos
+[2026-09-06 18:43:04] [OK] Symlink actualizado: 2022/2022-09-12-01-introduccion-al-mundo-de-bi-y-la-suite-power
+[2026-09-06 18:43:04] [OK] Symlink actualizado: 2022/2022-02-21-07-modelacion
+[2026-09-06 18:43:04] [OK] Symlink actualizado: 2022/2022-02-14-06-empleo-de-subrutinas
+[2026-09-06 18:43:04] [OK] Symlink actualizado: 2021/2021-09-13-03-metodos-de-estimacion-objeto-equatio-objeto-table
+[2026-09-06 18:43:04] [OK] Symlink actualizado: 2022/2022-02-07-05-objetos-avanzados
+[2026-09-06 18:43:04] [OK] Symlink actualizado: 2021/2021-08-30-01-introduccion-a-la-programacion-con-eviews
+[2026-09-06 18:43:04] [OK] Symlink actualizado: 2021/2021-09-06-02-empleo-de-bucles-y-variables-temporales
+[2026-09-06 18:43:04] [OK] Symlink actualizado: 2021/2021-06-14-04-ejecucion-condicional-con-python
+[2026-09-06 18:43:04] [OK] Symlink actualizado: 2022/2022-10-31-11-validacion-cruzada-y-composicion-del-modelo-con-python
+[2026-09-06 18:43:04] [OK] Symlink actualizado: 2021/2021-08-23-07-dataframes-con-python
+[2026-09-06 18:43:04] [OK] Symlink actualizado: 2021/2021-06-07-03-objetos-de-python
+[2026-09-06 18:43:04] [OK] Symlink actualizado: 2020/2020-06-19-instalacion-de-anaconda
+[2026-09-06 18:43:04] [OK] Symlink actualizado: 2021/2021-08-16-06-funciones-con-python
+[2026-09-06 18:43:04] [OK] Symlink actualizado: 2025/2025-05-10-visualizacion-de-datos-con-python
+[2026-09-06 18:43:04] [OK] Symlink actualizado: 2021/2021-06-21-05-iteraciones-con-python
+[2026-09-06 18:43:04] [OK] Symlink actualizado: 2021/2021-11-29-08-prediccion-y-metrica-de-performance-con-python
+[2026-09-06 18:43:04] [OK] Symlink actualizado: 2021/2021-12-13-10-metodos-de-machine-learning-para-regresion-con-python
+[2026-09-06 18:43:04] [OK] Symlink actualizado: 2021/2021-12-06-09-metodos-de-machine-learning-para-clasificacion-con-python
+[2026-09-06 18:43:05] [OK] Symlink actualizado: 2020/2020-06-20-configurar-entorno-virtual-python-anaconda
+[2026-09-06 18:43:05] [OK] Symlink actualizado: 2021/2021-05-31-02-variables-expresiones-y-statements-con-python
+[2026-09-06 18:43:05] [OK] Symlink actualizado: 2021/2021-04-17-01-introducion-a-la-programacion-con-python
+[2026-09-06 18:43:05] [OK] Symlink actualizado: 2015/2015-07-16-05-presentaciones-en-beamer
+[2026-09-06 18:43:05] [OK] Symlink actualizado: 2015/2015-07-14-03-latex-como-editor-de-texto
+[2026-09-06 18:43:05] [OK] Symlink actualizado: 2015/2015-07-15-04-latex-y-referencias
+[2026-09-06 18:43:05] [OK] Symlink actualizado: 2015/2015-07-12-01-introduccion-al-latex
+[2026-09-06 18:43:05] [OK] Symlink actualizado: 2015/2015-07-13-02-latex-y-matematica
+[2026-09-06 18:43:05] [OK] Symlink actualizado: 2015/2015-07-17-06-tikz
+[2026-09-06 18:43:05] [OK] Symlink actualizado: 2022/2022-08-01-02-elementos-basicos-en-matlab-i
+[2026-09-06 18:43:05] [OK] Symlink actualizado: 2022/2022-10-03-11-aplicaciones
+[2026-09-06 18:43:05] [OK] Symlink actualizado: 2022/2022-08-15-04-programacion-en-matlab
+[2026-09-06 18:43:05] [OK] Symlink actualizado: 2022/2022-08-29-06-sentencias-de-control
+[2026-09-06 18:43:05] [OK] Symlink actualizado: 2022/2022-07-25-01-primeros-pasos-en-matlab
+[2026-09-06 18:43:05] [OK] Symlink actualizado: 2022/2022-09-12-08-tipos-de-datos-heterogeneos
+[2026-09-06 18:43:05] [OK] Symlink actualizado: 2022/2022-08-08-03-elementos-basicos-en-matlab-ii
+[2026-09-06 18:43:05] [OK] Symlink actualizado: 2022/2022-09-26-10-toolbox-optimization
+[2026-09-06 18:43:05] [OK] Symlink actualizado: 2022/2022-08-22-05-visualizacion-de-datos-en-matlab
+[2026-09-06 18:43:05] [OK] Symlink actualizado: 2022/2022-09-19-09-funciones-avanzadas
+[2026-09-06 18:43:05] [OK] Symlink actualizado: 2022/2022-09-05-07-metodos-numericos
+[2026-09-06 18:43:05] [OK] Symlink actualizado: 2023/2023-05-12-la-economia-peruana-entre-1970-1990
+[2026-09-06 18:43:05] [OK] Symlink actualizado: 2020/2020-05-23-comandos-de-google-assistant
+[2026-09-06 18:43:05] [OK] Symlink actualizado: 2022/2022-06-02-impacto-del-cambio-climatico
+[2026-09-06 18:43:05] [OK] Symlink actualizado: 2023/2023-05-16-economia-regional
+[2026-09-06 18:43:05] [OK] Symlink actualizado: 2017/2017-04-23-sitios-web-asombrosos
+[2026-09-06 18:43:05] [OK] Symlink actualizado: 2022/2022-04-22-economia-agraria
+[2026-09-06 18:43:05] [SECTION] Resultado de la sincronización
+[2026-09-06 18:43:05] [INFO] Creados:    0
+[2026-09-06 18:43:05] [INFO] Actualizados: 229
+[2026-09-06 18:43:05] [INFO] Omitidos (ya existían): 0
+[2026-09-06 18:43:05] [SECTION] Verificando symlinks rotos
+[2026-09-06 18:43:05] [OK] No se encontraron symlinks rotos.
+[2026-09-06 18:43:05] [INFO] Log guardado en: /home/achalmaedison/Documents/scripts_quarto_studio/backend/script_pub_index_symlink/logs/2026-09-06.log

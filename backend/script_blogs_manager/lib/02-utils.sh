@@ -28,7 +28,7 @@ utils_detect_docs_dir() {
     local i
     for ((i = 0; i < 6; i++)); do
         if compgen -G "$candidate/${QBLOG_PROJECT_PREFIX}*" > /dev/null 2>&1 || \
-           [[ -d "$candidate/$QBLOG_WEBSITE_PROJECT" ]]; then
+           [[ -d "$candidate/$QBLOG_WEBSITE_DIR/_quarto.yml" || -f "$candidate/$QBLOG_WEBSITE_DIR/_quarto.yml" ]]; then
             echo "$candidate"
             return 0
         fi
@@ -75,7 +75,7 @@ utils_list_projects() {
         fi
         # website-achalma + pub_* sueltos en Documents (compatibilidad)
         find "$docs_dir" -mindepth 1 -maxdepth 1 -type d \
-            \( -name "${QBLOG_PROJECT_PREFIX}*" -o -name "$QBLOG_WEBSITE_PROJECT" \) -print0
+            \( -name "${QBLOG_PROJECT_PREFIX}*" -o -name "$QBLOG_WEBSITE_DIR" \) -print0
     } | sort -z)
 }
 
@@ -92,6 +92,11 @@ utils_resolve_project_path() {
     # Se busca primero en la carpeta de submódulos del hub y luego en
     # Documents (website-achalma vive ahí). Coincidencia exacta antes que
     # el nombre corto con el prefijo pub_ añadido.
+    # Alias del hub (website-achalma) → su carpeta real (04 index)
+    if [[ "$input_name" == "$QBLOG_WEBSITE_PROJECT" || "$input_name" == "$QBLOG_WEBSITE_DIR" ]] && [[ -f "$docs_dir/$QBLOG_WEBSITE_DIR/_quarto.yml" ]]; then
+        echo "$docs_dir/$QBLOG_WEBSITE_DIR"
+        return 0
+    fi
     local base
     for base in "$docs_dir/$QBLOG_PUBS_SUBDIR" "$docs_dir"; do
         if [[ -d "$base/$input_name" ]]; then
@@ -132,10 +137,10 @@ utils_detect_post_folders() {
     local dir_name
 
     # Caso especial: website-achalma/blog/posts
-    if [[ "$(basename "$blog_path")" == "$QBLOG_WEBSITE_PROJECT" ]] && [[ -d "$blog_path/blog/posts" ]]; then
+    if [[ "$(basename "$blog_path")" == "$QBLOG_WEBSITE_DIR" ]] && [[ -d "$blog_path/blog/posts" ]]; then
         echo "blog/posts"
     fi
-    if [[ "$(basename "$blog_path")" == "$QBLOG_WEBSITE_PROJECT" ]] && [[ -d "$blog_path/talk" ]]; then
+    if [[ "$(basename "$blog_path")" == "$QBLOG_WEBSITE_DIR" ]] && [[ -d "$blog_path/talk" ]]; then
         echo "talk"
     fi
 
@@ -145,7 +150,7 @@ utils_detect_post_folders() {
         utils_is_ignored_dir "$dir_name" && continue
         [[ "$dir_name" == .* ]] && continue
         # Evitar listar "blog" suelto cuando ya se manejó como "blog/posts"
-        if [[ "$(basename "$blog_path")" == "$QBLOG_WEBSITE_PROJECT" ]] && [[ "$dir_name" == "blog" ]]; then
+        if [[ "$(basename "$blog_path")" == "$QBLOG_WEBSITE_DIR" ]] && [[ "$dir_name" == "blog" ]]; then
             continue
         fi
 

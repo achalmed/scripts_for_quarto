@@ -25,11 +25,15 @@ QBLOG_PROJECT_PREFIX="pub_"
 
 # --- Proyecto especial que también se gestiona como "blog" -------------------
 QBLOG_WEBSITE_PROJECT="website-achalma"
+# Carpeta real del hub en Documents (desde 2026-09-06 el repo website-achalma
+# vive fusionado con la carpeta del vault "04 index"; el alias de arriba sigue
+# valiendo en la CLI: main.sh render website-achalma).
+QBLOG_WEBSITE_DIR="${QBLOG_WEBSITE_DIR:-04 index}"
 
 # --- Subcarpeta (relativa a Documents) donde viven los proyectos pub_* como
 #     submódulos git del hub website-achalma (reorganización 2026-09-06).
 #     Se puede forzar con la variable de entorno QBLOG_PUBS_SUBDIR. ---------
-QBLOG_PUBS_SUBDIR="${QBLOG_PUBS_SUBDIR:-website-achalma/_pubs}"
+QBLOG_PUBS_SUBDIR="${QBLOG_PUBS_SUBDIR:-$QBLOG_WEBSITE_DIR/_pubs}"
 
 # --- Proyectos excluidos de las operaciones masivas (render-all, clean-all,
 #     list, etc.) -------------------------------------------------------------

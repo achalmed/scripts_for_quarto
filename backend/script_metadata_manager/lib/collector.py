@@ -15,7 +15,7 @@ from typing import Optional, Set
 
 import pandas as pd
 
-from .config import SYSTEM_EXCLUDED_FOLDERS, EXCLUDED_INDEX_FILES, PUBS_SUBDIR
+from .config import SYSTEM_EXCLUDED_FOLDERS, EXCLUDED_INDEX_FILES, PUBS_SUBDIR, HUB_ALIASES
 from .yaml_parser import (
     is_article_index,
     extract_yaml_merged,
@@ -52,6 +52,10 @@ def should_exclude_file(file_path: Path) -> bool:
 def resolve_blog_dir(base_path: Path, name: str) -> Optional[Path]:
     """Devuelve la carpeta real de un blog a partir de su nombre o ruta relativa."""
     pubs = base_path / PUBS_SUBDIR
+    # alias del hub: "website-achalma" y "website-achalma/blog" → "04 index/…"
+    head, _, rest = name.partition("/")
+    if head in HUB_ALIASES:
+        name = HUB_ALIASES[head] + ("/" + rest if rest else "")
     for candidate in (
         base_path / name,
         pubs / name,

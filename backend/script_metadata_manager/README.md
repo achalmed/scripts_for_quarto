@@ -1,6 +1,6 @@
 # Sistema de Gestión de Metadatos Quarto — v2.2
 
-> **Ubicación de los blogs (desde 2026-09-06):** los 11 `pub_*` son submódulos git de `website-achalma` y viven en `~/Documents/website-achalma/_pubs/pub_*`; el hub sigue en `~/Documents/website-achalma`. Las herramientas los localizan por esa subcarpeta (variable `PUBS_SUBDIR en lib/config.py`), y aceptan el nombre de carpeta o el nombre corto sin `pub_`.
+> **Ubicación de los blogs (desde 2026-09-06):** los 11 `pub_*` son submódulos git de `website-achalma` y viven en `~/Documents/04 index/_pubs/pub_*`; el hub sigue en `~/Documents/04 index`. Las herramientas los localizan por esa subcarpeta (variable `PUBS_SUBDIR en lib/config.py`), y aceptan el nombre de carpeta o el nombre corto sin `pub_`.
 
 Sistema integral de administración de publicaciones Quarto: metadatos,
 tags, autores, categorías, keywords, taxonomía y sincronización, para todos
@@ -221,7 +221,7 @@ python3 main.py update ~/Documents excel_databases/quarto_metadata.xlsx \
     --config metadata_config.yml
 
 # 5. Renderizar blogs en Quarto
-cd ~/Documents/website-achalma/_pubs/pub_axiomata && quarto render
+cd ~/Documents/04 index/_pubs/pub_axiomata && quarto render
 ```
 
 ---

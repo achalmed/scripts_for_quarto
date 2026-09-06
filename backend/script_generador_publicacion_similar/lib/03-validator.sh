@@ -34,7 +34,7 @@ _validate_blog_dir() {
 
     if [[ ! -d "$GENIDX_BLOG_DIR" ]]; then
         log_error "El directorio '$GENIDX_BLOG_DIR' no existe"
-        log_info "Ejemplos válidos: ~/Documents/website-achalma/_pubs/pub_axiomata, ~/Documents/website-achalma/blog"
+        log_info "Ejemplos válidos: ~/Documents/04\ index/_pubs/pub_axiomata, ~/Documents/04\ index/blog"
         exit 3
     fi
 
