@@ -140,3 +140,9 @@
 [2026-07-13 13:30:31] [INFO] Carpeta índice: /home/achalmaedison/Documents/04 index
 [2026-07-13 13:30:31] [SECTION] Resumen de '04 index' por año
 [2026-07-13 13:30:31] [INFO] Log guardado en: /home/achalmaedison/Documents/scripts_quarto_studio/quarto_studio/backend/script_pub_index_symlink/logs/2026-07-13.log
+[2026-07-13 14:50:55] [INFO] Documents detectado en: /home/achalmaedison/Documents
+[2026-07-13 14:50:55] [INFO] Carpeta índice: /home/achalmaedison/Documents/04 index
+[2026-07-13 14:50:55] [SECTION] Buscando symlinks rotos en '04 index'
+[2026-07-13 14:50:55] [OK] No se encontraron symlinks rotos.
+[2026-07-13 14:50:55] [INFO] Total de symlinks rotos: 0
+[2026-07-13 14:50:55] [INFO] Log guardado en: /home/achalmaedison/Documents/scripts_quarto_studio/backend/script_pub_index_symlink/logs/2026-07-13.log
