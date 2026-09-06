@@ -30,6 +30,7 @@ SYSTEM_EXCLUDED_FOLDERS = {
     "_site", "_freeze", "site_libs", ".git", ".quarto",
     "node_modules", "__pycache__", "_extensions", ".venv",
     "venv", "env", "assets", "_partials",
+    "_pubs",   # submódulos pub_* dentro del hub: se procesan como blogs propios, no al recorrer website-achalma
     "title-block-link-buttons", "Excalidraw",
 }
 
@@ -47,6 +48,11 @@ SECTION_DIRS = {
     "blog", "posts", "talk", "teching", "publication",
     "about", "beschikbaarheid", "appointment",
 }
+
+
+# Subcarpeta (relativa a la ruta base ~/Documents) donde viven los blogs pub_*
+# como submódulos git del hub website-achalma (reorganización 2026-09-06).
+PUBS_SUBDIR = "website-achalma/_pubs"
 
 
 # =============================================================================
@@ -140,7 +146,7 @@ def create_default_config(base_path: str, output_path: str = "metadata_config.ym
             "practicas preprofesionales",
         ],
         "excel_output_dir": (
-            "~/Documents/scripts/scripts_for_quarto/"
+            "~/Documents/scripts_quarto_studio/backend/"
             "script_metadata_manager/excel_databases"
         ),
         # URL base de cada blog para sync-pdf-urls. Opcional: si un blog no

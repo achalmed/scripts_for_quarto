@@ -90,7 +90,7 @@ backup_blogs_interactive() {
                     --exclude='.quarto' \
                     --exclude='.git' \
                     --exclude='*.log' \
-                    -C "$docs_dir" \
+                    -C "$(dirname "$blog")" \
                     "$blog_name"
 
                 size=$(du -h "$backup_file" | cut -f1)
@@ -106,7 +106,7 @@ backup_blogs_interactive() {
             local blog
             while IFS= read -r blog; do
                 [[ -z "$blog" ]] && continue
-                includes+=("$(basename "$blog")")
+                includes+=("${blog#"$docs_dir"/}")
             done < <(utils_list_projects "$docs_dir")
 
             tar -czf "$backup_file" \

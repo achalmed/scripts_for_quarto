@@ -1,5 +1,7 @@
 # pub-index-sync
 
+> **Ubicación de los blogs (desde 2026-09-06):** los 11 `pub_*` son submódulos git de `website-achalma` y viven en `~/Documents/website-achalma/_pubs/pub_*`; el hub sigue en `~/Documents/website-achalma`. Las herramientas los localizan por esa subcarpeta (variable `PUBINDEX_PUBS_SUBDIR`), y aceptan el nombre de carpeta o el nombre corto sin `pub_`.
+
 Script en Bash que mantiene la carpeta `04 index` actualizada con enlaces
 simbólicos (symlinks), organizados por año, a todas las carpetas de
 publicación que existen dentro de tus proyectos `pub_*` y de

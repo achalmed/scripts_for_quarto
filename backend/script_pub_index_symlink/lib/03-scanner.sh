@@ -3,7 +3,8 @@
 # 03-scanner.sh
 # -----------------------------------------------------------------------------
 # Recorre:
-#   1) Todas las carpetas "pub_*" dentro de Documents, buscando en CUALQUIER
+#   1) Todas las carpetas "pub_*" (submódulos en website-achalma/_pubs, o
+#      sueltas en Documents), buscando en CUALQUIER
 #      nivel de profundidad carpetas cuyo nombre empiece con YYYY-MM-DD-,
 #      ignorando las carpetas técnicas (_freeze, _site, .git, etc.)
 #   2) La carpeta "website-achalma", solo dentro de blog/posts y talk.
@@ -77,10 +78,15 @@ scanner_find_all_publications() {
     local docs_dir="$1"
     local project_dir
 
-    # --- Proyectos pub_* (un nivel dentro de Documents) ---
-    while IFS= read -r -d '' project_dir; do
-        scanner_scan_pub_project "$project_dir"
-    done < <(find "$docs_dir" -mindepth 1 -maxdepth 1 -type d -name "${PUBINDEX_PROJECT_PREFIX}*" -print0)
+    # --- Proyectos pub_* : submódulos del hub (canónico) + sueltos en
+    #     Documents (compatibilidad con la organización anterior) ---
+    local pubs_base
+    for pubs_base in "$docs_dir/$PUBINDEX_PUBS_SUBDIR" "$docs_dir"; do
+        [[ -d "$pubs_base" ]] || continue
+        while IFS= read -r -d '' project_dir; do
+            scanner_scan_pub_project "$project_dir"
+        done < <(find "$pubs_base" -mindepth 1 -maxdepth 1 -type d -name "${PUBINDEX_PROJECT_PREFIX}*" -print0)
+    done
 
     # --- website-achalma (caso especial) ---
     local website_dir="$docs_dir/$PUBINDEX_WEBSITE_PROJECT"

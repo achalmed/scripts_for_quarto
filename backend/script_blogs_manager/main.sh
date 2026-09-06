@@ -7,8 +7,8 @@
 # publish, asistente de creación de posts APAQuarto, operaciones Git,
 # operaciones masivas, init-blog, check-structure, backups, menú
 # interactivo), reorganizadas en módulos independientes dentro de lib/, y
-# adaptadas para escanear directamente los proyectos pub_* y
-# website-achalma dentro de ~/Documents (en vez de una carpeta
+# adaptadas para escanear website-achalma y sus submódulos
+# website-achalma/_pubs/pub_* dentro de ~/Documents (en vez de una carpeta
 # "publicaciones/" separada).
 #
 # Uso:

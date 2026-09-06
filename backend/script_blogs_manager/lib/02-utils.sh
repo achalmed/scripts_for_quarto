@@ -3,7 +3,8 @@
 # 02-utils.sh
 # -----------------------------------------------------------------------------
 # Utilidades compartidas: autodetección de ~/Documents, listado de proyectos
-# de publicación (pub_* + website-achalma), verificación de exclusión, y
+# de publicación (website-achalma + sus submódulos website-achalma/_pubs/pub_*),
+# verificación de exclusión, y
 # detección de carpetas de posts dentro de un proyecto.
 # =============================================================================
 
@@ -66,8 +67,16 @@ utils_list_projects() {
         if [[ -f "$project_dir/index.qmd" ]] || [[ -f "$project_dir/_quarto.yml" ]]; then
             echo "$project_dir"
         fi
-    done < <(find "$docs_dir" -mindepth 1 -maxdepth 1 -type d \
-        \( -name "${QBLOG_PROJECT_PREFIX}*" -o -name "$QBLOG_WEBSITE_PROJECT" \) -print0 | sort -z)
+    done < <({
+        # pub_* como submódulos del hub (ubicación canónica desde 2026-09)
+        if [[ -d "$docs_dir/$QBLOG_PUBS_SUBDIR" ]]; then
+            find "$docs_dir/$QBLOG_PUBS_SUBDIR" -mindepth 1 -maxdepth 1 -type d \
+                -name "${QBLOG_PROJECT_PREFIX}*" -print0
+        fi
+        # website-achalma + pub_* sueltos en Documents (compatibilidad)
+        find "$docs_dir" -mindepth 1 -maxdepth 1 -type d \
+            \( -name "${QBLOG_PROJECT_PREFIX}*" -o -name "$QBLOG_WEBSITE_PROJECT" \) -print0
+    } | sort -z)
 }
 
 # Resuelve el nombre corto de un proyecto a su ruta absoluta completa.
@@ -80,17 +89,20 @@ utils_resolve_project_path() {
     local docs_dir="$1"
     local input_name="$2"
 
-    # Coincidencia exacta primero (incluye website-achalma)
-    if [[ -d "$docs_dir/$input_name" ]]; then
-        echo "$docs_dir/$input_name"
-        return 0
-    fi
-
-    # Intentar con el prefijo pub_ añadido
-    if [[ -d "$docs_dir/${QBLOG_PROJECT_PREFIX}${input_name}" ]]; then
-        echo "$docs_dir/${QBLOG_PROJECT_PREFIX}${input_name}"
-        return 0
-    fi
+    # Se busca primero en la carpeta de submódulos del hub y luego en
+    # Documents (website-achalma vive ahí). Coincidencia exacta antes que
+    # el nombre corto con el prefijo pub_ añadido.
+    local base
+    for base in "$docs_dir/$QBLOG_PUBS_SUBDIR" "$docs_dir"; do
+        if [[ -d "$base/$input_name" ]]; then
+            echo "$base/$input_name"
+            return 0
+        fi
+        if [[ -d "$base/${QBLOG_PROJECT_PREFIX}${input_name}" ]]; then
+            echo "$base/${QBLOG_PROJECT_PREFIX}${input_name}"
+            return 0
+        fi
+    done
 
     return 1
 }

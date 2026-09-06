@@ -26,6 +26,11 @@ QBLOG_PROJECT_PREFIX="pub_"
 # --- Proyecto especial que también se gestiona como "blog" -------------------
 QBLOG_WEBSITE_PROJECT="website-achalma"
 
+# --- Subcarpeta (relativa a Documents) donde viven los proyectos pub_* como
+#     submódulos git del hub website-achalma (reorganización 2026-09-06).
+#     Se puede forzar con la variable de entorno QBLOG_PUBS_SUBDIR. ---------
+QBLOG_PUBS_SUBDIR="${QBLOG_PUBS_SUBDIR:-website-achalma/_pubs}"
+
 # --- Proyectos excluidos de las operaciones masivas (render-all, clean-all,
 #     list, etc.) -------------------------------------------------------------
 # Vacío por defecto: todos los pub_* y website-achalma se gestionan.

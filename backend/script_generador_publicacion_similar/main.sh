@@ -11,7 +11,7 @@
 #
 # Uso:
 #   ./main.sh BLOG_DIR [opciones]
-#   ./main.sh ~/Documents/pub_axiomata
+#   ./main.sh ~/Documents/website-achalma/_pubs/pub_axiomata
 #   ./main.sh ~/Documents/website-achalma/teching --dry-run
 #   ./main.sh --help
 # =============================================================================

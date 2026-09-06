@@ -34,7 +34,9 @@ init_blog() {
         blog_name="${QBLOG_PROJECT_PREFIX}${raw_name}"
     fi
 
-    local blog_path="$docs_dir/$blog_name"
+    # Los pub_* viven como submódulos del hub (QBLOG_PUBS_SUBDIR); el hub, en Documents.
+    local blog_path="$docs_dir/$QBLOG_PUBS_SUBDIR/$blog_name"
+    [[ "$blog_name" == "$QBLOG_WEBSITE_PROJECT" ]] && blog_path="$docs_dir/$blog_name"
 
     if [[ -d "$blog_path" ]]; then
         print_warning "El blog '$blog_name' ya existe"
@@ -44,6 +46,7 @@ init_blog() {
     print_header "$QBLOG_E_ROCKET Creando nuevo blog: $blog_name"
 
     mkdir -p "$blog_path"/{posts,assets/{img,fonts},_extensions,_partials}
+    print_info "Recuerda registrarlo como submódulo del hub: git -C \"$docs_dir/$QBLOG_WEBSITE_PROJECT\" submodule add <url> \"${QBLOG_PUBS_SUBDIR#*/}/$blog_name\""
 
     cat > "$blog_path/_quarto.yml" << EOF
 project:

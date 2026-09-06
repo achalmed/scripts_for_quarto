@@ -15,7 +15,7 @@ from typing import Optional, Set
 
 import pandas as pd
 
-from .config import SYSTEM_EXCLUDED_FOLDERS, EXCLUDED_INDEX_FILES
+from .config import SYSTEM_EXCLUDED_FOLDERS, EXCLUDED_INDEX_FILES, PUBS_SUBDIR
 from .yaml_parser import (
     is_article_index,
     extract_yaml_merged,
@@ -40,6 +40,55 @@ def should_exclude_folder(
 def should_exclude_file(file_path: Path) -> bool:
     """True si el nombre del archivo está en la lista de excluidos."""
     return file_path.name in EXCLUDED_INDEX_FILES
+
+
+# =============================================================================
+# LOCALIZACIÓN DE BLOGS
+# =============================================================================
+# Desde 2026-09-06 los blogs pub_* son submódulos de website-achalma
+# (base_path / PUBS_SUBDIR / pub_x). Un nombre de blog se acepta como:
+# "pub_x", "x", "website-achalma" o una ruta relativa ("website-achalma/blog").
+
+def resolve_blog_dir(base_path: Path, name: str) -> Optional[Path]:
+    """Devuelve la carpeta real de un blog a partir de su nombre o ruta relativa."""
+    pubs = base_path / PUBS_SUBDIR
+    for candidate in (
+        base_path / name,
+        pubs / name,
+        base_path / f"pub_{name}",
+        pubs / f"pub_{name}",
+    ):
+        if candidate.is_dir():
+            return candidate
+    return None
+
+
+def discover_blog_dirs(base_path: Path, allowed_blogs: Set[str]) -> list:
+    """Lista de carpetas de blog a procesar (respeta allowed_blogs si no está vacío)."""
+    if allowed_blogs:
+        dirs = []
+        for name in sorted(allowed_blogs):
+            found = resolve_blog_dir(base_path, name)
+            if found is None:
+                print(f"⚠️  Blog permitido no encontrado: {name}")
+            else:
+                dirs.append(found)
+        return dirs
+    dirs = [
+        d for d in base_path.iterdir()
+        if d.is_dir() and not d.name.startswith(".")
+    ]
+    pubs = base_path / PUBS_SUBDIR
+    if pubs.is_dir():
+        dirs += [d for d in pubs.iterdir() if d.is_dir() and d.name.startswith("pub_")]
+    return dirs
+
+
+def blog_label(base_path: Path, blog_dir: Path) -> str:
+    """Nombre lógico del blog: 'pub_x' o 'website-achalma'; para secciones anidadas, la ruta relativa."""
+    if blog_dir.name.startswith("pub_") or blog_dir.parent == base_path:
+        return blog_dir.name
+    return str(blog_dir.relative_to(base_path))
 
 
 # =============================================================================
@@ -75,23 +124,13 @@ def collect_index_files(
 
     # Determinar qué blogs procesar
     if blog_name:
-        candidate = base_path / blog_name
-        if not candidate.exists():
-            # Intentar con prefijo pub_ si no se encuentra exacto
-            candidate = base_path / f"pub_{blog_name}"
-        if not candidate.is_dir():
-            print(f"⚠️  El blog '{blog_name}' no existe en {base_path}")
+        candidate = resolve_blog_dir(base_path, blog_name)
+        if candidate is None:
+            print(f"⚠️  El blog '{blog_name}' no existe en {base_path} ni en {base_path / PUBS_SUBDIR}")
             return pd.DataFrame()
         blogs_to_process = [candidate]
     else:
-        all_dirs = [
-            d for d in base_path.iterdir()
-            if d.is_dir() and not d.name.startswith(".")
-        ]
-        if allowed_blogs:
-            blogs_to_process = [d for d in all_dirs if d.name in allowed_blogs]
-        else:
-            blogs_to_process = all_dirs
+        blogs_to_process = discover_blog_dirs(base_path, allowed_blogs)
 
     total_found = total_articles = total_skipped = 0
 
@@ -101,10 +140,14 @@ def collect_index_files(
 
         for root, dirs, files in os.walk(blog_dir):
             root_path = Path(root)
+            # Se evalúa la ruta RELATIVA al blog: así "_pubs" excluye los
+            # submódulos al recorrer website-achalma, pero no a un pub_* que
+            # se procesa como blog propio (su ruta absoluta contiene _pubs).
             dirs[:] = [
                 d for d in dirs
                 if not should_exclude_folder(
-                    root_path / d, SYSTEM_EXCLUDED_FOLDERS, user_excluded_folders
+                    (root_path / d).relative_to(blog_dir),
+                    SYSTEM_EXCLUDED_FOLDERS, user_excluded_folders,
                 )
             ]
 
@@ -133,7 +176,8 @@ def collect_index_files(
                     continue
 
                 # Extraer YAML combinado (index + _metadata.yml)
-                yaml_data = extract_yaml_merged(file_path, base_path)
+                # El _metadata.yml se busca hacia arriba solo hasta la raíz del blog
+                yaml_data = extract_yaml_merged(file_path, blog_dir)
                 if not yaml_data:
                     if verbose:
                         print(f"  ⚠️  Sin YAML: {file_path.name}")
@@ -151,7 +195,7 @@ def collect_index_files(
                 rel_path = file_path.relative_to(base_path)
 
                 index_files.append({
-                    "blog_nombre":    blog_dir.name,
+                    "blog_nombre":    blog_label(base_path, blog_dir),
                     "ruta_archivo":   str(rel_path),
                     "tipo_documento": doc_type,
                     "fecha_creacion": ctime,

@@ -53,19 +53,28 @@ def date_from_folder(folder_name: str) -> Optional[str]:
 
 
 def blog_dir_from_ruta(ruta: str) -> str:
-    """Primer segmento de ruta_archivo: 'pub_chaska', 'website-achalma'…"""
-    return Path(str(ruta)).parts[0]
+    """
+    Carpeta del blog dentro de ruta_archivo. Los pub_* son submódulos del hub
+    ('website-achalma/_pubs/pub_chaska/…'), así que se busca el primer
+    segmento con prefijo pub_; si no hay, el primer segmento ('website-achalma').
+    """
+    parts = Path(str(ruta)).parts
+    for part in parts:
+        if part.startswith("pub_"):
+            return part
+    return parts[0]
 
 
 def expected_pdf_url(base_url: str, ruta: str) -> str:
     """
     URL canónica del PDF: base del blog + ruta interna del artículo.
-    'pub_chaska/operating-system/2017-.../index.qmd' con base
+    'website-achalma/_pubs/pub_chaska/operating-system/2017-.../index.qmd' con base
     'https://chaska-x.netlify.app' →
     'https://chaska-x.netlify.app/operating-system/2017-.../index.pdf'
     """
     parts = Path(str(ruta)).parts
-    inner = "/".join(parts[1:-1])  # sin carpeta del blog ni index.qmd
+    blog_idx = parts.index(blog_dir_from_ruta(ruta))
+    inner = "/".join(parts[blog_idx + 1:-1])  # sin carpeta del blog ni index.qmd
     return f"{base_url}/{inner}/index.pdf"
 
 

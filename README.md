@@ -1,5 +1,7 @@
 # 🛠️ Scripts for Quarto
 
+> **Ubicación de los blogs (desde 2026-09-06):** los 11 `pub_*` son submódulos git de `website-achalma` y viven en `~/Documents/website-achalma/_pubs/pub_*`; el hub sigue en `~/Documents/website-achalma`. Las herramientas los localizan por esa subcarpeta (variable `QBLOG_PUBS_SUBDIR / PUBS_SUBDIR`), y aceptan el nombre de carpeta o el nombre corto sin `pub_`.
+
 #readme
 
 **Colección de herramientas para optimizar y automatizar la gestión de blogs Quarto**
@@ -181,7 +183,7 @@ python fix_qmd_files.py --directory ~/Documents/publicaciones --recursive
 
 ```bash
 cd quarto_studio/backend/script_generador_publicacion_similar
-./main.sh ~/Documents/pub_actus-mercator --base-url https://actus-mercator.netlify.app
+./main.sh ~/Documents/website-achalma/_pubs/pub_actus-mercator --base-url https://actus-mercator.netlify.app
 ./main.sh ~/Documents/website-achalma/teching
 ```
 
@@ -383,10 +385,10 @@ python main.py update ~/Documents \
 
 # 5. Generar índices
 cd ../script_generador_publicacion_similar
-./main.sh ~/Documents/pub_axiomata
+./main.sh ~/Documents/website-achalma/_pubs/pub_axiomata
 
 # 6. Renderizar con Quarto
-cd ~/Documents/pub_axiomata
+cd ~/Documents/website-achalma/_pubs/pub_axiomata
 quarto render
 ```
 
@@ -440,7 +442,7 @@ python main.py update ~/Documents \
 
 # 4. Generar índices
 cd ../script_generador_publicacion_similar
-./main.sh ~/Documents/pub_axiomata
+./main.sh ~/Documents/website-achalma/_pubs/pub_axiomata
 
 # 5. Renderizar
 cd ~/Documents/publicaciones

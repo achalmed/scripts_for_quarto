@@ -11,6 +11,8 @@
 # Si está vacía, se procesarán todos los blogs encontrados
 # Útil para excluir carpetas que no son blogs
 
+# Los pub_* se localizan automáticamente como submódulos de website-achalma
+# (website-achalma/_pubs/pub_*); basta el nombre de la carpeta.
 allowed_blogs:
   - pub_actus-mercator
   - pub_aequilibria
@@ -56,9 +58,9 @@ excluded_folders:
   - prompts
   - propuesta bicentenario
   - scripts_for_calibre
-  - scripts_for_libreoffice
+  - scripts_document_studio
   - scripts_for_linux
-  - scripts_for_quarto
+  - scripts_quarto_studio
   - scripts_for_zotero
   - spss
   - stata
@@ -76,7 +78,7 @@ excluded_folders:
 # Puede ser una ruta absoluta o relativa
 # Usar ~ para referirse al home del usuario
 
-excel_output_dir: ~/Documents/scripts_for_quarto/script_metadata_manager/excel_databases
+excel_output_dir: ~/Documents/scripts_quarto_studio/backend/script_metadata_manager/excel_databases
 
 # =============================================================================
 # NOTAS DE USO

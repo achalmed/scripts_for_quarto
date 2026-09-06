@@ -1,5 +1,7 @@
 # 🚀 Gestor de Publicaciones Quarto (blog-manager) — v3.0
 
+> **Ubicación de los blogs (desde 2026-09-06):** los 11 `pub_*` son submódulos git de `website-achalma` y viven en `~/Documents/website-achalma/_pubs/pub_*`; el hub sigue en `~/Documents/website-achalma`. Las herramientas los localizan por esa subcarpeta (variable `QBLOG_PUBS_SUBDIR`), y aceptan el nombre de carpeta o el nombre corto sin `pub_`.
+
 Herramienta de línea de comandos para gestionar todos tus proyectos Quarto
 (`pub_*` + `website-achalma`) dentro de `~/Documents`: renderizar, hacer
 preview, limpiar, publicar, crear posts APAQuarto completos, gestionar Git,

@@ -30,6 +30,10 @@ PUBINDEX_PROJECT_PREFIX="pub_"
 
 # --- Proyecto especial (no tiene el prefijo pub_) y sus subcarpetas de posts
 PUBINDEX_WEBSITE_PROJECT="website-achalma"
+
+# --- Subcarpeta (relativa a Documents) con los pub_* como submódulos del hub
+#     (reorganización 2026-09-06). Forzable con PUBINDEX_PUBS_SUBDIR. ---------
+PUBINDEX_PUBS_SUBDIR="${PUBINDEX_PUBS_SUBDIR:-website-achalma/_pubs}"
 PUBINDEX_WEBSITE_SUBDIRS=("blog/posts" "talk")
 
 # --- Carpetas técnicas/generadas que se deben ignorar siempre ---------------
