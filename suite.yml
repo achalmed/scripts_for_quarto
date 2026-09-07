@@ -1,0 +1,17 @@
+# suite.yml — contrato de la suite (esquema en core/suite.schema.yml); core/suites.py generar escribe los índices y READMEs.
+nombre: quarto_studio
+objetivo: publicacion
+resumen: 'Interfaz de escritorio (PySide6) sobre los backends de la familia de blogs Quarto: render, publicación, metadatos, índices.'
+escribe_en:
+- web
+- vault
+simula_por_defecto: true
+comandos:
+- main.py
+estado: activo
+interfaz: gui
+depende_de:
+- PySide6
+- blogs_manager
+- metadata_manager
+- pub_index_symlink

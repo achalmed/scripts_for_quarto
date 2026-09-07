@@ -1,5 +1,37 @@
 # 🛠️ Scripts for Quarto
 
+<!-- suite:inicio -->
+**Suite `quarto_studio`** · objetivo *publicacion* · estado *activo* · python · interfaz gui
+
+Interfaz de escritorio (PySide6) sobre los backends de la familia de blogs Quarto: render, publicación, metadatos, índices.
+
+- Escribe en: web, vault · simula por defecto: sí
+- Depende de: PySide6, blogs_manager, metadata_manager, pub_index_symlink
+
+Comandos:
+
+```bash
+main.py
+```
+
+<sub>Bloque generado desde `suite.yml` por `core/suites.py generar` (2026-09-07); no se edita a mano.</sub>
+<!-- suite:fin -->
+
+<!-- suites:inicio -->
+Suites de esta carpeta (6); índice global en `meta/INDICE_SCRIPTS.md`. Patrón: M main · C config · L lib.
+
+| Suite | Carpeta | Objetivo | Escribe en | Simula | Timer | Estado | Patrón |
+|---|---|---|---|---|---|---|---|
+| `blogs_manager` | [scripts_quarto_studio/backend/script_blogs_manager](backend/script_blogs_manager/) | publicacion | web, git, archivos | no |  | activo | `M·L` |
+| `format_yaml` | [scripts_quarto_studio/backend/script_format_yaml](backend/script_format_yaml/) | publicacion | web | no |  | activo | `···` |
+| `generador_publicacion_similar` | [scripts_quarto_studio/backend/script_generador_publicacion_similar](backend/script_generador_publicacion_similar/) | publicacion | web | no |  | activo | `M·L` |
+| `metadata_manager` | [scripts_quarto_studio/backend/script_metadata_manager](backend/script_metadata_manager/) | publicacion | web | sí |  | activo | `M·L` |
+| `pub_index_symlink` | [scripts_quarto_studio/backend/script_pub_index_symlink](backend/script_pub_index_symlink/) | publicacion | vault | no |  | activo | `M·L` |
+| `quarto_studio` | [scripts_quarto_studio](./) | publicacion | web, vault | sí |  | activo | `M··` |
+
+<sub>Bloque generado desde los `suite.yml` por `core/suites.py generar` (2026-09-07); no se edita a mano.</sub>
+<!-- suites:fin -->
+
 > **Ubicación de los blogs (desde 2026-09-06):** los 11 `pub_*` son submódulos git de `website-achalma` y viven en `~/Documents/04 index/_pubs/pub_*`; el hub sigue en `~/Documents/04 index`. Las herramientas los localizan por esa subcarpeta (variable `QBLOG_PUBS_SUBDIR / PUBS_SUBDIR`), y aceptan el nombre de carpeta o el nombre corto sin `pub_`.
 
 #readme

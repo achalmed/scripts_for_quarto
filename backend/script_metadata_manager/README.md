@@ -1,5 +1,27 @@
 # Sistema de Gestión de Metadatos Quarto — v2.2
 
+<!-- suite:inicio -->
+**Suite `metadata_manager`** · objetivo *publicacion* · estado *activo* · python · interfaz cli
+
+Metadatos y etiquetas de todos los .qmd de la familia de blogs desde una base Excel: plantilla, aplicar, normalizar tags, fechas, URL de PDF.
+
+- Escribe en: web · simula por defecto: sí
+- Entrada: excel_databases/*.xlsx
+- Depende de: python3, openpyxl
+
+Comandos:
+
+```bash
+main.py create-template
+main.py update [--dry-run]
+main.py normalize-tags
+main.py sync-dates
+main.py audit-tags
+```
+
+<sub>Bloque generado desde `suite.yml` por `core/suites.py generar` (2026-09-07); no se edita a mano.</sub>
+<!-- suite:fin -->
+
 > **Ubicación de los blogs (desde 2026-09-06):** los 11 `pub_*` son submódulos git de `website-achalma` y viven en `~/Documents/04 index/_pubs/pub_*`; el hub sigue en `~/Documents/04 index`. Las herramientas los localizan por esa subcarpeta (variable `PUBS_SUBDIR en lib/config.py`), y aceptan el nombre de carpeta o el nombre corto sin `pub_`.
 
 Sistema integral de administración de publicaciones Quarto: metadatos,

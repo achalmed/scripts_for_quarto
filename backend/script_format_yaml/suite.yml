@@ -1,0 +1,12 @@
+# suite.yml — contrato de la suite (esquema en core/suite.schema.yml); core/suites.py generar escribe los índices y READMEs.
+nombre: format_yaml
+objetivo: publicacion
+resumen: Corrige el bloque YAML de los .qmd (comillas, orden, campos) en una carpeta, de forma recursiva.
+escribe_en:
+- web
+simula_por_defecto: false
+comandos:
+- python3 fix_qmd_files.py --directory <carpeta> --recursive --dry-run
+- python3 fix_qmd_files.py --directory <carpeta> --recursive
+estado: activo
+nota: un solo script; candidata a main.py + config.py en FS3

@@ -1,5 +1,25 @@
 # pub-index-sync
 
+<!-- suite:inicio -->
+**Suite `pub_index_symlink`** · objetivo *publicacion* · estado *activo* · bash · interfaz cli
+
+Mantiene 04 index/_indice con enlaces simbólicos por año a cada carpeta de publicación de los blogs.
+
+- Escribe en: vault · simula por defecto: no
+- Depende de: bash
+
+Comandos:
+
+```bash
+main.sh
+main.sh --dry-run
+main.sh --check-broken
+main.sh --clean-broken
+```
+
+<sub>Bloque generado desde `suite.yml` por `core/suites.py generar` (2026-09-07); no se edita a mano.</sub>
+<!-- suite:fin -->
+
 > **Ubicación de los blogs (desde 2026-09-06):** los 11 `pub_*` son submódulos git de `website-achalma` y viven en `~/Documents/04 index/_pubs/pub_*`; el hub sigue en `~/Documents/04 index`. Las herramientas los localizan por esa subcarpeta (variable `PUBINDEX_PUBS_SUBDIR`), y aceptan el nombre de carpeta o el nombre corto sin `pub_`.
 
 Script en Bash que mantiene la carpeta `04 index` actualizada con enlaces

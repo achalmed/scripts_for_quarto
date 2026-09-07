@@ -1,0 +1,20 @@
+# suite.yml — contrato de la suite (esquema en core/suite.schema.yml); core/suites.py generar escribe los índices y READMEs.
+nombre: blogs_manager
+objetivo: publicacion
+resumen: 'Gestiona el hub 04 index y sus pubs: listar, render, preview, publicar, crear posts APA, operaciones git y backups.'
+escribe_en:
+- web
+- git
+- archivos
+simula_por_defecto: false
+comandos:
+- 'main.sh                      # menú'
+- main.sh list
+- main.sh render <blog>
+- main.sh publish <blog>
+- main.sh help
+estado: activo
+entrada: 04 index y 04 index/_pubs/pub_*
+depende_de:
+- quarto
+- git

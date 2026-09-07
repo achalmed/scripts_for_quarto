@@ -1,0 +1,18 @@
+# suite.yml — contrato de la suite (esquema en core/suite.schema.yml); core/suites.py generar escribe los índices y READMEs.
+nombre: metadata_manager
+objetivo: publicacion
+resumen: 'Metadatos y etiquetas de todos los .qmd de la familia de blogs desde una base Excel: plantilla, aplicar, normalizar tags, fechas, URL de PDF.'
+escribe_en:
+- web
+simula_por_defecto: true
+comandos:
+- main.py create-template
+- main.py update [--dry-run]
+- main.py normalize-tags
+- main.py sync-dates
+- main.py audit-tags
+estado: activo
+entrada: excel_databases/*.xlsx
+depende_de:
+- python3
+- openpyxl

@@ -1,5 +1,23 @@
 # Generador de Índices de Contenido para Blogs Quarto
 
+<!-- suite:inicio -->
+**Suite `generador_publicacion_similar`** · objetivo *publicacion* · estado *activo* · bash · interfaz cli
+
+Genera los índices de contenido (_contenido_<subblog>.qmd) de un blog con enlaces a artículo y PDF.
+
+- Escribe en: web · simula por defecto: no
+- Depende de: bash
+
+Comandos:
+
+```bash
+main.sh <BLOG_DIR>
+main.sh <BLOG_DIR> --dry-run
+```
+
+<sub>Bloque generado desde `suite.yml` por `core/suites.py generar` (2026-09-07); no se edita a mano.</sub>
+<!-- suite:fin -->
+
 > Genera automáticamente archivos `_contenido_<subblog>.qmd` con enlaces
 > numerados (artículo + PDF) a las publicaciones de un blog Quarto,
 > soportando blogs independientes (`pub_*`) y secciones de página web
