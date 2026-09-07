@@ -92,7 +92,7 @@ done
 # --- Detectar Documents y carpeta destino "04 index" --------------------------
 PUBINDEX_DOCS_DIR="$(utils_detect_docs_dir)" || {
     log_error "No se pudo autodetectar la carpeta Documents (que contenga '04 index')."
-    log_error "Defínela manualmente, ej: PUBINDEX_DOCS_DIR=/home/achalmaedison/Documents ./main.sh"
+    log_error "Defínela manualmente, ej: PUBINDEX_DOCS_DIR=$HOME/Documents ./main.sh"
     exit 1
 }
 PUBINDEX_INDEX_DIR="$PUBINDEX_DOCS_DIR/$PUBINDEX_TARGET_DIRNAME"

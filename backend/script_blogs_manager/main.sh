@@ -58,7 +58,7 @@ source "$QBLOG_LIB_DIR/12-help.sh"
 # --- Detectar Documents -------------------------------------------------------
 QBLOG_DOCS_DIR="$(utils_detect_docs_dir)" || {
     print_error "No se pudo autodetectar la carpeta Documents (que contenga pub_* o website-achalma)."
-    print_error "Defínela manualmente, ej: QBLOG_DOCS_DIR=/home/achalmaedison/Documents ./main.sh"
+    print_error "Defínela manualmente, ej: QBLOG_DOCS_DIR=$HOME/Documents ./main.sh"
     exit 1
 }
 

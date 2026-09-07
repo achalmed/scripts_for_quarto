@@ -22,6 +22,11 @@ utils_detect_docs_dir() {
         return 0
     fi
 
+    # FS2: la raíz la conoce core/env.sh; la búsqueda hacia arriba queda como reserva
+    local _core_d="$QBLOG_SCRIPT_DIR"
+    while [[ "$_core_d" != / && ! -f "$_core_d/core/env.sh" ]]; do _core_d="$(dirname "$_core_d")"; done
+    if [[ -f "$_core_d/core/env.sh" ]]; then ( source "$_core_d/core/env.sh" && printf '%s\n' "$DOCS_ROOT" ); return 0; fi
+
     local candidate
     candidate="$(cd "$QBLOG_SCRIPT_DIR/.." && pwd)"
 

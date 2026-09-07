@@ -1,0 +1,9 @@
+[2026-09-07 14:32:28] [INFO] Documents detectado en: /home/achalmaedison/Documents
+[2026-09-07 14:32:28] [INFO] Carpeta índice: /home/achalmaedison/Documents/04 index/_indice
+[2026-09-07 14:32:28] [WARN] Modo dry-run activado: no se escribirá ni borrará nada.
+[2026-09-07 14:32:28] [INFO] Publicaciones encontradas: 229
+[2026-09-07 14:32:31] [INFO] Creados:    0
+[2026-09-07 14:32:31] [INFO] Actualizados: 0
+[2026-09-07 14:32:31] [INFO] Omitidos (ya existían): 229
+[2026-09-07 14:32:31] [OK] No se encontraron symlinks rotos.
+[2026-09-07 14:32:31] [INFO] Log guardado en: /home/achalmaedison/Documents/scripts_quarto_studio/backend/script_pub_index_symlink/logs/2026-09-07.log
