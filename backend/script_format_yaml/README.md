@@ -1,18 +1,19 @@
 # Guía de Uso - fix_qmd_files.py
 
 <!-- suite:inicio -->
-**Suite `format_yaml`** · objetivo *publicacion* · estado *activo* · - · interfaz cli
+**Suite `format_yaml`** · objetivo *publicacion* · estado *activo* · python · interfaz cli
 
 Corrige el bloque YAML de los .qmd (comillas, orden, campos) en una carpeta, de forma recursiva.
 
 - Escribe en: web · simula por defecto: no
-- Nota: un solo script; candidata a main.py + config.py en FS3
+- Nota: fix_qmd_files.py queda como alias de main.py (FS3)
 
 Comandos:
 
 ```bash
-python3 fix_qmd_files.py --directory <carpeta> --recursive --dry-run
-python3 fix_qmd_files.py --directory <carpeta> --recursive
+main.py --directory <carpeta> --recursive --dry-run
+main.py --directory <carpeta> --recursive
+main.py --file archivo.qmd
 ```
 
 <sub>Bloque generado desde `suite.yml` por `core/suites.py generar` (2026-09-07); no se edita a mano.</sub>

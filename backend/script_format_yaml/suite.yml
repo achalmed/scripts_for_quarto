@@ -6,7 +6,8 @@ escribe_en:
 - web
 simula_por_defecto: false
 comandos:
-- python3 fix_qmd_files.py --directory <carpeta> --recursive --dry-run
-- python3 fix_qmd_files.py --directory <carpeta> --recursive
+- main.py --directory <carpeta> --recursive --dry-run
+- main.py --directory <carpeta> --recursive
+- main.py --file archivo.qmd
 estado: activo
-nota: un solo script; candidata a main.py + config.py en FS3
+nota: fix_qmd_files.py queda como alias de main.py (FS3)
