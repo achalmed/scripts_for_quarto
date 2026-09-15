@@ -101,7 +101,9 @@ write_subblog_index() {
         return 0
     fi
 
-    if ! printf '%s' "$GENIDX_COLLECTED_CONTENT" > "$output_file"; then
+    # Fragmento que un index.qmd incluye: lleva el frontmatter de meta/NORMATIVA_ARCHIVOS.md §6.2 (tipo: fragmento)
+    if ! printf -- '---\ntipo: fragmento\ntitulo: "índice de publicaciones de %s; lo genera script_generador_publicacion_similar"\n---\n\n%s' \
+            "$(basename "$(dirname "$output_file")")" "$GENIDX_COLLECTED_CONTENT" > "$output_file"; then
         log_error "No se pudo escribir: $output_file"
         return 1
     fi

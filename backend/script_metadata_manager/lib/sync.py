@@ -23,11 +23,19 @@ from .config import ALL_FIELDS
 from .field_mapper import extract_value, apply_row_to_yaml
 from .yaml_parser import extract_yaml_only_index, flatten_yaml_keys
 from .qmd_updater import update_single_qmd
+from .collector import resolve_blog_dir
 
 
 # =============================================================================
 # COMPARACIÓN DE UN ARTÍCULO
 # =============================================================================
+
+
+def _ruta_real(base: Path, ruta) -> Path:
+    """`pub_x/tema/post/index.qmd` vive en `04 index/_pubs/pub_x/…` desde 2026-09-06: se resuelve el blog por nombre."""
+    head, _, rest = str(ruta).replace("\\", "/").partition("/")
+    d = resolve_blog_dir(base, head)
+    return (d / rest) if (d and rest) else base / ruta
 
 def compare_article(file_path: Path, excel_row: pd.Series) -> Optional[Dict]:
     """
@@ -121,7 +129,7 @@ def find_differences(
         ruta = row.get("ruta_archivo")
         if pd.isna(ruta):
             continue
-        file_path = base_path / ruta
+        file_path = _ruta_real(base_path, ruta)
         if not file_path.exists():
             continue
         comp = compare_article(file_path, row)

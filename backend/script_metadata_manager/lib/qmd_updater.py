@@ -21,11 +21,19 @@ import yaml
 
 from .config import ALL_FIELDS
 from .field_mapper import apply_row_to_yaml
+from .collector import resolve_blog_dir
 
 
 # =============================================================================
 # ESCRITURA DE UN SOLO ARCHIVO
 # =============================================================================
+
+
+def _ruta_real(base: Path, ruta) -> Path:
+    """`pub_x/tema/post/index.qmd` vive en `04 index/_pubs/pub_x/…` desde 2026-09-06: se resuelve el blog por nombre."""
+    head, _, rest = str(ruta).replace("\\", "/").partition("/")
+    d = resolve_blog_dir(base, head)
+    return (d / rest) if (d and rest) else base / ruta
 
 def write_yaml_to_qmd(file_path: Path, updated_yaml: dict, original_content: str, match_end: int):
     """
@@ -176,7 +184,7 @@ def update_from_excel(
         if pd.isna(ruta):
             continue
 
-        file_path = base_path / ruta
+        file_path = _ruta_real(base_path, ruta)
         if not file_path.exists():
             print(f"❌ Archivo no encontrado: {ruta}")
             total_errors += 1
