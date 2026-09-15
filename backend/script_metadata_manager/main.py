@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
-"""
-main.py — Sistema de Gestión de Metadatos Quarto v2.0
-======================================================
-Punto de entrada único. Parsea los argumentos CLI y delega toda
-la lógica a los módulos en lib/.
+"""backend/script_metadata_manager/main.py — punto de entrada del sistema de gestión de metadatos Quarto (argparse + despacho a lib/).
+
+Objetivo: una sola CLI para los metadatos y las etiquetas de todos los .qmd
+  de la familia de blogs, con el Excel como base de edición en bloque.
+Método: main.py solo parsea y despacha; toda la lógica vive en lib/ y todo lo
+  editable en metadata_config.yml (lib/config.py lo carga). Los comandos que
+  escriben admiten --dry-run. Fechas: el formato canónico de `date` es ISO
+  AAAA-MM-DD (NORMATIVA §3; desde v2.3.0, 2026-09-15).
 
 Uso:
     python main.py <comando> [opciones]
@@ -27,7 +30,9 @@ Comandos de tags (destino: un Excel .xlsx O un directorio de blogs):
     audit-tags         Auditoría de taxonomía con recomendaciones
 
 Comandos de sincronización desde la ruta (mismo doble destino):
-    sync-dates         date desde la carpeta YYYY-MM-DD-titulo
+    sync-dates         date desde la carpeta YYYY-MM-DD-titulo (escrita AAAA-MM-DD)
+    fechas-iso         date al formato AAAA-MM-DD sin cambiar la fecha (MM/DD/YYYY,
+                       ISO con hora, fechas de Excel y fórmulas → texto ISO)
     sync-pdf-urls      citation.pdf-url desde la ruta + URL base del blog
 """
 
@@ -66,6 +71,8 @@ from lib.tag_reports import (
 from lib.path_sync import (
     sync_dates_files,
     sync_dates_excel,
+    fechas_iso_files,
+    fechas_iso_excel,
     sync_pdf_urls_files,
     sync_pdf_urls_excel,
 )
@@ -388,6 +395,24 @@ def cmd_sync_dates(args):
         )
 
 
+def cmd_fechas_iso(args):
+    mode, target = _resolve_tag_target(args.target)
+    if mode == "excel":
+        fechas_iso_excel(
+            str(target),
+            blog_filter=getattr(args, "blog", None),
+            path_filter=getattr(args, "filter_path", None),
+            dry_run=args.dry_run,
+        )
+    else:
+        bp = Path(target).expanduser()
+        fechas_iso_files(
+            bp,
+            path_filter=getattr(args, "filter_path", None),
+            dry_run=args.dry_run,
+        )
+
+
 def cmd_sync_pdf_urls(args):
     # blog_base_urls es opcional: sin él, la URL base de cada blog se
     # resuelve por mayoría de los pdf-url existentes
@@ -485,9 +510,15 @@ Ejemplos:
 
   # --- SINCRONIZACIÓN DESDE LA RUTA ---
 
-  # Fechas: date = carpeta YYYY-MM-DD-titulo (formato MM/DD/YYYY)
+  # Fechas: date = carpeta YYYY-MM-DD-titulo, escrita AAAA-MM-DD (NORMATIVA §3)
   python main.py sync-dates ~/Documents --config metadata_config.yml --dry-run
   python main.py sync-dates excel_databases/quarto_metadata.xlsx --dry-run
+
+  # Fechas: solo el FORMATO de date → AAAA-MM-DD, sin cambiar la fecha
+  # (todo .qmd bajo el directorio; en el Excel, la columna date como texto)
+  python main.py fechas-iso "~/Documents/04 index" --config metadata_config.yml --dry-run
+  python main.py fechas-iso "~/Documents/04 index/_pubs/pub_chaska" --dry-run
+  python main.py fechas-iso excel_databases/quarto_metadata.xlsx --dry-run
 
   # PDF: citation.pdf-url = URL base del blog + ruta del artículo
   python main.py sync-pdf-urls ~/Documents --config metadata_config.yml --dry-run
@@ -627,7 +658,14 @@ Email:   {EMAIL}
     # --- Sincronización desde la ruta (mismo doble destino que tags) --------
     p = sub.add_parser(
         "sync-dates",
-        help="Sincronizar date con la carpeta YYYY-MM-DD-titulo de cada artículo",
+        help="Sincronizar date con la carpeta YYYY-MM-DD-titulo de cada artículo (escribe AAAA-MM-DD)",
+    )
+    _add_tag_common_args(p)
+    p.add_argument("--dry-run", action="store_true", help="Simular sin aplicar")
+
+    p = sub.add_parser(
+        "fechas-iso",
+        help="Normalizar date al formato AAAA-MM-DD sin cambiar la fecha (todo .qmd del directorio, o la columna date del Excel)",
     )
     _add_tag_common_args(p)
     p.add_argument("--dry-run", action="store_true", help="Simular sin aplicar")
@@ -665,6 +703,7 @@ COMMAND_MAP = {
     "audit-tags":         cmd_audit_tags,
     # Sincronización desde la ruta (absorbe los scripts legacy 1_ y 3_)
     "sync-dates":         cmd_sync_dates,
+    "fechas-iso":         cmd_fechas_iso,
     "sync-pdf-urls":      cmd_sync_pdf_urls,
 }
 

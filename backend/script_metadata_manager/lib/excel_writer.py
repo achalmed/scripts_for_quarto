@@ -1,16 +1,16 @@
-"""
-lib/excel_writer.py
-===================
-Crea y actualiza el archivo Excel de metadatos.
+"""backend/script_metadata_manager/lib/excel_writer.py — crea y actualiza el archivo Excel de metadatos (hojas METADATOS e INSTRUCCIONES).
 
-Responsabilidades:
-  - Generar la hoja METADATOS con encabezados estilizados.
-  - Rellenar filas a partir del YAML de cada artículo.
-  - Modo incremental: agregar sólo artículos nuevos preservando el resto.
-  - Agregar columnas nuevas a un Excel existente.
-  - Generar la hoja INSTRUCCIONES.
+Objetivo: la base Excel desde la que se editan en bloque los metadatos de la
+  familia de blogs: generar la hoja METADATOS con encabezados, rellenar filas
+  desde el YAML de cada artículo, modo incremental (solo artículos nuevos),
+  columnas nuevas sobre un Excel existente y la hoja INSTRUCCIONES.
+Método: openpyxl; la columna `date` se escribe siempre como TEXTO
+  `AAAA-MM-DD` (NORMATIVA §3; M6 2026-09-15), nunca como fórmula ni fecha
+  serial, para que `update` y `find-differences` comparen el mismo literal
+  que lleva el .qmd.
+Límite: no lee el Excel para aplicar cambios (eso es qmd_updater).
 
-Depende de: config, yaml_parser, field_mapper, collector.
+Depende de: config, fechas, field_mapper, yaml_parser.
 """
 
 from pathlib import Path
@@ -21,8 +21,19 @@ from openpyxl import Workbook, load_workbook
 from openpyxl.styles import Alignment, Font, PatternFill
 
 from .config import ALL_FIELDS, VERSION
+from .fechas import a_iso
 from .field_mapper import extract_value
 from .yaml_parser import extract_yaml_only_index
+
+# columnas que se escriben como texto AAAA-MM-DD (NORMATIVA §3)
+_COLUMNAS_FECHA = {"date"}
+
+
+def _valor_para_excel(col_name: str, value):
+    """Un valor del YAML listo para la celda: las fechas, como texto ISO."""
+    if col_name in _COLUMNAS_FECHA and value is not None:
+        return a_iso(value) or value
+    return value
 
 
 # =============================================================================
@@ -67,9 +78,11 @@ def _fill_row(ws, row_idx: int, yaml_data: Dict, columns: List[str]):
     """Rellena una fila del Excel a partir de un dict YAML."""
     for col_idx, col_name in enumerate(columns, 1):
         try:
-            value = extract_value(yaml_data, col_name)
+            value = _valor_para_excel(col_name, extract_value(yaml_data, col_name))
             if value is not None:
-                ws.cell(row_idx, col_idx, value)
+                celda = ws.cell(row_idx, col_idx, value)
+                if col_name in _COLUMNAS_FECHA:
+                    celda.number_format = "@"
         except Exception:
             pass
 
@@ -242,7 +255,7 @@ def add_columns_to_excel(
                         continue
                     yaml_data = extract_yaml_only_index(file_path)
                     if yaml_data:
-                        value = extract_value(yaml_data, field)
+                        value = _valor_para_excel(field, extract_value(yaml_data, field))
                         if value is not None:
                             ws.cell(row_idx, new_col, value)
 
@@ -312,8 +325,10 @@ def build_instructions_sheet(wb: Workbook):
         ["   • categories: Economia, Analisis Cuantitativo"],
         [""],
         ["📅 Fechas:"],
-        ["   • Formato: MM/DD/YYYY"],
-        ["   • Ejemplo: 12/19/2025"],
+        ["   • Formato: AAAA-MM-DD (ISO; la norma de fechas del ecosistema)"],
+        ["   • Ejemplo: 2025-12-19"],
+        ["   • Escribir la celda como TEXTO (no como fecha de Excel ni fórmula)"],
+        ["   • fechas-iso convierte lo heredado (MM/DD/YYYY, fechas de Excel) a este formato"],
         [""],
         ["🔗 Links (JSON):"],
         ["   • links_enabled: TRUE o FALSE"],
@@ -386,8 +401,10 @@ def build_instructions_sheet(wb: Workbook):
         ["📅 SINCRONIZACION DESDE LA RUTA"],
         [""],
         ["   python main.py sync-dates excel.xlsx --dry-run"],
+        ["   python main.py fechas-iso excel.xlsx --dry-run"],
         ["   python main.py sync-pdf-urls excel.xlsx --dry-run"],
-        ["   (date desde la carpeta YYYY-MM-DD; pdf-url desde la ruta real)"],
+        ["   (date desde la carpeta YYYY-MM-DD, escrita AAAA-MM-DD; fechas-iso solo"],
+        ["   cambia el formato; pdf-url desde la ruta real)"],
         [""],
         ["=" * 72],
         [""],

@@ -19,7 +19,7 @@ main.py sync-dates
 main.py audit-tags
 ```
 
-<sub>Bloque generado desde `suite.yml` por `core/suites.py generar` (2026-09-07); no se edita a mano.</sub>
+<sub>Bloque generado desde `suite.yml` por `core/suites.py generar` (2026-09-15); no se edita a mano.</sub>
 <!-- suite:fin -->
 
 > **Ubicación de los blogs (desde 2026-09-06):** los 11 `pub_*` son submódulos git de `website-achalma` y viven en `~/Documents/04 index/_pubs/pub_*`; el hub sigue en `~/Documents/04 index`. Las herramientas los localizan por esa subcarpeta (variable `PUBS_SUBDIR en lib/config.py`), y aceptan el nombre de carpeta o el nombre corto sin `pub_`.
@@ -39,6 +39,13 @@ en la hoja y actualizas todos los `.qmd` con un comando.
 > (`1_sincronizar_fecha...` y `3_actualizar_enlace_pdf...`) como los
 > comandos `sync-dates` y `sync-pdf-urls` (ver final de
 > [§7 Comandos completos](#7-comandos-completos)).
+>
+> **v2.3** (2026-09-15, fase M6 de `meta/NORMATIVA_ARCHIVOS.md`): el formato
+> canónico de `date` pasa de `MM/DD/YYYY` a **ISO `AAAA-MM-DD`** (§3 de la
+> normativa), en los `.qmd` y en la columna `date` del Excel (texto, no
+> fórmula). `sync-dates` escribe ISO; el comando nuevo `fechas-iso` normaliza
+> solo el formato sin cambiar la fecha. Cuando solo cambia `date`, se
+> sustituye esa línea del frontmatter y el resto del archivo no se toca.
 
 **Autor:** Edison Achalma — UNSCH, Ayacucho, Perú  
 **Email:** elmer.achalma.09@unsch.edu.pe  
@@ -118,7 +125,8 @@ metadata-manager/
     ├── tag_utils.py           Funciones puras de tags: normalización, dedup, similitud
     ├── tag_operations.py      Operaciones de tags sobre archivos y sobre Excel
     ├── tag_reports.py         Estadísticas (tag-stats) y auditoría (audit-tags)
-    └── path_sync.py           sync-dates y sync-pdf-urls (metadatos derivados de la ruta)
+    ├── fechas.py              fechas al formato canónico ISO AAAA-MM-DD (v2.3)
+    └── path_sync.py           sync-dates, fechas-iso y sync-pdf-urls (metadatos derivados de la ruta)
 ```
 
 **Cada módulo tiene una responsabilidad única**, lo que facilita extender el
@@ -387,10 +395,12 @@ python3 main.py sync-batch ~/Documents excel_databases/quarto_metadata.xlsx \
 ### `sync-dates` — Fecha desde el nombre de la carpeta (v2.2)
 
 Sincroniza el campo `date` con la fecha de la carpeta del artículo
-(`2023-05-12-titulo` → `date: 05/12/2023`, el formato canónico del
-proyecto). Acepta el mismo doble destino que los comandos de tags:
-un `.xlsx` (solo actualiza la columna `date`) o un directorio (edita
-los `index.qmd` directamente).
+(`2023-05-12-titulo` → `date: 2023-05-12`, el formato canónico ISO
+`AAAA-MM-DD` de todo el ecosistema desde v2.3). Acepta el mismo doble destino
+que los comandos de tags: un `.xlsx` (solo actualiza la columna `date`, como
+texto) o un directorio (edita los `index.qmd` directamente, sustituyendo solo
+la línea `date:`). Un artículo cuya fecha NO coincide con su carpeta cambia de
+valor: si solo quieres cambiar el formato, usa `fechas-iso`.
 
 ```bash
 # Sobre los archivos (simular primero)
@@ -400,6 +410,27 @@ python3 main.py sync-dates ~/Documents --config metadata_config.yml
 # Sobre el Excel (luego aplicar con update)
 python3 main.py sync-dates excel_databases/quarto_metadata.xlsx --dry-run
 ```
+
+### `fechas-iso` — `date` al formato AAAA-MM-DD sin cambiar la fecha (v2.3)
+
+Normaliza la grafía de `date` a ISO `AAAA-MM-DD` en **todo** `.qmd` del
+directorio indicado (no solo los `index.qmd` con carpeta datada: también
+`license.qmd`, sesiones de cursos, plantillas), o en la columna `date` del
+Excel. Reconoce `MM/DD/YYYY`, ISO entre comillas, ISO con hora
+(`"2021-06-01T10:00:00+00:00"` → `2021-06-01`), fechas de Excel y las fórmulas
+`=TEXT(DATE(…),"mm/dd/yyyy")` (las sustituye por su valor, como texto). Un
+valor irreconocible se informa y no se toca. Ignora `excluded_folders` del
+config (esa lista nombra carpetas de `~/Documents` que coinciden con secciones
+de `pub_numerus-scriptum`): quien pasa un directorio quiere normalizarlo entero.
+
+```bash
+python3 main.py fechas-iso "~/Documents/04 index" --dry-run                 # el hub
+python3 main.py fechas-iso "~/Documents/04 index/_pubs/pub_chaska" --dry-run  # un pub
+python3 main.py fechas-iso excel_databases/quarto_metadata.xlsx --dry-run   # el Excel
+```
+
+Es el «modo `--fechas-iso`» que la fila M6 de la normativa (§12) encarga a
+esta suite; la migración de 2026-09-15 convirtió 247 `.qmd` y 254 filas.
 
 ### `sync-pdf-urls` — citation.pdf-url desde la ruta real (v2.2)
 
@@ -558,7 +589,7 @@ Si modificas estas columnas, el script no encontrará el archivo.
 | `title`      | Texto             | `Proporcionalidad de Magnitudes`       |
 | `shorttitle` | Texto (<50 chars) | `Proporcionalidad`                     |
 | `subtitle`   | Texto             | `Un análisis detallado`                |
-| `date`       | `MM/DD/YYYY`      | `01/15/2025`                           |
+| `date`       | `AAAA-MM-DD` (ISO; celda de texto) | `2025-01-15`                |
 | `draft`      | `TRUE` / `FALSE`  | `FALSE` = publicado, `TRUE` = borrador |
 
 #### Contenido y clasificación
@@ -600,7 +631,7 @@ links_data: [{"icon": "github", "name": "Repositorio", "url": "https://github.co
 | ----------- | ------------ | ------------------------- |
 | `course`    | Texto        | `Metodología (ECON 5101)` |
 | `professor` | Texto        | `Dr. Edison Achalma`      |
-| `duedate`   | `MM/DD/YYYY` | `12/25/2025`              |
+| `duedate`   | Texto (apaquarto lo imprime tal cual; `fechas-iso` no lo toca) | `2025-12-25` |
 | `note`      | Texto        | `Código: 2020123456`      |
 
 **JOU** (revista):
@@ -650,13 +681,14 @@ Para cada autor N (1, 2, 3):
 ```
 ✅ Booleanos:   TRUE o FALSE  (MAYÚSCULAS)
 ✅ Listas:      economía, estadística, análisis  (comas, sin corchetes)
-✅ Fechas:      MM/DD/YYYY  →  01/15/2025
+✅ Fechas:      AAAA-MM-DD  →  2025-01-15   (ISO, NORMATIVA §3; celda de texto)
 ✅ Guardar:     siempre como .xlsx (no .xls ni .csv)
 
 ❌ draft: true          → debe ser TRUE
 ❌ [economía, análisis] → sin corchetes
 ❌ economía; análisis   → sin punto y coma
-❌ 19-12-2025           → usar MM/DD/YYYY
+❌ 12/19/2025           → usar AAAA-MM-DD (fechas-iso lo convierte)
+❌ =TEXT(DATE(...))     → texto, no fórmula (update leería una celda vacía)
 ```
 
 ---
@@ -991,24 +1023,29 @@ blog_nombre:  actus-mercator
 
 ### 12.4 Extraer fechas de rutas
 
-Extrae la fecha de `posts/2022-01-17-titulo/index.qmd` en formato `MM/DD/YYYY`:
+Extrae la fecha de `posts/2022-01-17-titulo/index.qmd` en el formato canónico
+`AAAA-MM-DD`:
 
 ```excel
-=TEXT(DATE(LEFT(TEXTAFTER(A2,"/",2),4),MID(TEXTAFTER(A2,"/",2),6,2),MID(TEXTAFTER(A2,"/",2),9,2)),"mm/dd/yyyy")
+=TEXT(DATE(LEFT(TEXTAFTER(A2,"/",2),4),MID(TEXTAFTER(A2,"/",2),6,2),MID(TEXTAFTER(A2,"/",2),9,2)),"yyyy-mm-dd")
 ```
 
-Formatos alternativos:
+> Antes de `update`, convierte la columna a **valores de texto** (o ejecuta
+> `python3 main.py fechas-iso excel.xlsx`): openpyxl no calcula fórmulas y una
+> celda con fórmula sin valor guardado llega a `update` como vacía, que
+> significa «eliminar `date` del .qmd». Más simple: `sync-dates excel.xlsx`
+> hace lo mismo que la fórmula y escribe texto.
+
+Otros derivados:
 
 ```excel
-=TEXT(DATE(...),"dd/mm/yyyy")     ← DD/MM/YYYY
-=TEXT(DATE(...),"yyyy-mm-dd")     ← YYYY-MM-DD
 =LEFT(TEXTAFTER(A2,"/",2),4)      ← Solo año (útil para copyrightnotice)
 ```
 
 **`duedate` condicional (solo para STU):**
 
 ```excel
-=IF(C2="stu",TEXT(DATE(LEFT(TEXTAFTER(A2,"/",2),4),MID(TEXTAFTER(A2,"/",2),6,2),MID(TEXTAFTER(A2,"/",2),9,2)),"mm/dd/yyyy"),"")
+=IF(C2="stu",TEXT(DATE(LEFT(TEXTAFTER(A2,"/",2),4),MID(TEXTAFTER(A2,"/",2),6,2),MID(TEXTAFTER(A2,"/",2),9,2)),"yyyy-mm-dd"),"")
 ```
 
 ---

@@ -1,11 +1,8 @@
-"""
-lib/config.py
-=============
-Constantes globales, lista de campos, carpetas/archivos excluidos
-y carga del archivo metadata_config.yml.
+"""backend/script_metadata_manager/lib/config.py — constantes globales, lista de campos, carpetas excluidas y carga de metadata_config.yml.
 
-Todos los demás módulos importan sus constantes desde aquí.
-Nada en este archivo depende de otros módulos del proyecto.
+Objetivo: un solo lugar para lo que todos los módulos consumen: versión de la
+  suite (una vez, NORMATIVA §3), campos del Excel, orden del YAML, exclusiones.
+Límite: nada en este archivo depende de otros módulos del proyecto.
 """
 
 from pathlib import Path
@@ -16,7 +13,7 @@ import yaml
 # =============================================================================
 # VERSIÓN
 # =============================================================================
-VERSION = "2.2.0"
+VERSION = "2.3.0"   # 2.3.0 (2026-09-15, M6): `date` canónico en ISO AAAA-MM-DD; comando fechas-iso
 AUTHOR  = "Edison Achalma"
 EMAIL   = "elmer.achalma.09@unsch.edu.pe"
 

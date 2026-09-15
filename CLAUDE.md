@@ -51,7 +51,8 @@ python main.py tag-stats <target> [--top N]
 python main.py audit-tags <target> [--threshold 0.8]
 
 # Path-derived sync (same dual target; absorbed the old root scripts 1_ and 3_)
-python main.py sync-dates <target> [--dry-run]        # date ← YYYY-MM-DD folder name (as MM/DD/YYYY)
+python main.py sync-dates <target> [--dry-run]        # date ← YYYY-MM-DD folder name (written as ISO AAAA-MM-DD)
+python main.py fechas-iso <target> [--dry-run]        # date → ISO AAAA-MM-DD, value unchanged (every .qmd under a dir, or the Excel column; v2.3)
 python main.py sync-pdf-urls <target> [--dry-run]     # citation.pdf-url ← per-blog base URL + article path
 
 # Blog manager
@@ -89,6 +90,6 @@ python quarto_studio/backend/script_format_yaml/fix_qmd_files.py --directory <pa
 
 The Excel file is the source of truth for bulk edits: generate template → edit in Excel → `update` applies changes back to the `.qmd` files.
 
-**Path-derived sync** (inside `script_metadata_manager/`, since v2.2): `path_sync.py` derives `date` from the article's `YYYY-MM-DD-titulo` folder and `citation.pdf-url` from the per-blog base URL + article path. Base URLs are resolved by majority vote over each blog's existing pdf-urls (so one bad copy-pasted URL can't poison detection — note `pub_chaska` → `chaska-x.netlify.app`, not derivable from the folder name), overridable via `blog_base_urls` in `metadata_config.yml`. It never creates a `citation` block, only updates existing ones.
+**Path-derived sync** (inside `script_metadata_manager/`, since v2.2): `path_sync.py` derives `date` from the article's `YYYY-MM-DD-titulo` folder and `citation.pdf-url` from the per-blog base URL + article path. **Dates are ISO `AAAA-MM-DD`** since v2.3 (2026-09-15, `meta/NORMATIVA_ARCHIVOS.md` §3, phase M6): `lib/fechas.py` holds the pure parsers (`MM/DD/YYYY`, ISO, ISO with time, `date`/`datetime`), `sync-dates` writes ISO, `fechas-iso` only normalizes the format (all `.qmd` under a directory, or the Excel `date` column as text, replacing the old `=TEXT(DATE(…),"mm/dd/yyyy")` formulas). When only `date` changes, the tool substitutes that single frontmatter line and leaves the rest of the file byte-identical (comments and quoting preserved); the full YAML writer is the fallback. Base URLs are resolved by majority vote over each blog's existing pdf-urls (so one bad copy-pasted URL can't poison detection — note `pub_chaska` → `chaska-x.netlify.app`, not derivable from the folder name), overridable via `blog_base_urls` in `metadata_config.yml`. It never creates a `citation` block, only updates existing ones.
 
 **Tag management** (inside `script_metadata_manager/`, since v2.1): `tag_utils.py` has the pure functions (normalization lowercases, strips accents, converts spaces to underscores: `Gestión Empresarial` → `gestion_empresarial`; dedup, string similarity); `tag_operations.py` applies operations to either the Excel `tags` column or directly to `.qmd` files (through the same `collector` + `write_yaml_to_qmd` used by `update`); `tag_reports.py` builds `tag-stats` and `audit-tags` reports. Every tag operation normalizes the full list, and articles without a `tags` field are always skipped. There is exactly ONE YAML writer (`qmd_updater.write_yaml_to_qmd`) and ONE field reorderer (`field_mapper.reorder_yaml`) — do not introduce parallel implementations.
