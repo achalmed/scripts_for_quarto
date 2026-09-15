@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # =============================================================================
-# 01-printing.sh
+#  backend/script_blogs_manager/lib/01-printing.sh — Funciones de salida visual (colores, emojis, cajas)
 # -----------------------------------------------------------------------------
 # Funciones de salida visual (colores, emojis, cajas). Conserva exactamente
 # el mismo estilo del script original para que la experiencia de uso no

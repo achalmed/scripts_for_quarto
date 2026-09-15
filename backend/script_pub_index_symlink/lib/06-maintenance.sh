@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # =============================================================================
-# 06-maintenance.sh
+#  backend/script_pub_index_symlink/lib/06-maintenance.sh — Utilidades adicionales que complementan la gestión de symlinks
 # -----------------------------------------------------------------------------
 # Utilidades adicionales que complementan la gestión de symlinks:
 #   - Eliminar carpetas de año ("04 index/2018", etc.) que quedaron vacías

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # =============================================================================
-# 03-scanner.sh
+#  backend/script_pub_index_symlink/lib/03-scanner.sh — Recorre los pub_* y website-achalma y lista las carpetas de publicación encontradas (solo lectura)
 # -----------------------------------------------------------------------------
 # Recorre:
 #   1) Todas las carpetas "pub_*" (submódulos en website-achalma/_pubs, o

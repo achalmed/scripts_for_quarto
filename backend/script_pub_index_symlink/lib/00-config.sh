@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # =============================================================================
-# 00-config.sh
+#  backend/script_pub_index_symlink/lib/00-config.sh — Módulo de configuración central
 # -----------------------------------------------------------------------------
 # Módulo de configuración central. Define rutas, patrones y constantes que
 # usan todos los demás módulos. Ningún otro módulo debe "hardcodear" rutas:

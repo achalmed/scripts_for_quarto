@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # =============================================================================
-# 11-interactive-menu.sh
+#  backend/script_blogs_manager/lib/11-interactive-menu.sh — Menú interactivo de la aplicación
 # -----------------------------------------------------------------------------
 # Menú interactivo de la aplicación: mismo flujo numerado del script
 # original (1-16), con la opción 10 (limpiar todos) ahora apuntando a la

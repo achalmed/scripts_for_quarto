@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # =============================================================================
-# 07-post-creator.sh
+#  backend/script_blogs_manager/lib/07-post-creator.sh — Asistente interactivo completo para crear posts APAQuarto
 # -----------------------------------------------------------------------------
 # Asistente interactivo completo para crear posts APAQuarto: detecta/crea
 # carpeta de destino, recorre 6 secciones del formulario (opciones

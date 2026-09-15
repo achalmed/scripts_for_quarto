@@ -1,5 +1,6 @@
-# suite.yml — contrato de la suite (esquema en core/suite.schema.yml); core/suites.py generar escribe los índices y READMEs.
-nombre: format_yaml
+# backend/script_format_yaml/suite.yml — suite format_yaml: Corrige el bloque YAML de los .qmd (comillas, orden, campos) en una carpeta, de forma recursiva.
+# Contrato: core/suite.schema.yml; core/suites.py validar lo comprueba y generar escribe los índices y README.
+id: format_yaml
 objetivo: publicacion
 resumen: Corrige el bloque YAML de los .qmd (comillas, orden, campos) en una carpeta, de forma recursiva.
 escribe_en:

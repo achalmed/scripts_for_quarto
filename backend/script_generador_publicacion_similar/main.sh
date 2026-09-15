@@ -2,7 +2,7 @@
 # =============================================================================
 # main.sh — Generador de Índices de Contenido para Blogs Quarto
 # -----------------------------------------------------------------------------
-# Versión 4.0 — Reestructuración modular del antiguo generar_indices.sh
+# Reestructuración modular (GENIDX_VERSION en lib/00-config.sh) del antiguo generar_indices.sh
 # monolítico. Conserva TODAS las funciones originales (detección de
 # estructura website/blog, generación de _contenido_<subblog>.qmd con
 # enlaces a artículo y PDF, limpieza de índices vacíos, resumen final),

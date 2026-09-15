@@ -2,7 +2,8 @@
 # =============================================================================
 # main.sh — Gestor de Publicaciones Quarto (blog-manager)
 # -----------------------------------------------------------------------------
-# Versión 3.0 — Reestructuración modular del antiguo build.sh monolítico.
+# Reestructuración modular del antiguo build.sh monolítico (la versión de la
+# suite, QBLOG_VERSION, se declara una sola vez en lib/00-config.sh).
 # Conserva TODAS las funciones originales (listado, render, preview, clean,
 # publish, asistente de creación de posts APAQuarto, operaciones Git,
 # operaciones masivas, init-blog, check-structure, backups, menú

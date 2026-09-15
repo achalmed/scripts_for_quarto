@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # =============================================================================
-# 03-validator.sh
+#  backend/script_generador_publicacion_similar/lib/03-validator.sh — Validación de entradas ANTES de ejecutar cualquier lógica: directorio del blog, URL base y tipo de estructura
 # -----------------------------------------------------------------------------
 # Validación de entradas ANTES de ejecutar cualquier lógica: directorio del
 # blog, URL base y tipo de estructura. Normaliza valores (ruta absoluta,

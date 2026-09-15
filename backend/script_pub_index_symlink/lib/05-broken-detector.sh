@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # =============================================================================
-# 05-broken-detector.sh
+#  backend/script_pub_index_symlink/lib/05-broken-detector.sh — Detecta symlinks rotos dentro de "04 index"
 # -----------------------------------------------------------------------------
 # Detecta symlinks rotos dentro de "04 index" (es decir, symlinks cuyo
 # destino ya no existe — por ejemplo porque borraste o moviste una carpeta

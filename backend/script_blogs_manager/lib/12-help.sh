@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 # =============================================================================
-# 12-help.sh
+#  backend/script_blogs_manager/lib/12-help.sh — Texto de ayuda mostrado con "help", "-h" o "--help"
 # -----------------------------------------------------------------------------
-# Texto de ayuda mostrado con "help", "-h" o "--help".
 # =============================================================================
 
 if [[ -n "${QBLOG_HELP_LOADED:-}" ]]; then

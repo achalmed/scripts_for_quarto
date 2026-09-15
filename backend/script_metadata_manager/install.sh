@@ -1,10 +1,7 @@
 #!/bin/bash
 
 ################################################################################
-# Script de Instalación - Sistema de Gestión de Metadatos Quarto
-# Versión: 1.2.0
-# Autor: Edison Achalma
-# Fecha: junio 2026
+#  backend/script_metadata_manager/install.sh — Script de Instalación - Sistema de Gestión de Metadatos Quarto
 ################################################################################
 
 set -e  # Salir si hay errores

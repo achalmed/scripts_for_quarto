@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # =============================================================================
-# 02-utils.sh
+#  backend/script_pub_index_symlink/lib/02-utils.sh — Funciones utilitarias pequeñas y reutilizables por otros módulos
 # -----------------------------------------------------------------------------
 # Funciones utilitarias pequeñas y reutilizables por otros módulos:
 # extraer el año de un nombre de carpeta, saber si una ruta debe ignorarse,

@@ -1,8 +1,5 @@
-# =============================================================================
-# ARCHIVO DE CONFIGURACIÓN - Sistema de Gestión de Metadatos Quarto
-# Autor: Edison Achalma
-# Versión: 1.1.0
-# =============================================================================
+# backend/script_metadata_manager/metadata_config.yml — configuración del sistema de gestión de metadatos Quarto (blogs permitidos, campos, etiquetas y rutas)
+# Todo lo editable vive aquí; lo lee lib/config.py. La versión de la suite se declara una sola vez en el código (NORMATIVA §3).
 
 # -----------------------------------------------------------------------------
 # BLOGS PERMITIDOS

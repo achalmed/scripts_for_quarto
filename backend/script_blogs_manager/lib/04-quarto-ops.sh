@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # =============================================================================
-# 04-quarto-ops.sh
+#  backend/script_blogs_manager/lib/04-quarto-ops.sh — Operaciones individuales de Quarto sobre un blog/proyecto
 # -----------------------------------------------------------------------------
 # Operaciones individuales de Quarto sobre un blog/proyecto: renderizar,
 # preview, limpiar, publicar, verificar, inspeccionar y convertir

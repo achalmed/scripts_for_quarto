@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 # =============================================================================
-# 05-batch-ops.sh
+#  backend/script_blogs_manager/lib/05-batch-ops.sh — Operaciones que se aplican a TODOS los blogs gestionables a la vez
 # -----------------------------------------------------------------------------
-# Operaciones que se aplican a TODOS los blogs gestionables a la vez.
 #
 # NOTA DE MIGRACIÓN: el script original (build.sh v2.0) invocaba
 # "clean_all_blogs" desde el menú interactivo y desde main(), pero esa

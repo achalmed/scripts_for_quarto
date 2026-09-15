@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # =============================================================================
-# 00-config.sh
+#  backend/script_generador_publicacion_similar/lib/00-config.sh — Configuración central del generador de índices
 # -----------------------------------------------------------------------------
 # Configuración central del generador de índices. Define versión, valores
 # por defecto y la lista de carpetas ignoradas. Ningún otro módulo debe

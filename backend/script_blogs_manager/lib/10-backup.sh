@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # =============================================================================
-# 10-backup.sh
+#  backend/script_blogs_manager/lib/10-backup.sh — Sistema de backups de los blogs gestionables
 # -----------------------------------------------------------------------------
 # Sistema de backups de los blogs gestionables: individual (un .tar.gz por
 # blog), completo (un solo archivo con todos), o incremental con rsync.

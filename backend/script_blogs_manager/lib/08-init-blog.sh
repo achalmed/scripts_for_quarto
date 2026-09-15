@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # =============================================================================
-# 08-init-blog.sh
+#  backend/script_blogs_manager/lib/08-init-blog.sh — Inicializa un nuevo blog Quarto con la estructura completa
 # -----------------------------------------------------------------------------
 # Inicializa un nuevo blog Quarto con la estructura completa: _quarto.yml,
 # index.qmd, about.qmd, styles.css, .gitignore y README.md. Equivalente al

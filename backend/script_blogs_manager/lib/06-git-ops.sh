@@ -1,9 +1,7 @@
 #!/usr/bin/env bash
 # =============================================================================
-# 06-git-ops.sh
+#  backend/script_blogs_manager/lib/06-git-ops.sh — Operaciones de Git sobre un blog/proyecto individual: status, commit+push, inicialización de repositorio
 # -----------------------------------------------------------------------------
-# Operaciones de Git sobre un blog/proyecto individual: status, commit+push,
-# inicialización de repositorio.
 # =============================================================================
 
 if [[ -n "${QBLOG_GIT_OPS_LOADED:-}" ]]; then

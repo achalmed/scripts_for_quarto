@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # =============================================================================
-# 04-symlinker.sh
+#  backend/script_pub_index_symlink/lib/04-symlinker.sh — Crea o actualiza los symlinks de «04 index/<AÑO>/» hacia las carpetas de publicación reales
 # -----------------------------------------------------------------------------
 # Crea/actualiza los symlinks dentro de "04 index/<AÑO>/<nombre-original>"
 # apuntando a las carpetas de publicación reales encontradas por el scanner.

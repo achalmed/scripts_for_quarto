@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # =============================================================================
-# 09-structure-check.sh
+#  backend/script_blogs_manager/lib/09-structure-check.sh — Verifica y reporta la integridad estructural de todos los blogs gestionables
 # -----------------------------------------------------------------------------
 # Verifica y reporta la integridad estructural de todos los blogs
 # gestionables: archivos esenciales, directorios, configuración Git,

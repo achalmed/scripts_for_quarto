@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # =============================================================================
-# 04-detector.sh
+#  backend/script_generador_publicacion_similar/lib/04-detector.sh — Detección automática de la estructura del blog
 # -----------------------------------------------------------------------------
 # Detección automática de la estructura del blog. La señal principal es la
 # ubicación del _quarto.yml: si está en el propio directorio es un proyecto

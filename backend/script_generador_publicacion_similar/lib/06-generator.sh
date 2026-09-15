@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # =============================================================================
-# 06-generator.sh
+#  backend/script_generador_publicacion_similar/lib/06-generator.sh — Lógica principal: recorre los subblogs, construye el índice en memoria y lo escribe de una sola vez
 # -----------------------------------------------------------------------------
 # Lógica principal: recorre los subblogs, construye el contenido del índice
 # en memoria y lo escribe de una sola vez. Escribir al final (y no truncar

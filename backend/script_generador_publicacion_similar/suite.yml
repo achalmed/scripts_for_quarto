@@ -1,5 +1,6 @@
-# suite.yml — contrato de la suite (esquema en core/suite.schema.yml); core/suites.py generar escribe los índices y READMEs.
-nombre: generador_publicacion_similar
+# backend/script_generador_publicacion_similar/suite.yml — suite generador_publicacion_similar: Genera los índices de contenido (_contenido_<subblog>.qmd) de un blog con enlaces a artículo y PDF.
+# Contrato: core/suite.schema.yml; core/suites.py validar lo comprueba y generar escribe los índices y README.
+id: generador_publicacion_similar
 objetivo: publicacion
 resumen: Genera los índices de contenido (_contenido_<subblog>.qmd) de un blog con enlaces a artículo y PDF.
 escribe_en:

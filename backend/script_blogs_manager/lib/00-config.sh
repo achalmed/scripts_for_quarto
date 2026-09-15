@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # =============================================================================
-# 00-config.sh
+#  backend/script_blogs_manager/lib/00-config.sh — Configuración central del gestor de publicaciones Quarto
 # -----------------------------------------------------------------------------
 # Configuración central del gestor de publicaciones Quarto. Define rutas,
 # colores, emojis y la lista de proyectos excluidos. Ningún otro módulo debe
@@ -11,6 +11,9 @@ if [[ -n "${QBLOG_CONFIG_LOADED:-}" ]]; then
     return 0
 fi
 QBLOG_CONFIG_LOADED=1
+
+# --- Identidad del script (la versión se declara aquí, una sola vez; §3) -------
+QBLOG_VERSION="3.0.0"
 
 # --- Directorio base de Documents -------------------------------------------
 # Se autodetecta subiendo desde la ubicación de este script hasta encontrar

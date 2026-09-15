@@ -1,5 +1,6 @@
-# suite.yml — contrato de la suite (esquema en core/suite.schema.yml); core/suites.py generar escribe los índices y READMEs.
-nombre: metadata_manager
+# backend/script_metadata_manager/suite.yml — suite metadata_manager: Metadatos y etiquetas de todos los .qmd de la familia de blogs desde una base Excel: plantilla, aplicar, normalizar tags, fechas, URL de PDF.
+# Contrato: core/suite.schema.yml; core/suites.py validar lo comprueba y generar escribe los índices y README.
+id: metadata_manager
 objetivo: publicacion
 resumen: 'Metadatos y etiquetas de todos los .qmd de la familia de blogs desde una base Excel: plantilla, aplicar, normalizar tags, fechas, URL de PDF.'
 escribe_en:

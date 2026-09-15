@@ -1,5 +1,6 @@
-# suite.yml — contrato de la suite (esquema en core/suite.schema.yml); core/suites.py generar escribe los índices y READMEs.
-nombre: pub_index_symlink
+# backend/script_pub_index_symlink/suite.yml — suite pub_index_symlink: Mantiene 04 index/_indice con enlaces simbólicos por año a cada carpeta de publicación de los blogs.
+# Contrato: core/suite.schema.yml; core/suites.py validar lo comprueba y generar escribe los índices y README.
+id: pub_index_symlink
 objetivo: publicacion
 resumen: Mantiene 04 index/_indice con enlaces simbólicos por año a cada carpeta de publicación de los blogs.
 escribe_en:

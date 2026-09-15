@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # =============================================================================
-# 02-utils.sh
+#  backend/script_blogs_manager/lib/02-utils.sh — Utilidades compartidas: autodetección de ~/Documents, listado de proyectos de publicación y detección de carpetas de posts
 # -----------------------------------------------------------------------------
 # Utilidades compartidas: autodetección de ~/Documents, listado de proyectos
 # de publicación (website-achalma + sus submódulos website-achalma/_pubs/pub_*),

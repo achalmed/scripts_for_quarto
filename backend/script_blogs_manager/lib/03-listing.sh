@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # =============================================================================
-# 03-listing.sh
+#  backend/script_blogs_manager/lib/03-listing.sh — Listado de proyectos (blogs) y de posts dentro de un proyecto
 # -----------------------------------------------------------------------------
 # Listado de proyectos (blogs) y de posts dentro de un proyecto. Misma
 # lógica y presentación visual del script original, adaptada para escanear

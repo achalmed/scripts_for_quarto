@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 ################################################################################
 # quick_start.sh — Inicio rápido del Sistema de Metadatos Quarto v2.0
-# Autor: Edison Achalma  |  Ayacucho, Perú
 ################################################################################
 
 set -euo pipefail

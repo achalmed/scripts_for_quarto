@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # =============================================================================
-# 02-cli.sh
+#  backend/script_generador_publicacion_similar/lib/02-cli.sh — Parsing de argumentos y ayuda
 # -----------------------------------------------------------------------------
 # Parsing de argumentos y ayuda. Reemplaza la configuración hardcodeada de la
 # versión monolítica: el directorio del blog ahora es un argumento posicional

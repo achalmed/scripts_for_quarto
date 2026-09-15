@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # =============================================================================
-# 05-linker.sh
+#  backend/script_generador_publicacion_similar/lib/05-linker.sh — Transformación de carpetas de publicación en enlaces Markdown
 # -----------------------------------------------------------------------------
 # Transformación de carpetas de publicación en enlaces Markdown: formateo
 # del título, construcción de la URL según la estructura y composición de
