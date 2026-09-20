@@ -1,3 +1,11 @@
 __pycache__/
 *.pyc
 app/resources/resources_rc.py
+
+# DOC2 (2026-09-20): temporales y derivados fuera de git (NORMATIVA §5, §15.8)
+estructura.txt
+
+# DOC2 (2026-09-20): temporales y derivados fuera de git (NORMATIVA §5, §15.8)
+logs/
+*.log
+respaldos/
