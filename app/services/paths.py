@@ -10,10 +10,10 @@ from __future__ import annotations
 
 from pathlib import Path
 
-# quarto_studio/app/services/paths.py → raíz del repositorio
+# app/services/paths.py → raíz del repositorio (scripts_quarto_studio)
 _SCRIPTS_ROOT = Path(__file__).resolve().parents[3]
 
-# Los script_* viven en quarto_studio/backend/
+# Los script_* viven en backend/
 _BACKEND_DIR = Path(__file__).resolve().parents[2] / "backend"
 
 
@@ -23,7 +23,7 @@ def scripts_root() -> Path:
 
 
 def backend_dir() -> Path:
-    """Directorio quarto_studio/backend (donde viven los script_*)."""
+    """Directorio backend/ (donde viven los script_*)."""
     return _BACKEND_DIR
 
 

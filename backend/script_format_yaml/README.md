@@ -1,4 +1,8 @@
-# Guía de Uso - fix_qmd_files.py
+---
+tipo: readme
+estado: activo
+---
+# backend/script_format_yaml/ — formateador idempotente del bloque YAML de los .qmd (v2.0)
 
 <!-- suite:inicio -->
 **Suite `format_yaml`** · objetivo *publicacion* · estado *activo* · python · interfaz cli
@@ -59,10 +63,10 @@ conda activate script_tag_manager
 ### Para archivos con el problema del `---` pegado:
 
 ```bash
-# Ver qué se cambiaría (sin modificar)
+## Ver qué se cambiaría (sin modificar)
 python fix_qmd_files.py --directory /home/achalmaedison/Documents/publicaciones --recursive --dry-run
 
-# Aplicar la corrección
+## Aplicar la corrección
 python fix_qmd_files.py --directory /home/achalmaedison/Documents/publicaciones --recursive
 ```
 
@@ -475,3 +479,11 @@ Si encuentras más problemas:
 
 **Versión:** 2.0  
 **Fecha:** 17 de Diciembre 2025
+
+## Límite honesto
+
+- **Solo toca los bordes del bloque YAML**: el `---` de apertura pegado y las líneas en blanco tras el de cierre. No valida, reordena ni renombra claves, no cambia comillas ni valores; eso es `script_metadata_manager`.
+- **No repara un frontmatter roto** (sin cierre, con tabulaciones, YAML inválido): lo deja como está.
+- **Idempotente y sin respaldo propio**: correrlo dos veces no cambia nada, y el respaldo es `git` antes de ejecutarlo (sección «Prevención para el futuro»).
+- **`--dry-run` solo informa**; sin él escribe directamente, sin confirmación.
+- **`fix_qmd_files.py` es un alias** de `main.py` (FS3, 2026-09-07): la lógica vive en `config.py` y `lib/formato.py`.

@@ -1,4 +1,8 @@
-# pub-index-sync
+---
+tipo: readme
+estado: activo
+---
+# backend/script_pub_index_symlink/ — enlaces simbólicos por año en 04 index/_indice a cada publicación de los blogs (pub-index-sync)
 
 <!-- suite:inicio -->
 **Suite `pub_index_symlink`** · objetivo *publicacion* · estado *activo* · bash · interfaz cli
@@ -176,7 +180,7 @@ ejecutar el script.
 
 El criterio es **únicamente el nombre de la carpeta**: debe empezar con
 una fecha en formato `YYYY-MM-DD-` seguida de cualquier texto. No importa
-en qué subcarpeta temática esté (`python/`, `r/`, `latex/`, `blog/posts/`,
+en qué subcarpeta temática esté (`python/`, `r/`, `latex/`, `04 index/blog/posts/`,
 `talk/`, etc.) ni qué tan profundo esté anidada — el script la encuentra
 igual, siempre que no esté dentro de una carpeta técnica ignorada.
 
@@ -223,3 +227,11 @@ Borra la carpeta `04 index` (o su contenido) y vuelve a correr
 - Bash 4+ (cualquier Kubuntu o Arch Linux moderno lo trae por defecto).
 - Utilidades estándar de GNU: `find`, `readlink`, `mkdir`, `ln`. Todas
   vienen preinstaladas en Kubuntu y Arch Linux.
+
+## Límite honesto
+
+- **Solo crea enlaces simbólicos, nunca copia**: si la carpeta original se borra o se mueve, el enlace queda roto (`--check-broken` los lista; `--clean-broken` los elimina con confirmación).
+- **No toca archivos ni carpetas reales** dentro de `04 index/_indice/`: un conflicto se reporta y se resuelve a mano.
+- **El criterio es solo el nombre de la carpeta** (`YYYY-MM-DD-…`): no lee frontmatter ni distingue borradores de publicados.
+- **`04 index/_indice/` es del vault y está ignorado en el hub**: no se versiona ni se publica.
+- **No simula por defecto** (`--dry-run` hay que pedirlo) y cada corrida escribe un log diario en `logs/` (ignorado en git).

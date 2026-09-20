@@ -1,4 +1,8 @@
-# 🚀 Gestor de Publicaciones Quarto (blog-manager) — v3.0
+---
+tipo: readme
+estado: activo
+---
+# backend/script_blogs_manager/ — gestor de publicaciones Quarto: render, preview, publicar, posts APA, git y respaldos del hub y los pubs (v3.0)
 
 <!-- suite:inicio -->
 **Suite `blogs_manager`** · objetivo *publicacion* · estado *activo* · bash · interfaz cli
@@ -390,7 +394,7 @@ QBLOG_BACKUP_DIR="/ruta/a/backups" ./main.sh backup
 ### Añadir un comando nuevo
 
 1. Escribe la función en el módulo `lib/` que corresponda temáticamente
-   (o crea uno nuevo, ej. `lib/13-mi-funcion.sh`).
+   (o crea uno nuevo, por ejemplo un `lib/13-<tema>.sh`).
 2. Si creaste un archivo nuevo, agrégalo al bloque de `source` en `main.sh`.
 3. Añade un `case` nuevo en la función `main()` de `main.sh`.
 4. Documéntalo en `lib/12-help.sh` y, si aplica, en el menú
@@ -483,3 +487,11 @@ Ayacucho, Perú
 
 Para más información sobre Quarto: [quarto.org/docs](https://quarto.org/docs/)
 Para APAQuarto: [wjschne.github.io/apaquarto](https://wjschne.github.io/apaquarto/)
+
+## Límite honesto
+
+- **No simula.** No hay `--dry-run`: `clean`, `clean-all`, `publish` y `git-commit` escriben de verdad y solo piden confirmación.
+- **No es seguro en paralelo.** Dos instancias sobre el mismo blog se pisan (`_site/`, `_freeze/`); la GUI Quarto Studio lo serializa y en terminal hay que hacer lo mismo.
+- **El asistente `new-post` es interactivo** (unas 50 preguntas) y no se automatiza; la GUI lo replica con `post_service.py`, que genera el mismo `index.qmd`.
+- **Solo ve el hub `04 index` y los `pub_*` de `04 index/_pubs/`**: un blog fuera de ahí no existe para `list`, `render-all`, `check-structure` ni `backup`.
+- **No gestiona metadatos ni índices**: para eso están `script_metadata_manager` y `script_pub_index_symlink`.

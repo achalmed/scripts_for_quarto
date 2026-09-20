@@ -1,4 +1,8 @@
-# Sistema de Gestión de Metadatos Quarto — v2.2
+---
+tipo: readme
+estado: activo
+---
+# backend/script_metadata_manager/ — metadatos, tags, fechas y pdf-url de todos los .qmd de la familia de blogs desde una base Excel (v2.3)
 
 <!-- suite:inicio -->
 **Suite `metadata_manager`** · objetivo *publicacion* · estado *activo* · python · interfaz cli
@@ -957,7 +961,7 @@ Con limpieza de espacios dobles:
 
 ### 12.2 Generar títulos desde rutas
 
-Convierte `aequilibria/posts/2022-01-17-09-crecimiento-economico/index.qmd`
+Convierte, por ejemplo, la ruta aequilibria/posts/2022-01-17-09-crecimiento-economico/index.qmd
 en `Crecimiento economico`.
 
 **Excel en español:**
@@ -1023,7 +1027,7 @@ blog_nombre:  actus-mercator
 
 ### 12.4 Extraer fechas de rutas
 
-Extrae la fecha de `posts/2022-01-17-titulo/index.qmd` en el formato canónico
+Extrae la fecha de `posts/AAAA-MM-DD-titulo/index.qmd` en el formato canónico
 `AAAA-MM-DD`:
 
 ```excel
@@ -1425,3 +1429,12 @@ versiones antiguas — actualiza LibreOffice o ignóralos.
 6. **Para campos booleanos:** siempre `TRUE` o `FALSE` en mayúsculas.
 7. **Para listas (keywords, tags, categories):** separar con comas, sin corchetes, sin punto y coma.
 8. **Usar el menú interactivo** (`./quick_start.sh`) para operaciones frecuentes y el CLI para scripts.
+
+## Límite honesto
+
+- **Nunca crea un bloque `citation`**: `sync-pdf-urls` solo actualiza `citation.pdf-url` donde ya existe.
+- **Toda operación de tags omite los artículos sin campo `tags`** (nunca los crea) y normaliza la lista completa, no solo el tag tocado.
+- **Un solo escritor de YAML** (`qmd_updater.write_yaml_to_qmd`) **y un solo reordenador** (`field_mapper.reorder_yaml`): salvo cuando solo cambia `date`, el bloque se reescribe entero con comillas y orden normalizados.
+- **Solo ve `index.qmd` dentro de carpetas con nombre `AAAA-MM-DD-…`**; un post fuera de esa convención no entra en el Excel.
+- **El Excel es la mesa de trabajo, no la verdad**: lo editado a mano en un `.qmd` queda fuera hasta `create-template --incremental` o `find-differences`; `update` solo escribe donde hay diferencias.
+- **La URL base de un blog se vota entre sus `pdf-url` existentes**; sin ninguno, o cuando no es derivable (`pub_chaska` → `chaska-x.netlify.app`), hay que declararla en `blog_base_urls` de `metadata_config.yml`.

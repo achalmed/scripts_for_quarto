@@ -1,95 +1,130 @@
-# CLAUDE.md
+---
+tipo: guia_ia
+estado: activo
+---
+# CLAUDE.md — scripts_quarto_studio (repo `scripts_for_quarto`, suite `quarto_studio`)
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+Guía para el asistente. En español, como todo el ecosistema. `AGENTS.md` es un enlace a este archivo.
+Léase antes: `README.md` (qué es, contrato con el hub, uso), `suite.yml` (raíz y uno por backend),
+`app/README.md` (la GUI) y el README de la herramienta que se toque.
 
-## What this repository is
+## Reglas que no se negocian
 
-A collection of **independent tools** (Python 3.8+ and Bash) for managing the author's Quarto blogs. Each `script_*/` directory under `quarto_studio/backend/` is a self-contained tool with its own README; `quarto_studio/` is the desktop GUI that drives them. There is no build system, no test suite, and no linting configuration. All code comments, CLI output, and documentation are written in **Spanish** — keep new code and docs in Spanish to match.
+- **Cinco herramientas independientes y una GUI que las lanza como procesos.** Cada `backend/script_*/`
+  es autónomo (`main.*` + config + `lib/`, `suite.yml`, README). La GUI (`app/`) nunca importa su código:
+  construye un `Command` y lo ejecuta con `QProcess`. Capas de la GUI: `ui → controllers → services →
+  workers`; la UI no conoce rutas de scripts, los servicios no importan Qt Widgets, los modelos no
+  importan Qt (`app/README.md`).
+- **Todo entry point de backend se resuelve en `app/services/paths.py`**: si un script se mueve, se
+  toca solo ese archivo.
+- **Los blogs viven en el hub.** Hub `04 index` (repo `website-achalma`) y 11 `pub_*` como submódulos
+  en `04 index/_pubs/` desde 2026-09-06 (el guion bajo evita que Quarto los renderice como parte del
+  hub). Cada herramienta los localiza por una sola variable (`QBLOG_PUBS_SUBDIR`, `PUBINDEX_PUBS_SUBDIR`,
+  `PUBS_SUBDIR`), por defecto `<hub>/_pubs`; `website-achalma` sigue aceptado como alias del hub
+  (`QBLOG_WEBSITE_DIR`, `HUB_ALIASES`). Un blog se nombra por carpeta (`pub_axiomata`) o en corto
+  (`axiomata`). Un post es `<blog>/posts/AAAA-MM-DD-titulo/index.qmd`: lo que no empieza por fecha no
+  es un post. Las herramientas Bash suben desde su propia ruta hasta hallar `~/Documents`; se fuerza
+  con `QBLOG_DOCS_DIR` o `PUBINDEX_DOCS_DIR`.
+- **La verdad de un post es su `index.qmd`; el Excel es la mesa de trabajo.** `update` escribe solo
+  donde hay diferencias; antes de un cambio masivo, `--dry-run` siempre (el metadata manager simula por
+  defecto; `blogs_manager` no simula nunca).
+- **UN escritor de YAML y UN reordenador:** `qmd_updater.write_yaml_to_qmd` y `field_mapper.reorder_yaml`
+  en `backend/script_metadata_manager/lib/`. No se introducen implementaciones paralelas; toda operación
+  de tags pasa por el mismo `collector` + `write_yaml_to_qmd` que `update`.
+- **Toda operación de tags normaliza la lista completa** (minúsculas, sin tildes, espacios → `_`:
+  `Gestión Empresarial` → `gestion_empresarial`; sin duplicados) **y omite los artículos sin campo
+  `tags`**: nunca se crean tags donde no existían.
+- **`sync-pdf-urls` nunca crea un bloque `citation`**: solo actualiza `citation.pdf-url` donde ya existe.
+- **Fechas ISO `AAAA-MM-DD` en `date`** (v2.3, M6, `meta/NORMATIVA_ARCHIVOS.md` §3): `sync-dates`
+  escribe ISO; `fechas-iso` solo cambia el formato. Cuando solo cambia `date`, se sustituye esa única
+  línea del frontmatter y el resto del archivo queda byte-idéntico (comentarios y comillas incluidos);
+  el escritor completo es el recurso de reserva.
+- **Patrón Bash modular** (`blogs_manager`, `pub_index_symlink`, `generador_publicacion_similar`): un
+  `main.sh` delgado carga los `lib/NN-*.sh` en orden numérico (los posteriores dependen de los
+  anteriores); `00-config.sh` concentra rutas, colores, exclusiones y valores por defecto, y ningún otro
+  módulo los escribe a mano; cada suite prefija sus globales (`QBLOG_`, `PUBINDEX_`, `GENIDX_`) y se
+  protege del doble `source` con `*_CONFIG_LOADED`.
+- **`main.py` del metadata manager es solo argparse y despacho**; la lógica vive en
+  `backend/script_metadata_manager/lib/` (`config.py`, `collector.py`, `yaml_parser.py`,
+  `field_mapper.py`, `excel_writer.py`, `qmd_updater.py`, `sync.py`, `path_sync.py`, `fechas.py`,
+  `tag_utils.py`, `tag_operations.py`, `tag_reports.py`).
+- **Raíz y logger de `core/`**: ninguna suite escribe `$HOME/Documents` ni define su logger; carga
+  `core/env.sh` o `core/env.py` y envuelve `core/shell-lib` o `core/py-common` (FS2). Ninguna ruta de
+  máquina (`$HOME/...`) en código.
+- **Lo generado no se edita**: los bloques `<!-- suite:inicio -->` y `<!-- suites:inicio -->` de los
+  README salen de los `suite.yml` con `core/suites.py generar --aplicar`; `_site/`, `_freeze/` y
+  `resources_rc.py` los regenera su herramienta.
+- **Español con tildes** en código, mensajes, comentarios y docs; nada del despacho en este repo.
+- **Un solo camino de instalación documentado**: `pip install -r requirements.txt`. Conda es opcional.
 
-The tools operate on the Quarto blog family: the hub `~/Documents/04 index` plus the 11 `pub_*` projects, which since 2026-09-06 are **git submodules of the hub** living in `~/Documents/04 index/_pubs/pub_*` (the leading underscore keeps Quarto from rendering them as part of the hub). Every tool locates them through a single setting (`QBLOG_PUBS_SUBDIR`, `PUBINDEX_PUBS_SUBDIR`, `PUBS_SUBDIR`), all defaulting to `website-achalma/_pubs`; blogs can still be named by folder (`pub_axiomata`) or short name (`axiomata`). Posts follow the convention `<blog>/posts/YYYY-MM-DD-titulo/index.qmd`. The Bash tools autodetect the Documents directory by walking up from their own location; this can be overridden with env vars (`QBLOG_DOCS_DIR`, `PUBINDEX_DOCS_DIR`).
-
-Python dependencies: `pyyaml`, `pandas`, `openpyxl` (typically in a conda env, e.g. `conda activate scripts_quarto`).
-
-## The tools
-
-The backend scripts live in `quarto_studio/backend/`:
-
-| Directory                                               | Language | Entry point          | Purpose                                                                                                            |
-| -------------------------------------------------------- | -------- | -------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| `quarto_studio/backend/script_blogs_manager/`                 | Bash     | `main.sh`            | Blog manager v3.0: list/render/preview/publish blogs, create posts (APAQuarto), git ops, backups, interactive menu |
-| `quarto_studio/backend/script_metadata_manager/`              | Python   | `main.py`            | Manage YAML metadata AND tags of hundreds of articles via an Excel database (v2.1 absorbed the old tag manager)    |
-| `quarto_studio/backend/script_pub_index_symlink/`             | Bash     | `main.sh`            | Maintain "04 index" symlinks (organized by year) to all publication folders                                        |
-| `quarto_studio/backend/script_format_yaml/`                   | Python   | `fix_qmd_files.py`   | Idempotent YAML block formatter for `.qmd` files                                                                   |
-| `quarto_studio/backend/script_generador_publicacion_similar/` | Bash     | `main.sh`            | Generate publication index files (`_contenido_*.qmd`)                                                              |
-| `quarto_studio/`                                          | Python   | `main.py`            | Quarto Studio: desktop GUI (PySide6/Qt6) that unifies all the tools above; the scripts are its backend (see its README) |
-
-The GUI resolves every backend entry point through `quarto_studio/app/services/paths.py` — if a script moves, update only that file.
-
-The old root-level one-off scripts (`1_sincronizar_fecha_carpeta_en_index_qmd.py`, `3_actualizar_enlace_pdf_en_qmd.py`) were absorbed into the metadata manager as `sync-dates` and `sync-pdf-urls` (v2.2) and deleted.
-
-**Note:** the old standalone `script_tag_manager/` was removed in favor of the tag commands inside `script_metadata_manager/` (v2.1); if docs or scripts mention `qmd_tag_manager.py`, they are stale.
-
-## Common commands
-
-Most tools that modify files support `--dry-run` — always suggest a dry run before applying bulk changes.
+## Cómo se verifica un cambio
 
 ```bash
-# Metadata manager (run from quarto_studio/backend/script_metadata_manager/)
-python main.py create-config ~/Documents                 # create metadata_config.yml
-python main.py create-template ~/Documents --config metadata_config.yml [--incremental]
-python main.py update ~/Documents excel_databases/quarto_metadata.xlsx --dry-run
-python main.py update ~/Documents excel.xlsx --blog pub_axiomata --filter-path "2025-06"
-python main.py find-differences ~/Documents excel.xlsx
-python main.py detect-new-fields ~/Documents --config metadata_config.yml
-
-# Tag management (target = .xlsx file → edits only the Excel; directory → edits .qmd files directly)
-python main.py normalize-tags <excel.xlsx | ~/Documents> [--dry-run]
-python main.py replace-tags <target> "viejo:nuevo" ["otro:nuevo2" ...]
-python main.py remove-tags <target> tag1 [tag2 ...]      # alias: remove-tag
-python main.py add-tags <target> tag1 [tag2 ...]         # only adds to articles that already have tags
-python main.py tag-stats <target> [--top N]
-python main.py audit-tags <target> [--threshold 0.8]
-
-# Path-derived sync (same dual target; absorbed the old root scripts 1_ and 3_)
-python main.py sync-dates <target> [--dry-run]        # date ← YYYY-MM-DD folder name (written as ISO AAAA-MM-DD)
-python main.py fechas-iso <target> [--dry-run]        # date → ISO AAAA-MM-DD, value unchanged (every .qmd under a dir, or the Excel column; v2.3)
-python main.py sync-pdf-urls <target> [--dry-run]     # citation.pdf-url ← per-blog base URL + article path
-
-# Blog manager
-./quarto_studio/backend/script_blogs_manager/main.sh            # interactive menu
-./quarto_studio/backend/script_blogs_manager/main.sh list       # list all blogs
-./quarto_studio/backend/script_blogs_manager/main.sh help
-
-# Publication index symlinks
-./quarto_studio/backend/script_pub_index_symlink/main.sh [--dry-run | --check-broken | --clean-broken | --summary]
-
-# YAML formatter
-python quarto_studio/backend/script_format_yaml/fix_qmd_files.py --directory <path> --recursive [--dry-run]
-
-# Publication index generator
-./quarto_studio/backend/script_generador_publicacion_similar/main.sh <blog-dir> [--base-url <url>] [--type auto|website|blog] [--dry-run]
+python3 core/archivos.py validar scripts_quarto_studio          # A01–A14 y D01–D12, desde ~/Documents
+python3 core/suites.py validar                                   # los 6 suite.yml contra el esquema
+python3 core/suites.py generar                                   # ¿bloques de README desfasados? (simula)
+bash -n backend/script_blogs_manager/main.sh                     # sintaxis; un archivo por invocación
+python3 -m py_compile main.py backend/*/main.py                # sintaxis Python
+cd backend/script_metadata_manager                              # el gestor de metadatos, desde su carpeta
+python3 main.py find-differences ~/Documents excel_databases/quarto_metadata.xlsx  # Excel vs .qmd
+python3 main.py update ~/Documents excel_databases/quarto_metadata.xlsx --dry-run  # simular antes de aplicar
+cd ../..
+backend/script_pub_index_symlink/main.sh --dry-run               # y --check-broken
+backend/script_generador_publicacion_similar/main.sh "../04 index/_pubs/pub_axiomata" --dry-run
+python3 backend/script_format_yaml/main.py --directory "../04 index/_pubs/pub_axiomata" --recursive --dry-run
+meta/doctor/main.sh --breve                                      # desde ~/Documents
 ```
 
-## Architecture
+No hay pruebas automáticas: un cambio en un backend se prueba con `--dry-run` sobre un pub y, si es de
+la GUI, abriendo `python3 main.py` y mirando la consola integrada (comando, stdout, stderr, código de
+salida y duración). Lo que se aplique de verdad sobre los blogs se confirma dentro del pub y después
+el puntero del submódulo en el hub (`04 index/docs/pubs-submodulos.md`).
 
-**Modular Bash pattern** (`script_blogs_manager`, `script_pub_index_symlink`, `script_generador_publicacion_similar`): a thin `main.sh` sources numbered modules from `lib/` in order (`00-config.sh`, `01-...`). Conventions:
+## Detalles que cuesta redescubrir
 
-- `00-config.sh` centralizes all paths, colors, excluded dirs, and defaults — other modules must not hardcode these values.
-- Each tool namespaces its globals with a prefix (`QBLOG_`, `PUBINDEX_`, `GENIDX_`) and guards against double-sourcing with a `*_CONFIG_LOADED` variable.
-- Modules load in numeric order because later modules depend on earlier ones.
-- `script_pub_index_symlink` writes daily logs to its `logs/` directory.
+- **`pub_chaska` publica en `chaska-x.netlify.app`**, no derivable de la carpeta. Por eso la URL base de
+  cada blog se resuelve por voto mayoritario entre los `pdf-url` existentes (una URL mal pegada no
+  envenena la detección) y `blog_base_urls` de `metadata_config.yml` tiene prioridad
+  (`backend/script_metadata_manager/lib/path_sync.py`).
+- **La documentación caduca se reconoce por sus nombres:** `script_tag_manager/` y `qmd_tag_manager.py`
+  desaparecieron en v2.1 (los comandos de tags viven en el metadata manager);
+  `1_sincronizar_fecha_carpeta_en_index_qmd.py` y `3_actualizar_enlace_pdf_en_qmd.py` son hoy
+  `sync-dates` y `sync-pdf-urls` (v2.2); el prefijo `quarto_studio/` en una ruta nunca existió en disco:
+  la GUI es `app/` y las herramientas, `backend/`.
+- **`fix_qmd_files.py` es un alias** de `backend/script_format_yaml/main.py` (FS3, 2026-09-07); la lógica
+  está en `config.py` y `lib/` de esa carpeta. La GUI todavía invoca el alias (`paths.yaml_formatter`).
+- **El asistente de posts no se automatiza** (`backend/script_blogs_manager/lib/07-post-creator.sh`, unas
+  50 preguntas encadenadas): es la única lógica portada a Python (`app/services/post_service.py`), que
+  genera el mismo `index.qmd`. Las confirmaciones de los scripts (`--clean-broken`, respaldo) se
+  responden por stdin después de que la GUI confirmó con el usuario.
+- **`sync-article` y `sync-batch` son interactivos**; en la GUI su equivalente es «Ver diferencias» →
+  «Aplicar Excel → .qmd» con filtros de blog y ruta.
+- **El runner de la GUI rechaza ejecuciones concurrentes**: los backends mutan los mismos árboles y no
+  son seguros en paralelo; el preview (proceso largo) se detiene con el botón ■.
+- **El Excel guarda `date` como texto**, ya no con la fórmula `=TEXT(DATE(…),"mm/dd/yyyy")` (M6). El
+  Excel `backend/script_metadata_manager/excel_databases/quarto_metadata.xlsx` está versionado a
+  propósito (es la `verdad` declarada en `meta/workspace.yml`); `respaldos/` y `logs/` están ignorados.
+- **`04 index/_indice/` es del vault**, ignorado en el hub: `pub_index_symlink` solo crea enlaces
+  simbólicos por año, nunca copia; omite los que ya apuntan bien y no toca archivos reales (los reporta
+  como conflicto). Escribe un log diario en su `logs/`.
+- **`generador_publicacion_similar` escribe fragmentos con frontmatter `tipo: fragmento`** (desde
+  2026-09-15) para `{{< include >}}`; ordena por el glob (con prefijo de fecha equivale a cronológico) y
+  **borra** el índice de un subblog que se queda sin posts; la capitalización usa `sed` GNU.
+- **Los recursos Qt se compilan opcionalmente** (`build_resources.sh` escribe `resources_rc.py` en
+  `app/resources/`, ignorado); sin él, la GUI carga iconos y temas desde disco.
 
-**Metadata manager** (`script_metadata_manager/`): `main.py` is only argparse + command dispatch; all logic lives in `lib/`:
+## Dónde está cada cosa
 
-- `config.py` — loads `metadata_config.yml` (`allowed_blogs`, `excluded_folders`, output dir)
-- `collector.py` — finds `index.qmd` files (only in date-named folders)
-- `yaml_parser.py` / `field_mapper.py` — YAML frontmatter parsing and Excel-column ↔ YAML-field mapping
-- `excel_writer.py` — builds/appends the Excel template (METADATOS + INSTRUCCIONES sheets)
-- `qmd_updater.py` — applies Excel rows back to `.qmd` files (only when values differ)
-- `sync.py` — diff detection and interactive per-article/batch sync
-
-The Excel file is the source of truth for bulk edits: generate template → edit in Excel → `update` applies changes back to the `.qmd` files.
-
-**Path-derived sync** (inside `script_metadata_manager/`, since v2.2): `path_sync.py` derives `date` from the article's `YYYY-MM-DD-titulo` folder and `citation.pdf-url` from the per-blog base URL + article path. **Dates are ISO `AAAA-MM-DD`** since v2.3 (2026-09-15, `meta/NORMATIVA_ARCHIVOS.md` §3, phase M6): `lib/fechas.py` holds the pure parsers (`MM/DD/YYYY`, ISO, ISO with time, `date`/`datetime`), `sync-dates` writes ISO, `fechas-iso` only normalizes the format (all `.qmd` under a directory, or the Excel `date` column as text, replacing the old `=TEXT(DATE(…),"mm/dd/yyyy")` formulas). When only `date` changes, the tool substitutes that single frontmatter line and leaves the rest of the file byte-identical (comments and quoting preserved); the full YAML writer is the fallback. Base URLs are resolved by majority vote over each blog's existing pdf-urls (so one bad copy-pasted URL can't poison detection — note `pub_chaska` → `chaska-x.netlify.app`, not derivable from the folder name), overridable via `blog_base_urls` in `metadata_config.yml`. It never creates a `citation` block, only updates existing ones.
-
-**Tag management** (inside `script_metadata_manager/`, since v2.1): `tag_utils.py` has the pure functions (normalization lowercases, strips accents, converts spaces to underscores: `Gestión Empresarial` → `gestion_empresarial`; dedup, string similarity); `tag_operations.py` applies operations to either the Excel `tags` column or directly to `.qmd` files (through the same `collector` + `write_yaml_to_qmd` used by `update`); `tag_reports.py` builds `tag-stats` and `audit-tags` reports. Every tag operation normalizes the full list, and articles without a `tags` field are always skipped. There is exactly ONE YAML writer (`qmd_updater.write_yaml_to_qmd`) and ONE field reorderer (`field_mapper.reorder_yaml`) — do not introduce parallel implementations.
+| pregunta | documento |
+|---|---|
+| qué escribe cada herramienta en el hub y los pubs | `README.md` §«Contrato con el hub» |
+| la GUI: arquitectura, decisiones, cómo añadir una herramienta | `app/README.md` |
+| comandos, filtros, fórmulas y columnas del Excel | `backend/script_metadata_manager/README.md` |
+| render, preview, publicar, posts APA, git, respaldos | `backend/script_blogs_manager/README.md` |
+| qué es una publicación, conflictos, logs del índice | `backend/script_pub_index_symlink/README.md` |
+| reparar bloques YAML y `---` pegados | `backend/script_format_yaml/README.md` |
+| estructuras `website`/`blog`, URL base | `backend/script_generador_publicacion_similar/README.md` |
+| versiones y desde cuándo | `CHANGELOG.md` |
+| el hub, los submódulos y el tema compartido | `04 index/docs/pubs-submodulos.md`, `04 index/CLAUDE.md` |
+| el contrato de suite y los bloques generados | `core/suite.schema.yml`, `core/README.md` |
+| normativa de archivos, fechas y cabeceras | `meta/NORMATIVA_ARCHIVOS.md` |

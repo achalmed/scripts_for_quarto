@@ -1,4 +1,8 @@
-# Generador de Índices de Contenido para Blogs Quarto
+---
+tipo: readme
+estado: activo
+---
+# backend/script_generador_publicacion_similar/ — generador de índices de contenido (_contenido_<subblog>.qmd) de un blog Quarto (v4.0)
 
 <!-- suite:inicio -->
 **Suite `generador_publicacion_similar`** · objetivo *publicacion* · estado *activo* · bash · interfaz cli
@@ -284,7 +288,7 @@ está en construcción y aún no lo tiene, fuerza el tipo manualmente:
   `alias indices-actus='main.sh ~/Documents/04 index/_pubs/pub_actus-mercator -u https://actus-mercator.netlify.app'`.
 - La capitalización de títulos usa `sed 's/\b\(.\)/\u\1/g'` (extensión GNU):
   en macOS/BSD requeriría `gsed`.
-- Los índices se generan **sin encabezado YAML** (comportamiento original),
+- Los índices llevan el frontmatter `tipo: fragmento` (NORMATIVA §6.2, desde 2026-09-15) y están
   pensados para usarse vía `{{< include >}}`.
 - El orden de las publicaciones es el alfabético del glob, que con el
   prefijo `YYYY-MM-DD-` equivale a orden cronológico ascendente.
@@ -298,3 +302,11 @@ está en construcción y aún no lo tiene, fuerza el tipo manualmente:
 
 - Website: [achalmaedison.netlify.app](https://achalmaedison.netlify.app)
 - GitHub: [@achalmed](https://github.com/achalmed)
+
+## Límite honesto
+
+- **Solo escribe `_contenido_<subblog>.qmd` en la raíz del blog**: no toca los posts ni `_quarto.yml`, y el `index.qmd` que incluye los fragmentos lo escribe el autor.
+- **Si un subblog se queda sin publicaciones válidas, borra su índice anterior**; `--dry-run` lo anuncia sin borrar.
+- **Una publicación es una carpeta cuyo nombre empieza por `YYYY-MM-DD-`**; nada más cuenta, y el orden es el del glob (cronológico gracias al prefijo).
+- **La URL base no se deduce del blog**: se pasa con `--base-url` o se usa la del hub por defecto (`pub_chaska` publica en `chaska-x.netlify.app`, no derivable de la carpeta).
+- **Requiere `sed` GNU** para la capitalización; en macOS/BSD haría falta `gsed`.

@@ -1,4 +1,8 @@
-# 🛠️ Scripts for Quarto
+---
+tipo: readme
+estado: activo
+---
+# scripts_quarto_studio/ — herramientas y GUI de la familia de blogs Quarto (repo scripts_for_quarto, suite quarto_studio)
 
 <!-- suite:inicio -->
 **Suite `quarto_studio`** · objetivo *publicacion* · estado *activo* · python · interfaz gui
@@ -32,616 +36,114 @@ Suites de esta carpeta (6); índice global en `meta/INDICE_SCRIPTS.md`. Patrón:
 <sub>Bloque generado desde los `suite.yml` por `core/suites.py generar` (2026-09-20); no se edita a mano.</sub>
 <!-- suites:fin -->
 
-> **Ubicación de los blogs (desde 2026-09-06):** los 11 `pub_*` son submódulos git de `website-achalma` y viven en `~/Documents/04 index/_pubs/pub_*`; el hub sigue en `~/Documents/04 index`. Las herramientas los localizan por esa subcarpeta (variable `QBLOG_PUBS_SUBDIR / PUBS_SUBDIR`), y aceptan el nombre de carpeta o el nombre corto sin `pub_`.
+## Qué es
 
-#readme
+Cinco herramientas de línea de comandos (tres en Bash, dos en Python) y una aplicación de escritorio
+(Quarto Studio, PySide6) que las envuelve, para mantener la familia de blogs Quarto del autor: el hub
+`04 index` (repo `website-achalma`) y sus 11 satélites `pub_*`, submódulos git del hub en `04 index/_pubs/`
+desde 2026-09-06. Resuelven lo que Quarto no hace por sí solo: editar el frontmatter de cientos de posts
+a la vez desde un Excel, normalizar etiquetas y fechas, reparar bloques YAML, generar índices de contenido,
+mantener un índice por año en el vault y renderizar o publicar los doce sitios desde un solo menú.
 
-**Colección de herramientas para optimizar y automatizar la gestión de blogs Quarto**
+Cuatro nombres para una sola cosa: la carpeta es `scripts_quarto_studio`; el remoto en GitHub sigue
+llamándose `scripts_for_quarto` (los nombres de repo no cambiaron al fusionar el workspace con el vault,
+2026-09-06); la suite raíz se llama `quarto_studio` y la GUI, «Quarto Studio».
 
-[![GitHub](https://img.shields.io/badge/GitHub-achalmed%2Fscripts__for__quarto-blue?logo=github)](https://github.com/achalmed/scripts_for_quarto)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Python](https://img.shields.io/badge/Python-3.8%2B-blue.svg)](https://www.python.org/)
-[![Quarto](https://img.shields.io/badge/Quarto-Compatible-orange.svg)](https://quarto.org/)
+**No es** un tema, un sitio ni una plantilla de Quarto: el tema de los doce sitios vive en el hub y se
+propaga con `04 index/scripts/sync-theme-pubs.sh`; el contenido de cada post vive en su pub. Tampoco es
+una biblioteca: cada herramienta es autónoma, con su `suite.yml`, su README y su `lib/`, y la GUI las
+invoca como procesos, nunca importa su código. Depende de `core/` (raíz y logger) y de `04 index`
+(`meta/workspace.yml`); su única fuente de verdad propia es el Excel de metadatos,
+`backend/script_metadata_manager/excel_databases/quarto_metadata.xlsx`, versionado a propósito.
 
----
+## Contrato con el hub
 
-## 📋 Descripción General
+Lo que cada herramienta escribe fuera de este repo. La verdad de un post es siempre su `index.qmd`; el
+Excel es la mesa de trabajo, y lo que se edite a mano en un `.qmd` prevalece hasta el siguiente
+`create-template --incremental` o `find-differences`.
 
-Este repositorio contiene una **suite de herramientas especializadas** para trabajar con blogs y documentos Quarto. Cada script está diseñado para resolver problemas específicos en la gestión, mantenimiento y publicación de contenido académico y profesional.
+| herramienta | escribe | dónde | cómo se protege |
+|---|---|---|---|
+| `metadata_manager` | el frontmatter YAML de los `index.qmd` | `04 index/blog/posts/` y los `posts/` de cada pub | simula por defecto; solo cambia lo que difiere; un solo escritor de YAML; nunca crea `citation` |
+| `format_yaml` | el bloque YAML de cada `.qmd` (delimitadores y líneas en blanco) | la carpeta que se le pase | idempotente; `--dry-run` |
+| `generador_publicacion_similar` | `_contenido_<subblog>.qmd`, fragmentos con `tipo: fragmento` para `{{< include >}}` | la raíz del blog que se le pase | `--dry-run`; si un subblog queda sin posts, borra su índice |
+| `pub_index_symlink` | enlaces simbólicos por año, nunca copias | `04 index/_indice/` (ignorado en git; del vault) | omite lo que ya apunta bien; no toca archivos reales; `--dry-run` |
+| `blogs_manager` | `_site/`, `_freeze/`, posts nuevos, commits, respaldos | hub y pubs; Netlify vía `quarto publish` | pide confirmación en lo destructivo; no tiene `--dry-run` |
+| `app/` (Quarto Studio) | nada propio: lanza las cinco anteriores | — | una operación a la vez; simula por defecto |
 
-**Desarrollado por:** Edison Achalma  
-**Ubicación:** Ayacucho, Perú  
-**Última actualización:** Diciembre 2024
+Cómo están montados los pubs y por qué se confirma dentro del pub antes que en el hub:
+`04 index/docs/pubs-submodulos.md`.
 
----
-
-## 🎯 ¿Para quién es este repositorio?
-
-Este conjunto de scripts es ideal para:
-
-- 📝 **Bloggers académicos** que gestionan múltiples blogs Quarto
-- 🎓 **Investigadores** que publican contenido técnico
-- 📚 **Educadores** que mantienen material educativo online
-- 💼 **Profesionales** con múltiples sitios de documentación
-- 🔧 **Desarrolladores** que buscan automatizar flujos de trabajo en Quarto
-
----
-
-# Quarto Studio
-
-Aplicación de escritorio (**PySide6 / Qt6**) que unifica todas las herramientas
-de `scripts_for_quarto` en una sola interfaz profesional. Los scripts
-existentes **no se reescriben**: actúan como motor (backend) y la GUI los
-invoca a través de una capa de servicios desacoplada.
-
-```
-┌────────────────────────────────────────────────────────────┐
-│  Menú · Toolbar                                            │
-├──────────┬─────────────────────────────────┬───────────────┤
-│ Sidebar  │  Páginas (QStackedWidget)       │  Explorador   │
-│ Dashboard│  Dashboard / Blogs / Metadata   │  de proyectos │
-│ Blogs    │  YAML / Índices / Contenido     │  (dock)       │
-│ Metadata ├─────────────────────────────────┴───────────────┤
-│ YAML     │  Consola integrada  |  Logs (historial)         │
-│ Índices  ├─────────────────────────────────────────────────┤
-│ Contenido│  Barra de estado · progreso · directorio        │
-└──────────┴─────────────────────────────────────────────────┘
-```
-
-## Ejecución
+## Uso
 
 ```bash
-conda activate scripts_quarto        # o cualquier entorno con PySide6
-pip install PySide6                  # solo la primera vez
-python quarto_studio/main.py
+pip install -r requirements.txt                       # PySide6, pyyaml, pandas, openpyxl (un entorno conda es opcional)
+python3 main.py                                       # Quarto Studio, la GUI
+backend/script_blogs_manager/main.sh                  # menú interactivo; `main.sh help` lista los comandos
+backend/script_blogs_manager/main.sh list             # los 12 sitios que ve el gestor
+backend/script_blogs_manager/main.sh render axiomata  # nombre corto o pub_axiomata; también preview, publish, clean, git-*
+cd backend/script_metadata_manager                    # el gestor de metadatos se ejecuta desde su carpeta
+python3 main.py create-template ~/Documents --config metadata_config.yml --incremental   # Excel al día
+python3 main.py update ~/Documents excel_databases/quarto_metadata.xlsx --dry-run        # simular; sin --dry-run aplica
+python3 main.py normalize-tags ~/Documents --config metadata_config.yml --dry-run        # igual: sync-dates, fechas-iso, sync-pdf-urls
+cd ../..
+python3 backend/script_format_yaml/main.py --directory "../04 index/_pubs/pub_axiomata" --recursive --dry-run
+backend/script_generador_publicacion_similar/main.sh "../04 index/_pubs/pub_axiomata" --dry-run
+backend/script_pub_index_symlink/main.sh --dry-run    # sin --dry-run escribe 04 index/_indice/; --check-broken, --clean-broken
+./build_resources.sh                                  # opcional: compila resources.qrc (la GUI funciona sin este paso)
 ```
 
-Opcional: compilar los recursos Qt (la app funciona sin este paso gracias al
-fallback a disco):
-
-```bash
-./build_resources.sh    # requiere pyside6-rcc funcional
-```
-
-## Arquitectura
-
-```
-quarto_studio/
-├── main.py                  # entrada: QApplication + MainWindow
-├── backend/                 # los script_* (CLI Bash/Python que la GUI invoca)
-│   ├── script_blogs_manager/
-│   ├── script_format_yaml/
-│   ├── script_generador_publicacion_similar/
-│   ├── script_metadata_manager/
-│   └── script_pub_index_symlink/
-└── app/
-    ├── application.py       # tema claro/oscuro (QSS), iconos, QApplication
-    ├── settings.py          # QSettings centralizado (única puerta de acceso)
-    ├── models/              # dominio puro: Blog, Post, Operacion
-    ├── services/            # construyen Command (datos) por herramienta:
-    │   ├── command.py       #   Command = programa + args + cwd + stdin
-    │   ├── paths.py         #   localización de scripts y Documents
-    │   ├── blog_service.py  #   → backend/script_blogs_manager/main.sh
-    │   ├── metadata_service.py  # → backend/script_metadata_manager/main.py
-    │   ├── yaml_service.py  #   → backend/script_format_yaml/fix_qmd_files.py
-    │   ├── index_service.py #   → backend/script_pub_index_symlink/main.sh
-    │   ├── similar_service.py   # → backend/script_generador_publicacion_similar/main.sh
-    │   ├── post_service.py  #   creación de posts APAQuarto (portado, ver abajo)
-    │   └── project_scanner.py   # escaneo de blogs/posts (Python puro)
-    ├── workers/
-    │   ├── process_runner.py    # QProcess asíncrono: señales de salida/progreso
-    │   └── scan_worker.py       # QThread para el escaneo de proyectos
-    ├── controllers/         # vista → servicio → worker (MVC)
-    ├── ui/pages/            # una página por funcionalidad
-    ├── widgets/             # consola, logs, sidebar, explorador, cabeceras
-    ├── dialogs/             # preferencias, nuevo post, nuevo blog (.ui)
-    ├── utils/               # limpieza ANSI
-    └── resources/           # resources.qrc, iconos SVG, temas QSS, .ui
-```
-
-**Regla de dependencias:** `ui → controllers → services → workers`. La UI
-nunca conoce rutas de scripts; los servicios nunca importan Qt Widgets; los
-modelos no importan nada de Qt.
-
-## Decisiones de diseño
-
-- **Reutilización primero.** Todos los subcomandos no interactivos de los
-  scripts se invocan tal cual (QProcess). La consola muestra el comando
-  exacto, stdout, stderr, código de salida y duración — nada se oculta.
-- **Una sola excepción portada a Python:** el asistente de posts APAQuarto
-  (`07-post-creator.sh`, ~50 prompts encadenados de terminal) no puede
-  automatizarse de forma fiable; `post_service.py` genera el mismo
-  `index.qmd` desde el diálogo Qt.
-- **Confirmaciones de los scripts** (`--clean-broken`, backup) se responden
-  por stdin después de que la GUI ya confirmó con el usuario.
-- **`sync-article` / `sync-batch`** (interactivos en terminal) se cubren con
-  el flujo GUI equivalente: *Ver diferencias* → *Aplicar Excel → .qmd* con
-  filtros de blog/ruta.
-- **Dry-run por defecto** en toda operación destructiva, igual que la
-  convención del repositorio.
-- **Una operación a la vez** (el runner rechaza ejecuciones concurrentes):
-  los scripts mutan los mismos árboles de archivos y no son seguros en
-  paralelo. El preview (proceso largo) se detiene con el botón ■.
-
-## Extender la aplicación
-
-Para añadir una herramienta nueva: crear su `*_service.py` (funciones que
-devuelven `Command`), añadir métodos al controlador correspondiente (o uno
-nuevo), crear la página en `ui/pages/` y registrarla en `Sidebar.SECCIONES`
-y `MainWindow`. Ni la consola, ni los logs, ni el progreso necesitan cambios.
-
-
-
----
-
-
-
-## 📦 Scripts Incluidos
-
-### 1. 🔧 **Script Format YAML** (`quarto_studio/backend/script_format_yaml/`)
-
-**Problema que resuelve:** Corrige automáticamente el formato del bloque YAML en archivos `.qmd`.
-
-**Características principales:**
-
-- ✅ Normaliza el espaciado después de los delimitadores `---`
-- ✅ Elimina líneas en blanco innecesarias
-- ✅ Es **idempotente** (puedes ejecutarlo múltiples veces)
-- ✅ Modo `--dry-run` para simular cambios
-
-**Uso rápido:**
-
-```bash
-cd quarto_studio/backend/script_format_yaml
-python fix_qmd_files.py --directory ~/Documents/publicaciones --recursive
-```
-
-**📖 [README completo](quarto_studio/backend/script_format_yaml/README.md)**
-
----
-
-### 2. 📑 **Generador de Índices de Publicaciones** (`quarto_studio/backend/script_generador_publicacion_similar/`)
-
-**Problema que resuelve:** Genera automáticamente archivos de índice para tus publicaciones.
-
-**Características principales:**
-
-- 📁 Soporta **dos estructuras**: página web completa (`blog/posts/`) y blog independiente (`posts/`)
-- 🔗 Crea enlaces a PDFs y artículos
-- 🎨 Usa iconos de Font Awesome
-- 🔄 Procesamiento automático de subdirectorios
-
-**Uso rápido:**
-
-```bash
-cd quarto_studio/backend/script_generador_publicacion_similar
-./main.sh ~/Documents/04 index/_pubs/pub_actus-mercator --base-url https://actus-mercator.netlify.app
-./main.sh ~/Documents/04 index/teching
-```
-
-**Estructuras soportadas:**
-
-**Página Web:**
-
-```
-mi-sitio/
-└── blog/
-    └── posts/
-        └── 2023-05-12-titulo/
-            └── index.qmd
-```
-
-**Blog Independiente:**
-
-```
-actus-mercator/
-└── posts/
-    └── 2022-01-23-titulo/
-        └── index.qmd
-```
-
-**📖 [README completo](quarto_studio/backend/script_generador_publicacion_similar/README.md)**
-
----
-
-### 3. 📊 **Sistema de Gestión de Metadatos** (`quarto_studio/backend/script_metadata_manager/`)
-
-**Problema que resuelve:** Administra metadatos YAML de **cientos de artículos** desde un solo archivo Excel.
-
-**Características principales:**
-
-- 📊 **Excel como base de datos** - Edita metadatos en Excel
-- 🎯 Filtra por blog, ruta o criterios personalizados
-- 🔄 Solo actualiza cuando hay diferencias
-- 📝 Soporta 4 tipos de documentos: STU, MAN, JOU, DOC
-- 👥 Gestión de hasta 3 autores con ORCID y afiliaciones
-- ⚡ Modo simulación con `--dry-run`
-
-**Flujo de trabajo:**
-
-```bash
-cd quarto_studio/backend/script_metadata_manager
-
-# 1. Crear configuración
-python main.py create-config ~/Documents
-
-# 2. Generar base de datos Excel
-python main.py create-template ~/Documents \
-    --config metadata_config.yml
-
-# 3. Editar metadatos en Excel
-libreoffice excel_databases/quarto_metadata.xlsx
-
-# 4. Actualizar archivos
-python main.py update ~/Documents \
-    excel_databases/quarto_metadata.xlsx --config metadata_config.yml
-```
-
-**Casos de uso comunes:**
-
-- ✅ Publicar 20+ artículos cambiando `draft: FALSE`
-- ✅ Actualizar keywords de forma masiva
-- ✅ Cambiar tipo de documento (JOU → STU)
-- ✅ Agregar/modificar autores en múltiples artículos
-
-**📖 [README completo](quarto_studio/backend/script_metadata_manager/README.md)**
-
----
-
-### 4. 🏷️ **Gestión de Tags** (integrada en `quarto_studio/backend/script_metadata_manager/` desde v2.1)
-
-> ℹ️ El antiguo `script_tag_manager/` fue **absorbido por el Metadata
-> Manager**: una sola herramienta, un solo parser YAML, una sola CLI.
-
-**Problema que resuelve:** Normaliza, reemplaza, elimina, agrega y audita tags — sobre el Excel o directamente sobre los archivos `.qmd`.
-
-**Características principales:**
-
-- 🔄 **Normalización automática** - Minúsculas, sin tildes, snake_case
-- 🔁 **Reemplazo masivo** - Varios `"viejo:nuevo"` a la vez
-- 🗑️ **Eliminación selectiva** - Remueve tags no deseados
-- ➕ **Adición inteligente** - Solo agrega tags a archivos que ya los tienen
-- 🔍 **Detección de duplicados** - `economia, Economía, ECONOMIA` → `economia`
-- 📊 **Estadísticas** - Top tags, huérfanos, distribución por blog/año
-- 🔬 **Auditoría de taxonomía** - Detecta typos y variantes por similitud
-
-**Ejemplos de normalización:**
-
-```yaml
-# Antes
-tags:
-  - Gestión Empresarial
-  - Economía Internacional
-  - Cadena de suministros
-
-# Después (con normalize-tags)
-tags:
-  - gestion_empresarial
-  - economia_internacional
-  - cadena_de_suministros
-```
-
-**Uso rápido:**
-
-```bash
-cd quarto_studio/backend/script_metadata_manager
-
-# Normalizar la columna tags del Excel (los archivos no se tocan)
-python main.py normalize-tags excel_databases/quarto_metadata.xlsx --dry-run
-
-# Normalizar directamente los archivos .qmd
-python main.py normalize-tags ~/Documents --config metadata_config.yml
-
-# Reemplazar, eliminar, agregar
-python main.py replace-tags excel.xlsx "viejo:nuevo" "otro:nuevo2"
-python main.py remove-tags excel.xlsx tag_obsoleto
-python main.py add-tags ~/Documents nuevo_tag --blog pub_axiomata
-
-# Estadísticas y auditoría de taxonomía
-python main.py tag-stats ~/Documents --top 30
-python main.py audit-tags excel_databases/quarto_metadata.xlsx
-```
-
-**📖 [README completo](quarto_studio/backend/script_metadata_manager/README.md)**
-
----
-
-## 🚀 Instalación General
-
-### Requisitos Previos
-
-- **Python 3.8+**
-- **Conda** (recomendado) o pip
-- **Quarto** (para renderizar blogs)
-- **Git** (para control de versiones)
-
-### Instalación Rápida
-
-```bash
-# 1. Clonar el repositorio
-git clone https://github.com/achalmed/scripts_for_quarto.git
-cd scripts_for_quarto
-
-# 2. Crear entorno conda (recomendado)
-conda create -n scripts_quarto python=3.9
-conda activate scripts_quarto
-
-# 3. Instalar dependencias generales
-pip install pyyaml pandas openpyxl
-
-# 4. Dar permisos de ejecución
-chmod +x quarto_studio/backend/script_generador_publicacion_similar/main.sh
-chmod +x quarto_studio/backend/script_metadata_manager/*.sh
-```
-
-### Instalación por Script
-
-Cada script tiene su propio directorio con instrucciones específicas:
-
-```bash
-# Script Format YAML
-cd quarto_studio/backend/script_format_yaml
-# Ver README.md
-
-# Generador de Índices
-cd quarto_studio/backend/script_generador_publicacion_similar
-# Ver README.md
-
-# Gestor de Metadatos y Tags
-cd quarto_studio/backend/script_metadata_manager
-bash install.sh  # Instalación automática
-```
-
----
-
-## 📖 Guías de Uso Rápido
-
-### Flujo de Trabajo Típico
-
-```bash
-# 1. Activar entorno
-conda activate scripts_quarto
-
-# 2. Normalizar formato YAML
-cd quarto_studio/backend/script_format_yaml
-python fix_qmd_files.py --directory ~/Documents/publicaciones --recursive
-
-# 3. Normalizar tags
-cd ../script_metadata_manager
-python main.py normalize-tags ~/Documents --config metadata_config.yml --dry-run
-python main.py normalize-tags ~/Documents --config metadata_config.yml
-
-# 4. Actualizar metadatos desde Excel
-python main.py update ~/Documents \
-    excel_databases/quarto_metadata.xlsx
-
-# 5. Generar índices
-cd ../script_generador_publicacion_similar
-./main.sh ~/Documents/04 index/_pubs/pub_axiomata
-
-# 6. Renderizar con Quarto
-cd ~/Documents/04 index/_pubs/pub_axiomata
-quarto render
-```
-
----
-
-## 🎯 Casos de Uso por Escenario
-
-### Escenario 1: Iniciar un Nuevo Blog
-
-```bash
-# 1. Crear estructura
-quarto create project blog mi-blog
-
-# 2. Configurar gestor de metadatos
-cd scripts_quarto_studio/quarto_studio/backend/script_metadata_manager
-python main.py create-config ~/Documents/mi-blog
-
-# 3. Generar primera base de datos
-python main.py create-template ~/Documents/mi-blog
-```
-
-### Escenario 2: Migrar Blog Existente
-
-```bash
-# 1. Corregir formato YAML
-cd quarto_studio/backend/script_format_yaml
-python fix_qmd_files.py --directory ~/Documents/blog-viejo --recursive
-
-# 2. Normalizar tags
-cd ../script_metadata_manager
-python main.py normalize-tags ~/Documents/blog-viejo --dry-run
-python main.py normalize-tags ~/Documents/blog-viejo
-
-# 3. Crear base de datos de metadatos
-python main.py create-template ~/Documents/blog-viejo
-```
-
-### Escenario 3: Publicación Masiva
-
-```bash
-# 1. Crear Excel con todos los artículos
-cd quarto_studio/backend/script_metadata_manager
-python main.py create-template ~/Documents
-
-# 2. Editar en Excel (cambiar draft: FALSE)
-libreoffice excel_databases/quarto_metadata.xlsx
-
-# 3. Aplicar cambios
-python main.py update ~/Documents \
-    excel_databases/quarto_metadata.xlsx
-
-# 4. Generar índices
-cd ../script_generador_publicacion_similar
-./main.sh ~/Documents/04 index/_pubs/pub_axiomata
-
-# 5. Renderizar
-cd ~/Documents/publicaciones
-quarto render
-```
-
-### Escenario 4: Mantenimiento Periódico
-
-```bash
-# 1. Actualizar metadatos
-cd quarto_studio/backend/script_metadata_manager
-python main.py create-template ~/Documents --incremental
-
-# 2. Revisar y editar Excel
-# (Actualizar keywords, categorías, etc.)
-
-# 3. Auditar la taxonomía de tags
-python main.py audit-tags excel_databases/quarto_metadata.xlsx
-
-# 4. Aplicar cambios
-python main.py update ~/Documents \
-    excel_databases/quarto_metadata.xlsx --dry-run  # Simular primero
-python main.py update ~/Documents \
-    excel_databases/quarto_metadata.xlsx  # Aplicar
-```
-
----
-
-## 📊 Comparación de Scripts
-
-| Script                | Propósito                          | Input              | Output             | Mejor Para                                   |
-| --------------------- | ---------------------------------- | ------------------ | ------------------ | -------------------------------------------- |
-| **Format YAML**       | Corregir formato                   | `.qmd`             | `.qmd` corregidos  | Normalización inicial                        |
-| **Generador Índices** | Crear listas                       | Carpetas con posts | `_contenido_*.qmd` | Navegación en blogs                          |
-| **Metadata Manager**  | Gestión masiva de metadatos y tags | `.qmd` / Excel     | Excel ↔ `.qmd`     | Edición de metadatos y taxonomía consistente |
-
----
-
-## 🤝 Contribuciones
-
-¡Las contribuciones son bienvenidas! Si tienes ideas para mejorar estos scripts:
-
-1. **Fork** el repositorio
-2. Crea una **branch** para tu feature: `git checkout -b feature/nueva-caracteristica`
-3. **Commit** tus cambios: `git commit -m "Agregar nueva característica"`
-4. **Push** a la branch: `git push origin feature/nueva-caracteristica`
-5. Abre un **Pull Request**
-
-### Áreas de Mejora Sugeridas
-
-- [ ] Interfaz gráfica (GUI) para los scripts
-- [ ] Soporte para más formatos de documentos
-- [ ] Integración con GitHub Actions
-- [ ] Tests automatizados
-- [ ] Documentación en inglés
-
----
-
-## 🐛 Reportar Problemas
-
-Si encuentras un bug o tienes una sugerencia:
-
-1. Verifica que estás usando la última versión
-2. Revisa los [Issues existentes](https://github.com/achalmed/scripts_for_quarto/issues)
-3. Crea un nuevo Issue con:
-   - Descripción del problema
-   - Pasos para reproducir
-   - Versión de Python y sistema operativo
-   - Logs relevantes
-
----
-
-## 📄 Licencia
-
-Este proyecto está licenciado bajo la licencia MIT - ver el archivo [LICENSE](LICENSE) para más detalles.
-
----
-
-## 📞 Contacto y Soporte
-
-**Autor:** Edison Achalma
-
-- 🌐 **Website:** [achalmaedison.netlify.app](https://achalmaedison.netlify.app)
-- 💼 **LinkedIn:** [@achalmaedison](https://www.linkedin.com/in/achalmaedison)
-- 🐙 **GitHub:** [@achalmed](https://github.com/achalmed)
-- 📧 **Email:** achalmaedison@gmail.com
-- 📍 **Ubicación:** Ayacucho, Perú
-
----
-
-## 🎓 Recursos Adicionales
-
-### Documentación de Quarto
-
-- [Quarto Official Docs](https://quarto.org/)
-- [Quarto Blogs Guide](https://quarto.org/docs/websites/website-blog.html)
-- [YAML Metadata](https://quarto.org/docs/reference/formats/html.html)
-
-### Tutoriales y Guías
-
-Cada script incluye:
-
-- 📖 **README.md** - Documentación completa
-- 📝 **EJEMPLOS.md** - Casos de uso detallados
-- 🔄 **CHANGELOG.md** - Historial de versiones (donde aplica)
-- 🚀 **QUICKSTART.md** - Guía de inicio rápido (donde aplica)
-
----
-
-## ⭐ Agradecimientos
-
-Gracias a todos los que han contribuido con ideas, reportes de bugs y sugerencias para mejorar estos scripts.
-
-Especial agradecimiento a:
-
-- La comunidad de **Quarto**
-- Los usuarios beta que probaron las primeras versiones
-- Todos los que reportaron bugs y sugirieron mejoras
-
----
-
-## 🔄 Actualizaciones Recientes
-
-### Diciembre 2024
-
-- ✅ **Script Metadata Manager v1.2** - Filtros avanzados, Excel unificado
-- ✅ **Script Tag Manager v1.1** - Corrección de bugs, mejor normalización
-- ✅ **Script Format YAML v2.0** - Idempotente, más robusto
-- ✅ **Generador de Índices v2.0** - Soporte para múltiples estructuras
-
-### Próximas Características
-
-- 🔜 Interfaz web para Metadata Manager
-- 🔜 Integración con CI/CD
-- 🔜 Exportación a otros formatos (JSON, CSV)
-- 🔜 Validación automática de metadatos
-- 🔜 Dashboard de estadísticas de blogs
-
----
-
-## 📈 Estadísticas del Proyecto
-
-![GitHub stars](https://img.shields.io/github/stars/achalmed/scripts_for_quarto?style=social)
-![GitHub forks](https://img.shields.io/github/forks/achalmed/scripts_for_quarto?style=social)
-![GitHub watchers](https://img.shields.io/github/watchers/achalmed/scripts_for_quarto?style=social)
-
----
-
-## 🎉 ¿Te gustó este proyecto?
-
-Si estos scripts te han sido útiles:
-
-- ⭐ **Dale una estrella** al repositorio
-- 🔄 **Comparte** con otros usuarios de Quarto
-- 💬 **Comenta** tus casos de uso
-- 🤝 **Contribuye** con mejoras
-
----
-
-**¡Feliz gestión de blogs con Quarto!** 🚀📝
-
----
-
-<div align="center">
-
-**Hecho con ❤️ en Ayacucho, Perú**
-
-_Last Updated: December 2024_
-
-</div>
+Regla de oro: `--dry-run` antes de cualquier cambio masivo. El `metadata_manager` simula por defecto;
+`blogs_manager` es el único sin simulación.
+
+## Estructura
+
+| carpeta | qué es | dueño / generador |
+|---|---|---|
+| `main.py` | entrada de la GUI: `QApplication` + `MainWindow`, nada más | a mano |
+| `app/` | Quarto Studio: `application.py`, `settings.py`, `models/`, `services/`, `workers/`, `controllers/`, `ui/`, `widgets/`, `dialogs/`, `utils/`, `resources/` | a mano; `app/README.md` |
+| `backend/script_blogs_manager/` | Bash, `main.sh` + `lib/` (13 módulos): listar, render, preview, publicar, posts APA, git, respaldos | a mano |
+| `backend/script_metadata_manager/` | Python, `main.py` + `lib/`: metadatos, tags, fechas y `pdf-url` desde el Excel de `excel_databases/`; `metadata_config.yml`; `install.sh`, `quick_start.sh` | a mano; el Excel lo escribe `create-template`; `respaldos/` ignorado |
+| `backend/script_pub_index_symlink/` | Bash, `main.sh` + `lib/`: enlaces por año en `04 index/_indice/`; `logs/` ignorado | a mano |
+| `backend/script_format_yaml/` | Python, `main.py` + `config.py` + `lib/`; `fix_qmd_files.py` es un alias | a mano |
+| `backend/script_generador_publicacion_similar/` | Bash, `main.sh` + `lib/`: índices `_contenido_*.qmd` | a mano |
+| `suite.yml` (raíz y uno por backend) | manifiesto de cada suite (`core/suite.schema.yml`) | a mano; los bloques de README los genera `core/suites.py generar --aplicar` |
+| `requirements.txt` · `build_resources.sh` | dependencias Python; compilación opcional de los recursos Qt | a mano |
+| `CHANGELOG.md` · `LICENSE` | versiones con fecha ISO; MIT | a mano |
+
+Sin `docs/`: variante `suite` de `meta/workspace.yml`; cada herramienta se documenta en su carpeta.
+
+## Documentación
+
+| documento | para qué leerlo |
+|---|---|
+| `CLAUDE.md` | reglas para el asistente: invariantes de diseño, cómo verificar, trampas |
+| `app/README.md` | la GUI: arquitectura, regla de dependencias, cómo añadir una herramienta |
+| `backend/script_blogs_manager/README.md` | manual del gestor de blogs v3.0 |
+| `backend/script_metadata_manager/README.md` | manual del gestor de metadatos y tags (Excel, filtros, fórmulas, columnas) |
+| `backend/script_pub_index_symlink/README.md` | qué cuenta como publicación, conflictos, logs |
+| `backend/script_format_yaml/README.md` | el formateador YAML y cómo reparar `---` pegados |
+| `backend/script_generador_publicacion_similar/README.md` | estructuras `website` y `blog`, URL base |
+| `CHANGELOG.md` | qué versión de cada herramienta hay y desde cuándo |
+| `04 index/docs/pubs-submodulos.md` | el hub y sus submódulos (frontera con `04 index`) |
+| `meta/INDICE_SCRIPTS.md` | las 6 suites entre las del workspace (generado) |
+
+## Límite honesto
+
+- **No hay pruebas automáticas, lint ni build**: la comprobación es `--dry-run`, `bash -n`, `py_compile` y
+  mirar el resultado en un pub.
+- **Los backends no son seguros en paralelo**: mutan los mismos árboles; la GUI ejecuta una operación a la
+  vez y en terminal hay que hacer lo mismo.
+- **`blogs_manager` no simula**: `clean`, `clean-all`, `publish` y `git-commit` escriben de verdad; pide
+  confirmación, nada más.
+- **El Excel no es la verdad**: si se edita un `.qmd` a mano, el Excel queda atrás hasta regenerarlo;
+  `update` solo escribe donde hay diferencias, así que no destruye, pero tampoco avisa.
+- **Solo `date` se sustituye línea a línea**; cualquier otro cambio reescribe el bloque YAML completo
+  (comillas y orden normalizados por `field_mapper.reorder_yaml`).
+- **`pub_chaska` publica en `chaska-x.netlify.app`**: la URL base no se deriva del nombre de carpeta; por eso
+  la detección vota entre los `pdf-url` existentes y `blog_base_urls` de `metadata_config.yml` manda.
+- **El asistente de posts es interactivo** (`07-post-creator.sh`, unas 50 preguntas): no se automatiza; la
+  GUI lo sustituye con `post_service.py`, que genera el mismo `index.qmd`.
+- **Un solo camino de instalación soportado**: `pip install -r requirements.txt`; el entorno conda
+  `scripts_quarto` que citan los manuales es una comodidad del autor, no un requisito.
+- Licencia MIT (`LICENSE`); el contenido de los blogs es del autor y vive en sus repos.
