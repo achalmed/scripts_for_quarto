@@ -7,7 +7,7 @@ estado: activo
 <!-- suite:inicio -->
 **Suite `format_yaml`** · objetivo *publicacion* · estado *activo* · python · interfaz cli
 
-Corrige el bloque YAML de los .qmd (comillas, orden, campos) en una carpeta, de forma recursiva.
+Repara el bloque YAML de los .qmd (delimitador --- pegado y líneas en blanco sobrantes) en una carpeta, de forma recursiva e idempotente.
 
 - Escribe en: web · simula por defecto: no
 - Nota: fix_qmd_files.py queda como alias de main.py (FS3)

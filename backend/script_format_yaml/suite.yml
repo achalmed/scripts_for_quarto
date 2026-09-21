@@ -1,8 +1,8 @@
-# backend/script_format_yaml/suite.yml — suite format_yaml: Corrige el bloque YAML de los .qmd (comillas, orden, campos) en una carpeta, de forma recursiva.
+# backend/script_format_yaml/suite.yml — suite format_yaml: Repara el bloque YAML de los .qmd (delimitador --- pegado y líneas en blanco sobrantes) en una carpeta, de forma recursiva e idempotente.
 # Contrato: core/suite.schema.yml; core/suites.py validar lo comprueba y generar escribe los índices y README.
 id: format_yaml
 objetivo: publicacion
-resumen: Corrige el bloque YAML de los .qmd (comillas, orden, campos) en una carpeta, de forma recursiva.
+resumen: Repara el bloque YAML de los .qmd (delimitador --- pegado y líneas en blanco sobrantes) en una carpeta, de forma recursiva e idempotente.
 escribe_en:
 - web
 simula_por_defecto: false
