@@ -9,7 +9,7 @@ estado: activo
 <!-- docs:inicio -->
 | documento | tipo | estado | qué es |
 |---|---|---|---|
-| [vision.md](vision.md) | `doc` | `hecho` | Visión de producto — Quarto Studio (2026-07-13) |
+| [vision.md](vision.md) | `plan` | `hecho` | Visión de producto — Quarto Studio (2026-07-13) |
 
 <sub>Bloque generado por `core/docs.py indice` desde el frontmatter de docs/ (2026-09-20); no se edita a mano.</sub>
 <!-- docs:fin -->
