@@ -70,7 +70,8 @@ servicios nunca importan Qt Widgets; los modelos no importan nada de Qt.
   la GUI ya confirmó con el usuario.
 - **`sync-article` y `sync-batch`** (interactivos en terminal) se cubren con el flujo equivalente de la
   GUI: *Ver diferencias* → *Aplicar Excel → .qmd* con filtros de blog y ruta.
-- **Dry-run por defecto** en toda operación destructiva, como en el resto del repositorio.
+- **Simulación marcada por defecto** en las páginas de metadatos e índices («Dry-run»); las operaciones
+  sobre todos los blogs piden confirmación. Los backends en terminal no simulan por defecto.
 - **Una operación a la vez**: el runner rechaza ejecuciones concurrentes porque los scripts mutan los
   mismos árboles de archivos y no son seguros en paralelo. El preview (proceso largo) se detiene con el
   botón ■.

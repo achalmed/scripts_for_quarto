@@ -22,291 +22,64 @@ main.sh <BLOG_DIR> --dry-run
 <sub>Bloque generado desde `suite.yml` por `core/suites.py generar` (2026-09-20); no se edita a mano.</sub>
 <!-- suite:fin -->
 
-> Genera automáticamente archivos `_contenido_<subblog>.qmd` con enlaces
-> numerados (artículo + PDF) a las publicaciones de un blog Quarto,
-> soportando blogs independientes (`pub_*`) y secciones de página web
-> (`website-achalma/blog`, `/teching`, etc.).
+## Qué es
 
-**Versión:** 4.0.0 · **Autor:** Edison Achalma
-
-## 📋 Tabla de Contenidos
-
-- [Descripción](#-descripción)
-- [Requisitos](#️-requisitos)
-- [Instalación](#-instalación)
-- [Uso](#-uso)
-- [Arquitectura](#️-arquitectura)
-- [Bugs Corregidos](#-bugs-corregidos)
-- [Solución de Problemas](#-solución-de-problemas)
-- [Cómo Contribuir](#-cómo-contribuir--agregar-nuevas-funcionalidades)
-- [Notas y Advertencias](#️-notas-y-advertencias)
-
-## 📖 Descripción
-
-Recorre los subblogs (subcarpetas) de un blog Quarto, localiza las carpetas
-de publicación con formato `YYYY-MM-DD-titulo/` que contengan un `index.qmd`,
-y genera en cada subblog un índice Markdown listo para incluir con
-`{{< include >}}`:
+Recorre los subblogs (subcarpetas) de un blog Quarto, toma las carpetas de publicación
+`AAAA-MM-DD-título/` que tienen `index.qmd` y escribe en cada subblog un índice
+`_contenido_<subblog>.qmd`: una lista numerada con el enlace al PDF y al artículo de cada publicación,
+lista para `{{< include >}}`. Quarto Studio lo invoca desde la página «Contenido».
 
 ```markdown
-1. [{{< fa regular file-pdf >}}](https://dominio.com/posts/2022-01-23-titulo/index.pdf) [Titulo](https://dominio.com/posts/2022-01-23-titulo)
-2. ...
+1. [{{< fa regular file-pdf >}}](https://dominio/subblog/2022-01-23-titulo/index.pdf) [Titulo](https://dominio/subblog/2022-01-23-titulo)
 ```
 
-### Estructuras soportadas
-
-| Tipo                              | Ejemplo de directorio                 | URL generada                       |
-| --------------------------------- | ------------------------------------- | ---------------------------------- |
-| `blog` (proyecto independiente)   | `~/Documents/04 index/_pubs/pub_actus-mercator`      | `base/<subblog>/<post>/`           |
-| `website` (sección de página web) | `~/Documents/04 index/teching` | `base/<seccion>/<subblog>/<post>/` |
-
-Con `--type auto` (por defecto) la estructura se detecta por la ubicación del
-`_quarto.yml`: si está en el propio directorio es un proyecto independiente;
-si está en el directorio padre, se trata de una sección de la página web.
-
-## ⚙️ Requisitos
-
-### Sistema Operativo
-
-- Linux (usa `sed` GNU para capitalizar títulos; no compatible con BSD/macOS sin ajustes)
-
-### Dependencias
-
-- Bash >= 4.x
-- Coreutils estándar: `sed`, `tr`, `date`, `basename`, `dirname`
-
-No requiere Python ni paquetes externos.
-
-## 🚀 Instalación
-
-### Paso 1: Obtener el código
-
-```bash
-git clone https://github.com/achalmed/scripts_for_quarto.git
-cd scripts_for_quarto/script_generador_publicacion_similar
-```
-
-### Paso 2: Dar permisos de ejecución
-
-```bash
-chmod +x main.sh
-```
-
-### Paso 3 (opcional): Crear alias
-
-```bash
-echo 'alias generar-indices="~/Documents/scripts_for_quarto/script_generador_publicacion_similar/main.sh"' >> ~/.zshrc
-source ~/.zshrc
-```
-
-## 💻 Uso
-
-### Sintaxis
-
-```bash
-./main.sh BLOG_DIR [OPCIONES]
-```
-
-### Opciones disponibles
-
-| Flag                 | Descripción                                                                        | Requerido |
-| -------------------- | ---------------------------------------------------------------------------------- | --------- |
-| `BLOG_DIR`           | Directorio del blog a procesar (posicional)                                        | Sí        |
-| `-u, --base-url URL` | URL base del sitio, sin barra final (default: `https://achalmaedison.netlify.app`) | No        |
-| `-t, --type TIPO`    | `auto` \| `website` \| `blog` (default: `auto`)                                    | No        |
-| `-n, --dry-run`      | Simula sin escribir ni borrar archivos                                             | No        |
-| `-h, --help`         | Muestra la ayuda                                                                   | No        |
-| `--version`          | Muestra la versión                                                                 | No        |
-
-### Ejemplos de uso
-
-```bash
-# Blog independiente (URL base propia)
-./main.sh ~/Documents/04 index/_pubs/pub_actus-mercator --base-url https://actus-mercator.netlify.app
-
-# Sección de la página web (URL base por defecto)
-./main.sh ~/Documents/04 index/teching
-
-# Simular primero (recomendado antes de cambios masivos)
-./main.sh ~/Documents/04 index/_pubs/pub_axiomata --dry-run
-./main.sh ~/Documents/04 index/teching          # usa la URL base por defecto
-
-# Forzar tipo de estructura si la autodetección no aplica
-./main.sh ~/Documents/mi-blog-nuevo --type blog
-```
-
-### Códigos de salida
-
-| Código | Significado                        |
-| ------ | ---------------------------------- |
-| 0      | Éxito                              |
-| 1      | Error general (fallo de escritura) |
-| 2      | Error de argumentos / uso          |
-| 3      | Directorio de blog no encontrado   |
-
-### Integración con Quarto
+El índice lleva frontmatter `tipo: fragmento` y se incluye desde la página del subblog:
 
 ```markdown
-## Publicaciones Recientes
-
-{{< include posts/_contenido_posts.qmd >}}
+{{< include _contenido_posts.qmd >}}
 ```
 
-## 🗂️ Arquitectura
-
-Sigue el mismo patrón modular que `script_blogs_manager` y
-`script_pub_index_symlink`: un `main.sh` delgado que carga módulos
-numerados desde `lib/` en orden de dependencia.
-
-```
-script_generador_publicacion_similar/
-├── main.sh                  # Punto de entrada — orquesta los módulos
-├── README.md                # Esta documentación
-└── lib/
-    ├── 00-config.sh         # Versión, defaults, carpetas ignoradas
-    ├── 01-logging.sh        # log_info/success/warn/error con timestamp
-    ├── 02-cli.sh            # Parsing de argumentos y ayuda
-    ├── 03-validator.sh      # Validación y normalización de entradas
-    ├── 04-detector.sh       # Autodetección website/blog vía _quarto.yml
-    ├── 05-linker.sh         # Título, URL y línea Markdown de cada post
-    └── 06-generator.sh      # Recorrido de subblogs, escritura y resumen
-```
-
-### Descripción de módulos
-
-| Archivo               | Responsabilidad                                                             |
-| --------------------- | --------------------------------------------------------------------------- |
-| `main.sh`             | Carga módulos, resuelve el tipo de estructura y ejecuta el flujo            |
-| `lib/00-config.sh`    | Única fuente de configuración (`GENIDX_*`); nada se hardcodea fuera         |
-| `lib/01-logging.sh`   | Formato de log consistente; WARN/ERROR a stderr                             |
-| `lib/02-cli.sh`       | `parse_arguments` + `show_help`; valida presencia de valores en flags       |
-| `lib/03-validator.sh` | Directorio existente → ruta absoluta; URL sin barra final; tipo válido      |
-| `lib/04-detector.sh`  | `detect_blog_structure`: `_quarto.yml` propio = blog, en el padre = website |
-| `lib/05-linker.sh`    | `format_post_title`, `build_post_url`, `convert_folder_to_link`             |
-| `lib/06-generator.sh` | Acumula el índice en memoria y escribe una sola vez; totales y resumen      |
-
-Convenciones: prefijo `GENIDX_` para todos los globales, guardas
-`GENIDX_*_LOADED` contra doble carga, y `set -uo pipefail` con chequeos de
-error explícitos (igual que el resto de herramientas del repositorio).
-
-## 🐛 Bugs Corregidos
-
-### Bug #1: Ruta hardcodeada obsoleta e inexistente
-
-- **Ubicación**: `generar_indices.sh:23` (variable `main_blog`)
-- **Descripción**: Apuntaba a `/home/achalmaedison/Documents/publicaciones/website-achalma/teching`, ruta que ya no existe (los blogs viven ahora directamente en `~/Documents`). Además obligaba a editar el script para cada blog.
-- **Impacto**: El script terminaba con error en toda ejecución; procesar otro blog requería modificar el código fuente.
-- **Corrección**: El directorio del blog es ahora un argumento posicional obligatorio; la URL base y el tipo son flags con defaults en `lib/00-config.sh`.
-
-### Bug #2: Detección de estructura incorrecta para secciones web
-
-- **Ubicación**: `generar_indices.sh:48-66` (`detect_blog_structure`)
-- **Descripción**: Solo reconocía la estructura `website` si la carpeta se llamaba literalmente `blog`. Secciones como `teching/` o `talk/` se clasificaban como blog independiente.
-- **Impacto**: URLs generadas sin el segmento de sección (`base/subblog/post` en vez de `base/teching/subblog/post`) → todos los enlaces del índice rotos.
-- **Corrección**: La detección usa la ubicación del `_quarto.yml` (raíz real del sitio Quarto); la heurística por nombre se conserva solo como fallback. Verificado: `teching` ahora se detecta como `website`.
-
-### Bug #3: Truncado prematuro del índice existente
-
-- **Ubicación**: `generar_indices.sh:213` (`> "$output_file"`)
-- **Descripción**: El archivo de índice se vaciaba _antes_ de saber si había publicaciones, y se escribía línea a línea durante el bucle.
-- **Impacto**: Una interrupción (Ctrl+C, error a mitad de bucle) dejaba el índice vacío o incompleto, destruyendo el contenido anterior. También imposibilitaba un modo de simulación.
-- **Corrección**: El contenido se acumula en memoria y se escribe de una sola vez, solo si hay publicaciones. Esto habilitó además el flag `--dry-run`. Se conserva el comportamiento original de eliminar índices obsoletos (ahora con `rm -f` en lugar de `rm`, que podía quedar interactivo por alias).
-
-### Bug #4: Rotura con rutas que contienen espacios
-
-- **Ubicación**: `generar_indices.sh:120` (`dirname "$path" | xargs basename`)
-- **Descripción**: `xargs` divide su entrada por espacios, por lo que rutas como `~/Documents/01 notes/...` producían un nombre de subblog incorrecto.
-- **Impacto**: URLs y nombres de archivo corruptos para cualquier ruta con espacios.
-- **Corrección**: `basename "$(dirname "$path")"` — sustitución de comandos anidada, inmune a espacios.
-
-### Bug #5: URL base con barra final sin normalizar
-
-- **Ubicación**: Configuración (`base_url`)
-- **Descripción**: El README advertía "sin barra final" pero el script no lo validaba ni corregía.
-- **Impacto**: URLs con doble barra (`https://dominio.com//posts/...`) en todos los enlaces generados.
-- **Corrección**: `lib/03-validator.sh` elimina la barra final automáticamente y avisa si la URL no empieza con `http(s)://`.
-
-### Bug #6: `echo -e` sobre contenido variable
-
-- **Ubicación**: `generar_indices.sh:130` y `227`
-- **Descripción**: `echo -e` interpreta secuencias de escape (`\n`, `\t`) presentes en los datos, y el título pasaba dos veces por él.
-- **Impacto**: Un título de carpeta con secuencias tipo `\n` corrompería el índice generado.
-- **Corrección**: Toda la salida usa `printf` con formato explícito.
-
-## 🔧 Solución de Problemas
-
-### Error: "Permission denied"
+## Uso
 
 ```bash
-chmod +x main.sh
+cd backend/script_generador_publicacion_similar
+./main.sh "../../../04 index/_pubs/pub_axiomata" --base-url https://axiomata.netlify.app --dry-run   # qué escribiría
+./main.sh "../../../04 index/_pubs/pub_axiomata" --base-url https://axiomata.netlify.app             # escribe
+./main.sh "../../../04 index/blog"                                                                    # sección del hub, URL base por defecto
 ```
 
-### La estructura no se detecta correctamente
+La ruta del blog va **entre comillas**: las carpetas del espacio de trabajo tienen espacios.
 
-La autodetección requiere que el proyecto tenga `_quarto.yml`. Si el blog
-está en construcción y aún no lo tiene, fuerza el tipo manualmente:
+| opción | qué hace |
+|---|---|
+| `BLOG_DIR` | directorio del blog (posicional, obligatorio) |
+| `-u, --base-url URL` | URL base del sitio; por defecto `GENIDX_DEFAULT_BASE_URL` (la del hub); la barra final se quita sola |
+| `-t, --type auto\|website\|blog` | estructura; `auto` (por defecto) la detecta |
+| `-n, --dry-run` | anuncia lo que escribiría o borraría, sin tocar nada |
+| `-h, --help` · `--version` | ayuda · versión (`GENIDX_VERSION`) |
 
-```bash
-./main.sh ~/ruta/al/blog --type blog      # proyecto independiente
-./main.sh ~/ruta/al/blog --type website   # sección de página web
-```
+Dos estructuras: `blog`, un proyecto independiente con su `_quarto.yml` (URL
+`base/<subblog>/<post>/`), y `website`, una sección del hub cuyo `_quarto.yml` está en la carpeta padre
+(URL `base/<sección>/<subblog>/<post>/`). Códigos de salida: `0` éxito, `2` argumentos inválidos, `3`
+directorio inexistente; un fallo al escribir un índice se informa en el registro.
 
-### Las URLs generadas son incorrectas
+## Estructura
 
-1. Verifica el tipo detectado en la primera línea del log.
-2. Confirma la `--base-url` (el script ya tolera la barra final).
-3. Ejecuta con `--dry-run` y revisa qué archivos se generarían.
+| carpeta | qué es | dueño |
+|---|---|---|
+| `main.sh` | carga `lib/` y ejecuta el flujo | a mano |
+| `lib/00-config.sh` | versión, URL base, prefijo de salida, carpetas ignoradas (`GENIDX_*`) | a mano |
+| `lib/01-logging.sh` · `02-cli.sh` · `03-validator.sh` | registro sobre `core/shell-lib`; argumentos y ayuda; validación | a mano |
+| `lib/04-detector.sh` · `05-linker.sh` · `06-generator.sh` | estructura por `_quarto.yml`; título y URL de cada post; recorrido y escritura | a mano |
+| `suite.yml` | manifiesto de la suite | a mano; el bloque de arriba lo genera `core/suites.py` |
 
-### Un subblog aparece como "sin publicaciones"
-
-- Las carpetas de posts deben llamarse `YYYY-MM-DD-titulo/` y contener `index.qmd`.
-- Las carpetas que empiezan con `.` o `_` y las listadas en `GENIDX_IGNORE_DIRS` se omiten siempre.
-
-## 🤝 Cómo Contribuir / Agregar Nuevas Funcionalidades
-
-### Para agregar un nuevo módulo
-
-1. Crea `lib/NN-nombre.sh` con el siguiente número disponible y la guarda `GENIDX_<NOMBRE>_LOADED`.
-2. Define funciones con responsabilidad única y prefijo coherente.
-3. Añade el `source` correspondiente en `main.sh` respetando el orden numérico.
-4. Si agrega flags, decláralas en `lib/02-cli.sh` y documéntalas en `show_help` y en este README.
-
-### Estándares de código
-
-- Máximo ~30 líneas por función.
-- Toda configuración vive en `lib/00-config.sh`; ningún módulo hardcodea rutas ni valores.
-- Toda salida a consola pasa por `lib/01-logging.sh`.
-- Comenta el "por qué", no el "qué".
-- Prueba con `--dry-run` y `bash -n` antes de hacer commit.
-
-## ⚠️ Notas y Advertencias
-
-- **Cambio de interfaz respecto a v3.0**: ya no se edita el script para
-  configurarlo; el directorio se pasa como argumento. Si usabas alias del
-  estilo `generar_indices_web.sh` (copias del script con distinta
-  configuración), reemplázalos por alias con argumentos:
-  `alias indices-actus='main.sh ~/Documents/04 index/_pubs/pub_actus-mercator -u https://actus-mercator.netlify.app'`.
-- La capitalización de títulos usa `sed 's/\b\(.\)/\u\1/g'` (extensión GNU):
-  en macOS/BSD requeriría `gsed`.
-- Los índices llevan el frontmatter `tipo: fragmento` (NORMATIVA §6.2, desde 2026-09-15) y están
-  pensados para usarse vía `{{< include >}}`.
-- El orden de las publicaciones es el alfabético del glob, que con el
-  prefijo `YYYY-MM-DD-` equivale a orden cronológico ascendente.
-- Si un subblog se queda sin publicaciones válidas, su índice previo se
-  **elimina** (comportamiento original preservado); `--dry-run` lo anuncia
-  sin borrarlo.
-
-## 👤 Autor
-
-**Edison Achalma**
-
-- Website: [achalmaedison.netlify.app](https://achalmaedison.netlify.app)
-- GitHub: [@achalmed](https://github.com/achalmed)
+Una opción nueva se declara en `lib/02-cli.sh` y en su ayuda; un módulo nuevo es `lib/NN-nombre.sh` con
+su guarda `GENIDX_<NOMBRE>_LOADED` y su `source` en `main.sh`, en orden.
 
 ## Límite honesto
 
-- **Solo escribe `_contenido_<subblog>.qmd` en la raíz del blog**: no toca los posts ni `_quarto.yml`, y el `index.qmd` que incluye los fragmentos lo escribe el autor.
+- **Escribe un `_contenido_<subblog>.qmd` en la carpeta de cada subblog**: no toca los posts ni `_quarto.yml`, y la página que incluye el fragmento la escribe el autor.
 - **Si un subblog se queda sin publicaciones válidas, borra su índice anterior**; `--dry-run` lo anuncia sin borrar.
-- **Una publicación es una carpeta cuyo nombre empieza por `YYYY-MM-DD-`**; nada más cuenta, y el orden es el del glob (cronológico gracias al prefijo).
-- **La URL base no se deduce del blog**: se pasa con `--base-url` o se usa la del hub por defecto (`pub_chaska` publica en `chaska-x.netlify.app`, no derivable de la carpeta).
-- **Requiere `sed` GNU** para la capitalización; en macOS/BSD haría falta `gsed`.
+- **Una publicación es una carpeta cuyo nombre empieza por `AAAA-MM-DD-`**; las carpetas que empiezan por `.` o `_` y las de `GENIDX_IGNORE_DIRS` no cuentan, y el orden es el del glob (cronológico por el prefijo).
+- **La URL base no se deduce del blog**: se pasa con `--base-url` o se usa la del hub (`pub_chaska` publica en `chaska-x.netlify.app`).
+- **Requiere `sed` GNU** para capitalizar los títulos; en macOS/BSD haría falta `gsed`.

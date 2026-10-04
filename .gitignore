@@ -1,11 +1,23 @@
+# .gitignore — scripts_quarto_studio: lo que no entra en git, por clase de archivo (NORMATIVA §5, §15.8)
+
+# ===== Derivado: cachés y compilados de Python =====
+# bytecode que Python regenera al importar
 __pycache__/
 *.pyc
+
+# ===== Derivado: recursos Qt compilados =====
+# lo escribe build_resources.sh desde resources.qrc; la GUI funciona sin él
 app/resources/resources_rc.py
 
-# DOC2 (2026-09-20): temporales y derivados fuera de git (NORMATIVA §5, §15.8)
-estructura.txt
-
-# DOC2 (2026-09-20): temporales y derivados fuera de git (NORMATIVA §5, §15.8)
+# ===== Temporal: registros y respaldos de ejecución =====
+# registro diario de pub_index_symlink y registros sueltos
 logs/
 *.log
+# copias de seguridad del Excel de metadatos antes de una operación masiva
 respaldos/
+# árbol del repo volcado a mano: se obtiene con tree bajo demanda (D07)
+estructura.txt
+
+# ===== Temporal: escritorio =====
+# metadatos de carpeta del gestor de archivos Dolphin (KDE)
+.directory
