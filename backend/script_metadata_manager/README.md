@@ -9,7 +9,7 @@ estado: activo
 
 Metadatos y etiquetas de todos los .qmd de la familia de blogs desde una base Excel: plantilla, aplicar, normalizar tags, fechas, URL de PDF.
 
-- Escribe en: web · simula por defecto: sí
+- Escribe en: web · simula por defecto: no
 - Entrada: excel_databases/*.xlsx
 - Depende de: python3, openpyxl
 
@@ -23,7 +23,7 @@ main.py sync-dates
 main.py audit-tags
 ```
 
-<sub>Bloque generado desde `suite.yml` por `core/suites.py generar` (2026-09-20); no se edita a mano.</sub>
+<sub>Bloque generado desde `suite.yml` por `core/suites.py generar` (2026-10-04); no se edita a mano.</sub>
 <!-- suite:fin -->
 
 ## Qué es

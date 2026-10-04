@@ -18,7 +18,7 @@ Comandos:
 main.py
 ```
 
-<sub>Bloque generado desde `suite.yml` por `core/suites.py generar` (2026-09-20); no se edita a mano.</sub>
+<sub>Bloque generado desde `suite.yml` por `core/suites.py generar` (2026-10-04); no se edita a mano.</sub>
 <!-- suite:fin -->
 
 <!-- suites:inicio -->
@@ -29,11 +29,11 @@ Suites de esta carpeta (6); índice global en `meta/INDICE_SCRIPTS.md`. Patrón:
 | `blogs_manager` | [scripts_quarto_studio/backend/script_blogs_manager](backend/script_blogs_manager/) | publicacion | web, git, archivos | no |  | activo | `MCL` |
 | `format_yaml` | [scripts_quarto_studio/backend/script_format_yaml](backend/script_format_yaml/) | publicacion | web | no |  | activo | `MCL` |
 | `generador_publicacion_similar` | [scripts_quarto_studio/backend/script_generador_publicacion_similar](backend/script_generador_publicacion_similar/) | publicacion | web | no |  | activo | `MCL` |
-| `metadata_manager` | [scripts_quarto_studio/backend/script_metadata_manager](backend/script_metadata_manager/) | publicacion | web | sí |  | activo | `MCL` |
+| `metadata_manager` | [scripts_quarto_studio/backend/script_metadata_manager](backend/script_metadata_manager/) | publicacion | web | no |  | activo | `MCL` |
 | `pub_index_symlink` | [scripts_quarto_studio/backend/script_pub_index_symlink](backend/script_pub_index_symlink/) | publicacion | vault | no |  | activo | `MCL` |
 | `quarto_studio` | [scripts_quarto_studio](./) | publicacion | web, vault | sí |  | activo | `MCL` |
 
-<sub>Bloque generado desde los `suite.yml` por `core/suites.py generar` (2026-09-20); no se edita a mano.</sub>
+<sub>Bloque generado desde los `suite.yml` por `core/suites.py generar` (2026-10-04); no se edita a mano.</sub>
 <!-- suites:fin -->
 
 ## Qué es
