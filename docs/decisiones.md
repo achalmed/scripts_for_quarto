@@ -66,7 +66,7 @@ commit, no aquí. Las versiones de cada herramienta están en [`CHANGELOG.md`](.
   propio lector y está en [`excel-de-metadatos.md`](excel-de-metadatos.md); cada herramienta se documenta
   en su carpeta.
 - **2026-10-04 · `CHANGELOG.md` se conserva aunque la versión no esté en un manifiesto.** Apartamiento
-  del perfil del ecosistema (`meta/NORMATIVA_ARCHIVOS.md` §15.11): cada herramienta declara su versión
+  del perfil del ecosistema (`meta/docs/historial/NORMATIVA_ARCHIVOS.md` §15.11): cada herramienta declara su versión
   en el código y el usuario la ve (H1 del README, `--version`, «Acerca de» de la GUI); el archivo
   registra solo versiones, no sesiones de trabajo.
 - **2026-10-04 · Se retira la visión de producto.** Superada la decisión D15 de DOC8 (2026-09-20), que la

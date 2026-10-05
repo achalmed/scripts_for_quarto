@@ -12,7 +12,7 @@ por backend), `app/README.md` (la GUI) y el README de la herramienta que se toqu
 
 - **Dónde va cada cosa nueva.** En la raíz solo `README.md`, `CLAUDE.md`, `AGENTS.md`, `suite.yml`,
   `LICENSE` y `CHANGELOG.md` como documentos; cualquier otro `.md` ahí está fuera de lugar
-  (`meta/NORMATIVA_ARCHIVOS.md` §15.11).
+  (`meta/docs/historial/NORMATIVA_ARCHIVOS.md` §15.11).
 
   | lo que apareció | va a | nunca a |
   |---|---|---|
@@ -54,7 +54,7 @@ por backend), `app/README.md` (la GUI) y el README de la herramienta que se toqu
   `Gestión Empresarial` → `gestion_empresarial`; sin duplicados) **y omite los artículos sin campo
   `tags`**: nunca se crean tags donde no existían.
 - **`sync-pdf-urls` nunca crea un bloque `citation`**: solo actualiza `citation.pdf-url` donde ya existe.
-- **Fechas ISO `AAAA-MM-DD` en `date`** (`meta/NORMATIVA_ARCHIVOS.md` §3): `sync-dates`
+- **Fechas ISO `AAAA-MM-DD` en `date`** (`meta/docs/historial/NORMATIVA_ARCHIVOS.md` §3): `sync-dates`
   escribe ISO; `fechas-iso` solo cambia el formato. Cuando solo cambia `date`, se sustituye esa única
   línea del frontmatter y el resto del archivo queda byte-idéntico (comentarios y comillas incluidos);
   el escritor completo es el recurso de reserva.
@@ -147,4 +147,4 @@ el puntero del submódulo en el hub (`04 index/docs/pubs-submodulos.md`).
 | versiones y desde cuándo | `CHANGELOG.md` |
 | el hub, los submódulos y el tema compartido | `04 index/docs/pubs-submodulos.md`, `04 index/CLAUDE.md` |
 | el contrato de suite y los bloques generados | `core/suite.schema.yml`, `core/README.md` |
-| normativa de archivos, fechas y cabeceras | `meta/NORMATIVA_ARCHIVOS.md` |
+| normativa de archivos, fechas y cabeceras | `meta/docs/historial/NORMATIVA_ARCHIVOS.md` |
