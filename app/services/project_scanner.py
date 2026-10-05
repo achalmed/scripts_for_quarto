@@ -12,6 +12,7 @@ import re
 from pathlib import Path
 
 from app.models.blog import Blog, Post
+from app.services import paths
 
 # Carpetas técnicas que nunca son carpetas de posts (mismo criterio que
 # QBLOG_IGNORE_DIRS en script_blogs_manager/lib/00-config.sh)
@@ -27,7 +28,7 @@ _TITULO_RE = re.compile(r'^title:\s*["\']?(.*?)["\']?\s*$', re.MULTILINE)
 def descubrir_blogs(docs_dir: Path) -> list[Blog]:
     """Encuentra todos los proyectos pub_* y website-achalma."""
     candidatos: list[Path] = sorted(docs_dir.glob("pub_*"))
-    website = docs_dir / "04 index"   # carpeta del hub (repo website-achalma) desde 2026-09-06
+    website = paths.hub_dir(docs_dir)   # carpeta del hub (repo website-achalma): INDEX_DIR de core/env
     if website.is_dir():
         candidatos.append(website)
 

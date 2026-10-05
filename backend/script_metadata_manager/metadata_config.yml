@@ -9,7 +9,7 @@
 # Útil para excluir carpetas que no son blogs
 
 # Los pub_* se localizan automáticamente como submódulos del hub, cuya carpeta es
-# "04 index" desde 2026-09-06 (repo website-achalma): 04 index/_pubs/pub_*.
+# la carpeta del hub (INDEX_DIR de core/env) desde 2026-09-06 (repo website-achalma): <hub>/_pubs/pub_*.
 # Basta el nombre de la carpeta; "website-achalma" sigue aceptado como alias.
 allowed_blogs:
   - pub_actus-mercator

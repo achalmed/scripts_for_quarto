@@ -52,7 +52,7 @@ def should_exclude_file(file_path: Path) -> bool:
 def resolve_blog_dir(base_path: Path, name: str) -> Optional[Path]:
     """Devuelve la carpeta real de un blog a partir de su nombre o ruta relativa."""
     pubs = base_path / PUBS_SUBDIR
-    # alias del hub: "website-achalma" y "website-achalma/blog" → "04 index/…"
+    # alias del hub: "website-achalma" y "website-achalma/blog" → la carpeta del hub (HUB_DIR, de INDEX_DIR)
     head, _, rest = name.partition("/")
     if head in HUB_ALIASES:
         name = HUB_ALIASES[head] + ("/" + rest if rest else "")

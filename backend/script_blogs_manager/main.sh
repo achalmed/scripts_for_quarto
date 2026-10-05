@@ -18,7 +18,7 @@
 #   ./main.sh help                  Ayuda completa
 #
 # Variables de entorno opcionales:
-#   QBLOG_DOCS_DIR     Fuerza la ruta de ~/Documents si la autodetección falla
+#   DOCS_ROOT          Fuerza la raíz del workspace (por defecto, la de core/env.sh)
 #   QBLOG_BACKUP_DIR   Fuerza la ruta del directorio de backups
 # =============================================================================
 
@@ -27,6 +27,15 @@ set -uo pipefail
 # --- Localización del propio script ------------------------------------------
 QBLOG_SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 QBLOG_LIB_DIR="$QBLOG_SCRIPT_DIR/lib"
+
+# --- Raíz del workspace: core/env.sh da DOCS_ROOT e INDEX_DIR (normativa 5.1-5.2) --
+# Se sube desde la carpeta del script hasta hallar core/env.sh; un DOCS_ROOT previo
+# en el entorno se respeta (así lo fija la GUI). Sin core/ la suite no arranca.
+_core_d="$QBLOG_SCRIPT_DIR"
+while [[ "$_core_d" != / && ! -f "$_core_d/core/env.sh" ]]; do _core_d="$(dirname "$_core_d")"; done
+# shellcheck source=/dev/null
+source "$_core_d/core/env.sh" || { echo "blogs_manager: no encuentro core/env.sh (exporta DOCS_ROOT)" >&2; exit 1; }
+unset _core_d
 
 # --- Carga de módulos en orden ------------------------------------------------
 # shellcheck source=lib/00-config.sh
@@ -57,14 +66,14 @@ source "$QBLOG_LIB_DIR/11-interactive-menu.sh"
 source "$QBLOG_LIB_DIR/12-help.sh"
 
 # --- Detectar Documents -------------------------------------------------------
-QBLOG_DOCS_DIR="$(utils_detect_docs_dir)" || {
-    print_error "No se pudo autodetectar la carpeta Documents (que contenga pub_* o website-achalma)."
-    print_error "Defínela manualmente, ej: QBLOG_DOCS_DIR=$HOME/Documents ./main.sh"
+DOCS_ROOT="$(utils_detect_docs_dir)" || {
+    print_error "No se pudo resolver la raíz del workspace (core/env.sh)."
+    print_error "Defínela manualmente, ej: DOCS_ROOT=\"\$HOME/Documents\" ./main.sh"
     exit 1
 }
 
 # --- Directorio de backups (autodetectado relativo a Documents, salvo override)
-QBLOG_BACKUP_DIR="${QBLOG_BACKUP_DIR:-$QBLOG_DOCS_DIR/06 archives/backups-publicaciones}"
+QBLOG_BACKUP_DIR="${QBLOG_BACKUP_DIR:-$DOCS_ROOT/06 archives/backups-publicaciones}"
 
 # Helper interno: resuelve un nombre de blog ingresado por el usuario a su
 # ruta absoluta, dejándola en la variable global QBLOG_RESOLVED_PATH. Si no
@@ -75,7 +84,7 @@ QBLOG_BACKUP_DIR="${QBLOG_BACKUP_DIR:-$QBLOG_DOCS_DIR/06 archives/backups-public
 QBLOG_RESOLVED_PATH=""
 _resolve_or_die() {
     local input_name="$1"
-    if ! QBLOG_RESOLVED_PATH="$(utils_resolve_project_path "$QBLOG_DOCS_DIR" "$input_name")"; then
+    if ! QBLOG_RESOLVED_PATH="$(utils_resolve_project_path "$DOCS_ROOT" "$input_name")"; then
         print_error "Blog no encontrado: $input_name"
         print_info "Usa 'main.sh list' para ver los blogs disponibles"
         exit 1
@@ -90,13 +99,13 @@ main() {
     echo ""
 
     if [[ $# -eq 0 ]]; then
-        interactive_mode "$QBLOG_DOCS_DIR" "$QBLOG_BACKUP_DIR"
+        interactive_mode "$DOCS_ROOT" "$QBLOG_BACKUP_DIR"
         exit 0
     fi
 
     case "$1" in
         list)
-            list_blogs "$QBLOG_DOCS_DIR"
+            list_blogs "$DOCS_ROOT"
             ;;
         render)
             [[ -z "${2:-}" ]] && { print_error "Especifica el nombre del blog"; exit 1; }
@@ -148,10 +157,10 @@ main() {
             create_post_interactive "$QBLOG_RESOLVED_PATH"
             ;;
         render-all)
-            render_all_blogs "$QBLOG_DOCS_DIR"
+            render_all_blogs "$DOCS_ROOT"
             ;;
         clean-all)
-            clean_all_blogs "$QBLOG_DOCS_DIR"
+            clean_all_blogs "$DOCS_ROOT"
             ;;
         git-init)
             [[ -z "${2:-}" ]] && { print_error "Especifica el nombre del blog"; exit 1; }
@@ -174,19 +183,19 @@ main() {
             ;;
         init-blog)
             [[ -z "${2:-}" ]] && { print_error "Especifica el nombre del nuevo blog"; exit 1; }
-            init_blog "$QBLOG_DOCS_DIR" "$2" "${3:-}"
+            init_blog "$DOCS_ROOT" "$2" "${3:-}"
             ;;
         check-structure)
-            check_structure_all "$QBLOG_DOCS_DIR"
+            check_structure_all "$DOCS_ROOT"
             ;;
         backup)
-            backup_blogs_interactive "$QBLOG_DOCS_DIR" "$QBLOG_BACKUP_DIR"
+            backup_blogs_interactive "$DOCS_ROOT" "$QBLOG_BACKUP_DIR"
             ;;
         interactive|-i)
-            interactive_mode "$QBLOG_DOCS_DIR" "$QBLOG_BACKUP_DIR"
+            interactive_mode "$DOCS_ROOT" "$QBLOG_BACKUP_DIR"
             ;;
         help|-h|--help)
-            show_help "$QBLOG_DOCS_DIR" "$QBLOG_BACKUP_DIR"
+            show_help "$DOCS_ROOT" "$QBLOG_BACKUP_DIR"
             ;;
         version|-v)
             quarto --version

@@ -1,13 +1,15 @@
 """
 paths.py — Localización de los scripts backend y del directorio Documents.
 
-Replica la autodetección de los scripts Bash (subir desde la ubicación
-propia hasta encontrar pub_* o website-achalma), de modo que la GUI y el
-backend siempre coincidan.
+La raíz (DOCS_ROOT) y la carpeta del hub (INDEX_DIR) salen de core/env.py,
+igual que en los scripts Bash (que cargan core/env.sh), de modo que la GUI y
+el backend siempre coincidan.
 """
 
 from __future__ import annotations
 
+import importlib.util
+from functools import lru_cache
 from pathlib import Path
 
 # app/services/paths.py → raíz del repositorio (scripts_quarto_studio)
@@ -27,17 +29,29 @@ def backend_dir() -> Path:
     return _BACKEND_DIR
 
 
+@lru_cache(maxsize=1)
+def core_env():
+    """El módulo core/env.py del workspace: se sube desde este archivo hasta hallarlo."""
+    d = Path(__file__).resolve()
+    while d != d.parent and not (d / "core" / "env.py").is_file():
+        d = d.parent
+    spec = importlib.util.spec_from_file_location("core_env", d / "core" / "env.py")
+    env = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(env)
+    return env
+
+
 def detectar_docs_dir() -> Path:
-    """
-    Autodetecta ~/Documents subiendo desde scripts_for_quarto hasta encontrar
-    un directorio que contenga proyectos pub_* o website-achalma.
-    """
-    actual = scripts_root()
-    for candidato in [actual, *actual.parents]:
-        if (candidato / "04 index" / "_quarto.yml").is_file() or (candidato / "website-achalma").is_dir() or any(candidato.glob("pub_*")):
-            return candidato
-    # Último recurso razonable
-    return Path.home() / "Documents"
+    """~/Documents: DOCS_ROOT de core/env (respeta un DOCS_ROOT previo del entorno)."""
+    return Path(core_env().DOCS_ROOT)
+
+
+def hub_dir(docs_dir: Path | None = None) -> Path:
+    """Carpeta del hub (repo website-achalma): INDEX_DIR de core/env, trasladada a `docs_dir` si se da otra raíz."""
+    env = core_env()
+    if docs_dir is None:
+        return Path(env.INDEX_DIR)
+    return Path(docs_dir) / Path(env.INDEX_DIR).relative_to(env.DOCS_ROOT)
 
 
 # --- Entradas (entry points) de cada herramienta backend --------------------

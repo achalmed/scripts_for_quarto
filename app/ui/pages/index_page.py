@@ -1,5 +1,5 @@
 """
-index_page.py — Página Índices: mantenimiento de symlinks de "04 index".
+index_page.py — Página Índices: mantenimiento de symlinks del hub (INDEX_DIR/_indice).
 """
 
 from __future__ import annotations

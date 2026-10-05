@@ -2,7 +2,7 @@
 # =============================================================================
 # main.sh — pub-index-sync
 # -----------------------------------------------------------------------------
-# Orquesta todos los módulos en lib/ para mantener "04 index" actualizado
+# Orquesta todos los módulos en lib/ para mantener "$INDEX_DIR/_indice" actualizado
 # con symlinks (organizados por año) a todas las carpetas de publicación
 # encontradas dentro de los proyectos pub_* y website-achalma/{blog/posts,talk}.
 #
@@ -16,7 +16,7 @@
 #   ./main.sh --help           Muestra esta ayuda
 #
 # Variables de entorno opcionales:
-#   PUBINDEX_DOCS_DIR   Fuerza la ruta de ~/Documents si la autodetección falla
+#   DOCS_ROOT           Fuerza la raíz del workspace (por defecto, la de core/env.sh)
 # =============================================================================
 
 set -uo pipefail
@@ -25,6 +25,15 @@ set -uo pipefail
 #     directorio) -------------------------------------------------------------
 PUBINDEX_SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PUBINDEX_LIB_DIR="$PUBINDEX_SCRIPT_DIR/lib"
+
+# --- Raíz del workspace: core/env.sh da DOCS_ROOT e INDEX_DIR (normativa 5.1-5.2) --
+# Se sube desde la carpeta del script hasta hallar core/env.sh; un DOCS_ROOT previo
+# en el entorno se respeta (así lo fija la GUI). Sin core/ la suite no arranca.
+_core_d="$PUBINDEX_SCRIPT_DIR"
+while [[ "$_core_d" != / && ! -f "$_core_d/core/env.sh" ]]; do _core_d="$(dirname "$_core_d")"; done
+# shellcheck source=/dev/null
+source "$_core_d/core/env.sh" || { echo "pub_index_symlink: no encuentro core/env.sh (exporta DOCS_ROOT)" >&2; exit 1; }
+unset _core_d
 
 # --- Carga de módulos en orden ------------------------------------------------
 # shellcheck source=lib/00-config.sh
@@ -89,20 +98,20 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-# --- Detectar Documents y carpeta destino "04 index" --------------------------
-PUBINDEX_DOCS_DIR="$(utils_detect_docs_dir)" || {
-    log_error "No se pudo autodetectar la carpeta Documents (que contenga '04 index')."
-    log_error "Defínela manualmente, ej: PUBINDEX_DOCS_DIR=$HOME/Documents ./main.sh"
+# --- Detectar Documents y carpeta destino "$INDEX_DIR/_indice" --------------------------
+DOCS_ROOT="$(utils_detect_docs_dir)" || {
+    log_error "No se pudo resolver la raíz del workspace (core/env.sh)."
+    log_error "Defínela manualmente, ej: DOCS_ROOT=\"\$HOME/Documents\" ./main.sh"
     exit 1
 }
-PUBINDEX_INDEX_DIR="$PUBINDEX_DOCS_DIR/$PUBINDEX_TARGET_DIRNAME"
+PUBINDEX_INDEX_DIR="$DOCS_ROOT/$PUBINDEX_TARGET_DIRNAME"
 
 if [[ ! -d "$PUBINDEX_INDEX_DIR" ]]; then
     log_error "La carpeta destino no existe: $PUBINDEX_INDEX_DIR"
     exit 1
 fi
 
-log_info "Documents detectado en: $PUBINDEX_DOCS_DIR"
+log_info "Documents detectado en: $DOCS_ROOT"
 log_info "Carpeta índice: $PUBINDEX_INDEX_DIR"
 [[ "$PUBINDEX_DRY_RUN" == "1" ]] && log_warn "Modo dry-run activado: no se escribirá ni borrará nada."
 
@@ -113,7 +122,7 @@ log_info "Carpeta índice: $PUBINDEX_INDEX_DIR"
 run_sync() {
     log_section "Escaneando proyectos pub_* y website-achalma"
     local publications
-    publications="$(scanner_find_all_publications "$PUBINDEX_DOCS_DIR")"
+    publications="$(scanner_find_all_publications "$DOCS_ROOT")"
 
     local total_found
     total_found="$(echo "$publications" | grep -c . || true)"

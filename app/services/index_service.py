@@ -17,13 +17,13 @@ def _cmd(args: list[str], descripcion: str, stdin_data: str | None = None) -> Co
         cwd=str(st.docs_dir()),
         stdin_data=stdin_data,
         descripcion=descripcion,
-        entorno={"PUBINDEX_DOCS_DIR": str(st.docs_dir())},
+        entorno={"DOCS_ROOT": str(st.docs_dir())},
     )
 
 
 def sincronizar(dry_run: bool = False) -> Command:
     args = ["--dry-run"] if dry_run else []
-    return _cmd(args, "Sincronizar symlinks de '04 index'" + (" (simulación)" if dry_run else ""))
+    return _cmd(args, "Sincronizar symlinks del índice del hub" + (" (simulación)" if dry_run else ""))
 
 
 def detectar_rotos() -> Command:

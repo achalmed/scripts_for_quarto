@@ -2,7 +2,7 @@
 # =============================================================================
 #  backend/script_pub_index_symlink/lib/04-symlinker.sh — Crea o actualiza los symlinks de «04 index/<AÑO>/» hacia las carpetas de publicación reales
 # -----------------------------------------------------------------------------
-# Crea/actualiza los symlinks dentro de "04 index/<AÑO>/<nombre-original>"
+# Crea/actualiza los symlinks dentro de "$INDEX_DIR/_indice/<AÑO>/<nombre-original>"
 # apuntando a las carpetas de publicación reales encontradas por el scanner.
 #
 # Reglas:
@@ -33,7 +33,7 @@ symlinker_reset_counters() {
 
 # Procesa UNA publicación: crea/actualiza/omite su symlink en 04 index/<año>/
 # $1 = ruta absoluta real de la carpeta de publicación
-# $2 = ruta absoluta de la carpeta "04 index"
+# $2 = ruta absoluta de la carpeta "$INDEX_DIR/_indice"
 # $3 = "1" para modo dry-run (no escribe nada, solo reporta), "0" para ejecutar
 symlinker_process_publication() {
     local real_path="$1"
@@ -97,7 +97,7 @@ symlinker_process_publication() {
 }
 
 # Procesa una lista completa de publicaciones (rutas, una por línea via stdin)
-# $1 = ruta absoluta de "04 index"
+# $1 = ruta absoluta de "$INDEX_DIR/_indice"
 # $2 = "1" para dry-run, "0" para ejecutar
 symlinker_process_all() {
     local index_dir="$1"

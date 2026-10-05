@@ -39,34 +39,11 @@ utils_matches_date_pattern() {
     [[ "$dirname" =~ $PUBINDEX_DATE_REGEX ]]
 }
 
-# Autodetecta el directorio ~/Documents subiendo desde la ubicación de este
-# script hasta encontrar una carpeta que contenga "04 index". Si no se
-# encuentra, falla con mensaje claro.
+# Devuelve ~/Documents: DOCS_ROOT de core/env.sh, que main.sh ya cargó (ola 0:
+# sin alias propio ni búsqueda hacia arriba de reserva). Falla si no hay raíz.
 utils_detect_docs_dir() {
-    if [[ -n "$PUBINDEX_DOCS_DIR" ]]; then
-        echo "$PUBINDEX_DOCS_DIR"
-        return 0
-    fi
-
-    # FS2: la raíz la conoce core/env.sh; la búsqueda hacia arriba queda como reserva
-    local _core_d="$PUBINDEX_SCRIPT_DIR"
-    while [[ "$_core_d" != / && ! -f "$_core_d/core/env.sh" ]]; do _core_d="$(dirname "$_core_d")"; done
-    if [[ -f "$_core_d/core/env.sh" ]]; then ( source "$_core_d/core/env.sh" && printf '%s\n' "$DOCS_ROOT" ); return 0; fi
-
-    local candidate
-    candidate="$(cd "$PUBINDEX_SCRIPT_DIR/.." && pwd)"
-
-    # Sube hasta 5 niveles buscando una carpeta que contenga "04 index"
-    local i
-    for ((i = 0; i < 5; i++)); do
-        if [[ -d "$candidate/$PUBINDEX_TARGET_DIRNAME" ]]; then
-            echo "$candidate"
-            return 0
-        fi
-        candidate="$(cd "$candidate/.." && pwd)"
-    done
-
-    return 1
+    [[ -n "${DOCS_ROOT:-}" && -d "$DOCS_ROOT" ]] || return 1
+    printf '%s\n' "$DOCS_ROOT"
 }
 
 # Confirma con el usuario (s/n). Devuelve 0 si confirma, 1 si no.

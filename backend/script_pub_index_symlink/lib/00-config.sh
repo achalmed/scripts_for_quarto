@@ -14,25 +14,22 @@ fi
 PUBINDEX_CONFIG_LOADED=1
 
 # --- Directorio base de Documents -------------------------------------------
-# Se asume que main.sh se ejecuta desde dentro de pub-index-sync/, que a su
-# vez vive en algún lugar dentro de ~/Documents. Por defecto se autodetecta
-# subiendo desde la ubicación del script hasta encontrar "04 index".
-# Si la autodetección falla, se puede forzar con la variable de entorno
-# PUBINDEX_DOCS_DIR antes de ejecutar main.sh, ej:
-#   PUBINDEX_DOCS_DIR=/home/achalmaedison/Documents ./main.sh
-PUBINDEX_DOCS_DIR="${PUBINDEX_DOCS_DIR:-}"
+# La raíz es DOCS_ROOT de core/env.sh, que main.sh carga antes que este módulo
+# (ola 0, 2026-10-05: sin alias propio de la raíz). Para forzarla:
+#   DOCS_ROOT="$HOME/Documents" ./main.sh
+
+# --- Proyecto especial (no tiene el prefijo pub_) y sus subcarpetas de posts
+# La carpeta del hub (repo website-achalma), relativa a la raíz: INDEX_DIR de core/env.
+PUBINDEX_WEBSITE_PROJECT="${INDEX_DIR#"$DOCS_ROOT"/}"
 
 # --- Carpeta destino donde se crean los symlinks organizados por año --------
-# Desde 2026-09-06 "04 index" es también el repo del hub Quarto (website-achalma);
+# Desde 2026-09-06 la carpeta del hub es también el repo del hub Quarto;
 # los symlinks por año van en su subcarpeta _indice/ (el guion bajo evita que
 # Quarto la renderice y el .gitignore del hub la excluye).
-PUBINDEX_TARGET_DIRNAME="04 index/_indice"
+PUBINDEX_TARGET_DIRNAME="$PUBINDEX_WEBSITE_PROJECT/_indice"
 
 # --- Prefijo de carpetas de proyectos de publicaciones a escanear -----------
 PUBINDEX_PROJECT_PREFIX="pub_"
-
-# --- Proyecto especial (no tiene el prefijo pub_) y sus subcarpetas de posts
-PUBINDEX_WEBSITE_PROJECT="04 index"   # carpeta del hub (repo website-achalma)
 
 # --- Subcarpeta (relativa a Documents) con los pub_* como submódulos del hub
 #     (reorganización 2026-09-06). Forzable con PUBINDEX_PUBS_SUBDIR. ---------

@@ -16,22 +16,19 @@ QBLOG_CONFIG_LOADED=1
 QBLOG_VERSION="3.0.0"
 
 # --- Directorio base de Documents -------------------------------------------
-# Se autodetecta subiendo desde la ubicación de este script hasta encontrar
-# una carpeta que contenga al menos un proyecto pub_* o "website-achalma".
-# Si la autodetección falla, se puede forzar con la variable de entorno
-# QBLOG_DOCS_DIR antes de ejecutar main.sh, ej:
-#   QBLOG_DOCS_DIR=/home/achalmaedison/Documents ./main.sh list
-QBLOG_DOCS_DIR="${QBLOG_DOCS_DIR:-}"
+# La raíz es DOCS_ROOT de core/env.sh, que main.sh carga antes que este módulo
+# (ola 0, 2026-10-05: sin alias propio de la raíz). Para forzarla:
+#   DOCS_ROOT="$HOME/Documents" ./main.sh list
 
 # --- Prefijo de carpetas de proyectos de publicaciones (blogs) --------------
 QBLOG_PROJECT_PREFIX="pub_"
 
 # --- Proyecto especial que también se gestiona como "blog" -------------------
 QBLOG_WEBSITE_PROJECT="website-achalma"
-# Carpeta real del hub en Documents (desde 2026-09-06 el repo website-achalma
-# vive fusionado con la carpeta del vault "04 index"; el alias de arriba sigue
-# valiendo en la CLI: main.sh render website-achalma).
-QBLOG_WEBSITE_DIR="${QBLOG_WEBSITE_DIR:-04 index}"
+# Carpeta real del hub, relativa a la raíz: la da INDEX_DIR de core/env (desde
+# 2026-09-06 el repo website-achalma vive fusionado con esa carpeta del vault; el
+# alias de arriba sigue valiendo en la CLI: main.sh render website-achalma).
+QBLOG_WEBSITE_DIR="${QBLOG_WEBSITE_DIR:-${INDEX_DIR#"$DOCS_ROOT"/}}"
 
 # --- Subcarpeta (relativa a Documents) donde viven los proyectos pub_* como
 #     submódulos git del hub website-achalma (reorganización 2026-09-06).

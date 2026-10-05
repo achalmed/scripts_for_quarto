@@ -64,7 +64,7 @@ Es idempotente: repetirlo solo añade lo nuevo. Para reindexar desde cero basta 
 
 | variable | para qué |
 |---|---|
-| `PUBINDEX_DOCS_DIR` | raíz del espacio de trabajo si la autodetección falla (sube desde la carpeta del script hasta hallar `04 index`) |
+| `DOCS_ROOT` | raíz del espacio de trabajo; por defecto la resuelve `core/env.sh` (sin alias propio desde la ola 0); la carpeta del hub es `INDEX_DIR` |
 | `PUBINDEX_PUBS_SUBDIR` | carpeta de los pubs (por defecto `04 index/_pubs`) |
 
 Cada corrida añade su registro a `logs/<AAAA-MM-DD>.log` de esta carpeta (ignorado en git).

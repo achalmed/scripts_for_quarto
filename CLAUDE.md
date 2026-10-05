@@ -40,8 +40,9 @@ por backend), `app/README.md` (la GUI) y el README de la herramienta que se toqu
   `PUBS_SUBDIR`), por defecto `<hub>/_pubs`; `website-achalma` sigue aceptado como alias del hub
   (`QBLOG_WEBSITE_DIR`, `HUB_ALIASES`). Un blog se nombra por carpeta (`pub_axiomata`) o en corto
   (`axiomata`). Un post es `<blog>/posts/AAAA-MM-DD-titulo/index.qmd`: lo que no empieza por fecha no
-  es un post. Las herramientas Bash suben desde su propia ruta hasta hallar `~/Documents`; se fuerza
-  con `QBLOG_DOCS_DIR` o `PUBINDEX_DOCS_DIR`.
+  es un post. Las herramientas toman la raíz (`DOCS_ROOT`) y la carpeta del hub (`INDEX_DIR`) de
+  `core/env.sh` y `core/env.py`; la raíz se fuerza exportando `DOCS_ROOT` (sin alias propios de la raíz desde
+  la ola 0).
 - **La verdad de un post es su `index.qmd`; el Excel es la mesa de trabajo.** `update` escribe solo
   donde hay diferencias y una celda vacía borra el campo; antes de un cambio masivo, `--dry-run`
   siempre: en la terminal ninguna herramienta simula por defecto (el `simula_por_defecto: true` del

@@ -19,6 +19,9 @@ Vigentes: `blogs_manager` 3.0.0 · `metadata_manager` 2.3.0 · `generador_public
 
 ### Cambiado
 
+- 2026-10-05 · Ola 0: `blogs_manager`, `pub_index_symlink`, `metadata_manager` y la GUI toman la raíz
+  (`DOCS_ROOT`) y la carpeta del hub (`INDEX_DIR`) de `core/env`; los alias propios de la raíz y la
+  búsqueda hacia arriba de reserva se retiran (la raíz se fuerza exportando `DOCS_ROOT`).
 - 2026-09-15 · Los índices `_contenido_<subblog>.qmd` del generador llevan frontmatter `tipo: fragmento`.
 - 2026-09-07 · Las cinco herramientas siguen el patrón `main` + `config` + `lib` y toman la raíz del
   espacio de trabajo y el registro de `core/`; `format_yaml` gana `main.py`, `config.py` y

@@ -5,6 +5,7 @@ Objetivo: un solo lugar para lo que todos los módulos consumen: versión de la
 Límite: nada en este archivo depende de otros módulos del proyecto.
 """
 
+import importlib.util
 from pathlib import Path
 from typing import Dict, Optional
 import yaml
@@ -47,9 +48,20 @@ SECTION_DIRS = {
 }
 
 
+def _hub_relativo() -> str:
+    """Carpeta del hub relativa a la raíz: INDEX_DIR de core/env.py (normativa 5.2; ola 0)."""
+    d = Path(__file__).resolve()
+    while d != d.parent and not (d / "core" / "env.py").is_file():
+        d = d.parent
+    spec = importlib.util.spec_from_file_location("core_env", d / "core" / "env.py")
+    env = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(env)
+    return Path(env.INDEX_DIR).relative_to(env.DOCS_ROOT).as_posix()
+
+
 # Subcarpeta (relativa a la ruta base ~/Documents) donde viven los blogs pub_*
 # como submódulos git del hub website-achalma (reorganización 2026-09-06).
-HUB_DIR = "04 index"          # carpeta del hub (repo website-achalma) desde 2026-09-06
+HUB_DIR = _hub_relativo()     # carpeta del hub (repo website-achalma): INDEX_DIR de core/env
 HUB_ALIASES = {"website-achalma": HUB_DIR}
 PUBS_SUBDIR = f"{HUB_DIR}/_pubs"
 
@@ -136,7 +148,7 @@ def create_default_config(base_path: str, output_path: str = "metadata_config.ym
             "pub_chaska", "pub_dialectica-y-mercado", "pub_epsilon-y-beta",
             "pub_methodica", "pub_numerus-scriptum", "pub_optimums",
             "pub_pecunia-fluxus", "pub_res-publica",
-            "04 index/blog",
+            f"{HUB_DIR}/blog",
         ],
         "excluded_folders": [
             "apa", "notas", "borradores",
@@ -155,7 +167,7 @@ def create_default_config(base_path: str, output_path: str = "metadata_config.ym
         # ningún pdf-url del que deducirlo.
         "blog_base_urls": {
             "pub_chaska": "https://chaska-x.netlify.app",
-            "04 index": "https://achalmaedison.netlify.app",
+            HUB_DIR: "https://achalmaedison.netlify.app",
         },
     }
 

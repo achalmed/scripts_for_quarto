@@ -62,7 +62,7 @@ convert_folder_to_link() {
 
     post_folder_name="$(basename "$post_dir")"
     # basename "$(dirname ...)" y no "dirname | xargs basename": xargs
-    # divide por espacios y rompía con rutas como "01 notes"
+    # divide por espacios y rompía con rutas con espacios (las del vault)
     subblog_name="$(basename "$(dirname "$post_dir")")"
     post_title="$(format_post_title "$post_folder_name")"
     post_url="$(build_post_url "$GENIDX_BLOG_TYPE" "$subblog_name" "$post_folder_name")"

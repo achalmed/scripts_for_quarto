@@ -3,7 +3,7 @@
 #  backend/script_pub_index_symlink/lib/06-maintenance.sh — Utilidades adicionales que complementan la gestión de symlinks
 # -----------------------------------------------------------------------------
 # Utilidades adicionales que complementan la gestión de symlinks:
-#   - Eliminar carpetas de año ("04 index/2018", etc.) que quedaron vacías
+#   - Eliminar carpetas de año ("$INDEX_DIR/_indice/2018", etc.) que quedaron vacías
 #     después de limpiar symlinks rotos.
 #   - Mostrar un resumen estadístico de cuántas publicaciones hay indexadas
 #     por año.
@@ -14,8 +14,8 @@ if [[ -n "${PUBINDEX_MAINTENANCE_LOADED:-}" ]]; then
 fi
 PUBINDEX_MAINTENANCE_LOADED=1
 
-# Elimina subcarpetas de año dentro de "04 index" que estén vacías.
-# $1 = ruta absoluta de "04 index"
+# Elimina subcarpetas de año dentro de "$INDEX_DIR/_indice" que estén vacías.
+# $1 = ruta absoluta de "$INDEX_DIR/_indice"
 maintenance_remove_empty_year_dirs() {
     local index_dir="$1"
     local removed=0
@@ -33,8 +33,8 @@ maintenance_remove_empty_year_dirs() {
 }
 
 # Muestra un resumen: cuántos symlinks (publicaciones) hay por año dentro
-# de "04 index".
-# $1 = ruta absoluta de "04 index"
+# de "$INDEX_DIR/_indice".
+# $1 = ruta absoluta de "$INDEX_DIR/_indice"
 maintenance_print_summary() {
     local index_dir="$1"
 

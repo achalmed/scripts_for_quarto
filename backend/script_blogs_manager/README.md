@@ -87,8 +87,8 @@ rellena el asistente, carpetas que nunca son carpetas de posts. Por entorno, sin
 
 | variable | para qué |
 |---|---|
-| `QBLOG_DOCS_DIR` | raíz del espacio de trabajo si la autodetección falla (sube desde la carpeta del script) |
-| `QBLOG_WEBSITE_DIR` · `QBLOG_PUBS_SUBDIR` | carpeta del hub (`04 index`) y de los pubs (`04 index/_pubs`) |
+| `DOCS_ROOT` | raíz del espacio de trabajo; por defecto la resuelve `core/env.sh` (sin alias propio desde la ola 0) |
+| `QBLOG_WEBSITE_DIR` · `QBLOG_PUBS_SUBDIR` | carpeta del hub (por defecto `INDEX_DIR` de `core/env.sh`, relativa a la raíz) y de los pubs (`<hub>/_pubs`) |
 | `QBLOG_BACKUP_DIR` | destino de `backup` |
 
 ## Estructura

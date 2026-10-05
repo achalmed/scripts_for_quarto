@@ -22,7 +22,7 @@ def _cmd(args: list[str], descripcion: str, stdin_data: str | None = None) -> Co
         cwd=str(st.docs_dir()),
         stdin_data=stdin_data,
         descripcion=descripcion,
-        entorno={"QBLOG_DOCS_DIR": str(st.docs_dir())},
+        entorno={"DOCS_ROOT": str(st.docs_dir())},
     )
 
 

@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # =============================================================================
-#  backend/script_pub_index_symlink/lib/05-broken-detector.sh — Detecta symlinks rotos dentro de "04 index"
+#  backend/script_pub_index_symlink/lib/05-broken-detector.sh — Detecta symlinks rotos dentro de "$INDEX_DIR/_indice"
 # -----------------------------------------------------------------------------
-# Detecta symlinks rotos dentro de "04 index" (es decir, symlinks cuyo
+# Detecta symlinks rotos dentro de "$INDEX_DIR/_indice" (es decir, symlinks cuyo
 # destino ya no existe — por ejemplo porque borraste o moviste una carpeta
 # de publicación en el proyecto original). Solo reporta; no borra nada salvo
 # que se invoque explícitamente la función de limpieza desde main.sh con
@@ -14,9 +14,9 @@ if [[ -n "${PUBINDEX_BROKEN_DETECTOR_LOADED:-}" ]]; then
 fi
 PUBINDEX_BROKEN_DETECTOR_LOADED=1
 
-# Busca todos los symlinks rotos dentro de "04 index" (recursivo, year/post).
+# Busca todos los symlinks rotos dentro de "$INDEX_DIR/_indice" (recursivo, year/post).
 # Imprime una ruta absoluta por línea (la ruta del symlink, no del destino).
-# $1 = ruta absoluta de "04 index"
+# $1 = ruta absoluta de "$INDEX_DIR/_indice"
 broken_detector_find_broken() {
     local index_dir="$1"
     # -xtype l con find: localiza symlinks cuyo destino final no existe.
@@ -24,7 +24,7 @@ broken_detector_find_broken() {
 }
 
 # Reporta (log) los symlinks rotos encontrados. Devuelve por stdout el total.
-# $1 = ruta absoluta de "04 index"
+# $1 = ruta absoluta de "$INDEX_DIR/_indice"
 broken_detector_report() {
     local index_dir="$1"
     local broken_list
@@ -50,7 +50,7 @@ broken_detector_report() {
 }
 
 # Elimina los symlinks rotos encontrados (usar con confirmación previa).
-# $1 = ruta absoluta de "04 index"
+# $1 = ruta absoluta de "$INDEX_DIR/_indice"
 broken_detector_clean() {
     local index_dir="$1"
     local broken_list

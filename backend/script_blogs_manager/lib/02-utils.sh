@@ -13,34 +13,11 @@ if [[ -n "${QBLOG_UTILS_LOADED:-}" ]]; then
 fi
 QBLOG_UTILS_LOADED=1
 
-# Autodetecta ~/Documents subiendo desde la ubicación de este script hasta
-# encontrar una carpeta que contenga al menos un proyecto pub_* o
-# "website-achalma". Si no se encuentra, falla con mensaje claro.
+# Devuelve ~/Documents: DOCS_ROOT de core/env.sh, que main.sh ya cargó (ola 0:
+# sin alias propio ni búsqueda hacia arriba de reserva). Falla si no hay raíz.
 utils_detect_docs_dir() {
-    if [[ -n "$QBLOG_DOCS_DIR" ]]; then
-        echo "$QBLOG_DOCS_DIR"
-        return 0
-    fi
-
-    # FS2: la raíz la conoce core/env.sh; la búsqueda hacia arriba queda como reserva
-    local _core_d="$QBLOG_SCRIPT_DIR"
-    while [[ "$_core_d" != / && ! -f "$_core_d/core/env.sh" ]]; do _core_d="$(dirname "$_core_d")"; done
-    if [[ -f "$_core_d/core/env.sh" ]]; then ( source "$_core_d/core/env.sh" && printf '%s\n' "$DOCS_ROOT" ); return 0; fi
-
-    local candidate
-    candidate="$(cd "$QBLOG_SCRIPT_DIR/.." && pwd)"
-
-    local i
-    for ((i = 0; i < 6; i++)); do
-        if compgen -G "$candidate/${QBLOG_PROJECT_PREFIX}*" > /dev/null 2>&1 || \
-           [[ -d "$candidate/$QBLOG_WEBSITE_DIR/_quarto.yml" || -f "$candidate/$QBLOG_WEBSITE_DIR/_quarto.yml" ]]; then
-            echo "$candidate"
-            return 0
-        fi
-        candidate="$(cd "$candidate/.." && pwd)"
-    done
-
-    return 1
+    [[ -n "${DOCS_ROOT:-}" && -d "$DOCS_ROOT" ]] || return 1
+    printf '%s\n' "$DOCS_ROOT"
 }
 
 # Verifica si un nombre de proyecto está en la lista de exclusión.
