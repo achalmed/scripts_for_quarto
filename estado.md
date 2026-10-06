@@ -3,7 +3,7 @@ tipo: estado
 estado: activo
 actualizado: 2026-10-06
 ---
-# estado.md — scripts_quarto_studio (repo `scripts_for_quarto`)
+# estado.md — scripts-quarto (repo `scripts_for_quarto`)
 
 Lo primero que se lee y lo último que se escribe en cada sesión (regla 10 de la guía raíz). Lo decidido vive en
 `docs/decisiones.md`; lo pendiente, aquí, en §Por hacer, con fecha y dueño.
@@ -33,7 +33,7 @@ nada en curso
 
 ## Por hacer
 
-- 2026-10-06 · dueño: director · `core/suites.py probar --repo scripts_quarto_studio`: RQ-MAN-05 en `pub_index_symlink` (y en `quarto_studio`, hoy en el repo `gui-suites`) (escriben en `vault`, pero el manifiesto no declara ese `escribe_en` para el proyecto); se corrige en `meta/workspace.yml`.
+- 2026-10-06 · dueño: director · `core/suites.py probar --repo scripts-quarto`: RQ-MAN-05 en `pub_index_symlink` (y en `quarto_studio`, hoy en el repo `gui-suites`) (escriben en `vault`, pero el manifiesto no declara ese `escribe_en` para el proyecto); se corrige en `meta/workspace.yml`.
 - 2026-10-04 · dueño: el autor · dos comentarios de código dan como ejemplo de raíz forzada una ruta de la máquina: `backend/script_blogs_manager/lib/00-config.sh` y `backend/script_pub_index_symlink/lib/00-config.sh`.
 - 2026-10-04 · dueño: el autor · `backend/script_metadata_manager/metadata_config.yml` (`excluded_folders`) publica en este repositorio público nombres de carpetas personales. ¿Se mueven a un archivo local ignorado?
 - 2026-10-04 · dueño: el autor · orden de etiquetas de cabecera (aviso A10) en `backend/script_metadata_manager/lib/excel_writer.py` y `backend/script_metadata_manager/lib/path_sync.py`.

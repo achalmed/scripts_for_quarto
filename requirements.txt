@@ -1,4 +1,4 @@
-# scripts_quarto_studio — dependencias de los backends (la GUI, Quarto Studio, vive en el repo studios)
+# scripts-quarto — dependencias de los backends (la GUI, Quarto Studio, vive en el repo studios)
 # Backend (script_metadata_manager); normalmente ya presentes en el
 # entorno conda scripts_quarto
 pyyaml

@@ -58,7 +58,7 @@ excluded_folders:
   - scripts-biblioteca
   - scripts_document_studio
   - scripts-linux
-  - scripts_quarto_studio
+  - scripts-quarto
   - scripts_for_zotero
   - spss
   - stata

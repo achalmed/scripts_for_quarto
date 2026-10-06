@@ -2,7 +2,7 @@
 tipo: readme
 estado: activo
 ---
-# scripts_quarto_studio/ — herramientas de la familia de blogs Quarto (repo scripts_for_quarto); su GUI vive en studios
+# scripts-quarto/ — herramientas de la familia de blogs Quarto (repo scripts_for_quarto); su GUI vive en studios
 
 <!-- suite:inicio -->
 **Suite `quarto_studio`** · objetivo *publicacion* · estado *activo* · python · interfaz gui
@@ -26,11 +26,11 @@ Suites de esta carpeta (5); índice global en `meta/INDICE_SCRIPTS.md`. Patrón:
 
 | Suite | Carpeta | Objetivo | Escribe en | Simula | Timer | Estado | Patrón |
 |---|---|---|---|---|---|---|---|
-| `blogs_manager` | [scripts_quarto_studio/backend/script_blogs_manager](backend/script_blogs_manager/) | publicacion | web, git, archivos | no |  | activo | `MCL` |
-| `format_yaml` | [scripts_quarto_studio/backend/script_format_yaml](backend/script_format_yaml/) | publicacion | web | no |  | activo | `MCL` |
-| `generador_publicacion_similar` | [scripts_quarto_studio/backend/script_generador_publicacion_similar](backend/script_generador_publicacion_similar/) | publicacion | web | no |  | activo | `MCL` |
-| `metadata_manager` | [scripts_quarto_studio/backend/script_metadata_manager](backend/script_metadata_manager/) | publicacion | web | no |  | activo | `MCL` |
-| `pub_index_symlink` | [scripts_quarto_studio/backend/script_pub_index_symlink](backend/script_pub_index_symlink/) | publicacion | vault | no |  | activo | `MCL` |
+| `blogs_manager` | [scripts-quarto/backend/script_blogs_manager](backend/script_blogs_manager/) | publicacion | web, git, archivos | no |  | activo | `MCL` |
+| `format_yaml` | [scripts-quarto/backend/script_format_yaml](backend/script_format_yaml/) | publicacion | web | no |  | activo | `MCL` |
+| `generador_publicacion_similar` | [scripts-quarto/backend/script_generador_publicacion_similar](backend/script_generador_publicacion_similar/) | publicacion | web | no |  | activo | `MCL` |
+| `metadata_manager` | [scripts-quarto/backend/script_metadata_manager](backend/script_metadata_manager/) | publicacion | web | no |  | activo | `MCL` |
+| `pub_index_symlink` | [scripts-quarto/backend/script_pub_index_symlink](backend/script_pub_index_symlink/) | publicacion | vault | no |  | activo | `MCL` |
 
 <sub>Bloque generado desde los `suite.yml` por `core/suites.py generar` (2026-10-06); no se edita a mano.</sub>
 <!-- suites:fin -->
@@ -43,7 +43,7 @@ Cinco herramientas de línea de comandos (tres en Bash, dos en Python) para mant
 a la vez desde un Excel, normalizar etiquetas y fechas, reparar bloques YAML, generar índices de contenido,
 mantener un índice por año en el vault y renderizar o publicar los doce sitios desde un solo menú.
 
-Dos nombres para una sola cosa: la carpeta es `scripts_quarto_studio` y el remoto en GitHub se llama
+Dos nombres para una sola cosa: la carpeta es `scripts-quarto` y el remoto en GitHub se llama
 `scripts_for_quarto`. La aplicación de escritorio que las envuelve, **Quarto Studio** (suite `quarto_studio`), vive
 desde la ola 4 en el repo `gui-suites` (`gui-suites/quarto/`) y encuentra estas herramientas por `SCRIPTS_QUARTO` de
 `core/env.py`.

@@ -1,4 +1,4 @@
-# .gitignore — scripts_quarto_studio: lo que no entra en git, por clase de archivo (NORMATIVA §5, §15.8)
+# .gitignore — scripts-quarto: lo que no entra en git, por clase de archivo (NORMATIVA §5, §15.8)
 
 # ===== Derivado: cachés y compilados de Python =====
 # bytecode que Python regenera al importar
