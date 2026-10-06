@@ -22,7 +22,7 @@ main.py
 <!-- suite:fin -->
 
 <!-- suites:inicio -->
-Suites de esta carpeta (6); índice global en `meta/INDICE_SCRIPTS.md`. Patrón: M main · C config · L lib.
+Suites de esta carpeta (5); índice global en `meta/INDICE_SCRIPTS.md`. Patrón: M main · C config · L lib.
 
 | Suite | Carpeta | Objetivo | Escribe en | Simula | Timer | Estado | Patrón |
 |---|---|---|---|---|---|---|---|
@@ -31,9 +31,8 @@ Suites de esta carpeta (6); índice global en `meta/INDICE_SCRIPTS.md`. Patrón:
 | `generador_publicacion_similar` | [scripts_quarto_studio/backend/script_generador_publicacion_similar](backend/script_generador_publicacion_similar/) | publicacion | web | no |  | activo | `MCL` |
 | `metadata_manager` | [scripts_quarto_studio/backend/script_metadata_manager](backend/script_metadata_manager/) | publicacion | web | no |  | activo | `MCL` |
 | `pub_index_symlink` | [scripts_quarto_studio/backend/script_pub_index_symlink](backend/script_pub_index_symlink/) | publicacion | vault | no |  | activo | `MCL` |
-| `quarto_studio` | [scripts_quarto_studio](./) | publicacion | web, vault | sí |  | activo | `MCL` |
 
-<sub>Bloque generado desde los `suite.yml` por `core/suites.py generar` (2026-10-04); no se edita a mano.</sub>
+<sub>Bloque generado desde los `suite.yml` por `core/suites.py generar` (2026-10-06); no se edita a mano.</sub>
 <!-- suites:fin -->
 
 ## Qué es
@@ -46,7 +45,7 @@ mantener un índice por año en el vault y renderizar o publicar los doce sitios
 
 Dos nombres para una sola cosa: la carpeta es `scripts_quarto_studio` y el remoto en GitHub se llama
 `scripts_for_quarto`. La aplicación de escritorio que las envuelve, **Quarto Studio** (suite `quarto_studio`), vive
-desde la ola 4 en el repo `studios` (`studios/quarto/`) y encuentra estas herramientas por `SCRIPTS_QUARTO` de
+desde la ola 4 en el repo `gui-suites` (`gui-suites/quarto/`) y encuentra estas herramientas por `SCRIPTS_QUARTO` de
 `core/env.py`.
 
 **No es** un tema, un sitio ni una plantilla de Quarto: el tema de los doce sitios vive en el hub y se
@@ -71,7 +70,7 @@ Excel es la mesa de trabajo, y lo que se edite a mano en un `.qmd` prevalece has
 | `generador_publicacion_similar` | `_contenido_<subblog>.qmd`, fragmentos con `tipo: fragmento` para `{{< include >}}` | la carpeta de cada subblog del blog que se le pase | `--dry-run`; si un subblog queda sin posts, borra su índice |
 | `pub_index_symlink` | enlaces simbólicos por año, nunca copias | `04 index/_indice/` (ignorado en git; del vault) | omite lo que ya apunta bien; no toca archivos reales; `--dry-run` |
 | `blogs_manager` | `_site/`, `_freeze/`, posts nuevos, commits, respaldos | hub y pubs; `06 archives/backups-publicaciones/`; el remoto git (Netlify) o `quarto publish <destino>` | `publish` y `git-commit` simulan salvo `--aplicar`, empujan solo tras la puerta R6 y no hacen `git add .`; `clean-all` pide confirmación |
-| Quarto Studio (repo `studios`) | nada propio: lanza las cinco anteriores | — | una operación a la vez; «Dry-run» marcado por defecto en metadatos e índices |
+| Quarto Studio (repo `gui-suites`) | nada propio: lanza las cinco anteriores | — | una operación a la vez; «Dry-run» marcado por defecto en metadatos e índices |
 
 Cómo están montados los pubs y por qué se confirma dentro del pub antes que en el hub:
 `04 index/docs/pubs-submodulos.md`.
@@ -80,7 +79,7 @@ Cómo están montados los pubs y por qué se confirma dentro del pub antes que e
 
 ```bash
 pip install -r requirements.txt                       # pyyaml, pandas, openpyxl (un entorno conda es opcional)
-python3 ../studios/quarto/main.py                     # Quarto Studio, la GUI (repo studios)
+python3 ../gui-suites/quarto/main.py                     # Quarto Studio, la GUI (repo studios)
 backend/script_blogs_manager/main.sh                  # menú interactivo; `main.sh help` lista los comandos
 backend/script_blogs_manager/main.sh list             # los sitios que ve el gestor
 backend/script_blogs_manager/main.sh render axiomata  # nombre corto o pub_axiomata; también preview, publish, clean, git-*
@@ -121,7 +120,7 @@ solo lo que no cabe en una puerta.
 | documento | para qué leerlo |
 |---|---|
 | `CLAUDE.md` | reglas para el asistente: invariantes de diseño, cómo verificar, trampas |
-| `studios/quarto/README.md` | la GUI (repo `studios`): arquitectura, regla de dependencias, cómo añadir una herramienta |
+| `gui-suites/quarto/README.md` | la GUI (repo `gui-suites`): arquitectura, regla de dependencias, cómo añadir una herramienta |
 | `backend/script_blogs_manager/README.md` | manual del gestor de blogs v3.0 |
 | `backend/script_metadata_manager/README.md` | manual del gestor de metadatos y tags (Excel, filtros, fórmulas, columnas) |
 | `backend/script_pub_index_symlink/README.md` | qué cuenta como publicación, conflictos, logs |

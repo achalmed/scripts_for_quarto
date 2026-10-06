@@ -112,6 +112,6 @@ línea en `lib/12-help.sh` y, si va en el menú, en `lib/11-interactive-menu.sh`
 
 - **Simula solo lo que publica.** `publish` y `git-commit` simulan salvo `--aplicar` (las pruebas: `tests/test_blogs_manager_git.py`, con un remoto bare local); `clean`, `clean-all`, `render` e `init-blog` escriben de verdad; `clean-all` pide confirmación.
 - **No es seguro en paralelo.** Dos instancias sobre el mismo blog se pisan (`_site/`, `_freeze/`); la GUI lo serializa y en terminal hay que hacer lo mismo.
-- **El asistente `new-post` es interactivo** y no se automatiza; la GUI lo replica con `studios/quarto/quarto_app/services/post_service.py`, que genera el mismo `index.qmd`.
+- **El asistente `new-post` es interactivo** y no se automatiza; la GUI lo replica con `gui-suites/quarto/quarto_app/services/post_service.py`, que genera el mismo `index.qmd`.
 - **Solo ve el hub y los `pub_*` de `04 index/_pubs/`**: un blog fuera de ahí no existe para `list`, `render-all`, `check-structure` ni `backup`.
 - **`git-commit` no confirma todo**: los archivos sueltos de la raíz que no son fuentes y los punteros de submódulo quedan fuera con un aviso; se confirman a mano. Los pubs son submódulos: después hay que confirmar el puntero en el hub.

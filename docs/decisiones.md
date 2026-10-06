@@ -11,33 +11,33 @@ commit, no aquí; lo pendiente, a [`estado.md`](../estado.md) §Por hacer (ola 4
 
 ## Arquitectura
 
-- **2026-10-06 · La GUI sale al repo `studios`; este repo es el de los backends.** Quarto Studio (`app/`,
-  `main.py`, `build_resources.sh` y la suite raíz `quarto_studio`) pasa con su historia al repo privado `studios`
-  (`studios/quarto/`, paquete `quarto_app`), junto a Filesystem Studio y Git Studio, y encuentra estas
+- **2026-10-06 · La GUI sale al repo `gui-suites`; este repo es el de los backends.** Quarto Studio (`app/`,
+  `main.py`, `build_resources.sh` y la suite raíz `quarto_studio`) pasa con su historia al repo privado `gui-suites`
+  (`gui-suites/quarto/`, paquete `quarto_app`), junto a Filesystem Studio y Git Studio, y encuentra estas
   herramientas por `SCRIPTS_QUARTO` de `core/env.py`, no por ruta relativa (ola 4, fase B; etiqueta previa
   `antes-ola-04-studios-2026-10-06`). Las entradas de abajo sobre la GUI citan ya su ruta de
-  hoy (`studios/quarto/quarto_app/`).
+  hoy (`gui-suites/quarto/quarto_app/`).
 
 - **2026-07-13 · La GUI lanza procesos; no importa el código de los backends.** Quarto Studio construye un
-  `Command` y lo ejecuta con `QProcess` (`studios/quarto/quarto_app/services/`, `studios/quarto/quarto_app/workers/process_runner.py`). Así un backend
+  `Command` y lo ejecuta con `QProcess` (`gui-suites/quarto/quarto_app/services/`, `gui-suites/quarto/quarto_app/workers/process_runner.py`). Así un backend
   puede cambiar de lenguaje sin tocar la GUI y la consola muestra el comando exacto. La capa de servicios
-  vive en `studios/quarto/quarto_app/services/` y no en un `core/` propio del repo, para no confundirse con el `core/` del
+  vive en `gui-suites/quarto/quarto_app/services/` y no en un `core/` propio del repo, para no confundirse con el `core/` del
   espacio de trabajo.
 - **2026-07-13 · Crecer solo cuando duela.** De la visión de producto inicial se adoptó la fundación
   (servicios por dominio, modelos sin Qt, consola integrada) y se dejaron como catálogo, a activar uno a
   uno y con un problema concreto que resolver: sistema de plugins con manifiesto, bus de eventos, caché
   SQLite derivada del sistema de archivos (nunca fuente de verdad), bus de comandos, vigilancia de
   archivos, integración con IA. Se descartaron MVVM (MVC basta para un mantenedor), la configuración
-  repartida en varios archivos (las preferencias van a `QSettings` desde `studios/quarto/quarto_app/settings.py`) y un log por
+  repartida en varios archivos (las preferencias van a `QSettings` desde `gui-suites/quarto/quarto_app/settings.py`) y un log por
   subsistema.
 - **2026-07-13 · Una sola lógica portada a Python: el asistente de posts.** `backend/script_blogs_manager/lib/07-post-creator.sh`
-  encadena unas 50 preguntas de terminal que no se automatizan con fiabilidad; `studios/quarto/quarto_app/services/post_service.py`
+  encadena unas 50 preguntas de terminal que no se automatizan con fiabilidad; `gui-suites/quarto/quarto_app/services/post_service.py`
   genera el mismo `index.qmd` desde un diálogo. Ninguna otra lógica de backend se duplica en la GUI.
 - **2026-07-13 · Una operación a la vez.** Los backends mutan los mismos árboles; el runner de la GUI
   rechaza ejecuciones concurrentes en lugar de ofrecer una cola.
 - **2026-09-07 · Patrón `main` + `config` + `lib` en las cinco herramientas, raíz y logger desde `core/`.**
   Ninguna suite escribe la ruta de `~/Documents` ni define su logger; `format_yaml` conserva
-  `fix_qmd_files.py` como alias de `main.py` porque la GUI lo invoca (`studios/quarto/quarto_app/services/paths.py`).
+  `fix_qmd_files.py` como alias de `main.py` porque la GUI lo invoca (`gui-suites/quarto/quarto_app/services/paths.py`).
 
 ## Metadatos y blogs
 

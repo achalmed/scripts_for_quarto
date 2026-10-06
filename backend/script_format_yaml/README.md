@@ -70,7 +70,7 @@ estar sin cambios pendientes en git, para revisar el resultado con `git diff` de
 | `main.py` | argumentos y recorrido | a mano |
 | `config.py` | extensión, recursividad por defecto, líneas en blanco tras el cierre | a mano |
 | `lib/formato.py` | la reparación | a mano |
-| `fix_qmd_files.py` | alias de `main.py`; lo usa la GUI (`studios/quarto/quarto_app/services/paths.py`) | a mano |
+| `fix_qmd_files.py` | alias de `main.py`; lo usa la GUI (`gui-suites/quarto/quarto_app/services/paths.py`) | a mano |
 | `suite.yml` | manifiesto de la suite | a mano; el bloque de arriba lo genera `core/suites.py` |
 
 ## Límite honesto
