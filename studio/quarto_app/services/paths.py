@@ -13,16 +13,6 @@ from pathlib import Path
 from comun import rutas
 
 
-def scripts_root() -> Path:
-    """Raíz del repositorio de los backends de Quarto (SCRIPTS_QUARTO de core/env)."""
-    return rutas.variable("SCRIPTS_QUARTO")
-
-
-def backend_dir() -> Path:
-    """Directorio backend/ del repositorio de los backends (donde viven los script_*)."""
-    return scripts_root() / "backend"
-
-
 def core_env():
     """El módulo core/env.py del workspace (lo carga comun.rutas)."""
     return rutas.core_env()

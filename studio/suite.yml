@@ -1,4 +1,4 @@
-# suite.yml — suite quarto_studio: Interfaz de escritorio (PySide6) sobre los backends de la familia de blogs Quarto: render, publicación, metadatos, índices.
+# quarto/suite.yml — suite quarto_studio: Interfaz de escritorio (PySide6) sobre los backends de la familia de blogs Quarto: render, publicación, metadatos, índices.
 # Contrato: core/suite.schema.yml; core/suites.py validar lo comprueba y generar escribe los índices y README.
 id: quarto_studio
 objetivo: publicacion
@@ -7,9 +7,10 @@ escribe_en:
 - web
 - vault
 simula_por_defecto: true
-pruebas: python3 -m pytest -q tests -p no:cacheprovider --basetemp ~/.cache/pytest/quarto-ola4   # desde la raíz del repo; fixtures y remoto bare en temporal (ola 4, Q1b)
+pruebas: tests/run.sh -k quarto   # desde la raíz de studios: abre la ventana sin pantalla y resuelve sus backends por core/env (ola 4, fase B)
 comandos:
 - main.py
+- main.py --smoke
 estado: activo
 interfaz: gui
 depende_de:
