@@ -45,7 +45,7 @@ from openpyxl import Workbook
 # Asegurar que el directorio del script esté en el path
 sys.path.insert(0, str(Path(__file__).parent))
 
-from lib.config import load_config, create_default_config, VERSION, AUTHOR, EMAIL
+from lib.config import load_config, create_default_config, resolver_excel_output_dir, VERSION, AUTHOR, EMAIL
 from lib.collector import collect_index_files
 from lib.excel_writer import (
     build_metadata_sheet,
@@ -95,10 +95,7 @@ def _make_manager_config(base_path: str, config_file: str = None):
     cfg = load_config(config_file)
     allowed_blogs     = set(cfg.get("allowed_blogs", []))
     user_excluded     = set(cfg.get("excluded_folders", []))
-    excel_output_dir  = Path(
-        cfg.get("excel_output_dir", str(bp / "excel_databases"))
-    ).expanduser()
-    excel_output_dir.mkdir(parents=True, exist_ok=True)
+    excel_output_dir  = resolver_excel_output_dir(cfg.get("excel_output_dir"))   # se crea solo al escribir
 
     return bp, allowed_blogs, user_excluded, excel_output_dir
 
@@ -191,6 +188,7 @@ def cmd_create_template(args):
         name, ext = os.path.splitext(output_filename)
         output_filename = f"{name}_{args.blog}{ext}"
 
+    out_dir.mkdir(parents=True, exist_ok=True)
     output_path = out_dir / output_filename
 
     print("🔍 Recolectando archivos index.qmd...")

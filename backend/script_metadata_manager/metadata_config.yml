@@ -72,11 +72,11 @@ excluded_folders:
 # -----------------------------------------------------------------------------
 # DIRECTORIO DE SALIDA PARA EXCEL
 # -----------------------------------------------------------------------------
-# Ubicación donde se guardarán los archivos Excel generados
-# Puede ser una ruta absoluta o relativa
-# Usar ~ para referirse al home del usuario
+# Ubicación donde se guardarán los archivos Excel generados. Una ruta relativa
+# se resuelve contra la carpeta de esta herramienta (sin la clave, también
+# excel_databases/ de aquí); una absoluta o con ~ se respeta tal cual.
 
-excel_output_dir: ~/Documents/scripts_quarto_studio/backend/script_metadata_manager/excel_databases
+excel_output_dir: excel_databases
 
 # =============================================================================
 # NOTAS DE USO

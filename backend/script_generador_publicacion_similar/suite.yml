@@ -6,6 +6,7 @@ resumen: Genera los índices de contenido (_contenido_<subblog>.qmd) de un blog 
 escribe_en:
 - web
 simula_por_defecto: false
+pruebas: python3 -m pytest -q tests -p no:cacheprovider --basetemp ~/.cache/pytest/quarto-ola4   # desde la raíz del repo; fixtures y remoto bare en temporal (ola 4, Q1b)
 comandos:
 - main.sh <BLOG_DIR>
 - main.sh <BLOG_DIR> --dry-run

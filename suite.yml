@@ -7,6 +7,7 @@ escribe_en:
 - web
 - vault
 simula_por_defecto: true
+pruebas: python3 -m pytest -q tests -p no:cacheprovider --basetemp ~/.cache/pytest/quarto-ola4   # desde la raíz del repo; fixtures y remoto bare en temporal (ola 4, Q1b)
 comandos:
 - main.py
 estado: activo

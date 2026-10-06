@@ -101,7 +101,11 @@ interactive_mode() {
 
     while true; do
         show_menu "$docs_dir"
-        read -r -p "$(echo -e "${QBLOG_WHITE}${QBLOG_BOLD}→${QBLOG_NC}")  Selecciona una opción: " option
+        # Sin entrada (fin de stdin: tubería, GUI, prueba de suite) el menú termina en vez de girar.
+        if ! read -r -p "$(echo -e "${QBLOG_WHITE}${QBLOG_BOLD}→${QBLOG_NC}")  Selecciona una opción: " option; then
+            echo ""
+            return 0
+        fi
 
         case $option in
             1)

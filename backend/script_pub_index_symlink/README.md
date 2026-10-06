@@ -67,7 +67,7 @@ Es idempotente: repetirlo solo añade lo nuevo. Para reindexar desde cero basta 
 | `DOCS_ROOT` | raíz del espacio de trabajo; por defecto la resuelve `core/env.sh` (sin alias propio desde la ola 0); la carpeta del hub es `INDEX_DIR` |
 | `PUBINDEX_PUBS_SUBDIR` | carpeta de los pubs (por defecto `04 index/_pubs`) |
 
-Cada corrida añade su registro a `logs/<AAAA-MM-DD>.log` de esta carpeta (ignorado en git).
+Cada corrida, salvo con `--dry-run` (que no escribe nada), añade su registro a `logs/<AAAA-MM-DD>.log` de esta carpeta (ignorado en git).
 
 ## Estructura
 

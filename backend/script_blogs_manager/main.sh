@@ -214,14 +214,21 @@ main() {
 # --- Simular primero: `--aplicar` (en cualquier posición) es lo único que deja
 #     actuar a `publish` y `git-commit`; `--dry-run` se acepta y simula (normativa 5.10).
 _qblog_args=()
+_qblog_banderas=0
 for _qblog_a in "$@"; do
     case "$_qblog_a" in
-        --aplicar) QBLOG_APLICAR=1 ;;
-        --dry-run|--simular) QBLOG_APLICAR=0 ;;
+        --aplicar) QBLOG_APLICAR=1; _qblog_banderas=1 ;;
+        --dry-run|--simular) QBLOG_APLICAR=0; _qblog_banderas=1 ;;
         *) _qblog_args+=("$_qblog_a") ;;
     esac
 done
 set -- "${_qblog_args[@]}"
-unset _qblog_a _qblog_args
+# Una bandera sin comando no abre el menú: no hay nada que simular ni que aplicar.
+if [[ $# -eq 0 && $_qblog_banderas -eq 1 ]]; then
+    print_info "Sin comando: nada que simular ni aplicar. Usa 'main.sh help'."
+    (( QBLOG_APLICAR )) && exit 2
+    exit 0
+fi
+unset _qblog_a _qblog_args _qblog_banderas
 
 main "$@"

@@ -137,8 +137,10 @@ solo lo que no cabe en una puerta.
 
 ## Límite honesto
 
-- **No hay pruebas automáticas, lint ni build**: la comprobación es `--dry-run`, `bash -n`, `py_compile` y
-  mirar el resultado en un pub.
+- **Pruebas sí; lint y build, no**: `tests/` comprueba que cada suite en simulación no escribe nada
+  (`test_simulacion.py`) y el flujo de `publish`/`git-commit` con un remoto bare local; corren con
+  `python3 -m pytest -q tests -p no:cacheprovider --basetemp ~/.cache/pytest/quarto-ola4`. Lo demás es
+  `bash -n`, `py_compile` y mirar el resultado de `--dry-run` en un pub.
 - **Los backends no son seguros en paralelo**: mutan los mismos árboles; la GUI ejecuta una operación a la
   vez y en terminal hay que hacer lo mismo.
 - **`blogs_manager` simula solo lo que publica**: `publish` y `git-commit` piden `--aplicar`; `clean`,

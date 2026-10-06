@@ -99,10 +99,9 @@ backend/script_generador_publicacion_similar/main.sh "../04 index/_pubs/pub_axio
 python3 backend/script_format_yaml/main.py --directory "../04 index/_pubs/pub_axiomata" --recursive --dry-run
 ```
 
-No hay pruebas automáticas: un cambio en un backend se prueba con `--dry-run` sobre un pub y, si es de
-la GUI, abriendo `python3 main.py` y mirando la consola integrada (comando, stdout, stderr, código de
-salida y duración). Lo que se aplique de verdad sobre los blogs se confirma dentro del pub y después
-el puntero del submódulo en el hub (`04 index/docs/pubs-submodulos.md`).
+Pruebas: `python3 -m pytest -q tests -p no:cacheprovider --basetemp ~/.cache/pytest/quarto-ola4` (nunca
+`/tmp`; fixtures y remoto bare en temporal, jamás el hub ni los pubs: Netlify despliega con cada push).
+Lo aplicado de verdad se confirma dentro del pub y luego el puntero del submódulo en el hub.
 
 ## Detalles que cuesta redescubrir
 
@@ -129,8 +128,8 @@ el puntero del submódulo en el hub (`04 index/docs/pubs-submodulos.md`).
 - **`generador_publicacion_similar` escribe un fragmento `tipo: fragmento` en la carpeta de cada subblog**
   para `{{< include >}}`; ordena por el glob (con prefijo de fecha equivale a cronológico) y
   **borra** el índice de un subblog que se queda sin posts; la capitalización usa `sed` GNU.
-- **`create-template` sin `--config metadata_config.yml`** escribe el Excel en una carpeta
-  excel_databases de la raíz de `~/Documents`, una carpeta fantasma que el doctor vigila.
+- **`excel_output_dir` relativo se resuelve contra la carpeta del metadata manager** (y sin la clave
+  es su `excel_databases/`): desde la ola 4 ya no nace la carpeta fantasma en la raíz que el doctor vigila.
 
 ## Dónde está cada cosa
 

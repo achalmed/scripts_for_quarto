@@ -137,6 +137,21 @@ def load_config(config_file: Optional[str]) -> Dict:
     return {}
 
 
+# Carpeta del Excel por defecto: la de esta herramienta (versionada a propósito; docs/decisiones.md).
+# Una ruta relativa en `excel_output_dir` se resuelve contra la carpeta de la herramienta, no contra la
+# carpeta actual ni la raíz de los blogs: así no aparece la carpeta fantasma `excel_databases` en la raíz.
+CARPETA_HERRAMIENTA = Path(__file__).resolve().parent.parent
+EXCEL_DIR_DEFECTO = CARPETA_HERRAMIENTA / "excel_databases"
+
+
+def resolver_excel_output_dir(valor: Optional[str]) -> Path:
+    """`excel_output_dir` de la configuración → ruta absoluta (sin crearla)."""
+    if not valor:
+        return EXCEL_DIR_DEFECTO
+    ruta = Path(str(valor)).expanduser()
+    return ruta if ruta.is_absolute() else CARPETA_HERRAMIENTA / ruta
+
+
 def create_default_config(base_path: str, output_path: str = "metadata_config.yml"):
     """
     Genera un metadata_config.yml con valores sensatos para el entorno de Edison.
@@ -156,10 +171,7 @@ def create_default_config(base_path: str, output_path: str = "metadata_config.ym
             "taller unsch como elaborar tesis de pregrado",
             "practicas preprofesionales",
         ],
-        "excel_output_dir": (
-            "~/Documents/scripts_quarto_studio/backend/"
-            "script_metadata_manager/excel_databases"
-        ),
+        "excel_output_dir": "excel_databases",   # relativa a la carpeta de la herramienta
         # URL base de cada blog para sync-pdf-urls. Opcional: si un blog no
         # figura aquí, se resuelve por mayoría de sus pdf-url existentes.
         # Imprescindible solo cuando el dominio no coincide con el nombre

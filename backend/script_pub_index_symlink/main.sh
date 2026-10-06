@@ -51,10 +51,6 @@ source "$PUBINDEX_LIB_DIR/05-broken-detector.sh"
 # shellcheck source=lib/06-maintenance.sh
 source "$PUBINDEX_LIB_DIR/06-maintenance.sh"
 
-# --- Preparar carpeta de logs -------------------------------------------------
-mkdir -p "$PUBINDEX_SCRIPT_DIR/logs"
-PUBINDEX_LOG_FILE="$PUBINDEX_SCRIPT_DIR/logs/$(date '+%Y-%m-%d').log"
-
 # --- Parseo de argumentos -----------------------------------------------------
 PUBINDEX_MODE="sync"
 PUBINDEX_DRY_RUN=0
@@ -97,6 +93,12 @@ while [[ $# -gt 0 ]]; do
             ;;
     esac
 done
+
+# --- Registro en logs/ (ignorado en git), salvo en simulación: --dry-run no escribe nada (ola 4, Q1b)
+if [[ "$PUBINDEX_DRY_RUN" != "1" ]]; then
+    mkdir -p "$PUBINDEX_SCRIPT_DIR/logs"
+    PUBINDEX_LOG_FILE="$PUBINDEX_SCRIPT_DIR/logs/$(date '+%Y-%m-%d').log"
+fi
 
 # --- Detectar Documents y carpeta destino "$INDEX_DIR/_indice" --------------------------
 DOCS_ROOT="$(utils_detect_docs_dir)" || {
@@ -203,4 +205,4 @@ case "$PUBINDEX_MODE" in
         ;;
 esac
 
-log_info "Log guardado en: $PUBINDEX_LOG_FILE"
+if [[ -n "$PUBINDEX_LOG_FILE" ]]; then log_info "Log guardado en: $PUBINDEX_LOG_FILE"; fi

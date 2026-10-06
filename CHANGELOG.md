@@ -35,6 +35,10 @@ Vigentes: `blogs_manager` 4.0.0 · `metadata_manager` 2.3.0 · `generador_public
 
 ### Cambiado
 
+- 2026-10-06 · Ola 4 (Q1b): `pub_index_symlink --dry-run` ya no escribe su log; `metadata_manager`
+  resuelve `excel_output_dir` relativo a su carpeta (por defecto su `excel_databases/`) y solo la crea al
+  escribir el Excel; `blogs_manager --dry-run` sin comando no abre el menú y el menú termina sin stdin.
+  Pruebas en `tests/` (simulación de cada suite y flujo de publicación con remoto bare local).
 - 2026-10-05 · Ola 0: `blogs_manager`, `pub_index_symlink`, `metadata_manager` y la GUI toman la raíz
   (`DOCS_ROOT`) y la carpeta del hub (`INDEX_DIR`) de `core/env`; los alias propios de la raíz y la
   búsqueda hacia arriba de reserva se retiran (la raíz se fuerza exportando `DOCS_ROOT`).

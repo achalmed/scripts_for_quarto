@@ -19,11 +19,12 @@ Comandos:
 main.sh                      # menú
 main.sh list
 main.sh render <blog>
-main.sh publish <blog>
+main.sh publish <blog> [--aplicar]
+main.sh git-commit <blog> <mensaje> [--aplicar]
 main.sh help
 ```
 
-<sub>Bloque generado desde `suite.yml` por `core/suites.py generar` (2026-09-20); no se edita a mano.</sub>
+<sub>Bloque generado desde `suite.yml` por `core/suites.py generar` (2026-10-06); no se edita a mano.</sub>
 <!-- suite:fin -->
 
 ## Qué es
@@ -75,7 +76,7 @@ Los sitios de la familia (el hub y los `pub_*`) se despliegan en Netlify con cad
 `git-commit` **simulan por defecto** (dicen qué añadirían, qué queda fuera y cuántos commits
 empujarían) y solo actúan con `--aplicar`; el menú simula, pregunta y entonces aplica. Ningún push sale
 sin pasar la **puerta R6** del hub (`$INDEX_DIR/scripts/puerta-r6.sh`, normativa 7.10): no se empuja un
-sitio con `_site/index.html` ausente o confirmado antes que su última fuente; si la puerta no está,
+sitio sin portada renderizada en `_site/` o con ella confirmada antes que su última fuente; si la puerta no está,
 tampoco se empuja. Antes de `clean-all`, `list` y `git-status` muestran sobre qué se va a actuar.
 
 El asistente `new-post` pregunta, en seis bloques, las opciones generales del documento, el formato

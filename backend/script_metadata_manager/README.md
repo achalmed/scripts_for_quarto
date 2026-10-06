@@ -76,7 +76,7 @@ comando que escribe acepta `--dry-run`.
 ## Configuración
 
 `metadata_config.yml`: `allowed_blogs` (vacío = todos), `excluded_folders` (nombres de carpeta, no
-rutas), `excel_output_dir` y, opcional, `blog_base_urls` (URL base por blog para `sync-pdf-urls`; sin
+rutas), `excel_output_dir` (relativa a esta carpeta; por defecto `excel_databases/`, que solo se crea al escribir el Excel) y, opcional, `blog_base_urls` (URL base por blog para `sync-pdf-urls`; sin
 ella, se vota entre los `pdf-url` existentes). Los blogs se localizan en `04 index/_pubs/`
 (`PUBS_SUBDIR` en `lib/config.py`); `website-achalma` es alias del hub.
 

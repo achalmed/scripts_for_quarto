@@ -6,6 +6,7 @@ resumen: Repara el bloque YAML de los .qmd (delimitador --- pegado y líneas en 
 escribe_en:
 - web
 simula_por_defecto: false
+pruebas: python3 -m pytest -q tests -p no:cacheprovider --basetemp ~/.cache/pytest/quarto-ola4   # desde la raíz del repo; fixtures y remoto bare en temporal (ola 4, Q1b)
 comandos:
 - main.py --directory <carpeta> --recursive --dry-run
 - main.py --directory <carpeta> --recursive
