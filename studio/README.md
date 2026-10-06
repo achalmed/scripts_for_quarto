@@ -24,7 +24,7 @@ main.py --smoke
 
 ## Qué es
 
-Una sola ventana para las cinco herramientas de `scripts_quarto_studio/backend/` (repo `scripts_for_quarto`), que
+Una sola ventana para las cinco herramientas de `scripts-quarto/backend/` (repo `scripts_for_quarto`), que
 encuentra por `SCRIPTS_QUARTO` de `core/env.py`. Los scripts **no se reescriben**: actúan
 como motor y la GUI los invoca como procesos a través de una capa de servicios desacoplada; la consola
 integrada muestra el comando exacto, stdout, stderr, código de salida y duración, nada se oculta. La
@@ -67,7 +67,7 @@ el diálogo de preferencias.
 | `quarto_app/application.py` | `QApplication`, tema claro/oscuro (QSS), icono de la app | a mano |
 | `quarto_app/settings.py` | `QSettings` centralizado: la única puerta a las preferencias; ningún otro módulo instancia `QSettings` | a mano |
 | `quarto_app/models/` | dominio puro (`blog.py`, `operation.py`): no importan nada de Qt | a mano |
-| `quarto_app/services/` | construyen `Command` (programa + args + cwd + stdin) por herramienta: `command.py`; `paths.py` (localiza los backends y la raíz del workspace por `../comun/rutas.py`, es decir, por `core/env.py`); `blog_service.py` → `scripts_quarto_studio/backend/script_blogs_manager/main.sh`; `metadata_service.py` → `scripts_quarto_studio/backend/script_metadata_manager/main.py`; `yaml_service.py` → `scripts_quarto_studio/backend/script_format_yaml/fix_qmd_files.py` (alias de `main.py`); `index_service.py` → `scripts_quarto_studio/backend/script_pub_index_symlink/main.sh`; `similar_service.py` → `scripts_quarto_studio/backend/script_generador_publicacion_similar/main.sh`; `post_service.py` (posts APAQuarto, portado); `project_scanner.py` (escaneo de blogs y posts, Python puro) | a mano |
+| `quarto_app/services/` | construyen `Command` (programa + args + cwd + stdin) por herramienta: `command.py`; `paths.py` (localiza los backends y la raíz del workspace por `../comun/rutas.py`, es decir, por `core/env.py`); `blog_service.py` → `scripts-quarto/backend/script_blogs_manager/main.sh`; `metadata_service.py` → `scripts-quarto/backend/script_metadata_manager/main.py`; `yaml_service.py` → `scripts-quarto/backend/script_format_yaml/fix_qmd_files.py` (alias de `main.py`); `index_service.py` → `scripts-quarto/backend/script_pub_index_symlink/main.sh`; `similar_service.py` → `scripts-quarto/backend/script_generador_publicacion_similar/main.sh`; `post_service.py` (posts APAQuarto, portado); `project_scanner.py` (escaneo de blogs y posts, Python puro) | a mano |
 | `quarto_app/workers/` | `process_runner.py` (`QProcess` asíncrono con señales de salida y progreso; una operación a la vez), `scan_worker.py` (`QThread` para el escaneo) | a mano |
 | `quarto_app/controllers/` | vista → servicio → worker (MVC): `main_controller.py`, `blogs_controller.py`, `metadata_controller.py`, `tools_controller.py` | a mano |
 | `quarto_app/ui/` | `main_window.py` y `quarto_app/ui/pages/`: una página por funcionalidad (dashboard, blogs, metadata, yaml, índices, similares) | a mano |
@@ -85,7 +85,7 @@ servicios nunca importan Qt Widgets; los modelos no importan nada de Qt.
 - **Reutilización primero.** Todos los subcomandos no interactivos de los scripts se invocan tal cual
   (`QProcess`). La consola muestra el comando exacto, stdout, stderr, código de salida y duración.
 - **Una sola excepción portada a Python:** el asistente de posts APAQuarto
-  (`scripts_quarto_studio/backend/script_blogs_manager/lib/07-post-creator.sh`, unas 50 preguntas encadenadas de terminal)
+  (`scripts-quarto/backend/script_blogs_manager/lib/07-post-creator.sh`, unas 50 preguntas encadenadas de terminal)
   no puede automatizarse de forma fiable; `quarto_app/services/post_service.py` genera el mismo `index.qmd` (mismo
   orden de campos y misma plantilla de contenido) desde el diálogo Qt.
 - **Confirmaciones de los scripts** (`--clean-broken`, respaldo) se responden por stdin después de que

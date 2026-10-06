@@ -254,7 +254,7 @@ class MainWindow(QMainWindow):
             self, f"Acerca de {APP_NAME}",
             f"<b>{APP_NAME} {APP_VERSION}</b><br><br>"
             "Frontend de escritorio (PySide6/Qt6) para las herramientas de "
-            "<code>scripts_quarto_studio</code> (repo <code>scripts_for_quarto</code>): gestión de blogs Quarto, metadatos, "
+            "<code>scripts-quarto</code> (repo <code>scripts_for_quarto</code>): gestión de blogs Quarto, metadatos, "
             "tags, índices y formato YAML.<br><br>"
             "Los scripts existentes actúan como motor: la interfaz los invoca a "
             "través de una capa de servicios desacoplada.",
