@@ -57,7 +57,7 @@ excluded_folders:
   - propuesta bicentenario
   - scripts-biblioteca
   - scripts_document_studio
-  - scripts_for_linux
+  - scripts-linux
   - scripts_quarto_studio
   - scripts_for_zotero
   - spss
