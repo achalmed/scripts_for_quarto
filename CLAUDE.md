@@ -2,22 +2,22 @@
 tipo: guia_ia
 estado: activo
 ---
-# CLAUDE.md — scripts_quarto_studio (repo `scripts_for_quarto`, suite `quarto_studio`)
+# CLAUDE.md — scripts_quarto_studio (repo `scripts_for_quarto`)
 
 Guía para el asistente. En español, como todo el ecosistema. `AGENTS.md` es un enlace a este archivo.
 Léase antes: `estado.md` (dónde está; §Por hacer), `README.md` (qué es, contrato con el hub, uso),
-`docs/README.md`, `suite.yml` (raíz y uno por backend), `app/README.md` (la GUI) y el README de la
-herramienta que se toque.
+`docs/README.md`, el `suite.yml` y el README de la herramienta que se toque y, si el cambio toca lo que
+lanza la GUI, el repo `studios` (`studios/quarto/README.md`).
 
 ## Reglas que no se negocian
 
-- **Dónde va cada cosa nueva.** En la raíz solo `README.md`, `CLAUDE.md`, `AGENTS.md`, `suite.yml`,
+- **Dónde va cada cosa nueva.** En la raíz solo `README.md`, `CLAUDE.md`, `AGENTS.md`, `estado.md`,
   `LICENSE` y `CHANGELOG.md` como documentos; cualquier otro `.md` ahí está fuera de lugar
   (`meta/docs/historial/NORMATIVA_ARCHIVOS.md` §15.11).
 
   | lo que apareció | va a | nunca a |
   |---|---|---|
-  | cómo se usa una herramienta, una opción nueva | el README de su carpeta (`backend/script_*/`, `app/`) | un `GUIA_*.md` |
+  | cómo se usa una herramienta, una opción nueva | el README de su carpeta (`backend/script_*/`) | un `GUIA_*.md` |
   | qué escribe una herramienta en el hub o los pubs | `README.md` §«Contrato con el hub» | una copia en `04 index` |
   | una columna, un formato o una fórmula del Excel | `docs/excel-de-metadatos.md` | el README del metadata manager |
   | por qué se decidió algo | `docs/decisiones.md` (fecha en cada entrada) | un `DECISION_<fecha>.md` |
@@ -28,13 +28,11 @@ herramienta que se toque.
   Lo que hiciste en esta sesión va al mensaje de commit, no a un archivo. Si nada encaja, pregunta antes
   de crear un documento.
 
-- **Cinco herramientas independientes y una GUI que las lanza como procesos.** Cada `backend/script_*/`
-  es autónomo (`main.*` + config + `lib/`, `suite.yml`, README). La GUI (`app/`) nunca importa su código:
-  construye un `Command` y lo ejecuta con `QProcess`. Capas de la GUI: `ui → controllers → services →
-  workers`; la UI no conoce rutas de scripts, los servicios no importan Qt Widgets, los modelos no
-  importan Qt (`app/README.md`).
-- **Todo entry point de backend se resuelve en `app/services/paths.py`**: si un script se mueve, se
-  toca solo ese archivo.
+- **Cinco herramientas independientes; su GUI vive en el repo `studios`.** Cada `backend/script_*/` es
+  autónomo (`main.*` + config + `lib/`, `suite.yml`, README). Quarto Studio (`studios/quarto/`, ola 4, fase B)
+  nunca importa su código: construye un `Command` y lo ejecuta con `QProcess`, y encuentra cada entrada por
+  `SCRIPTS_QUARTO` de `core/env.py` (`studios/comun/rutas.py`, `BACKENDS`). Si un script se mueve o cambia de
+  nombre, se toca allí.
 - **Los blogs viven en el hub.** Hub `04 index` (repo `website-achalma`) y 11 `pub_*` como submódulos
   en `04 index/_pubs/` (el guion bajo evita que Quarto los renderice como parte del
   hub). Cada herramienta los localiza por una sola variable (`QBLOG_PUBS_SUBDIR`, `PUBINDEX_PUBS_SUBDIR`,
@@ -67,8 +65,8 @@ herramienta que se toque.
   `core/env.sh` o `core/env.py` y envuelve `core/shell-lib` o `core/py-common` (FS2). Ninguna ruta de
   máquina (`$HOME/...`) en código ni en documentos.
 - **Lo generado no se edita**: los bloques `<!-- suite:inicio -->` y `<!-- suites:inicio -->` de los
-  README salen de los `suite.yml` con `core/suites.py generar --aplicar`; `_site/`, `_freeze/` y
-  `resources_rc.py` los regenera su herramienta.
+  README salen de los `suite.yml` con `core/suites.py generar --aplicar`; `_site/` y `_freeze/`
+  los regenera su herramienta.
 - **Español con tildes** en código, mensajes, comentarios y docs; nada del despacho en este repo.
 - **Un solo camino de instalación documentado**: `pip install -r requirements.txt`; `install.sh` (conda)
   del metadata manager es alternativa.
@@ -89,7 +87,7 @@ Desde la raíz del repo:
 
 ```bash
 bash -n backend/script_blogs_manager/main.sh                     # sintaxis; un archivo por invocación
-python3 -m py_compile main.py backend/*/main.py                # sintaxis Python
+python3 -m py_compile backend/*/main.py                        # sintaxis Python
 cd backend/script_metadata_manager                              # el gestor de metadatos, desde su carpeta
 python3 main.py find-differences ~/Documents excel_databases/quarto_metadata.xlsx  # Excel vs .qmd
 python3 main.py update ~/Documents excel_databases/quarto_metadata.xlsx --dry-run  # simular antes de aplicar
@@ -112,14 +110,14 @@ Lo aplicado de verdad se confirma dentro del pub y luego el puntero del submódu
 - **Nombres que ya no existen:** `script_tag_manager/` y `qmd_tag_manager.py` (los comandos de tags
   viven en el metadata manager); `1_sincronizar_fecha_carpeta_en_index_qmd.py` y
   `3_actualizar_enlace_pdf_en_qmd.py` (hoy `sync-dates` y `sync-pdf-urls`); el prefijo `quarto_studio/`
-  en una ruta nunca existió: la GUI es `app/` y las herramientas, `backend/`.
+  en una ruta nunca existió: las herramientas son `backend/` y la GUI, desde la ola 4, `studios/quarto/`.
 - **`fix_qmd_files.py` es un alias** de `backend/script_format_yaml/main.py`; la lógica
-  está en `config.py` y `lib/` de esa carpeta. La GUI todavía invoca el alias (`paths.yaml_formatter`).
+  está en `config.py` y `lib/` de esa carpeta. Quarto Studio todavía invoca el alias (`paths.yaml_formatter`, repo `studios`).
 - **El asistente de posts no se automatiza** (`backend/script_blogs_manager/lib/07-post-creator.sh`, unas
-  50 preguntas encadenadas): es la única lógica portada a Python (`app/services/post_service.py`), que
+  50 preguntas encadenadas): es la única lógica portada a Python (`studios/quarto/quarto_app/services/post_service.py`), que
   genera el mismo `index.qmd`. Las confirmaciones de los scripts (`--clean-broken`, respaldo) se
   responden por stdin después de que la GUI confirmó con el usuario.
-- **El runner de la GUI rechaza ejecuciones concurrentes**: los backends no son seguros en paralelo.
+- **El runner de Quarto Studio rechaza ejecuciones concurrentes**: los backends no son seguros en paralelo.
 - **El Excel guarda `date` como texto**, no como fórmula: openpyxl no calcula y una fórmula sin valor
   guardado llega vacía y borra el campo. `backend/script_metadata_manager/excel_databases/quarto_metadata.xlsx` está versionado a
   propósito (`docs/decisiones.md`); `respaldos/` y `logs/` están ignorados.
@@ -136,7 +134,7 @@ Lo aplicado de verdad se confirma dentro del pub y luego el puntero del submódu
 | pregunta | documento |
 |---|---|
 | qué escribe cada herramienta en el hub y los pubs | `README.md` §«Contrato con el hub» |
-| la GUI: arquitectura, decisiones, cómo añadir una herramienta | `app/README.md` |
+| la GUI: arquitectura, decisiones, cómo añadir una herramienta | `studios/quarto/README.md` (repo `studios`) |
 | comandos y filtros del metadata manager | `backend/script_metadata_manager/README.md` |
 | render, preview, publicar, posts APA, git, respaldos | `backend/script_blogs_manager/README.md` |
 | qué es una publicación, conflictos, logs del índice | `backend/script_pub_index_symlink/README.md` |

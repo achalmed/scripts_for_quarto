@@ -3,7 +3,7 @@ tipo: estado
 estado: activo
 actualizado: 2026-10-06
 ---
-# estado.md — scripts_quarto_studio (repo `scripts_for_quarto`, suite `quarto_studio`)
+# estado.md — scripts_quarto_studio (repo `scripts_for_quarto`)
 
 Lo primero que se lee y lo último que se escribe en cada sesión (regla 10 de la guía raíz). Lo decidido vive en
 `docs/decisiones.md`; lo pendiente, aquí, en §Por hacer, con fecha y dueño.
@@ -17,12 +17,14 @@ en disco con un remoto «bare» local.
 | fecha | qué | dónde se ve |
 |---|---|---|
 | 2026-10-06 | ola 4, fase A (agente «quarto»): Q1 y Q2, un commit por ítem | la bitácora de abajo; `meta/programa/06-olas/ola-04-reingenieria.md` §2 |
+| 2026-10-06 | ola 4, fase B (agente «studios»): la GUI sale al repo `studios`; este repo queda como el de los backends de Quarto | la bitácora de abajo; `docs/decisiones.md` |
 
 Bitácora de la ola 4:
 
 - 2026-10-06 · Q1a · etiqueta `antes-ola-04-2026-10-06`; `estado.md`; los pendientes de `docs/decisiones.md` pasan a §Por hacer.
 - 2026-10-06 · Q2 · `blogs_manager` 4.0.0: `publish` y `git-commit` simulan salvo `--aplicar`; todo push pasa la puerta R6 del hub; `git-commit` solo añade fuentes y `_site/` y lista lo demás; sin destino, `publish` es `git push` (Netlify); la GUI simula, pregunta y aplica (`tests/test_blogs_manager_git.py`, `tests/test_gui_blog_service.py`, remoto bare local).
 - 2026-10-06 · Q1b · `tests/test_simulacion.py`: las cinco suites CLI en simulación sobre un workspace de fixture no escriben nada (listado + mtime del temporal y del repo); la GUI, omitida con motivo. Arreglos que destapó: `pub_index_symlink --dry-run` escribía su log en el repo; `metadata_manager` creaba `excel_output_dir` (literal `~/Documents/…`, ahora relativo a su carpeta) aun simulando; `blogs_manager --dry-run` sin comando abría el menú. `pruebas:` en los seis `suite.yml`.
+- 2026-10-06 · B · etiqueta `antes-ola-04-studios-2026-10-06`; `app/` se copia con su historia (`git subtree split`) a `studios/quarto/quarto_app/` y `main.py`, `build_resources.sh` y el `suite.yml` raíz (`quarto_studio`) a `studios/quarto/`; con las pruebas de `studios` en verde salen de aquí con `git rm`, junto con `tests/test_gui_blog_service.py` (hoy `studios/tests/test_quarto_blog_service.py`). `requirements.txt` sin PySide6.
 - 2026-10-06 · Q2 (ajuste del director) · `git-commit` añade también las carpetas de contenido (las que contienen `.qmd`, con imágenes y datos) y `_freeze/`; fuera quedan, con aviso, los sueltos de la raíz y los punteros de submódulo (`tests/test_blogs_manager_git.py`).
 
 ## En curso
@@ -31,7 +33,7 @@ nada en curso
 
 ## Por hacer
 
-- 2026-10-06 · dueño: director · `core/suites.py probar --repo scripts_quarto_studio`: RQ-MAN-05 en `pub_index_symlink` y `quarto_studio` (escriben en `vault`, pero el manifiesto no declara ese `escribe_en` para el proyecto); se corrige en `meta/workspace.yml`.
+- 2026-10-06 · dueño: director · `core/suites.py probar --repo scripts_quarto_studio`: RQ-MAN-05 en `pub_index_symlink` (y en `quarto_studio`, hoy en el repo `studios`) (escriben en `vault`, pero el manifiesto no declara ese `escribe_en` para el proyecto); se corrige en `meta/workspace.yml`.
 - 2026-10-04 · dueño: el autor · dos comentarios de código dan como ejemplo de raíz forzada una ruta de la máquina: `backend/script_blogs_manager/lib/00-config.sh` y `backend/script_pub_index_symlink/lib/00-config.sh`.
 - 2026-10-04 · dueño: el autor · `backend/script_metadata_manager/metadata_config.yml` (`excluded_folders`) publica en este repositorio público nombres de carpetas personales. ¿Se mueven a un archivo local ignorado?
 - 2026-10-04 · dueño: el autor · orden de etiquetas de cabecera (aviso A10) en `backend/script_metadata_manager/lib/excel_writer.py` y `backend/script_metadata_manager/lib/path_sync.py`.
@@ -39,4 +41,4 @@ nada en curso
 
 ## Futuro
 
-- Una prueba de humo de la GUI (`QT_QPA_PLATFORM=offscreen`) que construya cada `Command` sin lanzarlo.
+- La prueba de humo de la GUI ya existe en el repo `studios` (`tests/run.sh -k quarto`).

@@ -4,16 +4,22 @@ estado: activo
 ---
 # CHANGELOG — scripts_quarto_studio (repo `scripts_for_quarto`)
 
-Versiones de las cinco herramientas y de la GUI, con fecha ISO, lo más reciente arriba (formato
+Versiones de las cinco herramientas (y, hasta la ola 4, de la GUI), con fecha ISO, lo más reciente arriba (formato
 inspirado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/); números [SemVer](https://semver.org/lang/es/)).
 Cada herramienta declara su versión una sola vez en el código: `QBLOG_VERSION`
 (`backend/script_blogs_manager/lib/00-config.sh`), `GENIDX_VERSION`
 (`backend/script_generador_publicacion_similar/lib/00-config.sh`), `VERSION`
-(`backend/script_metadata_manager/lib/config.py`) y `APP_VERSION` (`app/__init__.py`); `format_yaml` y
+(`backend/script_metadata_manager/lib/config.py`); `format_yaml` y
 `pub_index_symlink` no llevan número en el código. Los porqués están en [`docs/decisiones.md`](docs/decisiones.md).
 
 Vigentes: `blogs_manager` 4.0.0 · `metadata_manager` 2.3.0 · `generador_publicacion_similar` 4.0.0 ·
-`format_yaml` 2.0 · `pub_index_symlink` (sin número) · Quarto Studio 1.0.0.
+`format_yaml` 2.0 · `pub_index_symlink` (sin número). Quarto Studio 1.0.0 vive desde el 2026-10-06 en el repo
+`studios` (`APP_VERSION` en `studios/quarto/quarto_app/__init__.py`).
+
+## Retirado — 2026-10-06
+
+- La GUI Quarto Studio (`app/`, `main.py`, `build_resources.sh`, la suite raíz `quarto_studio`) y su prueba
+  `tests/test_gui_blog_service.py` salen de este repo al repo `studios` (ola 4, fase B; `docs/decisiones.md`).
 
 ## blogs_manager 4.0.0 — 2026-10-06
 

@@ -5,10 +5,6 @@
 __pycache__/
 *.pyc
 
-# ===== Derivado: recursos Qt compilados =====
-# lo escribe build_resources.sh desde resources.qrc; la GUI funciona sin él
-app/resources/resources_rc.py
-
 # ===== Temporal: registros y respaldos de ejecución =====
 # registro diario de pub_index_symlink y registros sueltos
 logs/

@@ -112,12 +112,12 @@ CASOS = [
         "bash", str(BACKEND / "script_blogs_manager" / "main.sh"), "git-commit", "pub_prueba", "cambio"]),
 ]
 
-OMITIDAS = {"quarto_studio": "GUI PySide6 sin CLI de simulación; sus Command se prueban en test_gui_blog_service.py"}
+OMITIDAS: dict[str, str] = {}   # la GUI (quarto_studio) vive en el repo studios desde la ola 4 (fase B) y se prueba allí
 
 
 def _suites() -> dict[str, dict]:
     salida = {}
-    for f in [RAIZ_REPO / "suite.yml", *sorted(BACKEND.glob("*/suite.yml"))]:
+    for f in sorted(BACKEND.glob("*/suite.yml")):
         datos = yaml.safe_load(f.read_text(encoding="utf-8"))
         salida[datos["id"]] = datos
     return salida
@@ -129,9 +129,6 @@ def test_toda_suite_que_escribe_tiene_caso_de_simulacion():
     assert escriben <= con_caso, f"suites que escriben sin caso de simulación: {sorted(escriben - con_caso)}"
 
 
-@pytest.mark.parametrize("suite", sorted(OMITIDAS))
-def test_suites_omitidas(suite):
-    pytest.skip(OMITIDAS[suite])
 
 
 @pytest.mark.parametrize("suite,caso,orden", CASOS, ids=[f"{s}:{c}" for s, c, _ in CASOS])
