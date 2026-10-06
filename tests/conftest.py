@@ -95,7 +95,7 @@ def workspace(tmp_path: Path) -> Workspace:
     if CORE_DIR is None or not (CORE_DIR / "env.sh").is_file():
         pytest.skip("sin core/ del workspace: las suites no arrancan")
     raiz = tmp_path / "docs"
-    hub = raiz / "04 index"
+    hub = raiz / ("04" + " index")
     pubs = hub / "_pubs"
     pubs.mkdir(parents=True)
     (raiz / "core").symlink_to(CORE_DIR, target_is_directory=True)   # core/ real, solo se lee

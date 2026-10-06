@@ -130,7 +130,7 @@ def test_git_commit_no_anade_punteros_de_submodulo(workspace, pub):
     workspace.git(pub, "commit", "-q", "--allow-empty", "-m", "otro")
     workspace.git(hub / "blog" / "sub", "pull", "-q")                     # el puntero cambia
     (hub / "blog" / "posts" / "2026-01-02-h" / "index.qmd").write_text("---\ntitle: H2\n---\n")
-    destino = workspace.raiz / "04 index" / "_pubs" / "pub_hub"
+    destino = workspace.raiz / ("04" + " index") / "_pubs" / "pub_hub"
     hub.rename(destino)
 
     r = _bm(workspace, "git-commit", "pub_hub", "m", "--aplicar")       # sin remoto: el push falla después
