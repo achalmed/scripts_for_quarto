@@ -69,7 +69,7 @@ Excel es la mesa de trabajo, y lo que se edite a mano en un `.qmd` prevalece has
 | `format_yaml` | el bloque YAML de cada `.qmd` (delimitadores y líneas en blanco) | la carpeta que se le pase | idempotente; `--dry-run` |
 | `generador_publicacion_similar` | `_contenido_<subblog>.qmd`, fragmentos con `tipo: fragmento` para `{{< include >}}` | la carpeta de cada subblog del blog que se le pase | `--dry-run`; si un subblog queda sin posts, borra su índice |
 | `pub_index_symlink` | enlaces simbólicos por año, nunca copias | `04 index/_indice/` (ignorado en git; del vault) | omite lo que ya apunta bien; no toca archivos reales; `--dry-run` |
-| `blogs_manager` | `_site/`, `_freeze/`, posts nuevos, commits, respaldos | hub y pubs; `06 archives/backups-publicaciones/`; `quarto publish` | `clean-all` pide confirmación; no tiene `--dry-run` |
+| `blogs_manager` | `_site/`, `_freeze/`, posts nuevos, commits, respaldos | hub y pubs; `06 archives/backups-publicaciones/`; el remoto git (Netlify) o `quarto publish <destino>` | `publish` y `git-commit` simulan salvo `--aplicar`, empujan solo tras la puerta R6 y no hacen `git add .`; `clean-all` pide confirmación |
 | `app/` (Quarto Studio) | nada propio: lanza las cinco anteriores | — | una operación a la vez; «Dry-run» marcado por defecto en metadatos e índices |
 
 Cómo están montados los pubs y por qué se confirma dentro del pub antes que en el hub:
@@ -95,8 +95,8 @@ backend/script_pub_index_symlink/main.sh --dry-run    # sin --dry-run escribe 04
 ```
 
 Regla de oro: `--dry-run` antes de cualquier cambio masivo. En la terminal ninguna herramienta simula
-por defecto; `blogs_manager` es la única sin `--dry-run`. La GUI marca la simulación por defecto en
-metadatos e índices.
+por defecto, salvo `publish` y `git-commit` de `blogs_manager`, que simulan sin `--aplicar`. La GUI
+marca la simulación por defecto en metadatos e índices, y publica y confirma solo tras mostrar la simulación.
 
 ## Estructura
 
@@ -141,8 +141,9 @@ solo lo que no cabe en una puerta.
   mirar el resultado en un pub.
 - **Los backends no son seguros en paralelo**: mutan los mismos árboles; la GUI ejecuta una operación a la
   vez y en terminal hay que hacer lo mismo.
-- **`blogs_manager` no simula**: `clean`, `clean-all`, `publish` y `git-commit` escriben de verdad; solo
-  `clean-all` pide confirmación (en la GUI, también las operaciones sobre todos los blogs).
+- **`blogs_manager` simula solo lo que publica**: `publish` y `git-commit` piden `--aplicar`; `clean`,
+  `clean-all` y `render` escriben de verdad; solo `clean-all` pide confirmación (en la GUI, también las
+  operaciones sobre todos los blogs).
 - **El Excel no es la verdad**: si se edita un `.qmd` a mano, el Excel queda atrás hasta regenerarlo;
   `update` solo escribe donde hay diferencias, pero una celda vacía borra el campo del `.qmd`.
 - **Solo `date` se sustituye línea a línea**; cualquier otro cambio reescribe el bloque YAML completo

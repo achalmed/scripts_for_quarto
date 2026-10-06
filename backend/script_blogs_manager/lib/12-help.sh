@@ -31,7 +31,9 @@ ${QBLOG_YELLOW}COMANDOS PRINCIPALES:${QBLOG_NC}
     preview BLOG [PORT]     Inicia preview del blog (puerto opcional)
     preview-browser BLOG    Preview con apertura automática del navegador
     clean BLOG              Limpia archivos generados (_site, _freeze, etc.)
-    publish BLOG [TARGET]   Publica el blog (gh-pages, netlify, etc.)
+    publish BLOG [DESTINO]  Sin destino: puerta R6 y git push (Netlify despliega);
+                            con destino: quarto publish (gh-pages, netlify…).
+                            Simula; actúa solo con --aplicar
     check BLOG              Verifica la configuración del blog
     inspect BLOG            Inspecciona la estructura del blog
 
@@ -47,7 +49,8 @@ ${QBLOG_YELLOW}COMANDOS PRINCIPALES:${QBLOG_NC}
   ${QBLOG_GREEN}Git:${QBLOG_NC}
     git-init BLOG           Inicializa repositorio Git
     git-status BLOG         Muestra estado de Git
-    git-commit BLOG [MSG]   Commit y push de cambios
+    git-commit BLOG [MSG]   Confirma fuentes y _site/ (nunca git add .), puerta R6
+                            y push. Simula; actúa solo con --aplicar
 
   ${QBLOG_GREEN}Utilidades:${QBLOG_NC}
     convert FILE [FORMAT]   Convierte documento a otro formato

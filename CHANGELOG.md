@@ -12,8 +12,24 @@ Cada herramienta declara su versión una sola vez en el código: `QBLOG_VERSION`
 (`backend/script_metadata_manager/lib/config.py`) y `APP_VERSION` (`app/__init__.py`); `format_yaml` y
 `pub_index_symlink` no llevan número en el código. Los porqués están en [`docs/decisiones.md`](docs/decisiones.md).
 
-Vigentes: `blogs_manager` 3.0.0 · `metadata_manager` 2.3.0 · `generador_publicacion_similar` 4.0.0 ·
+Vigentes: `blogs_manager` 4.0.0 · `metadata_manager` 2.3.0 · `generador_publicacion_similar` 4.0.0 ·
 `format_yaml` 2.0 · `pub_index_symlink` (sin número) · Quarto Studio 1.0.0.
+
+## blogs_manager 4.0.0 — 2026-10-06
+
+### Cambiado
+
+- `publish` y `git-commit` simulan por defecto y solo actúan con `--aplicar`; el menú simula, pregunta y
+  aplica, y la GUI muestra la simulación en la consola y pasa `--aplicar` solo si el usuario confirma.
+- Ningún `git push` sin la puerta R6 del hub (`$INDEX_DIR/scripts/puerta-r6.sh`); sin la puerta no se empuja.
+- `git-commit` deja `git add .`: confirma las fuentes del sitio (los pathspecs `FUENTES` de la puerta) y
+  `_site/`, y lista lo que queda fuera.
+- `publish` sin destino empuja con git (Netlify despliega); `quarto publish` solo con destino explícito.
+  El ajuste de la GUI pasa a `blogs/destino_publicacion` (vacío por defecto).
+
+### Corregido
+
+- `git-status` y `git-commit` reconocen los pubs, que son submódulos (su `.git` es un archivo).
 
 ## Sin versión nueva
 

@@ -91,36 +91,61 @@ clean_blog() {
     fi
 }
 
-# Publica un blog en el target indicado (gh-pages, netlify, quarto-pub,
-# confluence).
+# Publica un blog. Sin destino (o con «git»), empuja la rama actual con git:
+# Netlify despliega cada sitio de la familia con cada push. Con un destino
+# explícito (gh-pages, netlify, quarto-pub, confluence) usa `quarto publish`.
+# Simula por defecto; solo con --aplicar (QBLOG_APLICAR=1) empuja o publica.
+# Todo camino que empuja con git (el push y gh-pages) pasa antes la puerta R6.
 # $1 = ruta absoluta del blog
-# $2 = target (opcional, default QBLOG_DEFAULT_PUBLISH_TARGET)
+# $2 = destino (opcional, default QBLOG_DEFAULT_PUBLISH_TARGET: vacío = git push)
 publish_blog() {
     local blog_path="$1"
     local target="${2:-$QBLOG_DEFAULT_PUBLISH_TARGET}"
     local blog_name
     blog_name="$(basename "$blog_path")"
 
-    print_header "$QBLOG_E_PUBLISH Publicando: $blog_name"
-    print_info "Target: $target"
+    if [[ -z "$target" || "$target" == "git" ]]; then
+        print_header "$QBLOG_E_PUBLISH Publicando: $blog_name (git push; Netlify despliega)"
+        if ! _git_es_raiz "$blog_path"; then
+            print_error "No es un repositorio Git: $blog_path"
+            return 1
+        fi
+        _git_empujar "$blog_path" || return 1
+        (( QBLOG_APLICAR )) || print_warning "Simulación: no se empujó nada. Repite con --aplicar."
+        return 0
+    fi
 
-    cd "$blog_path" || { print_error "No se pudo acceder a $blog_path"; return 1; }
+    print_header "$QBLOG_E_PUBLISH Publicando: $blog_name"
+    print_info "Destino: $target (quarto publish)"
 
     case "$target" in
-        gh-pages|netlify|quarto-pub|confluence)
-            if quarto publish "$target"; then
-                print_success "Publicado en $target"
-            else
-                print_error "Error al publicar"
-                return 1
-            fi
-            ;;
+        gh-pages|netlify|quarto-pub|confluence) ;;
         *)
-            print_error "Target desconocido: $target"
-            print_info "Targets válidos: gh-pages, netlify, quarto-pub, confluence"
+            print_error "Destino desconocido: $target"
+            print_info "Destinos válidos: git (por defecto), gh-pages, netlify, quarto-pub, confluence"
             return 1
             ;;
     esac
+
+    # gh-pages empuja con git: la misma puerta que el push.
+    if [[ "$target" == "gh-pages" ]] && ! _git_puerta_r6 "$blog_path"; then
+        print_error "La puerta R6 no pasa: no se publica en gh-pages"
+        return 1
+    fi
+
+    if (( ! QBLOG_APLICAR )); then
+        print_info "→ ejecutaría: quarto publish $target (en $blog_path)"
+        print_warning "Simulación: no se publicó nada. Repite con --aplicar."
+        return 0
+    fi
+
+    cd "$blog_path" || { print_error "No se pudo acceder a $blog_path"; return 1; }
+    if quarto publish "$target"; then
+        print_success "Publicado en $target"
+    else
+        print_error "Error al publicar"
+        return 1
+    fi
 }
 
 # Renderiza un post específico (un solo index.qmd).

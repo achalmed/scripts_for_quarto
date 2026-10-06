@@ -12,7 +12,8 @@ comandos:
 - 'main.sh                      # menú'
 - main.sh list
 - main.sh render <blog>
-- main.sh publish <blog>
+- main.sh publish <blog> [--aplicar]         # simula; sin destino, puerta R6 y git push
+- main.sh git-commit <blog> <mensaje> [--aplicar]
 - main.sh help
 estado: activo
 entrada: 04 index y 04 index/_pubs/pub_*

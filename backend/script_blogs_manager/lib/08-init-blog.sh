@@ -166,8 +166,8 @@ quarto preview
 # Renderizar
 quarto render
 
-# Publicar
-quarto publish gh-pages
+# Publicar: Netlify despliega con cada git push (blogs_manager publish, puerta R6)
+git push
 \`\`\`
 
 ## Autor

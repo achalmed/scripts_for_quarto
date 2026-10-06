@@ -46,8 +46,8 @@ herramienta que se toque.
   la ola 0).
 - **La verdad de un post es su `index.qmd`; el Excel es la mesa de trabajo.** `update` escribe solo
   donde hay diferencias y una celda vacía borra el campo; antes de un cambio masivo, `--dry-run`
-  siempre: en la terminal ninguna herramienta simula por defecto (el `simula_por_defecto: true` del
-  `suite.yml` del metadata manager es un pendiente) y `blogs_manager` no tiene `--dry-run`.
+  siempre: en la terminal solo `publish` y `git-commit` de `blogs_manager` simulan por defecto (actúan
+  con `--aplicar`, nunca `git add .` y siempre tras la puerta R6 del hub, `$INDEX_DIR/scripts/puerta-r6.sh`).
 - **UN escritor de YAML y UN reordenador:** `qmd_updater.write_yaml_to_qmd` y `field_mapper.reorder_yaml`
   en `backend/script_metadata_manager/lib/`. No se introducen implementaciones paralelas; toda operación
   de tags pasa por el mismo `collector` + `write_yaml_to_qmd` que `update`.

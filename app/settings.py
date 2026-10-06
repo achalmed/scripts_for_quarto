@@ -30,7 +30,7 @@ class AppSettings:
         "rutas/backup_dir": "",              # vacío → default del blog manager
         "ejecucion/max_procesos": 1,
         "blogs/preview_port": 4200,
-        "blogs/publish_target": "gh-pages",
+        "blogs/destino_publicacion": "",     # vacío → git push (Netlify); si no, quarto publish <destino>
         "metadata/excel_file": "",
         "dashboard/operaciones_recientes": "[]",   # JSON
         "dashboard/favoritos": "[]",               # JSON

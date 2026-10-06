@@ -16,6 +16,9 @@
 #   ./main.sh                       Modo interactivo (menú)
 #   ./main.sh list                  Lista todos los blogs
 #   ./main.sh help                  Ayuda completa
+#   ./main.sh publish <blog>        Simula: corre la puerta R6 y dice qué empujaría
+#   ./main.sh publish <blog> --aplicar
+#   ./main.sh git-commit <blog> "mensaje" [--aplicar]
 #
 # Variables de entorno opcionales:
 #   DOCS_ROOT          Fuerza la raíz del workspace (por defecto, la de core/env.sh)
@@ -207,5 +210,18 @@ main() {
             ;;
     esac
 }
+
+# --- Simular primero: `--aplicar` (en cualquier posición) es lo único que deja
+#     actuar a `publish` y `git-commit`; `--dry-run` se acepta y simula (normativa 5.10).
+_qblog_args=()
+for _qblog_a in "$@"; do
+    case "$_qblog_a" in
+        --aplicar) QBLOG_APLICAR=1 ;;
+        --dry-run|--simular) QBLOG_APLICAR=0 ;;
+        *) _qblog_args+=("$_qblog_a") ;;
+    esac
+done
+set -- "${_qblog_args[@]}"
+unset _qblog_a _qblog_args
 
 main "$@"

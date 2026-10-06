@@ -27,6 +27,23 @@ _menu_resolve() {
     return 0
 }
 
+# Corre una operación que escribe primero en simulación y, si sale bien y el
+# usuario confirma, de verdad (publish y git-commit; normativa 5.10).
+# $1 = función; $2… = sus argumentos
+_menu_simular_y_aplicar() {
+    local respuesta
+    QBLOG_APLICAR=0
+    "$@" || return 1
+    read -r -p "¿Aplicar lo simulado? [s/N]: " respuesta
+    if [[ "$respuesta" =~ ^[sS]$ ]]; then
+        QBLOG_APLICAR=1
+        "$@"
+        QBLOG_APLICAR=0
+    else
+        print_info "No se aplicó nada"
+    fi
+}
+
 show_menu() {
     local docs_dir="$1"
     clear
@@ -119,11 +136,11 @@ interactive_mode() {
             5)
                 list_blogs "$docs_dir"
                 read -r -p "Nombre del blog: " blog_name
-                echo "Targets disponibles: gh-pages, netlify, quarto-pub, confluence"
-                read -r -p "Target (default: $QBLOG_DEFAULT_PUBLISH_TARGET): " target
+                echo "Destinos: vacío = git push (Netlify), gh-pages, netlify, quarto-pub, confluence"
+                read -r -p "Destino (Enter: git push): " target
                 target=${target:-$QBLOG_DEFAULT_PUBLISH_TARGET}
                 if _menu_resolve "$docs_dir" "$blog_name"; then
-                    publish_blog "$QBLOG_RESOLVED_PATH" "$target"
+                    _menu_simular_y_aplicar publish_blog "$QBLOG_RESOLVED_PATH" "$target"
                 fi
                 read -r -p "Presiona Enter para continuar..."
                 ;;
@@ -174,7 +191,7 @@ interactive_mode() {
                 read -r -p "Nombre del blog: " blog_name
                 read -r -p "Mensaje del commit: " message
                 if _menu_resolve "$docs_dir" "$blog_name"; then
-                    git_commit_push "$QBLOG_RESOLVED_PATH" "$message"
+                    _menu_simular_y_aplicar git_commit_push "$QBLOG_RESOLVED_PATH" "$message"
                 fi
                 read -r -p "Presiona Enter para continuar..."
                 ;;

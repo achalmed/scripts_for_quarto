@@ -13,7 +13,7 @@ fi
 QBLOG_CONFIG_LOADED=1
 
 # --- Identidad del script (la versión se declara aquí, una sola vez; §3) -------
-QBLOG_VERSION="3.0.0"
+QBLOG_VERSION="4.0.0"
 
 # --- Directorio base de Documents -------------------------------------------
 # La raíz es DOCS_ROOT de core/env.sh, que main.sh carga antes que este módulo
@@ -61,8 +61,29 @@ QBLOG_GIT_USER_NAME="Edison Achalma"
 QBLOG_GIT_USER_EMAIL="elmer.achalma.09@unsch.edu.pe"
 
 # --- Configuración de publicación y preview -----------------------------------
-QBLOG_DEFAULT_PUBLISH_TARGET="gh-pages"
+# Los sitios de la familia se despliegan en Netlify con cada `git push` (ola 4, Q2):
+# sin destino, `publish` empuja con git; `quarto publish <destino>` solo con destino
+# explícito (gh-pages, netlify, quarto-pub, confluence).
+QBLOG_DEFAULT_PUBLISH_TARGET=""
 QBLOG_DEFAULT_PREVIEW_PORT=4200
+
+# --- Simular primero (normativa 5.10) -----------------------------------------
+# `publish` y `git-commit` dicen qué harían y solo actúan con `--aplicar`, que fija
+# main.sh al leer los argumentos; el entorno no puede activarlo.
+QBLOG_APLICAR=0
+
+# --- Puerta R6 (normativa 7.10): ningún `git push` con `_site/` más viejo que sus
+#     fuentes. La puerta es del hub (INDEX_DIR de core/env); sin ella no se empuja. -
+QBLOG_PUERTA_R6="$INDEX_DIR/scripts/puerta-r6.sh"
+
+# --- Lo que `git-commit` añade: las fuentes del sitio (los pathspecs FUENTES de
+#     `04 index/scripts/puerta-r6.sh`, copiados aquí; tests/test_blogs_manager_git.py
+#     comprueba que sigan iguales) y, aparte, `_site/`. Nunca `git add .`. ----------
+QBLOG_FUENTES=(':(glob)**/*.qmd' ':(glob)**/_quarto.yml' ':(glob)**/_metadata.yml'
+               '_extensions/' '_filters/' '_partials/' 'assets/scss/' 'assets/js/' 'assets/css/'
+               '_brand.yml' 'THEME_VERSION'
+               ':(exclude)_site/' ':(exclude)_freeze/' ':(exclude,glob)**/README.md')
+QBLOG_SITIO_GENERADO="_site/"
 
 # --- Configuración de autor por defecto (usado por init y _metadata.yml) ----
 QBLOG_DEFAULT_AUTHOR="Edison Achalma"

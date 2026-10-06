@@ -88,6 +88,7 @@ class BlogsPage(QWidget):
             lambda ruta: QMessageBox.information(self, "Post creado", f"Post creado en:\n{ruta}"))
         self._ctl.error.connect(
             lambda msg: QMessageBox.warning(self, "Error", msg))
+        self._ctl.aplicacion_propuesta.connect(self._proponer_aplicacion)
 
     # ------------------------------------------------------------------- estado
     def actualizar_blogs(self, blogs: list[Blog]) -> None:
@@ -125,12 +126,12 @@ class BlogsPage(QWidget):
             accion()
 
     def _publicar(self) -> None:
-        blog = self._blog_actual()
-        if blog and QMessageBox.question(
-                self, "Publicar",
-                f"¿Publicar {blog.nombre}? Esta operación sube el sitio al destino configurado.") \
-                == QMessageBox.Yes:
-            self._ctl.publish(blog.nombre)
+        # Primero la simulación (no escribe); la pregunta llega con aplicacion_propuesta.
+        self._con_blog(self._ctl.publish)
+
+    def _proponer_aplicacion(self, pregunta: str, cmd) -> None:
+        if QMessageBox.question(self, "Aplicar", pregunta) == QMessageBox.Yes:
+            self._ctl.aplicar(cmd)
 
     def _commit(self) -> None:
         blog = self._blog_actual()

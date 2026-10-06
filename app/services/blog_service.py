@@ -45,9 +45,14 @@ def clean(blog: str) -> Command:
     return _cmd(["clean", blog], f"Limpiar artefactos de {blog}")
 
 
-def publish(blog: str, destino: str | None = None) -> Command:
-    destino = destino or settings().get("blogs/publish_target")
-    return _cmd(["publish", blog, destino], f"Publicar {blog} → {destino}")
+def publish(blog: str, destino: str | None = None, aplicar: bool = False) -> Command:
+    """Sin destino, `git push` detrás de la puerta R6 (Netlify despliega); con destino,
+    `quarto publish <destino>`. Simula salvo `aplicar=True`, que la GUI pasa solo
+    después de mostrar la simulación y de que el usuario confirme."""
+    destino = settings().get("blogs/destino_publicacion") if destino is None else destino
+    args = ["publish", blog, *([destino] if destino else []), *(["--aplicar"] if aplicar else [])]
+    via = destino or "git push (Netlify)"
+    return _cmd(args, f"Publicar {blog} → {via}" + ("" if aplicar else " (simulación)"))
 
 
 def check(blog: str) -> Command:
@@ -90,8 +95,11 @@ def git_status(blog: str) -> Command:
     return _cmd(["git-status", blog], f"Git status de {blog}")
 
 
-def git_commit(blog: str, mensaje: str) -> Command:
-    return _cmd(["git-commit", blog, mensaje], f"Commit+push en {blog}")
+def git_commit(blog: str, mensaje: str, aplicar: bool = False) -> Command:
+    """Confirma fuentes y `_site/` (nunca `git add .`) y empuja tras la puerta R6.
+    Simula salvo `aplicar=True`."""
+    args = ["git-commit", blog, mensaje, *(["--aplicar"] if aplicar else [])]
+    return _cmd(args, f"Commit+push en {blog}" + ("" if aplicar else " (simulación)"))
 
 
 # --- Creación / mantenimiento ----------------------------------------------------

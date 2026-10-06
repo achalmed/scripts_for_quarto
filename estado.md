@@ -21,6 +21,7 @@ en disco con un remoto «bare» local.
 Bitácora de la ola 4:
 
 - 2026-10-06 · Q1a · etiqueta `antes-ola-04-2026-10-06`; `estado.md`; los pendientes de `docs/decisiones.md` pasan a §Por hacer.
+- 2026-10-06 · Q2 · `blogs_manager` 4.0.0: `publish` y `git-commit` simulan salvo `--aplicar`; todo push pasa la puerta R6 del hub; `git-commit` solo añade fuentes y `_site/` y lista lo demás; sin destino, `publish` es `git push` (Netlify); la GUI simula, pregunta y aplica (`tests/test_blogs_manager_git.py`, `tests/test_gui_blog_service.py`, remoto bare local).
 
 ## En curso
 
@@ -30,7 +31,6 @@ nada en curso
 
 - 2026-10-04 · dueño: el autor · dos comentarios de código dan como ejemplo de raíz forzada una ruta de la máquina: `backend/script_blogs_manager/lib/00-config.sh` y `backend/script_pub_index_symlink/lib/00-config.sh`.
 - 2026-10-04 · dueño: el autor · `backend/script_metadata_manager/metadata_config.yml` (`excluded_folders`) publica en este repositorio público nombres de carpetas personales. ¿Se mueven a un archivo local ignorado?
-- 2026-10-04 · dueño: el autor · `blogs_manager publish` usa por defecto el destino `gh-pages` (`QBLOG_DEFAULT_PUBLISH_TARGET`), pero los sitios de la familia se despliegan en Netlify (lo resuelve Q2 de la ola 4).
 - 2026-10-04 · dueño: el autor · orden de etiquetas de cabecera (aviso A10) en `backend/script_metadata_manager/lib/excel_writer.py` y `backend/script_metadata_manager/lib/path_sync.py`.
 - 2026-10-06 · dueño: el autor · los `main.sh` de `blogs_manager`, `pub_index_symlink` y `generador_publicacion_similar` arrancan sin `set -e` (RQ-COD-01): el menú y las funciones devuelven ≠ 0 a propósito; se revisa función a función antes de activarlo.
 
