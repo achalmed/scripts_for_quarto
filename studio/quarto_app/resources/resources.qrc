@@ -1,0 +1,22 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+  <qresource prefix="/icons">
+    <file alias="dashboard.svg">icons/dashboard.svg</file>
+    <file alias="blogs.svg">icons/blogs.svg</file>
+    <file alias="metadata.svg">icons/metadata.svg</file>
+    <file alias="yaml.svg">icons/yaml.svg</file>
+    <file alias="indices.svg">icons/indices.svg</file>
+    <file alias="similares.svg">icons/similares.svg</file>
+    <file alias="configuracion.svg">icons/configuracion.svg</file>
+    <file alias="consola.svg">icons/consola.svg</file>
+    <file alias="logs.svg">icons/logs.svg</file>
+    <file alias="refrescar.svg">icons/refrescar.svg</file>
+    <file alias="detener.svg">icons/detener.svg</file>
+    <file alias="carpeta.svg">icons/carpeta.svg</file>
+    <file alias="quarto-studio.svg">icons/quarto-studio.svg</file>
+  </qresource>
+  <qresource prefix="/themes">
+    <file alias="oscuro.qss">themes/oscuro.qss</file>
+    <file alias="claro.qss">themes/claro.qss</file>
+  </qresource>
+</RCC>
