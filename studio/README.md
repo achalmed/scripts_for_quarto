@@ -4,6 +4,24 @@ estado: activo
 ---
 # quarto/ — Quarto Studio, la aplicación de escritorio (PySide6 / Qt6) que unifica los backends de Quarto
 
+<!-- suite:inicio -->
+**Suite `quarto_studio`** · objetivo *publicacion* · estado *activo* · python · interfaz gui
+
+Interfaz de escritorio (PySide6) sobre los backends de la familia de blogs Quarto: render, publicación, metadatos, índices.
+
+- Escribe en: web, vault · simula por defecto: sí
+- Depende de: PySide6, blogs_manager, metadata_manager, pub_index_symlink
+
+Comandos:
+
+```bash
+main.py
+main.py --smoke
+```
+
+<sub>Bloque generado desde `suite.yml` por `core/suites.py generar` (2026-10-06); no se edita a mano.</sub>
+<!-- suite:fin -->
+
 ## Qué es
 
 Una sola ventana para las cinco herramientas de `scripts_quarto_studio/backend/` (repo `scripts_for_quarto`), que
@@ -30,8 +48,8 @@ la lógica vive en `quarto_app/`. Nombre y versión (`Quarto Studio`, `1.0.0`) s
 ## Uso
 
 ```bash
-pip install -r requirements.txt    # desde studios/: PySide6 (los backends declaran sus dependencias en su repo)
-python3 quarto/main.py             # desde studios/
+pip install -r requirements.txt    # desde gui-suites/: PySide6 (los backends declaran sus dependencias en su repo)
+python3 quarto/main.py             # desde gui-suites/
 python3 quarto/main.py --smoke     # construye la interfaz y sale (prueba de humo)
 quarto/build_resources.sh          # opcional: compila resources.qrc a resources_rc.py (requiere pyside6-rcc)
 ```
@@ -44,7 +62,7 @@ el diálogo de preferencias.
 
 | carpeta / archivo | qué es | dueño / generador |
 |---|---|---|
-| `main.py` | entrada: pone `quarto/` y `studios/` en `sys.path`, crea la aplicación y abre la ventana; `--smoke` | a mano |
+| `main.py` | entrada: pone `quarto/` y `gui-suites/` en `sys.path`, crea la aplicación y abre la ventana; `--smoke` | a mano |
 | `suite.yml` | manifiesto de la suite `quarto_studio` (`core/suite.schema.yml`) | a mano |
 | `quarto_app/application.py` | `QApplication`, tema claro/oscuro (QSS), icono de la app | a mano |
 | `quarto_app/settings.py` | `QSettings` centralizado: la única puerta a las preferencias; ningún otro módulo instancia `QSettings` | a mano |

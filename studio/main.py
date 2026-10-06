@@ -7,14 +7,14 @@ la ventana principal. Toda la lógica vive en quarto_app/; los backends, en
 SCRIPTS_QUARTO/backend/ (core/env).
 
 Uso:
-    python3 quarto/main.py            # desde studios/
+    python3 quarto/main.py            # desde gui-suites/
     python3 quarto/main.py --smoke    # construye la UI y sale (prueba de humo)
 """
 
 import sys
 from pathlib import Path
 
-# El paquete quarto_app y el paquete comun de studios/ importables desde cualquier carpeta
+# El paquete quarto_app y el paquete comun de gui-suites/ importables desde cualquier carpeta
 _AQUI = Path(__file__).resolve().parent
 sys.path.insert(0, str(_AQUI))
 sys.path.insert(1, str(_AQUI.parent))
