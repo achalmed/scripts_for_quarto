@@ -76,14 +76,19 @@ QBLOG_APLICAR=0
 #     fuentes. La puerta es del hub (INDEX_DIR de core/env); sin ella no se empuja. -
 QBLOG_PUERTA_R6="$INDEX_DIR/scripts/puerta-r6.sh"
 
-# --- Lo que `git-commit` añade: las fuentes del sitio (los pathspecs FUENTES de
-#     `04 index/scripts/puerta-r6.sh`, copiados aquí; tests/test_blogs_manager_git.py
-#     comprueba que sigan iguales) y, aparte, `_site/`. Nunca `git add .`. ----------
+# --- Lo que `git-commit` añade (nunca `git add .`): las fuentes del sitio (los
+#     pathspecs FUENTES de `04 index/scripts/puerta-r6.sh`, copiados aquí;
+#     tests/test_blogs_manager_git.py comprueba que sigan iguales), todo lo rastreable
+#     de las carpetas de contenido (las de primer nivel, sin `_` ni `.` delante, que
+#     contienen algún .qmd: posts con sus imágenes y datos) y los generados
+#     versionados `_freeze/` y `_site/`. Lo demás (sueltos de la raíz, punteros de
+#     submódulo) se avisa y no se añade. -----------------------------------------
 QBLOG_FUENTES=(':(glob)**/*.qmd' ':(glob)**/_quarto.yml' ':(glob)**/_metadata.yml'
                '_extensions/' '_filters/' '_partials/' 'assets/scss/' 'assets/js/' 'assets/css/'
                '_brand.yml' 'THEME_VERSION'
                ':(exclude)_site/' ':(exclude)_freeze/' ':(exclude,glob)**/README.md')
 QBLOG_SITIO_GENERADO="_site/"
+QBLOG_GENERADOS=("_freeze/" "$QBLOG_SITIO_GENERADO")
 
 # --- Configuración de autor por defecto (usado por init y _metadata.yml) ----
 QBLOG_DEFAULT_AUTHOR="Edison Achalma"

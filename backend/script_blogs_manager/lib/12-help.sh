@@ -49,7 +49,8 @@ ${QBLOG_YELLOW}COMANDOS PRINCIPALES:${QBLOG_NC}
   ${QBLOG_GREEN}Git:${QBLOG_NC}
     git-init BLOG           Inicializa repositorio Git
     git-status BLOG         Muestra estado de Git
-    git-commit BLOG [MSG]   Confirma fuentes y _site/ (nunca git add .), puerta R6
+    git-commit BLOG [MSG]   Confirma fuentes, contenido, _freeze/ y _site/ (nunca
+                            git add .), puerta R6
                             y push. Simula; actúa solo con --aplicar
 
   ${QBLOG_GREEN}Utilidades:${QBLOG_NC}

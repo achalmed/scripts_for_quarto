@@ -22,8 +22,9 @@ Vigentes: `blogs_manager` 4.0.0 · `metadata_manager` 2.3.0 · `generador_public
 - `publish` y `git-commit` simulan por defecto y solo actúan con `--aplicar`; el menú simula, pregunta y
   aplica, y la GUI muestra la simulación en la consola y pasa `--aplicar` solo si el usuario confirma.
 - Ningún `git push` sin la puerta R6 del hub (`$INDEX_DIR/scripts/puerta-r6.sh`); sin la puerta no se empuja.
-- `git-commit` deja `git add .`: confirma las fuentes del sitio (los pathspecs `FUENTES` de la puerta) y
-  `_site/`, y lista lo que queda fuera.
+- `git-commit` deja `git add .`: confirma las fuentes del sitio (los pathspecs `FUENTES` de la puerta),
+  las carpetas de contenido con sus imágenes y datos, `_freeze/` y `_site/`, y avisa de lo que queda fuera
+  (sueltos de la raíz, punteros de submódulo).
 - `publish` sin destino empuja con git (Netlify despliega); `quarto publish` solo con destino explícito.
   El ajuste de la GUI pasa a `blogs/destino_publicacion` (vacío por defecto).
 

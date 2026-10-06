@@ -37,8 +37,10 @@ commit, no aquí; lo pendiente, a [`estado.md`](../estado.md) §Por hacer (ola 4
 - **2026-10-06 · Publicar es `git push`, simulado primero y detrás de la puerta R6** (ola 4, Q2). Netlify
   despliega el hub y los pubs con cada push, así que `publish` sin destino empuja con git y `quarto
   publish` exige un destino explícito; `gh-pages` también pasa la puerta porque empuja con git. `publish`
-  y `git-commit` simulan salvo `--aplicar` (normativa 5.10) y `git-commit` solo añade las fuentes y
-  `_site/`: imágenes, datos, `_freeze/` y punteros de submódulo se listan y se confirman a mano. Los
+  y `git-commit` simulan salvo `--aplicar` (normativa 5.10). `git-commit` añade lo rastreable de las
+  fuentes, de las carpetas de contenido (las que contienen `.qmd`, con imágenes y datos: un post no
+  puede publicarse sin sus figuras), de `_freeze/` (versionado en los pubs, piloto 3) y de `_site/`;
+  los sueltos de la raíz y los punteros de submódulo se avisan y se confirman a mano. Los
   pathspecs de fuentes son una copia de los `FUENTES` de `04 index/scripts/puerta-r6.sh` (la puerta, al
   ejecutarse, comprueba; no se puede cargar como biblioteca); `tests/test_blogs_manager_git.py` falla si
   divergen. Sin la puerta en disco no se empuja; no hay variable de entorno que la sustituya.

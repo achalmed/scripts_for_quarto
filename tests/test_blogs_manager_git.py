@@ -3,7 +3,8 @@
 Sobre un pub de fixture con remoto bare local (conftest.py) se demuestra que:
   · sin `--aplicar` no hay commit ni push (ni cambia nada en el repo ni en el remoto);
   · con `_site/` más viejo que una fuente, la puerta R6 bloquea el push;
-  · con todo al día, `git-commit --aplicar` confirma solo fuentes y `_site/` y empuja al bare;
+  · con todo al día, `git-commit --aplicar` confirma fuentes, contenido (con imágenes), `_freeze/` y `_site/`,
+    deja fuera los sueltos de la raíz y los punteros de submódulo, y empuja al bare;
   · el destino por defecto es el `git push` (Netlify), no `quarto publish gh-pages`;
   · los pathspecs de fuentes son los mismos que los de `04 index/scripts/puerta-r6.sh`.
 """
@@ -85,24 +86,58 @@ def test_puerta_r6_bloquea_si_site_es_mas_viejo_que_una_fuente(workspace, pub):
     assert _head(workspace, _remoto(workspace), "main") == remoto
 
 
-def test_git_commit_aplicar_con_todo_al_dia_empuja_solo_fuentes_y_site(workspace, pub):
-    (pub / "index.qmd").write_text("---\ntitle: Prueba 2\n---\n")
+def test_git_commit_aplicar_con_todo_al_dia_empuja_sitio_y_deja_sueltos(workspace, pub):
+    post = pub / "posts" / "2026-01-01-primero"
+    (post / "index.qmd").write_text("---\ntitle: Primero\n---\n![](figura.png)\n")
+    (post / "figura.png").write_bytes(b"\x89PNG")                       # imagen nueva del post: entra
+    (post / "datos.csv").write_text("a,b\n1,2\n")                       # datos del post: entran
     (pub / "nuevo.qmd").write_text("---\ntitle: Nuevo\n---\n")
     (pub / "_site" / "index.html").write_text("<html>v2</html>\n")
     (pub / "_site" / "nuevo.html").write_text("<html>nuevo</html>\n")
-    (pub / "foto.png").write_bytes(b"\x89PNG")
-    (pub / "_freeze").mkdir()
-    (pub / "_freeze" / "x.json").write_text("{}")
+    (pub / "_freeze" / "posts").mkdir(parents=True)
+    (pub / "_freeze" / "posts" / "x.json").write_text("{}")              # _freeze/ nuevo: entra
+    (pub / "suelto.txt").write_text("nota")                                # suelto en la raíz: fuera
+    (pub / "foto.png").write_bytes(b"\x89PNG")                            # suelto en la raíz: fuera
+    (pub / ".gitignore").write_text("*.tmp\n")
+    (post / "borrador.tmp").write_text("x")                                # ignorado: ni entra ni se lista
 
     r = _bm(workspace, "git-commit", "pub_prueba", "render al día", "--aplicar")
 
     assert r.returncode == 0, r.stdout + r.stderr
     assert _head(workspace, pub) == _head(workspace, _remoto(workspace), "main")
     confirmadas = set(workspace.git(pub, "show", "--name-only", "--format=", "HEAD").splitlines())
-    assert confirmadas == {"index.qmd", "nuevo.qmd", "_site/index.html", "_site/nuevo.html"}
+    assert confirmadas == {"posts/2026-01-01-primero/index.qmd", "posts/2026-01-01-primero/figura.png",
+                           "posts/2026-01-01-primero/datos.csv", "nuevo.qmd", "_site/index.html",
+                           "_site/nuevo.html", "_freeze/posts/x.json"}
     pendientes = workspace.git(pub, "status", "--porcelain", "--untracked-files=all")
-    assert "foto.png" in pendientes and "_freeze/x.json" in pendientes
-    assert "foto.png" in r.stdout                       # informado como fuera
+    for suelto in ("suelto.txt", "foto.png", ".gitignore"):
+        assert suelto in pendientes and suelto in r.stdout              # fuera, y avisado
+    assert "borrador.tmp" not in pendientes + r.stdout
+
+
+def test_git_commit_no_anade_punteros_de_submodulo(workspace, pub):
+    # Un «hub» de juguete con el pub como submódulo dentro de una carpeta de contenido.
+    hub = workspace.base / "hub"
+    (hub / "blog" / "posts" / "2026-01-02-h").mkdir(parents=True)
+    (hub / "blog" / "posts" / "2026-01-02-h" / "index.qmd").write_text("---\ntitle: H\n---\n")
+    (hub / "_site").mkdir()
+    (hub / "_site" / "index.html").write_text("<html>h</html>\n")
+    (hub / "_quarto.yml").write_text("project:\n  type: website\n")
+    workspace.git(hub, "init", "-q", "-b", "main")
+    workspace.git(hub, "-c", "protocol.file.allow=always", "submodule", "add", "-q", str(pub), "blog/sub")
+    workspace.git(hub, "add", "-A")
+    workspace.git(hub, "commit", "-qm", "inicio")
+    workspace.git(pub, "commit", "-q", "--allow-empty", "-m", "otro")
+    workspace.git(hub / "blog" / "sub", "pull", "-q")                     # el puntero cambia
+    (hub / "blog" / "posts" / "2026-01-02-h" / "index.qmd").write_text("---\ntitle: H2\n---\n")
+    destino = workspace.raiz / "04 index" / "_pubs" / "pub_hub"
+    hub.rename(destino)
+
+    r = _bm(workspace, "git-commit", "pub_hub", "m", "--aplicar")       # sin remoto: el push falla después
+
+    confirmadas = set(workspace.git(destino, "show", "--name-only", "--format=", "HEAD").splitlines())
+    assert confirmadas == {"blog/posts/2026-01-02-h/index.qmd"}
+    assert "blog/sub" in r.stdout
 
 
 def test_quarto_publish_solo_con_destino_explicito_y_aplicar(workspace, pub):

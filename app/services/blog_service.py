@@ -96,7 +96,7 @@ def git_status(blog: str) -> Command:
 
 
 def git_commit(blog: str, mensaje: str, aplicar: bool = False) -> Command:
-    """Confirma fuentes y `_site/` (nunca `git add .`) y empuja tras la puerta R6.
+    """Confirma fuentes, contenido, `_freeze/` y `_site/` (nunca `git add .`) y empuja tras la puerta R6.
     Simula salvo `aplicar=True`."""
     args = ["git-commit", blog, mensaje, *(["--aplicar"] if aplicar else [])]
     return _cmd(args, f"Commit+push en {blog}" + ("" if aplicar else " (simulación)"))

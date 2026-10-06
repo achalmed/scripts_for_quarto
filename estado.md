@@ -23,6 +23,7 @@ Bitácora de la ola 4:
 - 2026-10-06 · Q1a · etiqueta `antes-ola-04-2026-10-06`; `estado.md`; los pendientes de `docs/decisiones.md` pasan a §Por hacer.
 - 2026-10-06 · Q2 · `blogs_manager` 4.0.0: `publish` y `git-commit` simulan salvo `--aplicar`; todo push pasa la puerta R6 del hub; `git-commit` solo añade fuentes y `_site/` y lista lo demás; sin destino, `publish` es `git push` (Netlify); la GUI simula, pregunta y aplica (`tests/test_blogs_manager_git.py`, `tests/test_gui_blog_service.py`, remoto bare local).
 - 2026-10-06 · Q1b · `tests/test_simulacion.py`: las cinco suites CLI en simulación sobre un workspace de fixture no escriben nada (listado + mtime del temporal y del repo); la GUI, omitida con motivo. Arreglos que destapó: `pub_index_symlink --dry-run` escribía su log en el repo; `metadata_manager` creaba `excel_output_dir` (literal `~/Documents/…`, ahora relativo a su carpeta) aun simulando; `blogs_manager --dry-run` sin comando abría el menú. `pruebas:` en los seis `suite.yml`.
+- 2026-10-06 · Q2 (ajuste del director) · `git-commit` añade también las carpetas de contenido (las que contienen `.qmd`, con imágenes y datos) y `_freeze/`; fuera quedan, con aviso, los sueltos de la raíz y los punteros de submódulo (`tests/test_blogs_manager_git.py`).
 
 ## En curso
 

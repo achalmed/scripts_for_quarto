@@ -34,6 +34,24 @@ _git_cambios() {
     } | sort -zu
 }
 
+# Carpetas de contenido del sitio: las de primer nivel, sin `_` ni `.` delante, que
+# contienen algún .qmd (posts/, blog/, talk/…) y no son submódulos. Una por línea.
+# $1 = ruta absoluta del sitio
+_git_carpetas_contenido() {
+    local sitio="$1" d nombre
+    local -A submodulos=()
+    while IFS= read -r nombre; do submodulos["$nombre"]=1; done \
+        < <(git -C "$sitio" -c core.quotePath=false ls-files -s | awk '$1 == "160000" { sub(/^[^\t]*\t/, ""); print }')
+    for d in "$sitio"/*/; do
+        [[ -d "$d" ]] || continue
+        nombre="$(basename "$d")"
+        [[ "$nombre" == _* || "$nombre" == .* ]] && continue
+        [[ -n "${submodulos[$nombre]:-}" || -e "$d/.git" ]] && continue
+        find "$d" -name '*.qmd' -print -quit 2>/dev/null | grep -q . && printf '%s\n' "$nombre"
+    done
+    return 0
+}
+
 # Imprime un título y hasta 15 rutas de un arreglo (por nombre), con el total.
 # $1 = título; $2 = nombre del arreglo
 _git_listar() {
@@ -107,11 +125,12 @@ git_status_blog() {
     git -C "$blog_path" status
 }
 
-# Confirma las fuentes del sitio y su _site/ y empuja, detrás de la puerta R6.
-# Simula por defecto (dice qué añadiría, qué queda fuera y adónde empujaría);
-# solo con --aplicar (QBLOG_APLICAR=1) añade, confirma y empuja. Nunca `git add .`:
-# se añaden las rutas cambiadas bajo QBLOG_FUENTES y bajo _site/, y lo demás
-# (imágenes, datos, _freeze/, punteros de submódulos…) se informa y queda fuera.
+# Confirma el sitio y empuja, detrás de la puerta R6. Simula por defecto (dice qué
+# añadiría, qué queda fuera y adónde empujaría); solo con --aplicar
+# (QBLOG_APLICAR=1) añade, confirma y empuja. Nunca `git add .`: se añaden las rutas
+# cambiadas (respetando .gitignore) bajo QBLOG_FUENTES, las carpetas de contenido
+# (con sus imágenes y datos), _freeze/ y _site/; lo demás (sueltos de la raíz,
+# punteros de submódulo) se avisa y queda fuera.
 # $1 = ruta absoluta del blog
 # $2 = mensaje de commit (opcional, default "Update blog")
 git_commit_push() {
@@ -127,28 +146,44 @@ git_commit_push() {
         return 1
     fi
 
-    local -a fuentes=() sitio=() todas=() fuera=()
-    local -A dentro=()
+    local -a fuentes=() contenido=() carpetas=() sitio=() todas=() fuera=()
+    local -A dentro=() submodulos=()
     local r
+    mapfile -t carpetas < <(_git_carpetas_contenido "$blog_path")
+    while IFS= read -r r; do submodulos["$r"]=1; done \
+        < <(git -C "$blog_path" -c core.quotePath=false ls-files -s | awk '$1 == "160000" { sub(/^[^\t]*\t/, ""); print }')
     mapfile -d '' -t fuentes < <(_git_cambios "$blog_path" "${QBLOG_FUENTES[@]}")
-    mapfile -d '' -t sitio < <(_git_cambios "$blog_path" "$QBLOG_SITIO_GENERADO")
+    if (( ${#carpetas[@]} )); then
+        mapfile -d '' -t contenido < <(_git_cambios "$blog_path" "${carpetas[@]/%//}")
+    fi
+    mapfile -d '' -t sitio < <(_git_cambios "$blog_path" "${QBLOG_GENERADOS[@]}")
     mapfile -d '' -t todas < <(_git_cambios "$blog_path")
-    for r in "${fuentes[@]}" "${sitio[@]}"; do dentro["$r"]=1; done
+    # Un puntero de submódulo nunca entra, aunque caiga bajo un pathspec.
+    for r in "${fuentes[@]}" "${contenido[@]}" "${sitio[@]}"; do
+        [[ -n "${submodulos[$r]:-}" ]] || dentro["$r"]=1
+    done
     for r in "${todas[@]}"; do [[ -n "${dentro[$r]:-}" ]] || fuera+=("$r"); done
+    fuentes=()                          # sin repetidos: una ruta puede caer en varios grupos
+    if (( ${#dentro[@]} )); then
+        mapfile -d '' -t fuentes < <(printf '%s\0' "${!dentro[@]}" | sort -z)
+    fi
 
-    _git_listar "Fuentes que se confirman" fuentes
-    _git_listar "Rutas de ${QBLOG_SITIO_GENERADO} que se confirman" sitio
-    _git_listar "Quedan fuera (no se añaden; confírmalas a mano si deben ir)" fuera
+    print_info "Carpetas de contenido: ${carpetas[*]:-(ninguna)}"
+    _git_listar "Rutas que se confirman (fuentes, contenido, _freeze/ y _site/)" fuentes
+    if (( ${#fuera[@]} )); then
+        print_warning "Quedan fuera ${#fuera[@]} ruta(s): sueltas en la raíz o punteros de submódulo; no se añaden"
+        _git_listar "Fuera" fuera
+    fi
     if git -C "$blog_path" check-ignore -q "${QBLOG_SITIO_GENERADO}index.html"; then
         print_warning "${QBLOG_SITIO_GENERADO} está ignorado en este repo: la puerta R6 no pasará"
     fi
 
-    local n=$(( ${#fuentes[@]} + ${#sitio[@]} ))
+    local n=${#fuentes[@]}
     if (( ! QBLOG_APLICAR )); then
         if (( n )); then
             print_info "→ añadiría $n ruta(s) y confirmaría: «$message»"
         else
-            print_info "→ nada que confirmar entre las fuentes y ${QBLOG_SITIO_GENERADO}"
+            print_info "→ nada que confirmar en el sitio"
         fi
         print_info "→ después correría la puerta R6 ($QBLOG_PUERTA_R6) y, si pasa, git push"
         print_warning "Simulación: no se añadió, confirmó ni empujó nada. Repite con --aplicar."
@@ -156,15 +191,15 @@ git_commit_push() {
     fi
 
     if (( n )); then
-        printf '%s\0' "${fuentes[@]}" "${sitio[@]}" \
+        printf '%s\0' "${fuentes[@]}" \
             | git -C "$blog_path" --literal-pathspecs add -A --pathspec-from-file=- --pathspec-file-nul \
             || { print_error "git add falló"; return 1; }
-        printf '%s\0' "${fuentes[@]}" "${sitio[@]}" \
+        printf '%s\0' "${fuentes[@]}" \
             | git -C "$blog_path" --literal-pathspecs commit -q -m "$message" --pathspec-from-file=- --pathspec-file-nul \
             || { print_error "git commit falló"; return 1; }
         print_success "Commit realizado ($n ruta(s))"
     else
-        print_info "Nada que confirmar entre las fuentes y ${QBLOG_SITIO_GENERADO}"
+        print_info "Nada que confirmar en el sitio"
     fi
 
     _git_empujar "$blog_path"
