@@ -5,8 +5,9 @@ estado: activo
 # CLAUDE.md — scripts_quarto_studio (repo `scripts_for_quarto`, suite `quarto_studio`)
 
 Guía para el asistente. En español, como todo el ecosistema. `AGENTS.md` es un enlace a este archivo.
-Léase antes: `README.md` (qué es, contrato con el hub, uso), `docs/README.md`, `suite.yml` (raíz y uno
-por backend), `app/README.md` (la GUI) y el README de la herramienta que se toque.
+Léase antes: `estado.md` (dónde está; §Por hacer), `README.md` (qué es, contrato con el hub, uso),
+`docs/README.md`, `suite.yml` (raíz y uno por backend), `app/README.md` (la GUI) y el README de la
+herramienta que se toque.
 
 ## Reglas que no se negocian
 
@@ -21,7 +22,7 @@ por backend), `app/README.md` (la GUI) y el README de la herramienta que se toqu
   | una columna, un formato o una fórmula del Excel | `docs/excel-de-metadatos.md` | el README del metadata manager |
   | por qué se decidió algo | `docs/decisiones.md` (fecha en cada entrada) | un `DECISION_<fecha>.md` |
   | una versión nueva de una herramienta | su constante en el código y `CHANGELOG.md` | el README |
-  | un pendiente | §Pendientes de `docs/decisiones.md`, con fecha y dueño | un `TODO.md` |
+  | un pendiente | `estado.md` §Por hacer, con fecha y dueño | un `TODO.md` |
   | un bloque generado desactualizado | `core/suites.py generar --aplicar` o `core/docs.py indice --aplicar` | la edición a mano |
 
   Lo que hiciste en esta sesión va al mensaje de commit, no a un archivo. Si nada encaja, pregunta antes
@@ -143,7 +144,7 @@ el puntero del submódulo en el hub (`04 index/docs/pubs-submodulos.md`).
 | reparar bloques YAML y `---` pegados | `backend/script_format_yaml/README.md` |
 | estructuras `website`/`blog`, URL base | `backend/script_generador_publicacion_similar/README.md` |
 | columnas, formatos y fórmulas del Excel | `docs/excel-de-metadatos.md` |
-| por qué se decidió algo; pendientes | `docs/decisiones.md` |
+| por qué se decidió algo; dónde está el repo y qué falta | `docs/decisiones.md`; `estado.md` |
 | versiones y desde cuándo | `CHANGELOG.md` |
 | el hub, los submódulos y el tema compartido | `04 index/docs/pubs-submodulos.md`, `04 index/CLAUDE.md` |
 | el contrato de suite y los bloques generados | `core/suite.schema.yml`, `core/README.md` |

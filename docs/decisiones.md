@@ -1,13 +1,13 @@
 ---
 tipo: decision
-titulo: 'Decisiones y pendientes de scripts_quarto_studio'
+titulo: 'Decisiones de scripts_quarto_studio'
 estado: activo
 ---
-# Decisiones y pendientes de scripts_quarto_studio
+# Decisiones de scripts_quarto_studio
 
 Registro único y acumulativo de por qué el repositorio es como es. Cada entrada lleva su fecha; una
 decisión revocada no se borra: se marca «Superada por …». Lo que se hizo en una sesión va al mensaje de
-commit, no aquí. Las versiones de cada herramienta están en [`CHANGELOG.md`](../CHANGELOG.md).
+commit, no aquí; lo pendiente, a [`estado.md`](../estado.md) §Por hacer (ola 4). Las versiones de cada herramienta están en [`CHANGELOG.md`](../CHANGELOG.md).
 
 ## Arquitectura
 
@@ -73,13 +73,3 @@ commit, no aquí. Las versiones de cada herramienta están en [`CHANGELOG.md`](.
   había traído del vault a docs/vision.md: era la transcripción de una propuesta de asistente, no un
   documento del proyecto. Lo que sigue vigente quedó arriba («Crecer solo cuando duela»); el texto
   completo queda en el historial de git.
-
-## Pendientes
-
-| fecha | pendiente | dueño |
-|---|---|---|
-| 2026-10-04 | `backend/script_metadata_manager/suite.yml` declara `simula_por_defecto: true`, pero el CLI aplica salvo `--dry-run` (solo la GUI simula por defecto). Se corrige con la regeneración global de suites. | orquestador de la campaña documental |
-| 2026-10-04 | Dos comentarios de código citan una ruta absoluta de la máquina: `backend/script_blogs_manager/lib/00-config.sh` y `backend/script_pub_index_symlink/lib/00-config.sh`. | autor |
-| 2026-10-04 | `backend/script_metadata_manager/metadata_config.yml` (`excluded_folders`) publica en este repositorio público nombres de carpetas personales. ¿Se mueven a un archivo local ignorado? | autor |
-| 2026-10-04 | `blogs_manager publish` usa por defecto el destino `gh-pages` (`QBLOG_DEFAULT_PUBLISH_TARGET`), pero los sitios de la familia se despliegan en Netlify. ¿Se cambia el valor por defecto? | autor |
-| 2026-10-04 | Orden de etiquetas de cabecera (aviso A10) en `backend/script_metadata_manager/lib/excel_writer.py` y `backend/script_metadata_manager/lib/path_sync.py`. | autor |

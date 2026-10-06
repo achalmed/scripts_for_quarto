@@ -129,7 +129,8 @@ solo lo que no cabe en una puerta.
 | `backend/script_format_yaml/README.md` | el formateador YAML y cómo reparar `---` pegados |
 | `backend/script_generador_publicacion_similar/README.md` | estructuras `website` y `blog`, URL base |
 | `docs/excel-de-metadatos.md` | columnas, formatos y fórmulas del Excel de metadatos |
-| `docs/decisiones.md` | por qué el repo es como es, y los pendientes |
+| `docs/decisiones.md` | por qué el repo es como es |
+| `estado.md` | dónde está el repo y lo pendiente (§Por hacer) |
 | `CHANGELOG.md` | qué versión de cada herramienta hay y desde cuándo |
 | `04 index/docs/pubs-submodulos.md` | el hub y sus submódulos (frontera con `04 index`) |
 | `meta/INDICE_SCRIPTS.md` | estas suites entre las del espacio de trabajo (generado) |
