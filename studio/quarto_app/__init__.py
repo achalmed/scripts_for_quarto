@@ -1,6 +1,6 @@
-"""app — Quarto Studio, aplicación de escritorio para gestionar la familia de blogs Quarto.
+"""quarto_app — Quarto Studio, aplicación de escritorio para gestionar la familia de blogs Quarto.
 
-Frontend Qt (PySide6) desacoplado: los scripts existentes de scripts_for_quarto
+Frontend Qt (PySide6) desacoplado: los scripts de scripts_quarto_studio (repo scripts_for_quarto)
 actúan como motor (backend) y se invocan a través de la capa de servicios.
 """
 
