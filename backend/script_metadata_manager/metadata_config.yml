@@ -55,7 +55,7 @@ excluded_folders:
   - ofimatica
   - prompts
   - propuesta bicentenario
-  - scripts_for_calibre
+  - scripts-biblioteca
   - scripts_document_studio
   - scripts_for_linux
   - scripts_quarto_studio
