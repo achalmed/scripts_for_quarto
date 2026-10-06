@@ -6,8 +6,8 @@ from __future__ import annotations
 
 from PySide6.QtCore import QObject
 
-from app.controllers.main_controller import MainController
-from app.services import metadata_service as svc
+from quarto_app.controllers.main_controller import MainController
+from quarto_app.services import metadata_service as svc
 
 
 class MetadataController(QObject):

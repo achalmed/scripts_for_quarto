@@ -11,8 +11,8 @@ from pathlib import Path
 
 from PySide6.QtCore import QThread, Signal
 
-from app.models.blog import Blog
-from app.services.project_scanner import descubrir_blogs
+from quarto_app.models.blog import Blog
+from quarto_app.services.project_scanner import descubrir_blogs
 
 
 class ScanWorker(QThread):

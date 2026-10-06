@@ -14,7 +14,7 @@ from PySide6.QtCore import QDir, QModelIndex, QUrl
 from PySide6.QtGui import QDesktopServices
 from PySide6.QtWidgets import QFileSystemModel, QTreeView, QVBoxLayout, QWidget
 
-from app.settings import settings
+from quarto_app.settings import settings
 
 
 class FileExplorer(QWidget):

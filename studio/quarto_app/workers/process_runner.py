@@ -12,9 +12,9 @@ import re
 
 from PySide6.QtCore import QObject, QProcess, QProcessEnvironment, QElapsedTimer, Signal
 
-from app.models.operation import Operacion
-from app.services.command import Command
-from app.utils.ansi import limpiar
+from quarto_app.models.operation import Operacion
+from quarto_app.services.command import Command
+from quarto_app.utils.ansi import limpiar
 
 # Patrones para estimar progreso a partir de la salida de los scripts
 _RE_TOTAL = re.compile(r"[Ee]ncontrad[oa]s?\s+(\d+)\s+archivo")

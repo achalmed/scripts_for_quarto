@@ -12,12 +12,12 @@ from __future__ import annotations
 
 from PySide6.QtCore import QObject, Signal
 
-from app.models.blog import Blog
-from app.models.operation import Operacion
-from app.services.command import Command
-from app.settings import settings
-from app.workers.process_runner import ProcessRunner
-from app.workers.scan_worker import ScanWorker
+from quarto_app.models.blog import Blog
+from quarto_app.models.operation import Operacion
+from quarto_app.services.command import Command
+from quarto_app.settings import settings
+from quarto_app.workers.process_runner import ProcessRunner
+from quarto_app.workers.scan_worker import ScanWorker
 
 
 class MainController(QObject):
@@ -53,6 +53,11 @@ class MainController(QObject):
         self._scanner = ScanWorker(settings().docs_dir(), self)
         self._scanner.resultado.connect(self._al_escanear)
         self._scanner.start()
+
+    def esperar_escaneo(self, ms: int = 30000) -> None:
+        """Espera al escaneo en curso: cerrar con un QThread vivo aborta el proceso (ola 4, fase B)."""
+        if self._scanner and self._scanner.isRunning():
+            self._scanner.wait(ms)
 
     def blogs(self) -> list[Blog]:
         return self._blogs

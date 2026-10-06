@@ -5,8 +5,8 @@ similar_service.py — Servicio del generador de índices de contenido
 
 from __future__ import annotations
 
-from app.services import paths
-from app.services.command import Command
+from quarto_app.services import paths
+from quarto_app.services.command import Command
 
 
 def generar(blog_dir: str, base_url: str = "", tipo: str = "auto", dry_run: bool = False) -> Command:

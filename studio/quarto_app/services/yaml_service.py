@@ -4,9 +4,9 @@ yaml_service.py — Servicio del formateador YAML (script_format_yaml).
 
 from __future__ import annotations
 
-from app.services import paths
-from app.services.command import Command
-from app.settings import settings
+from quarto_app.services import paths
+from quarto_app.services.command import Command
+from quarto_app.settings import settings
 
 
 def formatear_directorio(directorio: str, recursivo: bool = True, dry_run: bool = False) -> Command:

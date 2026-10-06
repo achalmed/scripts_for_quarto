@@ -11,8 +11,8 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
-from app.models.blog import Blog, Post
-from app.services import paths
+from quarto_app.models.blog import Blog, Post
+from quarto_app.services import paths
 
 # Carpetas técnicas que nunca son carpetas de posts (mismo criterio que
 # QBLOG_IGNORE_DIRS en script_blogs_manager/lib/00-config.sh)

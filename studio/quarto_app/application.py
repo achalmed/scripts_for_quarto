@@ -8,14 +8,14 @@ from PySide6.QtCore import Qt
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication
 
-from app import APP_NAME, APP_VERSION, ORG_DOMAIN, ORG_NAME
-from app.services import paths
-from app.settings import settings
+from quarto_app import APP_NAME, APP_VERSION, ORG_DOMAIN, ORG_NAME
+from quarto_app.services import paths
+from quarto_app.settings import settings
 
 # Los recursos compilados (resources_rc) registran :/icons y :/themes.
 # Si no están compilados, se cargan directamente del sistema de archivos.
 try:
-    from app.resources import resources_rc  # noqa: F401
+    from quarto_app.resources import resources_rc  # noqa: F401
     _QRC_DISPONIBLE = True
 except ImportError:
     _QRC_DISPONIBLE = False

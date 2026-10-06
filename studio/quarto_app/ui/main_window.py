@@ -18,24 +18,24 @@ from PySide6.QtWidgets import (
     QStatusBar, QTabWidget, QToolBar, QWidget, QHBoxLayout, QDockWidget,
 )
 
-from app import APP_NAME, APP_VERSION
-from app.application import aplicar_tema, icono_app
-from app.controllers.blogs_controller import BlogsController
-from app.controllers.main_controller import MainController
-from app.controllers.metadata_controller import MetadataController
-from app.controllers.tools_controller import ToolsController
-from app.dialogs.preferences_dialog import PreferencesDialog
-from app.settings import settings
-from app.ui.pages.blogs_page import BlogsPage
-from app.ui.pages.dashboard_page import DashboardPage
-from app.ui.pages.index_page import IndexPage
-from app.ui.pages.metadata_page import MetadataPage
-from app.ui.pages.similar_page import SimilarPage
-from app.ui.pages.yaml_page import YamlPage
-from app.widgets.console_widget import ConsoleWidget
-from app.widgets.file_explorer import FileExplorer
-from app.widgets.log_panel import LogPanel
-from app.widgets.sidebar import Sidebar
+from quarto_app import APP_NAME, APP_VERSION
+from quarto_app.application import aplicar_tema, icono_app
+from quarto_app.controllers.blogs_controller import BlogsController
+from quarto_app.controllers.main_controller import MainController
+from quarto_app.controllers.metadata_controller import MetadataController
+from quarto_app.controllers.tools_controller import ToolsController
+from quarto_app.dialogs.preferences_dialog import PreferencesDialog
+from quarto_app.settings import settings
+from quarto_app.ui.pages.blogs_page import BlogsPage
+from quarto_app.ui.pages.dashboard_page import DashboardPage
+from quarto_app.ui.pages.index_page import IndexPage
+from quarto_app.ui.pages.metadata_page import MetadataPage
+from quarto_app.ui.pages.similar_page import SimilarPage
+from quarto_app.ui.pages.yaml_page import YamlPage
+from quarto_app.widgets.console_widget import ConsoleWidget
+from quarto_app.widgets.file_explorer import FileExplorer
+from quarto_app.widgets.log_panel import LogPanel
+from quarto_app.widgets.sidebar import Sidebar
 
 
 class MainWindow(QMainWindow):
@@ -254,7 +254,7 @@ class MainWindow(QMainWindow):
             self, f"Acerca de {APP_NAME}",
             f"<b>{APP_NAME} {APP_VERSION}</b><br><br>"
             "Frontend de escritorio (PySide6/Qt6) para las herramientas de "
-            "<code>scripts_for_quarto</code>: gestión de blogs Quarto, metadatos, "
+            "<code>scripts_quarto_studio</code> (repo <code>scripts_for_quarto</code>): gestión de blogs Quarto, metadatos, "
             "tags, índices y formato YAML.<br><br>"
             "Los scripts existentes actúan como motor: la interfaz los invoca a "
             "través de una capa de servicios desacoplada.",
@@ -262,4 +262,5 @@ class MainWindow(QMainWindow):
 
     def closeEvent(self, evento) -> None:  # noqa: N802 — API Qt
         self.ctl.detener()
+        self.ctl.esperar_escaneo()
         super().closeEvent(evento)

@@ -11,10 +11,10 @@ from pathlib import Path
 
 from PySide6.QtCore import QObject, Signal
 
-from app.controllers.main_controller import MainController
-from app.models.operation import Operacion
-from app.services import blog_service, post_service
-from app.services.command import Command
+from quarto_app.controllers.main_controller import MainController
+from quarto_app.models.operation import Operacion
+from quarto_app.services import blog_service, post_service
+from quarto_app.services.command import Command
 
 
 class BlogsController(QObject):

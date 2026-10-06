@@ -1,44 +1,31 @@
 """
-paths.py — Localización de los scripts backend y del directorio Documents.
+quarto_app/services/paths.py — Localización de los scripts backend y del directorio Documents.
 
-La raíz (DOCS_ROOT) y la carpeta del hub (INDEX_DIR) salen de core/env.py,
-igual que en los scripts Bash (que cargan core/env.sh), de modo que la GUI y
-el backend siempre coincidan.
+La raíz (DOCS_ROOT), la carpeta del hub (INDEX_DIR) y la de los backends (SCRIPTS_QUARTO) salen de
+core/env.py a través de comun.rutas, igual que en los scripts Bash (que cargan core/env.sh), de modo que la
+GUI y el backend siempre coincidan. Ninguna ruta es relativa a este archivo salvo los recursos propios.
 """
 
 from __future__ import annotations
 
-import importlib.util
-from functools import lru_cache
 from pathlib import Path
 
-# app/services/paths.py → raíz del repositorio (scripts_quarto_studio)
-_SCRIPTS_ROOT = Path(__file__).resolve().parents[3]
-
-# Los script_* viven en backend/
-_BACKEND_DIR = Path(__file__).resolve().parents[2] / "backend"
+from comun import rutas
 
 
 def scripts_root() -> Path:
-    """Raíz del repositorio scripts_quarto_studio."""
-    return _SCRIPTS_ROOT
+    """Raíz del repositorio de los backends de Quarto (SCRIPTS_QUARTO de core/env)."""
+    return rutas.variable("SCRIPTS_QUARTO")
 
 
 def backend_dir() -> Path:
-    """Directorio backend/ (donde viven los script_*)."""
-    return _BACKEND_DIR
+    """Directorio backend/ del repositorio de los backends (donde viven los script_*)."""
+    return scripts_root() / "backend"
 
 
-@lru_cache(maxsize=1)
 def core_env():
-    """El módulo core/env.py del workspace: se sube desde este archivo hasta hallarlo."""
-    d = Path(__file__).resolve()
-    while d != d.parent and not (d / "core" / "env.py").is_file():
-        d = d.parent
-    spec = importlib.util.spec_from_file_location("core_env", d / "core" / "env.py")
-    env = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(env)
-    return env
+    """El módulo core/env.py del workspace (lo carga comun.rutas)."""
+    return rutas.core_env()
 
 
 def detectar_docs_dir() -> Path:
@@ -57,31 +44,31 @@ def hub_dir(docs_dir: Path | None = None) -> Path:
 # --- Entradas (entry points) de cada herramienta backend --------------------
 
 def blogs_manager() -> Path:
-    return backend_dir() / "script_blogs_manager" / "main.sh"
+    return rutas.backend("quarto", "blogs_manager") / "main.sh"
 
 
 def metadata_manager() -> Path:
-    return backend_dir() / "script_metadata_manager" / "main.py"
+    return rutas.backend("quarto", "metadata_manager") / "main.py"
 
 
 def metadata_config() -> Path:
-    return backend_dir() / "script_metadata_manager" / "metadata_config.yml"
+    return rutas.backend("quarto", "metadata_manager") / "metadata_config.yml"
 
 
 def yaml_formatter() -> Path:
-    return backend_dir() / "script_format_yaml" / "fix_qmd_files.py"
+    return rutas.backend("quarto", "format_yaml") / "fix_qmd_files.py"
 
 
 def pub_index_symlink() -> Path:
-    return backend_dir() / "script_pub_index_symlink" / "main.sh"
+    return rutas.backend("quarto", "pub_index_symlink") / "main.sh"
 
 
 def pub_index_logs_dir() -> Path:
-    return backend_dir() / "script_pub_index_symlink" / "logs"
+    return rutas.backend("quarto", "pub_index_symlink") / "logs"
 
 
 def generador_similar() -> Path:
-    return backend_dir() / "script_generador_publicacion_similar" / "main.sh"
+    return rutas.backend("quarto", "generador_similar") / "main.sh"
 
 
 def recursos_dir() -> Path:

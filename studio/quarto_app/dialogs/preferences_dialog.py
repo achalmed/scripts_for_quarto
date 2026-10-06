@@ -9,8 +9,8 @@ from PySide6.QtWidgets import (
     QHBoxLayout, QLineEdit, QPushButton, QSpinBox, QVBoxLayout,
 )
 
-from app.application import aplicar_tema
-from app.settings import settings
+from quarto_app.application import aplicar_tema
+from quarto_app.settings import settings
 
 
 class _SelectorRuta(QHBoxLayout):

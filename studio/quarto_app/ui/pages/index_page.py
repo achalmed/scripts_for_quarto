@@ -9,8 +9,8 @@ from PySide6.QtWidgets import (
     QVBoxLayout, QWidget,
 )
 
-from app.controllers.tools_controller import ToolsController
-from app.widgets.page_header import PageHeader
+from quarto_app.controllers.tools_controller import ToolsController
+from quarto_app.widgets.page_header import PageHeader
 
 
 class IndexPage(QWidget):

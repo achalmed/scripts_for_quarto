@@ -7,7 +7,7 @@ from __future__ import annotations
 from PySide6.QtCore import QSize, Signal
 from PySide6.QtWidgets import QListWidget, QListWidgetItem
 
-from app.application import icono_app
+from quarto_app.application import icono_app
 
 # (id, etiqueta, icono)
 SECCIONES = [

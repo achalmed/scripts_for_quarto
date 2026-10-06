@@ -12,9 +12,9 @@ from PySide6.QtWidgets import (
     QPushButton, QVBoxLayout, QWidget,
 )
 
-from app.controllers.tools_controller import ToolsController
-from app.models.blog import Blog
-from app.widgets.page_header import PageHeader
+from quarto_app.controllers.tools_controller import ToolsController
+from quarto_app.models.blog import Blog
+from quarto_app.widgets.page_header import PageHeader
 
 
 class SimilarPage(QWidget):

@@ -15,8 +15,8 @@ from PySide6.QtWidgets import (
     QVBoxLayout, QWidget,
 )
 
-from app.models.operation import Operacion
-from app.services import paths
+from quarto_app.models.operation import Operacion
+from quarto_app.services import paths
 
 _COLUMNAS = ["Hora", "Operación", "Comando", "Código", "Duración"]
 

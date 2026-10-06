@@ -11,10 +11,10 @@ from PySide6.QtWidgets import (
     QVBoxLayout, QWidget,
 )
 
-from app.models.blog import Blog
-from app.models.operation import Operacion
-from app.settings import settings
-from app.widgets.page_header import PageHeader
+from quarto_app.models.blog import Blog
+from quarto_app.models.operation import Operacion
+from quarto_app.settings import settings
+from quarto_app.widgets.page_header import PageHeader
 
 
 class _Tarjeta(QFrame):

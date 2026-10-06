@@ -13,7 +13,7 @@ from PySide6.QtWidgets import (
     QPlainTextEdit, QTabWidget, QVBoxLayout, QWidget,
 )
 
-from app.services.post_service import DatosPost
+from quarto_app.services.post_service import DatosPost
 
 
 def _separar(texto: str) -> list[str]:

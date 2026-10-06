@@ -10,8 +10,8 @@ from __future__ import annotations
 
 from PySide6.QtCore import QObject
 
-from app.controllers.main_controller import MainController
-from app.services import index_service, similar_service, yaml_service
+from quarto_app.controllers.main_controller import MainController
+from quarto_app.services import index_service, similar_service, yaml_service
 
 
 class ToolsController(QObject):

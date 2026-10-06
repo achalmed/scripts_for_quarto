@@ -18,10 +18,10 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
-from app.controllers.metadata_controller import MetadataController
-from app.models.blog import Blog
-from app.settings import settings
-from app.widgets.page_header import PageHeader
+from quarto_app.controllers.metadata_controller import MetadataController
+from quarto_app.models.blog import Blog
+from quarto_app.settings import settings
+from quarto_app.widgets.page_header import PageHeader
 
 
 class MetadataPage(QWidget):

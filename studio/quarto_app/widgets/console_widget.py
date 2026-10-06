@@ -13,8 +13,8 @@ from PySide6.QtWidgets import (
     QHBoxLayout, QLabel, QPlainTextEdit, QPushButton, QVBoxLayout, QWidget,
 )
 
-from app.models.operation import Operacion
-from app.services.command import Command
+from quarto_app.models.operation import Operacion
+from quarto_app.services.command import Command
 
 
 class ConsoleWidget(QWidget):

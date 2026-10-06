@@ -9,9 +9,9 @@ from PySide6.QtWidgets import (
     QMessageBox, QPushButton, QVBoxLayout, QWidget,
 )
 
-from app.controllers.tools_controller import ToolsController
-from app.settings import settings
-from app.widgets.page_header import PageHeader
+from quarto_app.controllers.tools_controller import ToolsController
+from quarto_app.settings import settings
+from quarto_app.widgets.page_header import PageHeader
 
 
 class YamlPage(QWidget):

@@ -11,12 +11,12 @@ from PySide6.QtWidgets import (
     QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget,
 )
 
-from app.controllers.blogs_controller import BlogsController
-from app.dialogs.new_blog_dialog import NewBlogDialog
-from app.dialogs.new_post_dialog import NewPostDialog
-from app.models.blog import Blog
-from app.services.project_scanner import IGNORAR_DIRS
-from app.widgets.page_header import PageHeader
+from quarto_app.controllers.blogs_controller import BlogsController
+from quarto_app.dialogs.new_blog_dialog import NewBlogDialog
+from quarto_app.dialogs.new_post_dialog import NewPostDialog
+from quarto_app.models.blog import Blog
+from quarto_app.services.project_scanner import IGNORAR_DIRS
+from quarto_app.widgets.page_header import PageHeader
 
 _COLUMNAS = ["Blog", "Posts", "Git", "_quarto.yml", "Ruta"]
 

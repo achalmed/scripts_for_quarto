@@ -12,8 +12,8 @@ from pathlib import Path
 
 from PySide6.QtCore import QSettings
 
-from app import APP_NAME, ORG_NAME
-from app.services import paths
+from quarto_app import APP_NAME, ORG_NAME
+from quarto_app.services import paths
 
 
 class AppSettings:

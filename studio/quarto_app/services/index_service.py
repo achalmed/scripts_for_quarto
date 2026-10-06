@@ -4,9 +4,9 @@ index_service.py — Servicio del índice de symlinks (script_pub_index_symlink)
 
 from __future__ import annotations
 
-from app.services import paths
-from app.services.command import Command
-from app.settings import settings
+from quarto_app.services import paths
+from quarto_app.services.command import Command
+from quarto_app.settings import settings
 
 
 def _cmd(args: list[str], descripcion: str, stdin_data: str | None = None) -> Command:
