@@ -123,7 +123,7 @@ Lo aplicado de verdad se confirma dentro del pub y luego el puntero del submódu
   propósito (`docs/decisiones.md`); `respaldos/` y `logs/` están ignorados.
 - **`04 index/_indice/` es del vault**, ignorado en el hub: `pub_index_symlink` solo crea enlaces por
   año ahí; nunca se borra `04 index` para reindexar, solo el contenido de `_indice/`.
-- **`generador_publicacion_similar` escribe un fragmento `tipo: fragmento` en la carpeta de cada subblog**
+- **`generador_publicacion_similar` escribe un fragmento (identidad en un comentario de la línea 1, sin frontmatter) en la carpeta de cada subblog**
   para `{{< include >}}`; ordena por el glob (con prefijo de fecha equivale a cronológico) y
   **borra** el índice de un subblog que se queda sin posts; la capitalización usa `sed` GNU.
 - **`excel_output_dir` relativo se resuelve contra la carpeta del metadata manager** (y sin la clave

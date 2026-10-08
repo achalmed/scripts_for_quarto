@@ -73,6 +73,7 @@ commit, no aquí; lo pendiente, a [`estado.md`](../estado.md) §Por hacer (ola 4
   cuando solo cambia `date` se sustituye esa línea y el resto del archivo queda byte a byte igual. El
   Excel guarda la fecha como texto, no como fórmula: openpyxl no calcula fórmulas y una celda sin valor
   guardado borraría `date`.
+- **2026-10-08 · Los fragmentos de inclusión no llevan frontmatter** (sucede a la de 2026-09-15). Pandoc lee un bloque YAML en medio del documento como texto según el contexto que lo rodea, y la cabecera `tipo: fragmento` llegó publicada en 12 PDF y 11 páginas de cuatro blogs. La identidad va en un comentario de la línea 1 (`<!-- fragmento de inclusión — … -->`), que no se renderiza y que el validador de `core` reconoce (ola 6).
 - **2026-09-15 · Los índices `_contenido_<subblog>.qmd` llevan `tipo: fragmento`.** Son fragmentos para
   `{{< include >}}`, no páginas.
 

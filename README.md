@@ -67,7 +67,7 @@ Excel es la mesa de trabajo, y lo que se edite a mano en un `.qmd` prevalece has
 |---|---|---|---|
 | `metadata_manager` | el frontmatter YAML de los `index.qmd` | `04 index/blog/posts/` y los `posts/` de cada pub | `--dry-run` (la terminal aplica sin él); solo cambia lo que difiere; un solo escritor de YAML; nunca crea `citation` |
 | `format_yaml` | el bloque YAML de cada `.qmd` (delimitadores y líneas en blanco) | la carpeta que se le pase | idempotente; `--dry-run` |
-| `generador_publicacion_similar` | `_contenido_<subblog>.qmd`, fragmentos con `tipo: fragmento` para `{{< include >}}` | la carpeta de cada subblog del blog que se le pase | `--dry-run`; si un subblog queda sin posts, borra su índice |
+| `generador_publicacion_similar` | `_contenido_<subblog>.qmd`, fragmentos para `{{< include >}}` con su identidad en un comentario de la línea 1 (sin frontmatter) | la carpeta de cada subblog del blog que se le pase | `--dry-run`; si un subblog queda sin posts, borra su índice |
 | `pub_index_symlink` | enlaces simbólicos por año, nunca copias | `04 index/_indice/` (ignorado en git; del vault) | omite lo que ya apunta bien; no toca archivos reales; `--dry-run` |
 | `blogs_manager` | `_site/`, `_freeze/`, posts nuevos, commits, respaldos | hub y pubs; `06 archives/backups-publicaciones/`; el remoto git (Netlify) o `quarto publish <destino>` | `publish` y `git-commit` simulan salvo `--aplicar`, empujan solo tras la puerta R6 y no hacen `git add .`; `clean-all` pide confirmación |
 | Quarto Studio (repo `gui-suites`) | nada propio: lanza las cinco anteriores | — | una operación a la vez; «Dry-run» marcado por defecto en metadatos e índices |

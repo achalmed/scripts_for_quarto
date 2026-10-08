@@ -33,7 +33,7 @@ lista para `{{< include >}}`. Quarto Studio lo invoca desde la página «Conteni
 1. [{{< fa regular file-pdf >}}](https://dominio/subblog/2022-01-23-titulo/index.pdf) [Titulo](https://dominio/subblog/2022-01-23-titulo)
 ```
 
-El índice lleva frontmatter `tipo: fragmento` y se incluye desde la página del subblog:
+El índice lleva su identidad en un comentario de la línea 1 (`<!-- fragmento de inclusión — … -->`), sin frontmatter, y se incluye desde la página del subblog:
 
 ```markdown
 {{< include _contenido_posts.qmd >}}

@@ -101,8 +101,9 @@ write_subblog_index() {
         return 0
     fi
 
-    # Fragmento que un index.qmd incluye: lleva el frontmatter de meta/NORMATIVA_ARCHIVOS.md §6.2 (tipo: fragmento)
-    if ! printf -- '---\ntipo: fragmento\ntitulo: "índice de publicaciones de %s; lo genera script_generador_publicacion_similar"\n---\n\n%s' \
+    # Fragmento que un index.qmd incluye: su identidad va en un comentario de la línea 1, no en frontmatter (Pandoc lee
+    # un bloque YAML en medio del documento como texto según el contexto y llegaba publicado; ola 6, 2026-10-08)
+    if ! printf -- '<!-- fragmento de inclusión — índice de publicaciones de %s; lo genera script_generador_publicacion_similar -->\n\n%s' \
             "$(basename "$(dirname "$output_file")")" "$GENIDX_COLLECTED_CONTENT" > "$output_file"; then
         log_error "No se pudo escribir: $output_file"
         return 1
