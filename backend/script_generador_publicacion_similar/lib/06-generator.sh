@@ -50,6 +50,7 @@ collect_subblog_entries() {
 
     GENIDX_COLLECTED_CONTENT=""
     GENIDX_LAST_POSTS_FOUND=0
+    GENIDX_LAST_DRAFTS=0
 
     for post_dir in "$subblog_dir"/*/; do
         [[ -d "$post_dir" ]] || continue
@@ -60,6 +61,13 @@ collect_subblog_entries() {
 
         if [[ ! -f "$post_dir/index.qmd" ]]; then
             log_warn "Carpeta sin index.qmd: $(basename "$subblog_dir")/$post_folder_name"
+            continue
+        fi
+
+        # Un borrador no se publica (decisión del autor, 2026-10-08): no entra en el índice, que se incluye en
+        # entradas publicadas y enlazaría a una página que no existe.
+        if sed -n '1,/^---$/{/^---$/!p}' <(tail -n +2 "$post_dir/index.qmd") | grep -qE '^draft:[[:space:]]*true'; then
+            GENIDX_LAST_DRAFTS=$((GENIDX_LAST_DRAFTS + 1))
             continue
         fi
 
@@ -83,7 +91,11 @@ write_subblog_index() {
     subblog_name="$(basename "$subblog_dir")"
     output_file="$subblog_dir/${GENIDX_OUTPUT_PREFIX}${subblog_name}.qmd"
 
-    if [[ "$GENIDX_LAST_POSTS_FOUND" -eq 0 ]]; then
+    # Solo borradores: el fragmento queda vacío (con su identidad) en vez de borrarse, porque los borradores lo
+    # incluyen y Quarto los procesa igual; un include a un archivo que no existe rompería el render.
+    if [[ "$GENIDX_LAST_POSTS_FOUND" -eq 0 && "$GENIDX_LAST_DRAFTS" -gt 0 ]]; then
+        GENIDX_COLLECTED_CONTENT=""
+    elif [[ "$GENIDX_LAST_POSTS_FOUND" -eq 0 ]]; then
         log_info "No se encontraron publicaciones en: $subblog_name"
         if [[ -f "$output_file" ]]; then
             if [[ "$GENIDX_DRY_RUN" -eq 1 ]]; then
