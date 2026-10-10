@@ -78,7 +78,7 @@ DOCS_ROOT="$(utils_detect_docs_dir)" || {
 }
 
 # --- Directorio de backups (autodetectado relativo a Documents, salvo override)
-QBLOG_BACKUP_DIR="${QBLOG_BACKUP_DIR:-$DOCS_ROOT/06 archives/backups-publicaciones}"
+QBLOG_BACKUP_DIR="${QBLOG_BACKUP_DIR:-$DOCS_ROOT/archivo/backups-publicaciones}"
 
 # Helper interno: resuelve un nombre de blog ingresado por el usuario a su
 # ruta absoluta, dejándola en la variable global QBLOG_RESOLVED_PATH. Si no
