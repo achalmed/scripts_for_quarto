@@ -7,10 +7,10 @@ estado: activo
 <!-- suite:inicio -->
 **Suite `blogs_manager`** · objetivo *publicacion* · estado *activo* · bash · interfaz cli
 
-Gestiona el hub 04 index y sus pubs: listar, render, preview, publicar, crear posts APA, operaciones git y backups.
+Gestiona el hub web y sus pubs: listar, render, preview, publicar, crear posts APA, operaciones git y backups.
 
 - Escribe en: web, git, archivos · simula por defecto: no
-- Entrada: 04 index y 04 index/_pubs/*
+- Entrada: web y web/_pubs/*
 - Depende de: quarto, git
 
 Comandos:
@@ -24,7 +24,7 @@ main.sh git-commit <blog> <mensaje> [--aplicar]
 main.sh help
 ```
 
-<sub>Bloque generado desde `suite.yml` por `core/suites.py generar` (2026-10-06); no se edita a mano.</sub>
+<sub>Bloque generado desde `suite.yml` por `core/suites.py generar` (2026-10-10); no se edita a mano.</sub>
 <!-- suite:fin -->
 
 ## Qué es

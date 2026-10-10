@@ -7,7 +7,7 @@ estado: activo
 <!-- suite:inicio -->
 **Suite `pub_index_symlink`** · objetivo *publicacion* · estado *activo* · bash · interfaz cli
 
-Mantiene 04 index/_indice con enlaces simbólicos por año a cada carpeta de publicación de los blogs.
+Mantiene web/_indice con enlaces simbólicos por año a cada carpeta de publicación de los blogs.
 
 - Escribe en: vault · simula por defecto: no
 - Depende de: bash
@@ -21,7 +21,7 @@ main.sh --check-broken
 main.sh --clean-broken
 ```
 
-<sub>Bloque generado desde `suite.yml` por `core/suites.py generar` (2026-09-20); no se edita a mano.</sub>
+<sub>Bloque generado desde `suite.yml` por `core/suites.py generar` (2026-10-10); no se edita a mano.</sub>
 <!-- suite:fin -->
 
 ## Qué es
