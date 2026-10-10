@@ -68,7 +68,7 @@ Un blog se nombra por su carpeta (`axiomata`) o sin el prefijo (`axiomata`); el 
 | `convert ARCHIVO [FORMATO]` | `quarto convert` (por defecto, html) |
 | `init-blog NOMBRE [TÍTULO]` | crea un blog `pub_<nombre>` con su estructura |
 | `check-structure` | revisa archivos, git y YAML de todos los sitios |
-| `backup` | respaldo interactivo (de un sitio, completo o incremental) en `archivo/backups-publicaciones/` |
+| `backup` | respaldo interactivo (de un sitio, completo o incremental) en `$DOCS_ROOT/archivo/backups-publicaciones/` |
 | `version` | versión de Quarto instalada |
 
 Los sitios de la familia (el hub y los `pub_*`) se despliegan en Netlify con cada `git push`: por eso
