@@ -26,8 +26,8 @@ _TITULO_RE = re.compile(r'^title:\s*["\']?(.*?)["\']?\s*$', re.MULTILINE)
 
 
 def descubrir_blogs(docs_dir: Path) -> list[Blog]:
-    """Encuentra todos los proyectos pub_* y website-achalma."""
-    candidatos: list[Path] = sorted(docs_dir.glob("pub_*"))
+    """Encuentra todos los blogs del registro `_pubs/pubs.yml` y el hub (website-achalma)."""
+    candidatos: list[Path] = [p.ruta for p in paths.pubs_registro().pubs()]
     website = paths.hub_dir(docs_dir)   # carpeta del hub (repo website-achalma): INDEX_DIR de core/env
     if website.is_dir():
         candidatos.append(website)

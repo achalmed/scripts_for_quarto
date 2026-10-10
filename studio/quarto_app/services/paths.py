@@ -23,6 +23,16 @@ def detectar_docs_dir() -> Path:
     return Path(core_env().DOCS_ROOT)
 
 
+def pubs_registro():
+    """core/py-common/pubs.py: los blogs por `_pubs/pubs.yml` del hub, nunca por el prefijo de carpeta (ola 6, 6f)."""
+    import importlib.util
+    ruta = Path(core_env().__file__).resolve().parent / "py-common" / "pubs.py"
+    spec = importlib.util.spec_from_file_location("core_pubs", ruta)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
 def hub_dir(docs_dir: Path | None = None) -> Path:
     """Carpeta del hub (repo website-achalma): INDEX_DIR de core/env, trasladada a `docs_dir` si se da otra raíz."""
     env = core_env()

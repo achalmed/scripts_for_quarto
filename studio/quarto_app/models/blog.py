@@ -36,7 +36,7 @@ class Blog:
 
     @property
     def es_website(self) -> bool:
-        return not self.nombre.startswith("pub_")
+        return (self.ruta / "_pubs").is_dir()      # el hub es el que contiene los blogs; un blog no tiene _pubs/
 
     @property
     def num_posts(self) -> int:
