@@ -93,8 +93,8 @@ python3 main.py find-differences ~/Documents excel_databases/quarto_metadata.xls
 python3 main.py update ~/Documents excel_databases/quarto_metadata.xlsx --dry-run  # simular antes de aplicar
 cd ../..
 backend/script_pub_index_symlink/main.sh --dry-run               # y --check-broken
-backend/script_generador_publicacion_similar/main.sh "../04 index/_pubs/axiomata" --dry-run
-python3 backend/script_format_yaml/main.py --directory "../04 index/_pubs/axiomata" --recursive --dry-run
+backend/script_generador_publicacion_similar/main.sh "../web/_pubs/axiomata" --dry-run
+python3 backend/script_format_yaml/main.py --directory "../web/_pubs/axiomata" --recursive --dry-run
 ```
 
 Pruebas: `python3 -m pytest -q tests -p no:cacheprovider --basetemp ~/.cache/pytest/quarto-ola4` (nunca
@@ -121,8 +121,8 @@ Lo aplicado de verdad se confirma dentro del pub y luego el puntero del submódu
 - **El Excel guarda `date` como texto**, no como fórmula: openpyxl no calcula y una fórmula sin valor
   guardado llega vacía y borra el campo. `backend/script_metadata_manager/excel_databases/quarto_metadata.xlsx` está versionado a
   propósito (`docs/decisiones.md`); `respaldos/` y `logs/` están ignorados.
-- **`04 index/_indice/` es del vault**, ignorado en el hub: `pub_index_symlink` solo crea enlaces por
-  año ahí; nunca se borra `04 index` para reindexar, solo el contenido de `_indice/`.
+- **`web/_indice/` es del vault**, ignorado en el hub: `pub_index_symlink` solo crea enlaces por
+  año ahí; nunca se borra `web` para reindexar, solo el contenido de `_indice/`.
 - **`generador_publicacion_similar` escribe un fragmento (identidad en un comentario de la línea 1, sin frontmatter) en la carpeta de cada subblog**
   para `{{< include >}}`; ordena por el glob (con prefijo de fecha equivale a cronológico) y
   **borra** el índice de un subblog que se queda sin posts; la capitalización usa `sed` GNU.
@@ -143,6 +143,6 @@ Lo aplicado de verdad se confirma dentro del pub y luego el puntero del submódu
 | columnas, formatos y fórmulas del Excel | `docs/excel-de-metadatos.md` |
 | por qué se decidió algo; dónde está el repo y qué falta | `docs/decisiones.md`; `estado.md` |
 | versiones y desde cuándo | `CHANGELOG.md` |
-| el hub, los submódulos y el tema compartido | `04 index/docs/pubs-submodulos.md`, `04 index/CLAUDE.md` |
+| el hub, los submódulos y el tema compartido | `web/docs/pubs-submodulos.md`, `web/CLAUDE.md` |
 | el contrato de suite y los bloques generados | `core/suite.schema.yml`, `core/README.md` |
 | normativa de archivos, fechas y cabeceras | `meta/docs/historial/NORMATIVA_ARCHIVOS.md` |
