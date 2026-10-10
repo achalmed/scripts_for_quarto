@@ -21,7 +21,7 @@ class IndexPage(QWidget):
         layout = QVBoxLayout(self)
         layout.setContentsMargins(16, 16, 16, 16)
         layout.addWidget(PageHeader(
-            "Índice de publicaciones (04 index)",
+            "Índice de publicaciones (web)",
             "Mantiene los symlinks de Obsidian organizados por año hacia todas "
             "las carpetas de publicación. No edites los symlinks a mano: regenera aquí.",
         ))
@@ -51,6 +51,6 @@ class IndexPage(QWidget):
     def _limpiar_rotos(self) -> None:
         if QMessageBox.question(
                 self, "Eliminar symlinks rotos",
-                "Se eliminarán los symlinks rotos de '04 index' (con limpieza de "
+                "Se eliminarán los symlinks rotos de 'web' (con limpieza de "
                 "carpetas de año vacías).\n¿Continuar?") == QMessageBox.Yes:
             self._ctl.limpiar_rotos()
