@@ -6,7 +6,7 @@ Sobre un pub de fixture con remoto bare local (conftest.py) se demuestra que:
   · con todo al día, `git-commit --aplicar` confirma fuentes, contenido (con imágenes), `_freeze/` y `_site/`,
     deja fuera los sueltos de la raíz y los punteros de submódulo, y empuja al bare;
   · el destino por defecto es el `git push` (Netlify), no `quarto publish gh-pages`;
-  · los pathspecs de fuentes son los mismos que los de `04 index/scripts/puerta-r6.sh`.
+  · los pathspecs de fuentes son los mismos que los de `web/scripts/puerta-r6.sh`.
 """
 
 from __future__ import annotations
@@ -21,7 +21,7 @@ from conftest import BACKEND, FECHA_PASADA, PUERTA_REAL, instantanea
 MAIN = BACKEND / "script_blogs_manager" / "main.sh"
 
 pytestmark = pytest.mark.skipif(PUERTA_REAL is None or not PUERTA_REAL.is_file(),
-                                reason="sin 04 index/scripts/puerta-r6.sh no hay puerta que probar")
+                                reason="sin web/scripts/puerta-r6.sh no hay puerta que probar")
 
 
 def _bm(ws, *args):

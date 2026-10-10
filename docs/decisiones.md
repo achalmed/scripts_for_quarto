@@ -48,7 +48,7 @@ commit, no aquí; lo pendiente, a [`estado.md`](../estado.md) §Por hacer (ola 4
   fuentes, de las carpetas de contenido (las que contienen `.qmd`, con imágenes y datos: un post no
   puede publicarse sin sus figuras), de `_freeze/` (versionado en los pubs, piloto 3) y de `_site/`;
   los sueltos de la raíz y los punteros de submódulo se avisan y se confirman a mano. Los
-  pathspecs de fuentes son una copia de los `FUENTES` de `04 index/scripts/puerta-r6.sh` (la puerta, al
+  pathspecs de fuentes son una copia de los `FUENTES` de `web/scripts/puerta-r6.sh` (la puerta, al
   ejecutarse, comprueba; no se puede cargar como biblioteca); `tests/test_blogs_manager_git.py` falla si
   divergen. Sin la puerta en disco no se empuja; no hay variable de entorno que la sustituya.
 - **2026-09-20 · El frontmatter del `.qmd` es la verdad; el Excel es la mesa de trabajo.** `update` solo
@@ -67,7 +67,7 @@ commit, no aquí; lo pendiente, a [`estado.md`](../estado.md) §Por hacer (ola 4
   script para cada blog; desde la 4.0 el directorio es posicional y la URL base y el tipo son opciones.
   Escribe el índice en memoria y de una vez, lo que permitió `--dry-run`.
 - **2026-09-06 · Los pubs se localizan por una sola variable.** Los `pub_*` son submódulos del hub en
-  `04 index/_pubs/`; cada herramienta los busca por `QBLOG_PUBS_SUBDIR`, `PUBINDEX_PUBS_SUBDIR` o
+  `web/_pubs/`; cada herramienta los busca por `QBLOG_PUBS_SUBDIR`, `PUBINDEX_PUBS_SUBDIR` o
   `PUBS_SUBDIR`, y acepta `website-achalma` como alias del hub.
 - **2026-09-15 · `date` en ISO y sustitución de una sola línea.** `sync-dates` escribe `AAAA-MM-DD`;
   cuando solo cambia `date` se sustituye esa línea y el resto del archivo queda byte a byte igual. El

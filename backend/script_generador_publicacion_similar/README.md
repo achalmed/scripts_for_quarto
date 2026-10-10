@@ -43,9 +43,9 @@ El índice lleva su identidad en un comentario de la línea 1 (`<!-- fragmento d
 
 ```bash
 cd backend/script_generador_publicacion_similar
-./main.sh "../../../04 index/_pubs/axiomata" --base-url https://axiomata.netlify.app --dry-run   # qué escribiría
-./main.sh "../../../04 index/_pubs/axiomata" --base-url https://axiomata.netlify.app             # escribe
-./main.sh "../../../04 index/blog"                                                                    # sección del hub, URL base por defecto
+./main.sh "../../../web/_pubs/axiomata" --base-url https://axiomata.netlify.app --dry-run   # qué escribiría
+./main.sh "../../../web/_pubs/axiomata" --base-url https://axiomata.netlify.app             # escribe
+./main.sh "../../../web/blog"                                                                    # sección del hub, URL base por defecto
 ```
 
 La ruta del blog va **entre comillas**: las carpetas del espacio de trabajo tienen espacios.

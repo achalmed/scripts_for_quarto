@@ -78,7 +78,7 @@ QBLOG_APLICAR=0
 QBLOG_PUERTA_R6="$INDEX_DIR/scripts/puerta-r6.sh"
 
 # --- Lo que `git-commit` añade (nunca `git add .`): las fuentes del sitio (los
-#     pathspecs FUENTES de `04 index/scripts/puerta-r6.sh`, copiados aquí;
+#     pathspecs FUENTES de `web/scripts/puerta-r6.sh`, copiados aquí;
 #     tests/test_blogs_manager_git.py comprueba que sigan iguales), todo lo rastreable
 #     de las carpetas de contenido (las de primer nivel, sin `_` ni `.` delante, que
 #     contienen algún .qmd: posts con sus imágenes y datos) y los generados

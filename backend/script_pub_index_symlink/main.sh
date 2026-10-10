@@ -130,7 +130,7 @@ run_sync() {
     total_found="$(echo "$publications" | grep -c . || true)"
     log_info "Publicaciones encontradas: $total_found"
 
-    log_section "Sincronizando symlinks en '04 index'"
+    log_section "Sincronizando symlinks en 'web'"
     symlinker_reset_counters
     symlinker_process_all "$PUBINDEX_INDEX_DIR" "$PUBINDEX_DRY_RUN" < <(echo "$publications")
 
@@ -151,14 +151,14 @@ run_sync() {
 }
 
 run_check_broken() {
-    log_section "Buscando symlinks rotos en '04 index'"
+    log_section "Buscando symlinks rotos en 'web'"
     local count
     count="$(broken_detector_report "$PUBINDEX_INDEX_DIR")"
     log_info "Total de symlinks rotos: $count"
 }
 
 run_clean_broken() {
-    log_section "Buscando symlinks rotos en '04 index'"
+    log_section "Buscando symlinks rotos en 'web'"
     local count
     count="$(broken_detector_report "$PUBINDEX_INDEX_DIR")"
 

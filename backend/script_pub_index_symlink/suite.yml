@@ -1,8 +1,8 @@
-# backend/script_pub_index_symlink/suite.yml — suite pub_index_symlink: Mantiene 04 index/_indice con enlaces simbólicos por año a cada carpeta de publicación de los blogs.
+# backend/script_pub_index_symlink/suite.yml — suite pub_index_symlink: Mantiene web/_indice con enlaces simbólicos por año a cada carpeta de publicación de los blogs.
 # Contrato: core/suite.schema.yml; core/suites.py validar lo comprueba y generar escribe los índices y README.
 id: pub_index_symlink
 objetivo: publicacion
-resumen: Mantiene 04 index/_indice con enlaces simbólicos por año a cada carpeta de publicación de los blogs.
+resumen: Mantiene web/_indice con enlaces simbólicos por año a cada carpeta de publicación de los blogs.
 escribe_en:
 - vault
 simula_por_defecto: false

@@ -8,7 +8,7 @@ actualizado: 2026-10-10
 Lo primero que se lee y lo último que se escribe en cada sesión (regla 10 de la guía raíz). Lo decidido vive en
 `docs/decisiones.md`; lo pendiente, aquí, en §Por hacer, con fecha y dueño.
 
-**Repositorio público y blogs que despliegan solos.** Netlify publica cada `pub_*` y el hub `04 index` con cada
+**Repositorio público y blogs que despliegan solos.** Netlify publica cada `pub_*` y el hub `web` con cada
 `git push`: ninguna prueba empuja ni confirma en ellos; las pruebas usan repos de fixture en un directorio temporal
 en disco con un remoto «bare» local.
 

@@ -18,7 +18,7 @@ lanza la GUI, el repo `gui-suites` (`gui-suites/quarto/README.md`).
   | lo que apareció | va a | nunca a |
   |---|---|---|
   | cómo se usa una herramienta, una opción nueva | el README de su carpeta (`backend/script_*/`) | un `GUIA_*.md` |
-  | qué escribe una herramienta en el hub o los pubs | `README.md` §«Contrato con el hub» | una copia en `04 index` |
+  | qué escribe una herramienta en el hub o los pubs | `README.md` §«Contrato con el hub» | una copia en `web` |
   | una columna, un formato o una fórmula del Excel | `docs/excel-de-metadatos.md` | el README del metadata manager |
   | por qué se decidió algo | `docs/decisiones.md` (fecha en cada entrada) | un `DECISION_<fecha>.md` |
   | una versión nueva de una herramienta | su constante en el código y `CHANGELOG.md` | el README |
@@ -33,8 +33,8 @@ lanza la GUI, el repo `gui-suites` (`gui-suites/quarto/README.md`).
   nunca importa su código: construye un `Command` y lo ejecuta con `QProcess`, y encuentra cada entrada por
   `SCRIPTS_QUARTO` de `core/env.py` (`gui-suites/comun/rutas.py`, `BACKENDS`). Si un script se mueve o cambia de
   nombre, se toca allí.
-- **Los blogs viven en el hub.** Hub `04 index` (repo `website-achalma`) y 11 `pub_*` como submódulos
-  en `04 index/_pubs/` (el guion bajo evita que Quarto los renderice como parte del
+- **Los blogs viven en el hub.** Hub `web` (repo `website-achalma`) y 11 `pub_*` como submódulos
+  en `web/_pubs/` (el guion bajo evita que Quarto los renderice como parte del
   hub). Cada herramienta los localiza por una sola variable (`QBLOG_PUBS_SUBDIR`, `PUBINDEX_PUBS_SUBDIR`,
   `PUBS_SUBDIR`), por defecto `<hub>/_pubs`; `website-achalma` sigue aceptado como alias del hub
   (`QBLOG_WEBSITE_DIR`, `HUB_ALIASES`). Un blog se nombra por carpeta (`axiomata`) o en corto

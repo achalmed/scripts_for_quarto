@@ -38,7 +38,7 @@ maintenance_remove_empty_year_dirs() {
 maintenance_print_summary() {
     local index_dir="$1"
 
-    log_section "Resumen de '04 index' por año"
+    log_section "Resumen de 'web' por año"
 
     local year_dir
     local total=0

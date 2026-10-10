@@ -69,7 +69,7 @@ utils_resolve_project_path() {
     # Se busca primero en la carpeta de submódulos del hub y luego en
     # Documents (website-achalma vive ahí). Coincidencia exacta antes que
     # el nombre corto con el prefijo pub_ añadido.
-    # Alias del hub (website-achalma) → su carpeta real (04 index)
+    # Alias del hub (website-achalma) → su carpeta real (web)
     if [[ "$input_name" == "$QBLOG_WEBSITE_PROJECT" || "$input_name" == "$QBLOG_WEBSITE_DIR" ]] && [[ -f "$docs_dir/$QBLOG_WEBSITE_DIR/_quarto.yml" ]]; then
         echo "$docs_dir/$QBLOG_WEBSITE_DIR"
         return 0

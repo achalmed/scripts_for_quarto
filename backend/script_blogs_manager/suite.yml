@@ -1,8 +1,8 @@
-# backend/script_blogs_manager/suite.yml — suite blogs_manager: Gestiona el hub 04 index y sus pubs: listar, render, preview, publicar, crear posts APA, operaciones git y backups.
+# backend/script_blogs_manager/suite.yml — suite blogs_manager: Gestiona el hub web y sus pubs: listar, render, preview, publicar, crear posts APA, operaciones git y backups.
 # Contrato: core/suite.schema.yml; core/suites.py validar lo comprueba y generar escribe los índices y README.
 id: blogs_manager
 objetivo: publicacion
-resumen: 'Gestiona el hub 04 index y sus pubs: listar, render, preview, publicar, crear posts APA, operaciones git y backups.'
+resumen: 'Gestiona el hub web y sus pubs: listar, render, preview, publicar, crear posts APA, operaciones git y backups.'
 escribe_en:
 - web
 - git
@@ -17,7 +17,7 @@ comandos:
 - main.sh git-commit <blog> <mensaje> [--aplicar]
 - main.sh help
 estado: activo
-entrada: 04 index y 04 index/_pubs/*
+entrada: web y web/_pubs/*
 depende_de:
 - quarto
 - git

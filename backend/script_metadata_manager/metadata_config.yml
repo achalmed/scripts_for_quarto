@@ -23,7 +23,7 @@ allowed_blogs:
   - optimums
   - pecunia-fluxus
   - res-publica
-  - 04 index/blog
+  - web/blog
   # Agregar más blogs según necesidad
 
 # -----------------------------------------------------------------------------
@@ -63,10 +63,10 @@ excluded_folders:
   - spss
   - stata
   - whatsapp chat
-  - 04 index/about
-  - 04 index/beschikbaarheid
-  - 04 index/talk
-  - 04 index/publication
+  - web/about
+  - web/beschikbaarheid
+  - web/talk
+  - web/publication
   # Agregar más carpetas según necesidad
 
 # -----------------------------------------------------------------------------

@@ -2,7 +2,7 @@
 tipo: readme
 estado: activo
 ---
-# backend/script_pub_index_symlink/ — enlaces simbólicos por año en 04 index/_indice a cada publicación de los blogs (pub-index-sync)
+# backend/script_pub_index_symlink/ — enlaces simbólicos por año en web/_indice a cada publicación de los blogs (pub-index-sync)
 
 <!-- suite:inicio -->
 **Suite `pub_index_symlink`** · objetivo *publicacion* · estado *activo* · bash · interfaz cli
@@ -26,18 +26,18 @@ main.sh --clean-broken
 
 ## Qué es
 
-Mantiene `04 index/_indice/<año>/` con un enlace simbólico a cada carpeta de publicación de la
+Mantiene `web/_indice/<año>/` con un enlace simbólico a cada carpeta de publicación de la
 familia de blogs, para encontrar cualquier publicación por año sin recorrer blog por blog. Es del vault:
-`04 index/_indice/` está ignorado en el hub y no se publica. Quarto Studio lo invoca desde la página
+`web/_indice/` está ignorado en el hub y no se publica. Quarto Studio lo invoca desde la página
 «Índices».
 
 Qué hace en cada corrida:
 
-1. Recorre los `pub_*` de `04 index/_pubs/` a cualquier profundidad, y `blog/posts` y `talk` del hub,
+1. Recorre los `pub_*` de `web/_pubs/` a cualquier profundidad, y `blog/posts` y `talk` del hub,
    buscando carpetas cuyo **nombre** empieza por `AAAA-MM-DD-`.
 2. Ignora las carpetas técnicas (`_freeze`, `_site`, `_partials`, `_extensions`, `.quarto`, `.git`,
    `site_libs`, `node_modules`, `_indice`, `_vault`); las subcarpetas de una publicación viajan con ella.
-3. Crea `04 index/_indice/<año>/<carpeta>` apuntando a la carpeta real; si ya apunta bien, la omite; si
+3. Crea `web/_indice/<año>/<carpeta>` apuntando a la carpeta real; si ya apunta bien, la omite; si
    la publicación cambió de sitio, actualiza el enlace.
 4. Informa de los enlaces rotos (la carpeta original se borró o se movió) y, si se pide, los elimina.
 5. No toca archivos ni carpetas reales: si en el lugar del enlace hay uno, lo informa como conflicto.
@@ -54,18 +54,18 @@ backend/script_pub_index_symlink/main.sh --check-broken   # solo lista los enlac
 |---|---|
 | (ninguna) | sincroniza, informa de rotos sin borrarlos y muestra el resumen por año |
 | `--dry-run` | anuncia lo que haría, sin escribir |
-| `--check-broken` | lista los enlaces rotos de `04 index/_indice/` |
-| `--clean-broken` | lista los enlaces rotos de `04 index/_indice/`, pide confirmación (`s`/`N`) y los borra; después borra las carpetas de año vacías |
+| `--check-broken` | lista los enlaces rotos de `web/_indice/` |
+| `--clean-broken` | lista los enlaces rotos de `web/_indice/`, pide confirmación (`s`/`N`) y los borra; después borra las carpetas de año vacías |
 | `--summary` · `--no-summary` | solo el resumen por año · sincronizar sin resumen |
 | `--help`, `-h` | ayuda |
 
 Es idempotente: repetirlo solo añade lo nuevo. Para reindexar desde cero basta borrar el **contenido de
-`04 index/_indice/`** (solo enlaces) y volver a ejecutarlo; nunca la carpeta `04 index`.
+`web/_indice/`** (solo enlaces) y volver a ejecutarlo; nunca la carpeta `web`.
 
 | variable | para qué |
 |---|---|
 | `DOCS_ROOT` | raíz del espacio de trabajo; por defecto la resuelve `core/env.sh` (sin alias propio desde la ola 0); la carpeta del hub es `INDEX_DIR` |
-| `PUBINDEX_PUBS_SUBDIR` | carpeta de los pubs (por defecto `04 index/_pubs`) |
+| `PUBINDEX_PUBS_SUBDIR` | carpeta de los pubs (por defecto `web/_pubs`) |
 
 Cada corrida, salvo con `--dry-run` (que no escribe nada), añade su registro a `logs/<AAAA-MM-DD>.log` de esta carpeta (ignorado en git).
 
@@ -83,6 +83,6 @@ Cada corrida, salvo con `--dry-run` (que no escribe nada), añade su registro a 
 ## Límite honesto
 
 - **Solo crea enlaces simbólicos, nunca copia**: si la carpeta original se borra o se mueve, el enlace queda roto hasta `--clean-broken` o la siguiente corrida.
-- **No toca archivos ni carpetas reales** dentro de `04 index/_indice/`: un conflicto se resuelve a mano.
+- **No toca archivos ni carpetas reales** dentro de `web/_indice/`: un conflicto se resuelve a mano.
 - **El criterio es solo el nombre de la carpeta** (`AAAA-MM-DD-…`): no lee el frontmatter ni distingue borradores de publicados.
 - **No simula por defecto**: `--dry-run` hay que pedirlo.

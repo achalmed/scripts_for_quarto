@@ -31,7 +31,7 @@ main.sh help
 
 El gestor de la familia de blogs desde la terminal: lista los sitios, los renderiza, los previsualiza,
 los limpia y los publica, crea posts APA con un asistente, opera git sobre cada blog, crea blogs nuevos,
-revisa su estructura y hace respaldos. Ve el hub `04 index` y los `pub_*` de `04 index/_pubs/`. No
+revisa su estructura y hace respaldos. Ve el hub `web` y los `pub_*` de `web/_pubs/`. No
 gestiona metadatos ni índices: para eso están [`script_metadata_manager`](../script_metadata_manager/)
 y [`script_pub_index_symlink`](../script_pub_index_symlink/). Quarto Studio lo invoca desde la página
 «Blogs».
@@ -48,7 +48,7 @@ cd backend/script_blogs_manager           # desde la raíz del repo
 ```
 
 Un blog se nombra por su carpeta (`axiomata`) o sin el prefijo (`axiomata`); el hub, como
-`website-achalma` (alias de `04 index`). Requiere Bash ≥ 4 y Quarto; git para los comandos `git-*`;
+`website-achalma` (alias de `web`). Requiere Bash ≥ 4 y Quarto; git para los comandos `git-*`;
 `yq`, opcional, para validar `_quarto.yml` en `check-structure`.
 
 | comando | qué hace |
@@ -64,7 +64,7 @@ Un blog se nombra por su carpeta (`axiomata`) o sin el prefijo (`axiomata`); el 
 | `render-post RUTA` | renderiza un solo `index.qmd` |
 | `new-post BLOG` | asistente interactivo de post APA |
 | `git-init BLOG` · `git-status BLOG` | inicia un repositorio (y su `.gitignore`) · muestra su estado |
-| `git-commit BLOG [MENSAJE] [--aplicar]` | confirma lo rastreable (respetando `.gitignore`) de las fuentes del sitio (los pathspecs `FUENTES` de `04 index/scripts/puerta-r6.sh`), de las carpetas de contenido (las de primer nivel que contienen algún `.qmd`, con sus imágenes y datos), `_freeze/` y `_site/`; avisa de lo que queda fuera, corre la puerta R6 y empuja. Simula salvo `--aplicar` |
+| `git-commit BLOG [MENSAJE] [--aplicar]` | confirma lo rastreable (respetando `.gitignore`) de las fuentes del sitio (los pathspecs `FUENTES` de `web/scripts/puerta-r6.sh`), de las carpetas de contenido (las de primer nivel que contienen algún `.qmd`, con sus imágenes y datos), `_freeze/` y `_site/`; avisa de lo que queda fuera, corre la puerta R6 y empuja. Simula salvo `--aplicar` |
 | `convert ARCHIVO [FORMATO]` | `quarto convert` (por defecto, html) |
 | `init-blog NOMBRE [TÍTULO]` | crea un blog `pub_<nombre>` con su estructura |
 | `check-structure` | revisa archivos, git y YAML de todos los sitios |
@@ -113,5 +113,5 @@ línea en `lib/12-help.sh` y, si va en el menú, en `lib/11-interactive-menu.sh`
 - **Simula solo lo que publica.** `publish` y `git-commit` simulan salvo `--aplicar` (las pruebas: `tests/test_blogs_manager_git.py`, con un remoto bare local); `clean`, `clean-all`, `render` e `init-blog` escriben de verdad; `clean-all` pide confirmación.
 - **No es seguro en paralelo.** Dos instancias sobre el mismo blog se pisan (`_site/`, `_freeze/`); la GUI lo serializa y en terminal hay que hacer lo mismo.
 - **El asistente `new-post` es interactivo** y no se automatiza; la GUI lo replica con `gui-suites/quarto/quarto_app/services/post_service.py`, que genera el mismo `index.qmd`.
-- **Solo ve el hub y los `pub_*` de `04 index/_pubs/`**: un blog fuera de ahí no existe para `list`, `render-all`, `check-structure` ni `backup`.
+- **Solo ve el hub y los `pub_*` de `web/_pubs/`**: un blog fuera de ahí no existe para `list`, `render-all`, `check-structure` ni `backup`.
 - **`git-commit` no confirma todo**: los archivos sueltos de la raíz que no son fuentes y los punteros de submódulo quedan fuera con un aviso; se confirman a mano. Los pubs son submódulos: después hay que confirmar el puntero en el hub.

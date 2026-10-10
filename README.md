@@ -38,8 +38,8 @@ Suites de esta carpeta (5); índice global en `meta/INDICE_SCRIPTS.md`. Patrón:
 ## Qué es
 
 Cinco herramientas de línea de comandos (tres en Bash, dos en Python) para mantener la familia de blogs Quarto del autor: el hub
-`04 index` (repo `website-achalma`) y sus satélites `pub_*`, submódulos git del hub en `04 index/_pubs/`
-(la lista, en `04 index/_pubs/pubs.yml`). Resuelven lo que Quarto no hace por sí solo: editar el frontmatter de cientos de posts
+`web` (repo `website-achalma`) y sus satélites `pub_*`, submódulos git del hub en `web/_pubs/`
+(la lista, en `web/_pubs/pubs.yml`). Resuelven lo que Quarto no hace por sí solo: editar el frontmatter de cientos de posts
 a la vez desde un Excel, normalizar etiquetas y fechas, reparar bloques YAML, generar índices de contenido,
 mantener un índice por año en el vault y renderizar o publicar los doce sitios desde un solo menú.
 
@@ -49,31 +49,31 @@ desde la ola 4 en el repo `gui-suites` (`gui-suites/quarto/`) y encuentra estas 
 `core/env.py`.
 
 **No es** un tema, un sitio ni una plantilla de Quarto: el tema de los doce sitios vive en el hub y se
-propaga con `04 index/scripts/sync-theme-pubs.sh`; el contenido de cada post vive en su pub. Tampoco es
+propaga con `web/scripts/sync-theme-pubs.sh`; el contenido de cada post vive en su pub. Tampoco es
 una biblioteca: cada herramienta es autónoma, con su `suite.yml`, su README y su `lib/`, y Quarto Studio las
-invoca como procesos, nunca importa su código. Depende de `core/` (raíz y logger) y de `04 index`
+invoca como procesos, nunca importa su código. Depende de `core/` (raíz y logger) y de `web`
 (`meta/workspace.yml`). Su único dato propio es el Excel de metadatos,
 `backend/script_metadata_manager/excel_databases/quarto_metadata.xlsx`, versionado a propósito como mesa
 de trabajo: la verdad de cada post sigue siendo su `index.qmd`.
 
 ## Contrato con el hub
 
-Lo que cada herramienta escribe fuera de este repo. Este repo es el proveedor: `04 index` enlaza aquí
+Lo que cada herramienta escribe fuera de este repo. Este repo es el proveedor: `web` enlaza aquí
 desde su `CLAUDE.md` y su `docs/`. La verdad de un post es siempre su `index.qmd`; el
 Excel es la mesa de trabajo, y lo que se edite a mano en un `.qmd` prevalece hasta el siguiente
 `create-template --incremental` o `find-differences`.
 
 | herramienta | escribe | dónde | cómo se protege |
 |---|---|---|---|
-| `metadata_manager` | el frontmatter YAML de los `index.qmd` | `04 index/blog/posts/` y los `posts/` de cada pub | `--dry-run` (la terminal aplica sin él); solo cambia lo que difiere; un solo escritor de YAML; nunca crea `citation` |
+| `metadata_manager` | el frontmatter YAML de los `index.qmd` | `web/blog/posts/` y los `posts/` de cada pub | `--dry-run` (la terminal aplica sin él); solo cambia lo que difiere; un solo escritor de YAML; nunca crea `citation` |
 | `format_yaml` | el bloque YAML de cada `.qmd` (delimitadores y líneas en blanco) | la carpeta que se le pase | idempotente; `--dry-run` |
 | `generador_publicacion_similar` | `_contenido_<subblog>.qmd`, fragmentos para `{{< include >}}` con su identidad en un comentario de la línea 1 (sin frontmatter) | la carpeta de cada subblog del blog que se le pase | `--dry-run`; si un subblog queda sin posts, borra su índice |
-| `pub_index_symlink` | enlaces simbólicos por año, nunca copias | `04 index/_indice/` (ignorado en git; del vault) | omite lo que ya apunta bien; no toca archivos reales; `--dry-run` |
+| `pub_index_symlink` | enlaces simbólicos por año, nunca copias | `web/_indice/` (ignorado en git; del vault) | omite lo que ya apunta bien; no toca archivos reales; `--dry-run` |
 | `blogs_manager` | `_site/`, `_freeze/`, posts nuevos, commits, respaldos | hub y pubs; `06 archives/backups-publicaciones/`; el remoto git (Netlify) o `quarto publish <destino>` | `publish` y `git-commit` simulan salvo `--aplicar`, empujan solo tras la puerta R6 y no hacen `git add .`; `clean-all` pide confirmación |
 | Quarto Studio (repo `gui-suites`) | nada propio: lanza las cinco anteriores | — | una operación a la vez; «Dry-run» marcado por defecto en metadatos e índices |
 
 Cómo están montados los pubs y por qué se confirma dentro del pub antes que en el hub:
-`04 index/docs/pubs-submodulos.md`.
+`web/docs/pubs-submodulos.md`.
 
 ## Uso
 
@@ -88,9 +88,9 @@ python3 main.py create-template ~/Documents --config metadata_config.yml --incre
 python3 main.py update ~/Documents excel_databases/quarto_metadata.xlsx --dry-run        # simular; sin --dry-run aplica
 python3 main.py normalize-tags ~/Documents --config metadata_config.yml --dry-run        # igual: sync-dates, fechas-iso, sync-pdf-urls
 cd ../..
-python3 backend/script_format_yaml/main.py --directory "../04 index/_pubs/axiomata" --recursive --dry-run
-backend/script_generador_publicacion_similar/main.sh "../04 index/_pubs/axiomata" --dry-run
-backend/script_pub_index_symlink/main.sh --dry-run    # sin --dry-run escribe 04 index/_indice/; --check-broken, --clean-broken
+python3 backend/script_format_yaml/main.py --directory "../web/_pubs/axiomata" --recursive --dry-run
+backend/script_generador_publicacion_similar/main.sh "../web/_pubs/axiomata" --dry-run
+backend/script_pub_index_symlink/main.sh --dry-run    # sin --dry-run escribe web/_indice/; --check-broken, --clean-broken
 ```
 
 Regla de oro: `--dry-run` antes de cualquier cambio masivo. En la terminal ninguna herramienta simula
@@ -103,7 +103,7 @@ marca la simulación por defecto en metadatos e índices, y publica y confirma s
 |---|---|---|
 | `backend/script_blogs_manager/` | Bash, `main.sh` + `lib/`: listar, render, preview, publicar, posts APA, git, respaldos | a mano |
 | `backend/script_metadata_manager/` | Python, `main.py` + `lib/`: metadatos, tags, fechas y `pdf-url` desde el Excel de `excel_databases/`; `metadata_config.yml`; `install.sh`, `quick_start.sh` | a mano; el Excel lo escribe `create-template`; `respaldos/` ignorado |
-| `backend/script_pub_index_symlink/` | Bash, `main.sh` + `lib/`: enlaces por año en `04 index/_indice/`; `logs/` ignorado | a mano |
+| `backend/script_pub_index_symlink/` | Bash, `main.sh` + `lib/`: enlaces por año en `web/_indice/`; `logs/` ignorado | a mano |
 | `backend/script_format_yaml/` | Python, `main.py` + `config.py` + `lib/`; `fix_qmd_files.py` es un alias | a mano |
 | `backend/script_generador_publicacion_similar/` | Bash, `main.sh` + `lib/`: índices `_contenido_*.qmd` | a mano |
 | `suite.yml` (uno por backend) | manifiesto de cada suite (`core/suite.schema.yml`) | a mano; los bloques de README los genera `core/suites.py generar --aplicar` |
@@ -130,7 +130,7 @@ solo lo que no cabe en una puerta.
 | `docs/decisiones.md` | por qué el repo es como es |
 | `estado.md` | dónde está el repo y lo pendiente (§Por hacer) |
 | `CHANGELOG.md` | qué versión de cada herramienta hay y desde cuándo |
-| `04 index/docs/pubs-submodulos.md` | el hub y sus submódulos (frontera con `04 index`) |
+| `web/docs/pubs-submodulos.md` | el hub y sus submódulos (frontera con `web`) |
 | `meta/INDICE_SCRIPTS.md` | estas suites entre las del espacio de trabajo (generado) |
 
 ## Límite honesto

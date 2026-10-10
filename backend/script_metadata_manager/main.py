@@ -514,8 +514,8 @@ Ejemplos:
 
   # Fechas: solo el FORMATO de date → AAAA-MM-DD, sin cambiar la fecha
   # (todo .qmd bajo el directorio; en el Excel, la columna date como texto)
-  python main.py fechas-iso "~/Documents/04 index" --config metadata_config.yml --dry-run
-  python main.py fechas-iso "~/Documents/04 index/_pubs/chaska" --dry-run
+  python main.py fechas-iso "~/Documents/web" --config metadata_config.yml --dry-run
+  python main.py fechas-iso "~/Documents/web/_pubs/chaska" --dry-run
   python main.py fechas-iso excel_databases/quarto_metadata.xlsx --dry-run
 
   # PDF: citation.pdf-url = URL base del blog + ruta del artículo

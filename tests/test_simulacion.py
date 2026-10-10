@@ -136,7 +136,7 @@ def test_simulacion_no_escribe(workspace, blogs, suite, caso, orden, request):
     sitio, config = blogs
     if suite == "blogs_manager":
         if PUERTA_REAL is None or not PUERTA_REAL.is_file():
-            pytest.skip("sin 04 index/scripts/puerta-r6.sh")
+            pytest.skip("sin web/scripts/puerta-r6.sh")
         pub = request.getfixturevalue("pub")
         (pub / "index.qmd").write_text("---\ntitle: Cambio\n---\n")       # algo que confirmar
         (pub / "_site" / "index.html").write_text("<html>v2</html>\n")

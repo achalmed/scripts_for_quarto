@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # =============================================================================
-#  backend/script_pub_index_symlink/lib/04-symlinker.sh — Crea o actualiza los symlinks de «04 index/<AÑO>/» hacia las carpetas de publicación reales
+#  backend/script_pub_index_symlink/lib/04-symlinker.sh — Crea o actualiza los symlinks de «web/<AÑO>/» hacia las carpetas de publicación reales
 # -----------------------------------------------------------------------------
 # Crea/actualiza los symlinks dentro de "$INDEX_DIR/_indice/<AÑO>/<nombre-original>"
 # apuntando a las carpetas de publicación reales encontradas por el scanner.
@@ -31,7 +31,7 @@ symlinker_reset_counters() {
     PUBINDEX_COUNT_CONFLICT=0
 }
 
-# Procesa UNA publicación: crea/actualiza/omite su symlink en 04 index/<año>/
+# Procesa UNA publicación: crea/actualiza/omite su symlink en web/<año>/
 # $1 = ruta absoluta real de la carpeta de publicación
 # $2 = ruta absoluta de la carpeta "$INDEX_DIR/_indice"
 # $3 = "1" para modo dry-run (no escribe nada, solo reporta), "0" para ejecutar
