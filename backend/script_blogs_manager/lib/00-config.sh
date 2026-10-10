@@ -20,7 +20,8 @@ QBLOG_VERSION="4.0.0"
 # (ola 0, 2026-10-05: sin alias propio de la raíz). Para forzarla:
 #   DOCS_ROOT="$HOME/Documents" ./main.sh list
 
-# --- Prefijo de carpetas de proyectos de publicaciones (blogs) --------------
+# --- Prefijo histórico de las carpetas de blog (pub_<x> hasta la ola 6): solo para aceptar ese nombre en la CLI;
+#     los blogs se descubren por _pubs/pubs.yml (core/shell-lib/pubs.sh) ---------------------------------------
 QBLOG_PROJECT_PREFIX="pub_"
 
 # --- Proyecto especial que también se gestiona como "blog" -------------------
@@ -85,7 +86,7 @@ QBLOG_PUERTA_R6="$INDEX_DIR/scripts/puerta-r6.sh"
 #     submódulo) se avisa y no se añade. -----------------------------------------
 QBLOG_FUENTES=(':(glob)**/*.qmd' ':(glob)**/_quarto.yml' ':(glob)**/_metadata.yml'
                '_extensions/' '_filters/' '_partials/' 'assets/scss/' 'assets/js/' 'assets/css/'
-               '_brand.yml' 'THEME_VERSION'
+               '_brand.yml'   # THEME_VERSION dejó de ser fuente el 2026-10-10 (sello del conjunto; igual que puerta-r6.sh)
                ':(exclude)_site/' ':(exclude)_freeze/' ':(exclude,glob)**/README.md')
 QBLOG_SITIO_GENERADO="_site/"
 QBLOG_GENERADOS=("_freeze/" "$QBLOG_SITIO_GENERADO")

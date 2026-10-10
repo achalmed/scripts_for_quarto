@@ -58,11 +58,15 @@ def date_from_folder(folder_name: str) -> Optional[str]:
 
 def blog_dir_from_ruta(ruta: str) -> str:
     """
-    Carpeta del blog dentro de ruta_archivo. Los pub_* son submódulos del hub
-    ('website-achalma/_pubs/pub_chaska/…'), así que se busca el primer
-    segmento con prefijo pub_; si no hay, el primer segmento ('website-achalma').
+    Carpeta del blog dentro de ruta_archivo. Los blogs son submódulos del hub
+    ('website-achalma/_pubs/<blog>/…'), así que se toma el segmento que sigue a
+    `_pubs`; en filas anteriores a la ola 6 vale el prefijo pub_; si no hay, el
+    primer segmento ('website-achalma').
     """
     parts = Path(str(ruta)).parts
+    for i, part in enumerate(parts):
+        if part == "_pubs" and i + 1 < len(parts):
+            return parts[i + 1]
     for part in parts:
         if part.startswith("pub_"):
             return part

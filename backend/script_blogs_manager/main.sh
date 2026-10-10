@@ -38,6 +38,8 @@ _core_d="$QBLOG_SCRIPT_DIR"
 while [[ "$_core_d" != / && ! -f "$_core_d/core/env.sh" ]]; do _core_d="$(dirname "$_core_d")"; done
 # shellcheck source=/dev/null
 source "$_core_d/core/env.sh" || { echo "blogs_manager: no encuentro core/env.sh (exporta DOCS_ROOT)" >&2; exit 1; }
+# shellcheck source=/dev/null
+source "$_core_d/core/shell-lib/pubs.sh"     # los blogs, por _pubs/pubs.yml del hub (ola 6, 6f)
 unset _core_d
 
 # --- Carga de módulos en orden ------------------------------------------------

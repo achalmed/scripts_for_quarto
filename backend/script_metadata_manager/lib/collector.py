@@ -15,7 +15,7 @@ from typing import Optional, Set
 
 import pandas as pd
 
-from .config import SYSTEM_EXCLUDED_FOLDERS, EXCLUDED_INDEX_FILES, PUBS_SUBDIR, HUB_ALIASES
+from .config import SYSTEM_EXCLUDED_FOLDERS, EXCLUDED_INDEX_FILES, PUBS_SUBDIR, HUB_ALIASES, pubs_registro
 from .yaml_parser import (
     is_article_index,
     extract_yaml_merged,
@@ -45,23 +45,20 @@ def should_exclude_file(file_path: Path) -> bool:
 # =============================================================================
 # LOCALIZACIÓN DE BLOGS
 # =============================================================================
-# Desde 2026-09-06 los blogs pub_* son submódulos de website-achalma
-# (base_path / PUBS_SUBDIR / pub_x). Un nombre de blog se acepta como:
-# "pub_x", "x", "website-achalma" o una ruta relativa ("website-achalma/blog").
+# Los blogs son submódulos del hub (base_path / PUBS_SUBDIR / <carpeta>) y los dice el registro `_pubs/pubs.yml`
+# (core/py-common/pubs.py; ola 6, 6f). Un nombre de blog se acepta como su carpeta, su nombre corto, su repo
+# (también el histórico "pub_x"), "website-achalma" o una ruta relativa ("website-achalma/blog").
 
 def resolve_blog_dir(base_path: Path, name: str) -> Optional[Path]:
     """Devuelve la carpeta real de un blog a partir de su nombre o ruta relativa."""
-    pubs = base_path / PUBS_SUBDIR
+    p = pubs_registro().resolver(name)
+    if p is not None and p.ruta.is_dir():
+        return p.ruta
     # alias del hub: "website-achalma" y "website-achalma/blog" → la carpeta del hub (HUB_DIR, de INDEX_DIR)
     head, _, rest = name.partition("/")
     if head in HUB_ALIASES:
         name = HUB_ALIASES[head] + ("/" + rest if rest else "")
-    for candidate in (
-        base_path / name,
-        pubs / name,
-        base_path / f"pub_{name}",
-        pubs / f"pub_{name}",
-    ):
+    for candidate in (base_path / name, base_path / PUBS_SUBDIR / name):
         if candidate.is_dir():
             return candidate
     return None
@@ -82,15 +79,13 @@ def discover_blog_dirs(base_path: Path, allowed_blogs: Set[str]) -> list:
         d for d in base_path.iterdir()
         if d.is_dir() and not d.name.startswith(".")
     ]
-    pubs = base_path / PUBS_SUBDIR
-    if pubs.is_dir():
-        dirs += [d for d in pubs.iterdir() if d.is_dir() and d.name.startswith("pub_")]
+    dirs += [p.ruta for p in pubs_registro().pubs() if p.ruta.is_dir()]     # del registro, no por prefijo
     return dirs
 
 
 def blog_label(base_path: Path, blog_dir: Path) -> str:
-    """Nombre lógico del blog: 'pub_x' o 'website-achalma'; para secciones anidadas, la ruta relativa."""
-    if blog_dir.name.startswith("pub_") or blog_dir.parent == base_path:
+    """Nombre lógico del blog: su carpeta (un blog del registro o una carpeta de la raíz); para secciones anidadas, la ruta relativa."""
+    if pubs_registro().de_ruta(blog_dir) is not None or blog_dir.parent == base_path:
         return blog_dir.name
     return str(blog_dir.relative_to(base_path))
 

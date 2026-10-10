@@ -1,7 +1,7 @@
 ---
 tipo: estado
 estado: activo
-actualizado: 2026-10-06
+actualizado: 2026-10-10
 ---
 # estado.md — scripts-quarto (repo `scripts_for_quarto`)
 
@@ -16,6 +16,7 @@ en disco con un remoto «bare» local.
 
 | fecha | qué | dónde se ve |
 |---|---|---|
+| 2026-10-10 | **Los blogs por el registro** (ola 6, 6f): `metadata_manager` (`resolve_blog_dir`, `discover_blog_dirs`, `blog_label`, `path_sync.blog_dir_from_ruta`, `create_default_config`), `blogs_manager` (`utils_list_projects`, `utils_resolve_project_path`) y `pub_index_symlink` (`scanner_find_all_publications`) leen `core` (`pubs.py` / `pubs.sh`), no el prefijo `pub_`; `QBLOG_FUENTES` sin `THEME_VERSION` (igual que la puerta R6) | `tests/` (29); `main.sh list` = 12 |
 | 2026-10-06 | ola 4, fase A (agente «quarto»): Q1 y Q2, un commit por ítem | la bitácora de abajo; `meta/programa/06-olas/ola-04-reingenieria.md` §2 |
 | 2026-10-06 | ola 4, fase B (agente «studios»): la GUI sale al repo `gui-suites`; este repo queda como el de los backends de Quarto | la bitácora de abajo; `docs/decisiones.md` |
 

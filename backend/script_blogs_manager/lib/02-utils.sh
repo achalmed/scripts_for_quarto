@@ -50,15 +50,10 @@ utils_list_projects() {
             echo "$project_dir"
         fi
     done < <({
-        # pub_* como submódulos del hub (ubicación canónica desde 2026-09)
-        if [[ -d "$docs_dir/$QBLOG_PUBS_SUBDIR" ]]; then
-            find "$docs_dir/$QBLOG_PUBS_SUBDIR" -mindepth 1 -maxdepth 1 -type d \
-                -name "${QBLOG_PROJECT_PREFIX}*" -print0
-        fi
-        # website-achalma + pub_* sueltos en Documents (compatibilidad)
-        find "$docs_dir" -mindepth 1 -maxdepth 1 -type d \
-            \( -name "${QBLOG_PROJECT_PREFIX}*" -o -name "$QBLOG_WEBSITE_DIR" \) -print0
-    } | sort -z)
+        # los blogs, por el registro _pubs/pubs.yml del hub (core/shell-lib/pubs.sh; ola 6, 6f) + el hub
+        pubs_rutas
+        [[ -d "$docs_dir/$QBLOG_WEBSITE_DIR" ]] && echo "$docs_dir/$QBLOG_WEBSITE_DIR"
+    } | sort | tr '\n' '\0')
 }
 
 # Resuelve el nombre corto de un proyecto a su ruta absoluta completa.
@@ -77,6 +72,12 @@ utils_resolve_project_path() {
     # Alias del hub (website-achalma) → su carpeta real (04 index)
     if [[ "$input_name" == "$QBLOG_WEBSITE_PROJECT" || "$input_name" == "$QBLOG_WEBSITE_DIR" ]] && [[ -f "$docs_dir/$QBLOG_WEBSITE_DIR/_quarto.yml" ]]; then
         echo "$docs_dir/$QBLOG_WEBSITE_DIR"
+        return 0
+    fi
+    # Un blog del registro, por carpeta, nombre corto, repo o pub_<x> histórico (core/shell-lib/pubs.sh)
+    local registrado
+    if registrado="$(pub_ruta "$input_name" 2>/dev/null)" && [[ -d "$registrado" ]]; then
+        echo "$registrado"
         return 0
     fi
     local base

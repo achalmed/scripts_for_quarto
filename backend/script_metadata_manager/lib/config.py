@@ -48,15 +48,36 @@ SECTION_DIRS = {
 }
 
 
-def _hub_relativo() -> str:
-    """Carpeta del hub relativa a la raíz: INDEX_DIR de core/env.py (normativa 5.2; ola 0)."""
+def _core_dir() -> Path:
+    """La carpeta core/ del workspace, subiendo desde aquí (normativa 5.2; ola 0)."""
     d = Path(__file__).resolve()
     while d != d.parent and not (d / "core" / "env.py").is_file():
         d = d.parent
-    spec = importlib.util.spec_from_file_location("core_env", d / "core" / "env.py")
-    env = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(env)
+    return d / "core"
+
+
+def _cargar(nombre: str, ruta: Path):
+    spec = importlib.util.spec_from_file_location(nombre, ruta)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+def _hub_relativo() -> str:
+    """Carpeta del hub relativa a la raíz: INDEX_DIR de core/env.py."""
+    env = _cargar("core_env", _core_dir() / "env.py")
     return Path(env.INDEX_DIR).relative_to(env.DOCS_ROOT).as_posix()
+
+
+_PUBS = None
+
+
+def pubs_registro():
+    """core/py-common/pubs.py: los blogs por `_pubs/pubs.yml` del hub, nunca por el prefijo de carpeta (ola 6, 6f)."""
+    global _PUBS
+    if _PUBS is None:
+        _PUBS = _cargar("core_pubs", _core_dir() / "py-common" / "pubs.py")
+    return _PUBS
 
 
 # Subcarpeta (relativa a la ruta base ~/Documents) donde viven los blogs pub_*
@@ -155,16 +176,10 @@ def resolver_excel_output_dir(valor: Optional[str]) -> Path:
 def create_default_config(base_path: str, output_path: str = "metadata_config.yml"):
     """
     Genera un metadata_config.yml con valores sensatos para el entorno de Edison.
-    Actualiza los nombres de blogs al formato pub_* actual.
+    Los blogs salen del registro `_pubs/pubs.yml` del hub.
     """
     config = {
-        "allowed_blogs": [
-            "pub_actus-mercator", "pub_aequilibria", "pub_axiomata",
-            "pub_chaska", "pub_dialectica-y-mercado", "pub_epsilon-y-beta",
-            "pub_methodica", "pub_numerus-scriptum", "pub_optimums",
-            "pub_pecunia-fluxus", "pub_res-publica",
-            f"{HUB_DIR}/blog",
-        ],
+        "allowed_blogs": [p.carpeta for p in pubs_registro().pubs()] + [f"{HUB_DIR}/blog"],   # del registro, no a mano
         "excluded_folders": [
             "apa", "notas", "borradores",
             "propuesta bicentenario",
