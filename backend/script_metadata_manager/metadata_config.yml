@@ -9,20 +9,20 @@
 # Útil para excluir carpetas que no son blogs
 
 # Los pub_* se localizan automáticamente como submódulos del hub, cuya carpeta es
-# la carpeta del hub (INDEX_DIR de core/env) desde 2026-09-06 (repo website-achalma): <hub>/_pubs/pub_*.
+# la carpeta del hub (INDEX_DIR de core/env) desde 2026-09-06 (repo website-achalma): <hub>/_pubs/*.
 # Basta el nombre de la carpeta; "website-achalma" sigue aceptado como alias.
 allowed_blogs:
-  - pub_actus-mercator
-  - pub_aequilibria
-  - pub_axiomata
-  - pub_chaska
-  - pub_dialectica-y-mercado
-  - pub_epsilon-y-beta
-  - pub_methodica
-  - pub_numerus-scriptum
-  - pub_optimums
-  - pub_pecunia-fluxus
-  - pub_res-publica
+  - actus-mercator
+  - aequilibria
+  - axiomata
+  - chaska
+  - dialectica-y-mercado
+  - epsilon-y-beta
+  - methodica
+  - numerus-scriptum
+  - optimums
+  - pecunia-fluxus
+  - res-publica
   - 04 index/blog
   # Agregar más blogs según necesidad
 

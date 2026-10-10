@@ -9,7 +9,7 @@
 # operaciones masivas, init-blog, check-structure, backups, menú
 # interactivo), reorganizadas en módulos independientes dentro de lib/, y
 # adaptadas para escanear website-achalma y sus submódulos
-# website-achalma/_pubs/pub_* dentro de ~/Documents (en vez de una carpeta
+# website-achalma/_pubs/* dentro de ~/Documents (en vez de una carpeta
 # "publicaciones/" separada).
 #
 # Uso:

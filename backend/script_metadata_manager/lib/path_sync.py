@@ -76,7 +76,7 @@ def blog_dir_from_ruta(ruta: str) -> str:
 def expected_pdf_url(base_url: str, ruta: str) -> str:
     """
     URL canónica del PDF: base del blog + ruta interna del artículo.
-    'website-achalma/_pubs/pub_chaska/operating-system/2017-.../index.qmd' con base
+    'website-achalma/_pubs/chaska/operating-system/2017-.../index.qmd' con base
     'https://chaska-x.netlify.app' →
     'https://chaska-x.netlify.app/operating-system/2017-.../index.pdf'
     """
@@ -215,7 +215,7 @@ def _iter_todos_los_qmd(base_path: Path, path_filter: Optional[str]):
     de las carpetas del sistema. Es el recorrido de fechas-iso: la norma de
     fechas rige todo el sitio, no solo los posts. No aplica `excluded_folders`
     de la configuración: esa lista nombra carpetas de ~/Documents (`latex`,
-    `stata`, `ofimatica`…) que coinciden con secciones de pub_numerus-scriptum,
+    `stata`, `ofimatica`…) que coinciden con secciones de numerus-scriptum,
     y quien pasa un directorio explícito quiere normalizarlo entero.
     """
     excluidas = set(SYSTEM_EXCLUDED_FOLDERS)

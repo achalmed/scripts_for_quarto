@@ -32,7 +32,7 @@ from .collector import resolve_blog_dir
 
 
 def _ruta_real(base: Path, ruta) -> Path:
-    """`pub_x/tema/post/index.qmd` vive en `04 index/_pubs/pub_x/…` desde 2026-09-06: se resuelve el blog por nombre."""
+    """`pub_x/tema/post/index.qmd` vive en `04 index/_pubs/x/…` desde 2026-09-06: se resuelve el blog por nombre."""
     head, _, rest = str(ruta).replace("\\", "/").partition("/")
     d = resolve_blog_dir(base, head)
     return (d / rest) if (d and rest) else base / ruta

@@ -46,7 +46,7 @@ cd backend/script_metadata_manager
 python3 main.py create-template ~/Documents --config metadata_config.yml --incremental   # añade al Excel los artículos nuevos
 python3 main.py find-differences ~/Documents excel_databases/quarto_metadata.xlsx        # Excel frente a los .qmd
 python3 main.py update ~/Documents excel_databases/quarto_metadata.xlsx --config metadata_config.yml --dry-run
-python3 main.py update ~/Documents excel_databases/quarto_metadata.xlsx --config metadata_config.yml --blog pub_axiomata
+python3 main.py update ~/Documents excel_databases/quarto_metadata.xlsx --config metadata_config.yml --blog axiomata
 ```
 
 Sin `--config metadata_config.yml`, `create-template` procesa todos los blogs y guarda el Excel en
@@ -70,7 +70,7 @@ una carpeta excel_databases **bajo la ruta base** (en la raíz de `~/Documents`)
 
 `RUTA` es la raíz del espacio de trabajo (`~/Documents`). `DESTINO` es un Excel (`.xlsx`: cambia solo la
 hoja, para revisar y luego aplicar con `update`) o un directorio (cambia los `.qmd`). Filtros comunes:
-`-b/--blog pub_axiomata`, `-p/--filter-path 2025-06` (subcadena de la ruta) y `-c/--config`. Todo
+`-b/--blog axiomata`, `-p/--filter-path 2025-06` (subcadena de la ruta) y `-c/--config`. Todo
 comando que escribe acepta `--dry-run`.
 
 ## Configuración
@@ -108,4 +108,4 @@ módulo temático, el subparser en `build_parser()` y su entrada en `COMMAND_MAP
 - **Un solo escritor de YAML** (`qmd_updater.write_yaml_to_qmd`) **y un solo reordenador** (`field_mapper.reorder_yaml`): salvo cuando solo cambia `date`, el bloque se reescribe entero con comillas y orden normalizados.
 - **Solo ve `index.qmd` dentro de carpetas `AAAA-MM-DD-…`**; un post fuera de esa convención no entra en el Excel.
 - **El Excel queda atrás** si se edita un `.qmd` a mano, hasta `create-template --incremental` o `find-differences`; `update` solo escribe donde hay diferencias.
-- **La URL base no se deduce del nombre de carpeta** (`pub_chaska` publica en `chaska-x.netlify.app`): sin `pdf-url` previos, hay que declararla en `blog_base_urls`.
+- **La URL base no se deduce del nombre de carpeta** (`chaska` publica en `chaska-x.netlify.app`): sin `pdf-url` previos, hay que declararla en `blog_base_urls`.

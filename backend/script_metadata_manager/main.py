@@ -466,7 +466,7 @@ Ejemplos:
   python main.py update ~/Documents excel_databases/quarto_metadata.xlsx
 
   # Actualizar solo un blog
-  python main.py update ~/Documents excel.xlsx --blog pub_axiomata
+  python main.py update ~/Documents excel.xlsx --blog axiomata
 
   # Actualizar solo rutas que contengan "2025-06"
   python main.py update ~/Documents excel.xlsx --filter-path "2025-06"
@@ -478,14 +478,14 @@ Ejemplos:
   python main.py add-columns ~/Documents excel.xlsx campo1 campo2
 
   # Ver diferencias entre Excel y archivos
-  python main.py find-differences ~/Documents excel.xlsx --blog pub_axiomata
+  python main.py find-differences ~/Documents excel.xlsx --blog axiomata
 
   # Sincronizar un artículo (interactivo)
   python main.py sync-article ~/Documents excel.xlsx \\
-      pub_axiomata/posts/2025-01-01-mi-articulo/index.qmd
+      axiomata/posts/2025-01-01-mi-articulo/index.qmd
 
   # Sincronización masiva interactiva
-  python main.py sync-batch ~/Documents excel.xlsx --blog pub_axiomata
+  python main.py sync-batch ~/Documents excel.xlsx --blog axiomata
 
   # --- TAGS (destino: Excel .xlsx O directorio de blogs) ---
 
@@ -500,7 +500,7 @@ Ejemplos:
 
   # Eliminar y agregar tags
   python main.py remove-tags excel.xlsx tag_obsoleto otro_tag
-  python main.py add-tags ~/Documents nuevo_tag --blog pub_axiomata --dry-run
+  python main.py add-tags ~/Documents nuevo_tag --blog axiomata --dry-run
 
   # Estadísticas y auditoría de taxonomía
   python main.py tag-stats ~/Documents --top 30
@@ -515,7 +515,7 @@ Ejemplos:
   # Fechas: solo el FORMATO de date → AAAA-MM-DD, sin cambiar la fecha
   # (todo .qmd bajo el directorio; en el Excel, la columna date como texto)
   python main.py fechas-iso "~/Documents/04 index" --config metadata_config.yml --dry-run
-  python main.py fechas-iso "~/Documents/04 index/_pubs/pub_chaska" --dry-run
+  python main.py fechas-iso "~/Documents/04 index/_pubs/chaska" --dry-run
   python main.py fechas-iso excel_databases/quarto_metadata.xlsx --dry-run
 
   # PDF: citation.pdf-url = URL base del blog + ruta del artículo

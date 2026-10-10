@@ -23,7 +23,7 @@ discrepan, manda el código.
 | col. | columna | qué es |
 |---|---|---|
 | A | `ruta_archivo` | ruta del `index.qmd` relativa a la ruta base (`~/Documents`); identifica la fila |
-| B | `blog_nombre` | blog del artículo (`pub_axiomata`, o la ruta de la sección del hub) |
+| B | `blog_nombre` | blog del artículo (`axiomata`, o la ruta de la sección del hub) |
 | C | `tipo_documento` | `jou`, `stu`, `man` o `doc` (modo de apaquarto), detectado del YAML |
 
 Si se cambia `ruta_archivo`, `update` no encuentra el archivo y salta la fila.

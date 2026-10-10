@@ -46,10 +46,10 @@ draft: false---            draft: false
 ## Uso
 
 ```bash
-python3 backend/script_format_yaml/main.py --directory "../04 index/_pubs/pub_axiomata" --recursive --dry-run   # desde la raíz del repo: qué cambiaría
-python3 backend/script_format_yaml/main.py --directory "../04 index/_pubs/pub_axiomata" --recursive             # aplica
+python3 backend/script_format_yaml/main.py --directory "../04 index/_pubs/axiomata" --recursive --dry-run   # desde la raíz del repo: qué cambiaría
+python3 backend/script_format_yaml/main.py --directory "../04 index/_pubs/axiomata" --recursive             # aplica
 python3 backend/script_format_yaml/main.py --file ruta/al/index.qmd                                             # un archivo
-grep -rl --include='*.qmd' -e 'false---' "../04 index/_pubs/pub_axiomata"                                       # localizar cierres pegados
+grep -rl --include='*.qmd' -e 'false---' "../04 index/_pubs/axiomata"                                       # localizar cierres pegados
 ```
 
 | opción | qué hace |

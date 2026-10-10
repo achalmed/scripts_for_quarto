@@ -17,7 +17,7 @@ comandos:
 - main.sh git-commit <blog> <mensaje> [--aplicar]
 - main.sh help
 estado: activo
-entrada: 04 index y 04 index/_pubs/pub_*
+entrada: 04 index y 04 index/_pubs/*
 depende_de:
 - quarto
 - git

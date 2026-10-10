@@ -43,8 +43,8 @@ El índice lleva su identidad en un comentario de la línea 1 (`<!-- fragmento d
 
 ```bash
 cd backend/script_generador_publicacion_similar
-./main.sh "../../../04 index/_pubs/pub_axiomata" --base-url https://axiomata.netlify.app --dry-run   # qué escribiría
-./main.sh "../../../04 index/_pubs/pub_axiomata" --base-url https://axiomata.netlify.app             # escribe
+./main.sh "../../../04 index/_pubs/axiomata" --base-url https://axiomata.netlify.app --dry-run   # qué escribiría
+./main.sh "../../../04 index/_pubs/axiomata" --base-url https://axiomata.netlify.app             # escribe
 ./main.sh "../../../04 index/blog"                                                                    # sección del hub, URL base por defecto
 ```
 
@@ -81,5 +81,5 @@ su guarda `GENIDX_<NOMBRE>_LOADED` y su `source` en `main.sh`, en orden.
 - **Escribe un `_contenido_<subblog>.qmd` en la carpeta de cada subblog**: no toca los posts ni `_quarto.yml`, y la página que incluye el fragmento la escribe el autor.
 - **Si un subblog se queda sin publicaciones válidas, borra su índice anterior**; `--dry-run` lo anuncia sin borrar.
 - **Una publicación es una carpeta cuyo nombre empieza por `AAAA-MM-DD-`**; las carpetas que empiezan por `.` o `_` y las de `GENIDX_IGNORE_DIRS` no cuentan, y el orden es el del glob (cronológico por el prefijo).
-- **La URL base no se deduce del blog**: se pasa con `--base-url` o se usa la del hub (`pub_chaska` publica en `chaska-x.netlify.app`).
+- **La URL base no se deduce del blog**: se pasa con `--base-url` o se usa la del hub (`chaska` publica en `chaska-x.netlify.app`).
 - **Requiere `sed` GNU** para capitalizar los títulos; en macOS/BSD haría falta `gsed`.

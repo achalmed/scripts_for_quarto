@@ -190,10 +190,10 @@ def create_default_config(base_path: str, output_path: str = "metadata_config.ym
         # URL base de cada blog para sync-pdf-urls. Opcional: si un blog no
         # figura aquí, se resuelve por mayoría de sus pdf-url existentes.
         # Imprescindible solo cuando el dominio no coincide con el nombre
-        # de la carpeta (ej. pub_chaska → chaska-x) Y el blog aún no tiene
+        # de la carpeta (ej. chaska → chaska-x) Y el blog aún no tiene
         # ningún pdf-url del que deducirlo.
         "blog_base_urls": {
-            "pub_chaska": "https://chaska-x.netlify.app",
+            "chaska": "https://chaska-x.netlify.app",
             HUB_DIR: "https://achalmaedison.netlify.app",
         },
     }

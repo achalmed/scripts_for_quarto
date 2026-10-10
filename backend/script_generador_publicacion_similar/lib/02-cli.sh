@@ -42,14 +42,14 @@ Tipos de estructura:
 
 Ejemplos:
   # Blog independiente (URL base propia del blog)
-  $GENIDX_SCRIPT_NAME ~/Documents/04\ index/_pubs/pub_actus-mercator \\
+  $GENIDX_SCRIPT_NAME ~/Documents/04\ index/_pubs/actus-mercator \\
       --base-url https://actus-mercator.netlify.app
 
   # Sección de la página web (usa la URL base por defecto)
   $GENIDX_SCRIPT_NAME ~/Documents/04\ index/teching
 
   # Simular sin modificar nada
-  $GENIDX_SCRIPT_NAME ~/Documents/04\ index/_pubs/pub_axiomata --dry-run
+  $GENIDX_SCRIPT_NAME ~/Documents/04\ index/_pubs/axiomata --dry-run
 EOF
 }
 

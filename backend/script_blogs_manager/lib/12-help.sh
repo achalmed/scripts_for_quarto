@@ -71,16 +71,16 @@ ${QBLOG_YELLOW}EJEMPLOS:${QBLOG_NC}
   main.sh render website-achalma
 
   # Preview de un blog en puerto específico
-  main.sh preview pub_epsilon-y-beta 4300
+  main.sh preview epsilon-y-beta 4300
 
   # Crear nuevo post (asistente interactivo completo)
-  main.sh new-post pub_numerus-scriptum
+  main.sh new-post numerus-scriptum
 
   # Renderizar post específico
   main.sh render-post /path/to/blog/posts/2025-12-28-mi-post/index.qmd
 
   # Limpiar y renderizar
-  main.sh clean pub_axiomata && main.sh render pub_axiomata
+  main.sh clean axiomata && main.sh render axiomata
 
   # Commit y push
   main.sh git-commit website-achalma "Actualización de contenido"
@@ -92,9 +92,9 @@ ${QBLOG_YELLOW}EJEMPLOS:${QBLOG_NC}
   main.sh -i
 
 ${QBLOG_YELLOW}NOTAS SOBRE NOMBRES DE BLOG:${QBLOG_NC}
-  Puedes usar el nombre exacto de la carpeta (ej: "pub_axiomata",
+  Puedes usar el nombre exacto de la carpeta (ej: "axiomata",
   "website-achalma") o el nombre corto sin el prefijo "pub_" (ej:
-  "axiomata" se resuelve automáticamente a "pub_axiomata" si existe).
+  "axiomata" se resuelve automáticamente a "axiomata" si existe).
 
 ${QBLOG_YELLOW}UBICACIONES:${QBLOG_NC}
   Documents (autodetectado): ${docs_dir}

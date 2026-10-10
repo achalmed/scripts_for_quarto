@@ -82,14 +82,14 @@ pip install -r requirements.txt                       # pyyaml, pandas, openpyxl
 python3 ../gui-suites/quarto/main.py                     # Quarto Studio, la GUI (repo studios)
 backend/script_blogs_manager/main.sh                  # menú interactivo; `main.sh help` lista los comandos
 backend/script_blogs_manager/main.sh list             # los sitios que ve el gestor
-backend/script_blogs_manager/main.sh render axiomata  # nombre corto o pub_axiomata; también preview, publish, clean, git-*
+backend/script_blogs_manager/main.sh render axiomata  # nombre corto o axiomata; también preview, publish, clean, git-*
 cd backend/script_metadata_manager                    # el gestor de metadatos se ejecuta desde su carpeta
 python3 main.py create-template ~/Documents --config metadata_config.yml --incremental   # Excel al día
 python3 main.py update ~/Documents excel_databases/quarto_metadata.xlsx --dry-run        # simular; sin --dry-run aplica
 python3 main.py normalize-tags ~/Documents --config metadata_config.yml --dry-run        # igual: sync-dates, fechas-iso, sync-pdf-urls
 cd ../..
-python3 backend/script_format_yaml/main.py --directory "../04 index/_pubs/pub_axiomata" --recursive --dry-run
-backend/script_generador_publicacion_similar/main.sh "../04 index/_pubs/pub_axiomata" --dry-run
+python3 backend/script_format_yaml/main.py --directory "../04 index/_pubs/axiomata" --recursive --dry-run
+backend/script_generador_publicacion_similar/main.sh "../04 index/_pubs/axiomata" --dry-run
 backend/script_pub_index_symlink/main.sh --dry-run    # sin --dry-run escribe 04 index/_indice/; --check-broken, --clean-broken
 ```
 
@@ -148,7 +148,7 @@ solo lo que no cabe en una puerta.
   `update` solo escribe donde hay diferencias, pero una celda vacía borra el campo del `.qmd`.
 - **Solo `date` se sustituye línea a línea**; cualquier otro cambio reescribe el bloque YAML completo
   (comillas y orden normalizados por `field_mapper.reorder_yaml`).
-- **`pub_chaska` publica en `chaska-x.netlify.app`**: la URL base no se deriva del nombre de carpeta; por eso
+- **`chaska` publica en `chaska-x.netlify.app`**: la URL base no se deriva del nombre de carpeta; por eso
   la detección vota entre los `pdf-url` existentes y `blog_base_urls` de `metadata_config.yml` manda.
 - **El asistente de posts es interactivo** (`07-post-creator.sh`, unas 50 preguntas): no se automatiza; la
   GUI lo sustituye con `post_service.py`, que genera el mismo `index.qmd`.

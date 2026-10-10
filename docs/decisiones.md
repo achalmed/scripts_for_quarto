@@ -60,7 +60,7 @@ commit, no aquí; lo pendiente, a [`estado.md`](../estado.md) §Por hacer (ola 4
   fechas y `pdf-url` se absorbieron en `metadata_manager` (v2.1 y v2.2): un solo escritor
   (`qmd_updater.write_yaml_to_qmd`) y un solo reordenador (`field_mapper.reorder_yaml`), para que dos
   herramientas no normalicen el mismo YAML de formas distintas.
-- **2026-07-03 · La URL base de un blog se vota.** No se deriva del nombre de carpeta (`pub_chaska`
+- **2026-07-03 · La URL base de un blog se vota.** No se deriva del nombre de carpeta (`chaska`
   publica en `chaska-x.netlify.app`): `sync-pdf-urls` toma la mayoría entre los `pdf-url` existentes y
   `blog_base_urls` de `metadata_config.yml` tiene prioridad.
 - **2026-07-03 · El generador de índices recibe el blog como argumento.** Antes había que editar el

@@ -10,7 +10,7 @@ estado: activo
 Gestiona el hub 04 index y sus pubs: listar, render, preview, publicar, crear posts APA, operaciones git y backups.
 
 - Escribe en: web, git, archivos · simula por defecto: no
-- Entrada: 04 index y 04 index/_pubs/pub_*
+- Entrada: 04 index y 04 index/_pubs/*
 - Depende de: quarto, git
 
 Comandos:
@@ -42,12 +42,12 @@ y [`script_pub_index_symlink`](../script_pub_index_symlink/). Quarto Studio lo i
 cd backend/script_blogs_manager           # desde la raíz del repo
 ./main.sh                                 # menú interactivo (también: ./main.sh -i)
 ./main.sh list                            # los sitios que ve el gestor, con sus posts y estado git
-./main.sh render axiomata                 # nombre corto, o el de la carpeta: pub_axiomata
+./main.sh render axiomata                 # nombre corto, o el de la carpeta: axiomata
 ./main.sh preview axiomata 4200           # servidor local; el puerto es opcional
 ./main.sh help                            # la ayuda completa
 ```
 
-Un blog se nombra por su carpeta (`pub_axiomata`) o sin el prefijo (`axiomata`); el hub, como
+Un blog se nombra por su carpeta (`axiomata`) o sin el prefijo (`axiomata`); el hub, como
 `website-achalma` (alias de `04 index`). Requiere Bash ≥ 4 y Quarto; git para los comandos `git-*`;
 `yq`, opcional, para validar `_quarto.yml` en `check-structure`.
 

@@ -3,7 +3,7 @@
 #  backend/script_blogs_manager/lib/02-utils.sh — Utilidades compartidas: autodetección de ~/Documents, listado de proyectos de publicación y detección de carpetas de posts
 # -----------------------------------------------------------------------------
 # Utilidades compartidas: autodetección de ~/Documents, listado de proyectos
-# de publicación (website-achalma + sus submódulos website-achalma/_pubs/pub_*),
+# de publicación (website-achalma + sus submódulos website-achalma/_pubs/*),
 # verificación de exclusión, y
 # detección de carpetas de posts dentro de un proyecto.
 # =============================================================================
@@ -57,9 +57,9 @@ utils_list_projects() {
 }
 
 # Resuelve el nombre corto de un proyecto a su ruta absoluta completa.
-# Acepta tanto el nombre exacto de carpeta (ej: "pub_axiomata",
+# Acepta tanto el nombre exacto de carpeta (ej: "axiomata",
 # "website-achalma") como variantes sin el prefijo "pub_" por comodidad
-# (ej: "axiomata" se resuelve a "pub_axiomata" si existe).
+# (ej: "axiomata" se resuelve a "axiomata" si existe).
 # $1 = ruta absoluta de Documents
 # $2 = nombre corto o exacto ingresado por el usuario
 utils_resolve_project_path() {

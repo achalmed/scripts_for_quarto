@@ -126,7 +126,7 @@ option_create_blog() {
     print_header "📁 CREAR BASE DE BLOG ESPECÍFICO"
     get_base_path || return
     echo ""
-    read -rp "Nombre del blog (ej: pub_axiomata o website-achalma): " BLOG_NAME
+    read -rp "Nombre del blog (ej: axiomata o website-achalma): " BLOG_NAME
     [ -z "$BLOG_NAME" ] && { print_error "Nombre requerido"; read -rp "Presiona Enter..."; return; }
     python3 "$MAIN_PY" create-template "$BASE_PATH" --blog "$BLOG_NAME" $(config_arg)
     print_success "Base de datos creada"

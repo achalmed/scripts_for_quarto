@@ -37,7 +37,7 @@ lanza la GUI, el repo `gui-suites` (`gui-suites/quarto/README.md`).
   en `04 index/_pubs/` (el guion bajo evita que Quarto los renderice como parte del
   hub). Cada herramienta los localiza por una sola variable (`QBLOG_PUBS_SUBDIR`, `PUBINDEX_PUBS_SUBDIR`,
   `PUBS_SUBDIR`), por defecto `<hub>/_pubs`; `website-achalma` sigue aceptado como alias del hub
-  (`QBLOG_WEBSITE_DIR`, `HUB_ALIASES`). Un blog se nombra por carpeta (`pub_axiomata`) o en corto
+  (`QBLOG_WEBSITE_DIR`, `HUB_ALIASES`). Un blog se nombra por carpeta (`axiomata`) o en corto
   (`axiomata`). Un post es `<blog>/posts/AAAA-MM-DD-titulo/index.qmd`: lo que no empieza por fecha no
   es un post. Las herramientas toman la raíz (`DOCS_ROOT`) y la carpeta del hub (`INDEX_DIR`) de
   `core/env.sh` y `core/env.py`; la raíz se fuerza exportando `DOCS_ROOT` (sin alias propios de la raíz desde
@@ -93,8 +93,8 @@ python3 main.py find-differences ~/Documents excel_databases/quarto_metadata.xls
 python3 main.py update ~/Documents excel_databases/quarto_metadata.xlsx --dry-run  # simular antes de aplicar
 cd ../..
 backend/script_pub_index_symlink/main.sh --dry-run               # y --check-broken
-backend/script_generador_publicacion_similar/main.sh "../04 index/_pubs/pub_axiomata" --dry-run
-python3 backend/script_format_yaml/main.py --directory "../04 index/_pubs/pub_axiomata" --recursive --dry-run
+backend/script_generador_publicacion_similar/main.sh "../04 index/_pubs/axiomata" --dry-run
+python3 backend/script_format_yaml/main.py --directory "../04 index/_pubs/axiomata" --recursive --dry-run
 ```
 
 Pruebas: `python3 -m pytest -q tests -p no:cacheprovider --basetemp ~/.cache/pytest/quarto-ola4` (nunca
@@ -103,7 +103,7 @@ Lo aplicado de verdad se confirma dentro del pub y luego el puntero del submódu
 
 ## Detalles que cuesta redescubrir
 
-- **`pub_chaska` publica en `chaska-x.netlify.app`**, no derivable de la carpeta. Por eso la URL base de
+- **`chaska` publica en `chaska-x.netlify.app`**, no derivable de la carpeta. Por eso la URL base de
   cada blog se resuelve por voto mayoritario entre los `pdf-url` existentes (una URL mal pegada no
   envenena la detección) y `blog_base_urls` de `metadata_config.yml` tiene prioridad
   (`backend/script_metadata_manager/lib/path_sync.py`).
