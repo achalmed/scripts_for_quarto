@@ -76,8 +76,8 @@ lanza la GUI, el repo `gui-suites` (`gui-suites/quarto/README.md`).
 Desde `~/Documents`:
 
 ```bash
-python3 core/archivos.py validar scripts_quarto_studio          # A01–A14 y D01–D12
-python3 core/docs.py verificar scripts_quarto_studio            # índice de docs/ al día
+python3 core/archivos.py validar scripts-quarto          # A01–A14 y D01–D12
+python3 core/docs.py verificar scripts-quarto            # índice de docs/ al día
 python3 core/suites.py validar                                   # los suite.yml contra el esquema
 python3 core/suites.py generar                                   # ¿bloques de README desfasados? (simula)
 meta/doctor/main.sh --breve
