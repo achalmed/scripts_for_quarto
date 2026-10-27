@@ -25,7 +25,7 @@ main.py --smoke
 ## Qué es
 
 Una sola ventana para las cinco herramientas de `../backend/`, en este mismo repo (`scripts-quarto`, remoto
-`scripts_for_quarto`). Lo que comparte con Filesystem Studio y Git Studio (rutas por `core/env`, workers, tema) es el
+`scripts_for_quarto`). Lo que comparte con Filesystem Studio y Git Studio (rutas por `core/env.sh`, workers, tema) es el
 paquete `gui_comun` de `core/py-common/`. Los scripts **no se reescriben**: actúan
 como motor y la GUI los invoca como procesos a través de una capa de servicios desacoplada; la consola
 integrada muestra el comando exacto, stdout, stderr, código de salida y duración, nada se oculta. La

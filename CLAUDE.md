@@ -32,7 +32,7 @@ lanza la GUI, `studio/README.md`.
   (`main.*` + config + `lib/`, `suite.yml`, README). Quarto Studio (`studio/`, de vuelta de `gui-suites` el
   2026-10-27) nunca importa su código: construye un `Command` y lo ejecuta con `QProcess`, y encuentra cada
   entrada en `backend/` de este repo (`studio/quarto_app/services/paths.py`, `BACKENDS`). Si un script se mueve o
-  cambia de nombre, se toca allí. Lo común de los tres studios (`gui_comun`: rutas por `core/env`, workers, tema) es
+  cambia de nombre, se toca allí. Lo común de los tres studios (`gui_comun`: rutas por `core/env.sh`, workers, tema) es
   de `core/py-common/`; aquí no se copia.
 - **Los blogs viven en el hub.** Hub `web` (repo `website-achalma`) y 11 `pub_*` como submódulos
   en `web/_pubs/` (el guion bajo evita que Quarto los renderice como parte del
@@ -112,7 +112,7 @@ Lo aplicado de verdad se confirma dentro del pub y luego el puntero del submódu
   viven en el metadata manager); `1_sincronizar_fecha_carpeta_en_index_qmd.py` y
   `3_actualizar_enlace_pdf_en_qmd.py` (hoy `sync-dates` y `sync-pdf-urls`); el prefijo `quarto_studio/`
   en una ruta nunca existió: las herramientas son `backend/` y la GUI, `studio/` (antes `app/`; de la ola 4 al
-  2026-10-27, `gui-suites/quarto/`).
+  2026-10-27, la carpeta quarto/ de gui-suites).
 - **`fix_qmd_files.py` es un alias** de `backend/script_format_yaml/main.py`; la lógica
   está en `config.py` y `lib/` de esa carpeta. Quarto Studio todavía invoca el alias (`studio/quarto_app/services/paths.py`, `yaml_formatter`).
 - **El asistente de posts no se automatiza** (`backend/script_blogs_manager/lib/07-post-creator.sh`, unas

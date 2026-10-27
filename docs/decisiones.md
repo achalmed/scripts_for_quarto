@@ -15,14 +15,14 @@ commit, no aquí; lo pendiente, a [`estado.md`](../estado.md) §Por hacer (ola 4
   studio es un proyecto independiente, con su interfaz y su lógica juntas. Quarto Studio vuelve de `gui-suites` a
   `studio/` con su historia (`git filter-repo` de un clon de `gui-suites` y merge sin historia común; la anterior a la
   ola 4 ya estaba aquí, en `app/`) y encuentra sus backends en `backend/`, por ruta del repo; `SCRIPTS_QUARTO` sale de
-  `core/env` (sin lector, N 5.19). Lo común de los studios (`gui_comun`) es de `core/py-common/`. `gui-suites` se
+  `core/env.sh` (sin lector, N 5.19). Lo común de los studios (`gui_comun`) es de `core/py-common/`. `gui-suites` se
   retira (`meta/programa/08-mantenimiento/studios-independientes-2026-10-27.md`; etiqueta previa
   `antes-studios-independientes-2026-10-27`). Supera la entrada del 2026-10-06 de abajo; las demás citan ya la ruta de
   hoy (`studio/quarto_app/`).
 
 - **2026-10-06 · La GUI sale al repo `gui-suites`; este repo es el de los backends.** *Superada por la del 2026-10-27.* Quarto Studio (`app/`,
   `main.py`, `build_resources.sh` y la suite raíz `quarto_studio`) pasa con su historia al repo privado `gui-suites`
-  (`gui-suites/quarto/`, paquete `quarto_app`), junto a Filesystem Studio y Git Studio, y encuentra estas
+  (la carpeta quarto/ de gui-suites, paquete `quarto_app`), junto a Filesystem Studio y Git Studio, y encuentra estas
   herramientas por `SCRIPTS_QUARTO` de `core/env.py`, no por ruta relativa (ola 4, fase B; etiqueta previa
   `antes-ola-04-studios-2026-10-06`).
 
