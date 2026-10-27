@@ -2,7 +2,7 @@
 tipo: readme
 estado: activo
 ---
-# scripts-quarto/ — herramientas de la familia de blogs Quarto (repo scripts_for_quarto); su GUI vive en studios
+# scripts-quarto/ — herramientas de la familia de blogs Quarto y su GUI, Quarto Studio (repo scripts_for_quarto)
 
 <!-- suite:inicio -->
 **Suite `quarto_studio`** · objetivo *publicacion* · estado *activo* · python · interfaz gui
@@ -45,8 +45,8 @@ mantener un índice por año en el vault y renderizar o publicar los doce sitios
 
 Dos nombres para una sola cosa: la carpeta es `scripts-quarto` y el remoto en GitHub se llama
 `scripts_for_quarto`. La aplicación de escritorio que las envuelve, **Quarto Studio** (suite `quarto_studio`), vive
-desde la ola 4 en el repo `gui-suites` (`gui-suites/quarto/`) y encuentra estas herramientas por `SCRIPTS_QUARTO` de
-`core/env.py`.
+en este mismo repo, en `studio/` (de la ola 4 al 2026-10-27 estuvo en el repo `gui-suites`), y encuentra estas
+herramientas en `backend/`; lo común de los studios (`gui_comun`) lo importa de `core/py-common/`.
 
 **No es** un tema, un sitio ni una plantilla de Quarto: el tema de los doce sitios vive en el hub y se
 propaga con `web/scripts/sync-theme-pubs.sh`; el contenido de cada post vive en su pub. Tampoco es
@@ -70,7 +70,7 @@ Excel es la mesa de trabajo, y lo que se edite a mano en un `.qmd` prevalece has
 | `generador_publicacion_similar` | `_contenido_<subblog>.qmd`, fragmentos para `{{< include >}}` con su identidad en un comentario de la línea 1 (sin frontmatter) | la carpeta de cada subblog del blog que se le pase | `--dry-run`; si un subblog queda sin posts, borra su índice |
 | `pub_index_symlink` | enlaces simbólicos por año, nunca copias | `web/_indice/` (ignorado en git; del vault) | omite lo que ya apunta bien; no toca archivos reales; `--dry-run` |
 | `blogs_manager` | `_site/`, `_freeze/`, posts nuevos, commits, respaldos | hub y pubs; `$DOCS_ROOT/archivo/backups-publicaciones/`; el remoto git (Netlify) o `quarto publish <destino>` | `publish` y `git-commit` simulan salvo `--aplicar`, empujan solo tras la puerta R6 y no hacen `git add .`; `clean-all` pide confirmación |
-| Quarto Studio (repo `gui-suites`) | nada propio: lanza las cinco anteriores | — | una operación a la vez; «Dry-run» marcado por defecto en metadatos e índices |
+| Quarto Studio (`studio/`) | nada propio: lanza las cinco anteriores | — | una operación a la vez; «Dry-run» marcado por defecto en metadatos e índices |
 
 Cómo están montados los pubs y por qué se confirma dentro del pub antes que en el hub:
 `web/docs/pubs-submodulos.md`.
@@ -78,8 +78,8 @@ Cómo están montados los pubs y por qué se confirma dentro del pub antes que e
 ## Uso
 
 ```bash
-pip install -r requirements.txt                       # pyyaml, pandas, openpyxl (un entorno conda es opcional)
-python3 ../gui-suites/quarto/main.py                     # Quarto Studio, la GUI (repo studios)
+pip install -r requirements.txt                       # pyyaml, pandas, openpyxl, PySide6 (un entorno conda es opcional)
+python3 studio/main.py                                # Quarto Studio, la GUI; --smoke la abre y la cierra
 backend/script_blogs_manager/main.sh                  # menú interactivo; `main.sh help` lista los comandos
 backend/script_blogs_manager/main.sh list             # los sitios que ve el gestor
 backend/script_blogs_manager/main.sh render axiomata  # nombre corto o axiomata; también preview, publish, clean, git-*
@@ -106,9 +106,10 @@ marca la simulación por defecto en metadatos e índices, y publica y confirma s
 | `backend/script_pub_index_symlink/` | Bash, `main.sh` + `lib/`: enlaces por año en `web/_indice/`; `logs/` ignorado | a mano |
 | `backend/script_format_yaml/` | Python, `main.py` + `config.py` + `lib/`; `fix_qmd_files.py` es un alias | a mano |
 | `backend/script_generador_publicacion_similar/` | Bash, `main.sh` + `lib/`: índices `_contenido_*.qmd` | a mano |
-| `suite.yml` (uno por backend) | manifiesto de cada suite (`core/suite.schema.yml`) | a mano; los bloques de README los genera `core/suites.py generar --aplicar` |
+| `studio/` | Quarto Studio, la GUI (PySide6): `main.py`, paquete `quarto_app`, `suite.yml`, README | a mano; `resources_rc.py` lo genera `studio/build_resources.sh` (ignorado) |
+| `suite.yml` (uno por backend y el de `studio/`) | manifiesto de cada suite (`core/suite.schema.yml`) | a mano; los bloques de README los genera `core/suites.py generar --aplicar` |
 | `requirements.txt` | dependencias Python de los backends | a mano |
-| `tests/` | pytest: cada suite en simulación no escribe nada; el flujo de `publish`/`git-commit` con un remoto bare local | a mano |
+| `tests/` | pytest: cada suite en simulación no escribe nada; el flujo de `publish`/`git-commit` con un remoto bare local; la GUI sin pantalla (`test_studio*.py`) | a mano |
 | `docs/` | referencia del Excel de metadatos y registro de decisiones; índice generado | a mano; `docs/README.md` por `core/docs.py indice` |
 | `CHANGELOG.md` · `LICENSE` | versiones de cada herramienta con fecha ISO; MIT | a mano |
 
@@ -120,7 +121,7 @@ solo lo que no cabe en una puerta.
 | documento | para qué leerlo |
 |---|---|
 | `CLAUDE.md` | reglas para el asistente: invariantes de diseño, cómo verificar, trampas |
-| `gui-suites/quarto/README.md` | la GUI (repo `gui-suites`): arquitectura, regla de dependencias, cómo añadir una herramienta |
+| `studio/README.md` | la GUI: arquitectura, regla de dependencias, cómo añadir una herramienta |
 | `backend/script_blogs_manager/README.md` | manual del gestor de blogs v3.0 |
 | `backend/script_metadata_manager/README.md` | manual del gestor de metadatos y tags (Excel, filtros, fórmulas, columnas) |
 | `backend/script_pub_index_symlink/README.md` | qué cuenta como publicación, conflictos, logs |

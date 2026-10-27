@@ -17,3 +17,9 @@ estructura.txt
 # ===== Temporal: escritorio =====
 # metadatos de carpeta del gestor de archivos Dolphin (KDE)
 .directory
+
+# ===== Derivado: recursos Qt compilados =====
+# los escribe studio/build_resources.sh; Quarto Studio funciona sin ellos
+resources_rc.py
+# informes de ejecución de la GUI
+reports/

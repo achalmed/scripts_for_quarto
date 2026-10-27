@@ -1,6 +1,8 @@
-# scripts-quarto — dependencias de los backends (la GUI, Quarto Studio, vive en el repo studios)
+# scripts-quarto — dependencias de los backends y de su GUI, Quarto Studio (studio/)
 # Backend (script_metadata_manager); normalmente ya presentes en el
 # entorno conda scripts_quarto
 pyyaml
 pandas
 openpyxl
+# GUI (studio/): Quarto Studio
+PySide6>=6.5

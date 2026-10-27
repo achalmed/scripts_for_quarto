@@ -7,7 +7,7 @@ estado: activo
 Guía para el asistente. En español, como todo el ecosistema. `AGENTS.md` es un enlace a este archivo.
 Léase antes: `estado.md` (dónde está; §Por hacer), `README.md` (qué es, contrato con el hub, uso),
 `docs/README.md`, el `suite.yml` y el README de la herramienta que se toque y, si el cambio toca lo que
-lanza la GUI, el repo `gui-suites` (`gui-suites/quarto/README.md`).
+lanza la GUI, `studio/README.md`.
 
 ## Reglas que no se negocian
 
@@ -28,11 +28,12 @@ lanza la GUI, el repo `gui-suites` (`gui-suites/quarto/README.md`).
   Lo que hiciste en esta sesión va al mensaje de commit, no a un archivo. Si nada encaja, pregunta antes
   de crear un documento.
 
-- **Cinco herramientas independientes; su GUI vive en el repo `gui-suites`.** Cada `backend/script_*/` es
-  autónomo (`main.*` + config + `lib/`, `suite.yml`, README). Quarto Studio (`gui-suites/quarto/`, ola 4, fase B)
-  nunca importa su código: construye un `Command` y lo ejecuta con `QProcess`, y encuentra cada entrada por
-  `SCRIPTS_QUARTO` de `core/env.py` (`gui-suites/comun/rutas.py`, `BACKENDS`). Si un script se mueve o cambia de
-  nombre, se toca allí.
+- **Cinco herramientas independientes y su GUI en el mismo repo.** Cada `backend/script_*/` es autónomo
+  (`main.*` + config + `lib/`, `suite.yml`, README). Quarto Studio (`studio/`, de vuelta de `gui-suites` el
+  2026-10-27) nunca importa su código: construye un `Command` y lo ejecuta con `QProcess`, y encuentra cada
+  entrada en `backend/` de este repo (`studio/quarto_app/services/paths.py`, `BACKENDS`). Si un script se mueve o
+  cambia de nombre, se toca allí. Lo común de los tres studios (`gui_comun`: rutas por `core/env`, workers, tema) es
+  de `core/py-common/`; aquí no se copia.
 - **Los blogs viven en el hub.** Hub `web` (repo `website-achalma`) y 11 `pub_*` como submódulos
   en `web/_pubs/` (el guion bajo evita que Quarto los renderice como parte del
   hub). Cada herramienta los localiza por una sola variable (`QBLOG_PUBS_SUBDIR`, `PUBINDEX_PUBS_SUBDIR`,
@@ -110,11 +111,12 @@ Lo aplicado de verdad se confirma dentro del pub y luego el puntero del submódu
 - **Nombres que ya no existen:** `script_tag_manager/` y `qmd_tag_manager.py` (los comandos de tags
   viven en el metadata manager); `1_sincronizar_fecha_carpeta_en_index_qmd.py` y
   `3_actualizar_enlace_pdf_en_qmd.py` (hoy `sync-dates` y `sync-pdf-urls`); el prefijo `quarto_studio/`
-  en una ruta nunca existió: las herramientas son `backend/` y la GUI, desde la ola 4, `gui-suites/quarto/`.
+  en una ruta nunca existió: las herramientas son `backend/` y la GUI, `studio/` (antes `app/`; de la ola 4 al
+  2026-10-27, `gui-suites/quarto/`).
 - **`fix_qmd_files.py` es un alias** de `backend/script_format_yaml/main.py`; la lógica
-  está en `config.py` y `lib/` de esa carpeta. Quarto Studio todavía invoca el alias (`paths.yaml_formatter`, repo `gui-suites`).
+  está en `config.py` y `lib/` de esa carpeta. Quarto Studio todavía invoca el alias (`studio/quarto_app/services/paths.py`, `yaml_formatter`).
 - **El asistente de posts no se automatiza** (`backend/script_blogs_manager/lib/07-post-creator.sh`, unas
-  50 preguntas encadenadas): es la única lógica portada a Python (`gui-suites/quarto/quarto_app/services/post_service.py`), que
+  50 preguntas encadenadas): es la única lógica portada a Python (`studio/quarto_app/services/post_service.py`), que
   genera el mismo `index.qmd`. Las confirmaciones de los scripts (`--clean-broken`, respaldo) se
   responden por stdin después de que la GUI confirmó con el usuario.
 - **El runner de Quarto Studio rechaza ejecuciones concurrentes**: los backends no son seguros en paralelo.
@@ -134,7 +136,7 @@ Lo aplicado de verdad se confirma dentro del pub y luego el puntero del submódu
 | pregunta | documento |
 |---|---|
 | qué escribe cada herramienta en el hub y los pubs | `README.md` §«Contrato con el hub» |
-| la GUI: arquitectura, decisiones, cómo añadir una herramienta | `gui-suites/quarto/README.md` (repo `gui-suites`) |
+| la GUI: arquitectura, decisiones, cómo añadir una herramienta | `studio/README.md` |
 | comandos y filtros del metadata manager | `backend/script_metadata_manager/README.md` |
 | render, preview, publicar, posts APA, git, respaldos | `backend/script_blogs_manager/README.md` |
 | qué es una publicación, conflictos, logs del índice | `backend/script_pub_index_symlink/README.md` |

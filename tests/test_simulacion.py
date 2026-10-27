@@ -3,8 +3,8 @@
 Para cada `suite.yml` del repo con `escribe_en` distinto de `[ninguno]` hay al menos un caso: se ejecuta la
 herramienta en simulación (`--dry-run`, o sin `--aplicar` en `blogs_manager`) sobre un workspace de fixture
 (conftest.py) y se compara el listado + mtime + tamaño de todo el directorio temporal y de todo el repo antes y
-después. La GUI (`quarto_studio`) no tiene CLI: se omite con su motivo (sus `Command` se prueban en
-`test_gui_blog_service.py`). Ningún caso necesita red.
+después. La GUI (`quarto_studio`, en `studio/`) no tiene CLI: sus `Command` se prueban en
+`test_studio_blog_service.py`. Ningún caso necesita red.
 
     python3 -m pytest tests --basetemp ~/.cache/pytest/quarto-ola4 -p no:cacheprovider
 """
@@ -112,7 +112,7 @@ CASOS = [
         "bash", str(BACKEND / "script_blogs_manager" / "main.sh"), "git-commit", "pub_prueba", "cambio"]),
 ]
 
-OMITIDAS: dict[str, str] = {}   # la GUI (quarto_studio) vive en el repo studios desde la ola 4 (fase B) y se prueba allí
+OMITIDAS: dict[str, str] = {}   # la GUI (quarto_studio, studio/) no tiene CLI: sus Command se prueban en test_studio*.py
 
 
 def _suites() -> dict[str, dict]:

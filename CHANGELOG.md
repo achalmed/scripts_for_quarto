@@ -13,8 +13,13 @@ Cada herramienta declara su versión una sola vez en el código: `QBLOG_VERSION`
 `pub_index_symlink` no llevan número en el código. Los porqués están en [`docs/decisiones.md`](docs/decisiones.md).
 
 Vigentes: `blogs_manager` 4.0.0 · `metadata_manager` 2.3.0 · `generador_publicacion_similar` 4.0.0 ·
-`format_yaml` 2.0 · `pub_index_symlink` (sin número). Quarto Studio 1.0.0 vive desde el 2026-10-06 en el repo
-`gui-suites` (`APP_VERSION` en `gui-suites/quarto/quarto_app/__init__.py`).
+`format_yaml` 2.0 · `pub_index_symlink` (sin número) · Quarto Studio 1.0.0 (`APP_VERSION` en
+`studio/quarto_app/__init__.py`; del 2026-10-06 al 2026-10-27 vivió en el repo `gui-suites`).
+
+## Añadido — 2026-10-27
+
+- Quarto Studio vuelve de `gui-suites` a `studio/` con su historia, y su prueba como `tests/test_studio*.py`: la GUI
+  encuentra los backends en `backend/` y lo común de los studios en `core/py-common/gui_comun` (`docs/decisiones.md`).
 
 ## Retirado — 2026-10-06
 

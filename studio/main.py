@@ -3,21 +3,19 @@
 main.py — Punto de entrada de Quarto Studio.
 
 Solo orquesta: crea la QApplication, aplica el tema persistido y muestra
-la ventana principal. Toda la lógica vive en quarto_app/; los backends, en
-SCRIPTS_QUARTO/backend/ (core/env).
+la ventana principal. Toda la lógica vive en quarto_app/; los backends, en ../backend/ (este mismo repo).
 
 Uso:
-    python3 quarto/main.py            # desde gui-suites/
-    python3 quarto/main.py --smoke    # construye la UI y sale (prueba de humo)
+    python3 studio/main.py            # desde scripts-quarto/
+    python3 studio/main.py --smoke    # construye la UI y sale (prueba de humo)
 """
 
 import sys
 from pathlib import Path
 
-# El paquete quarto_app y el paquete comun de gui-suites/ importables desde cualquier carpeta
+# El paquete quarto_app importable desde cualquier carpeta (él mismo pone core/py-common, la de gui_comun, en sys.path)
 _AQUI = Path(__file__).resolve().parent
 sys.path.insert(0, str(_AQUI))
-sys.path.insert(1, str(_AQUI.parent))
 
 from quarto_app.application import crear_aplicacion
 from quarto_app.ui.main_window import MainWindow

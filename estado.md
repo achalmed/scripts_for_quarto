@@ -1,7 +1,7 @@
 ---
 tipo: estado
 estado: activo
-actualizado: 2026-10-10
+actualizado: 2026-10-27
 ---
 # estado.md — scripts-quarto (repo `scripts_for_quarto`)
 
@@ -16,6 +16,7 @@ en disco con un remoto «bare» local.
 
 | fecha | qué | dónde se ve |
 |---|---|---|
+| 2026-10-27 | **Quarto Studio vuelve** (sesión 9 de la cola de la auditoría posterior): la GUI en `studio/` con su historia, sus backends por ruta del repo, `gui_comun` desde `core`; `gui-suites` retirado | `docs/decisiones.md`; `tests/test_studio*.py` (5); `meta/programa/08-mantenimiento/studios-independientes-2026-10-27.md` |
 | 2026-10-10 | **Los blogs por el registro** (ola 6, 6f): `metadata_manager` (`resolve_blog_dir`, `discover_blog_dirs`, `blog_label`, `path_sync.blog_dir_from_ruta`, `create_default_config`), `blogs_manager` (`utils_list_projects`, `utils_resolve_project_path`) y `pub_index_symlink` (`scanner_find_all_publications`) leen `core` (`pubs.py` / `pubs.sh`), no el prefijo `pub_`; `QBLOG_FUENTES` sin `THEME_VERSION` (igual que la puerta R6) | `tests/` (29); `main.sh list` = 12 |
 | 2026-10-06 | ola 4, fase A (agente «quarto»): Q1 y Q2, un commit por ítem | la bitácora de abajo; `meta/programa/06-olas/ola-04-reingenieria.md` §2 |
 | 2026-10-06 | ola 4, fase B (agente «studios»): la GUI sale al repo `gui-suites`; este repo queda como el de los backends de Quarto | la bitácora de abajo; `docs/decisiones.md` |
@@ -34,7 +35,8 @@ nada en curso
 
 ## Por hacer
 
-- 2026-10-06 · dueño: director · `core/suites.py probar --repo scripts-quarto`: RQ-MAN-05 en `pub_index_symlink` (y en `quarto_studio`, hoy en el repo `gui-suites`) (escriben en `vault`, pero el manifiesto no declara ese `escribe_en` para el proyecto); se corrige en `meta/workspace.yml`.
+- 2026-10-27 · dueño: la sesión del hub · `tests/test_blogs_manager_git.py::test_fuentes_iguales_a_las_de_la_puerta` falla: la puerta R6 del hub ya excluye `_vitrina/` y `_ediciones/` y `QBLOG_FUENTES` (`backend/script_blogs_manager/lib/00-config.sh`) no; no viene de la sesión 9.
+- 2026-10-06 · dueño: director · `core/suites.py probar --repo scripts-quarto`: RQ-MAN-05 en `pub_index_symlink` y en `quarto_studio` (escriben en `vault`, pero el manifiesto no declara ese `escribe_en` para el proyecto); se corrige en `meta/workspace.yml`.
 - 2026-10-04 · dueño: el autor · dos comentarios de código dan como ejemplo de raíz forzada una ruta de la máquina: `backend/script_blogs_manager/lib/00-config.sh` y `backend/script_pub_index_symlink/lib/00-config.sh`.
 - 2026-10-04 · dueño: el autor · `backend/script_metadata_manager/metadata_config.yml` (`excluded_folders`) publica en este repositorio público nombres de carpetas personales. ¿Se mueven a un archivo local ignorado?
 - 2026-10-04 · dueño: el autor · orden de etiquetas de cabecera (aviso A10) en `backend/script_metadata_manager/lib/excel_writer.py` y `backend/script_metadata_manager/lib/path_sync.py`.
@@ -42,4 +44,4 @@ nada en curso
 
 ## Futuro
 
-- La prueba de humo de la GUI ya existe en el repo `gui-suites` (`tests/run.sh -k quarto`).
+- La prueba de humo de la GUI está en `tests/test_studio.py` (desde el 2026-10-27).

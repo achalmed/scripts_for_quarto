@@ -2,7 +2,7 @@
 tipo: readme
 estado: activo
 ---
-# quarto/ — Quarto Studio, la aplicación de escritorio (PySide6 / Qt6) que unifica los backends de Quarto
+# studio/ — Quarto Studio, la aplicación de escritorio (PySide6 / Qt6) que unifica los backends de Quarto
 
 <!-- suite:inicio -->
 **Suite `quarto_studio`** · objetivo *publicacion* · estado *activo* · python · interfaz gui
@@ -24,8 +24,9 @@ main.py --smoke
 
 ## Qué es
 
-Una sola ventana para las cinco herramientas de `scripts-quarto/backend/` (repo `scripts_for_quarto`), que
-encuentra por `SCRIPTS_QUARTO` de `core/env.py`. Los scripts **no se reescriben**: actúan
+Una sola ventana para las cinco herramientas de `../backend/`, en este mismo repo (`scripts-quarto`, remoto
+`scripts_for_quarto`). Lo que comparte con Filesystem Studio y Git Studio (rutas por `core/env`, workers, tema) es el
+paquete `gui_comun` de `core/py-common/`. Los scripts **no se reescriben**: actúan
 como motor y la GUI los invoca como procesos a través de una capa de servicios desacoplada; la consola
 integrada muestra el comando exacto, stdout, stderr, código de salida y duración, nada se oculta. La
 entrada es `main.py`: crea la `QApplication`, aplica el tema persistido y muestra `MainWindow`; toda
@@ -48,10 +49,10 @@ la lógica vive en `quarto_app/`. Nombre y versión (`Quarto Studio`, `1.0.0`) s
 ## Uso
 
 ```bash
-pip install -r requirements.txt    # desde gui-suites/: PySide6 (los backends declaran sus dependencias en su repo)
-python3 quarto/main.py             # desde gui-suites/
-python3 quarto/main.py --smoke     # construye la interfaz y sale (prueba de humo)
-quarto/build_resources.sh          # opcional: compila resources.qrc a resources_rc.py (requiere pyside6-rcc)
+pip install -r requirements.txt    # desde scripts-quarto/: PySide6 y lo de los backends
+python3 studio/main.py             # desde scripts-quarto/
+python3 studio/main.py --smoke     # construye la interfaz y sale (prueba de humo)
+studio/build_resources.sh          # opcional: compila resources.qrc a resources_rc.py (requiere pyside6-rcc)
 ```
 
 La aplicación funciona sin compilar los recursos: si `resources_rc.py` no existe, carga iconos y temas
@@ -62,12 +63,12 @@ el diálogo de preferencias.
 
 | carpeta / archivo | qué es | dueño / generador |
 |---|---|---|
-| `main.py` | entrada: pone `quarto/` y `gui-suites/` en `sys.path`, crea la aplicación y abre la ventana; `--smoke` | a mano |
+| `main.py` | entrada: pone `studio/` en `sys.path` (el paquete añade `core/py-common`), crea la aplicación y abre la ventana; `--smoke` | a mano |
 | `suite.yml` | manifiesto de la suite `quarto_studio` (`core/suite.schema.yml`) | a mano |
 | `quarto_app/application.py` | `QApplication`, tema claro/oscuro (QSS), icono de la app | a mano |
 | `quarto_app/settings.py` | `QSettings` centralizado: la única puerta a las preferencias; ningún otro módulo instancia `QSettings` | a mano |
 | `quarto_app/models/` | dominio puro (`blog.py`, `operation.py`): no importan nada de Qt | a mano |
-| `quarto_app/services/` | construyen `Command` (programa + args + cwd + stdin) por herramienta: `command.py`; `paths.py` (localiza los backends y la raíz del workspace por `../comun/rutas.py`, es decir, por `core/env.py`); `blog_service.py` → `scripts-quarto/backend/script_blogs_manager/main.sh`; `metadata_service.py` → `scripts-quarto/backend/script_metadata_manager/main.py`; `yaml_service.py` → `scripts-quarto/backend/script_format_yaml/fix_qmd_files.py` (alias de `main.py`); `index_service.py` → `scripts-quarto/backend/script_pub_index_symlink/main.sh`; `similar_service.py` → `scripts-quarto/backend/script_generador_publicacion_similar/main.sh`; `post_service.py` (posts APAQuarto, portado); `project_scanner.py` (escaneo de blogs y posts, Python puro) | a mano |
+| `quarto_app/services/` | construyen `Command` (programa + args + cwd + stdin) por herramienta: `command.py`; `paths.py` (localiza los backends en `../backend/` y la raíz del workspace por `gui_comun.rutas`, es decir, por `core/env.py`); `blog_service.py` → `scripts-quarto/backend/script_blogs_manager/main.sh`; `metadata_service.py` → `scripts-quarto/backend/script_metadata_manager/main.py`; `yaml_service.py` → `scripts-quarto/backend/script_format_yaml/fix_qmd_files.py` (alias de `main.py`); `index_service.py` → `scripts-quarto/backend/script_pub_index_symlink/main.sh`; `similar_service.py` → `scripts-quarto/backend/script_generador_publicacion_similar/main.sh`; `post_service.py` (posts APAQuarto, portado); `project_scanner.py` (escaneo de blogs y posts, Python puro) | a mano |
 | `quarto_app/workers/` | `process_runner.py` (`QProcess` asíncrono con señales de salida y progreso; una operación a la vez), `scan_worker.py` (`QThread` para el escaneo) | a mano |
 | `quarto_app/controllers/` | vista → servicio → worker (MVC): `main_controller.py`, `blogs_controller.py`, `metadata_controller.py`, `tools_controller.py` | a mano |
 | `quarto_app/ui/` | `main_window.py` y `quarto_app/ui/pages/`: una página por funcionalidad (dashboard, blogs, metadata, yaml, índices, similares) | a mano |
@@ -107,7 +108,7 @@ necesitan cambios.
 
 ## Límite honesto
 
-- **La prueba automática es corta** (`tests/run.sh -k quarto`): la ventana abre y cierra sin pantalla, las entradas
+- **La prueba automática es corta** (`python3 -m pytest -q tests -k studio …`, desde `scripts-quarto/`): la ventana abre y cierra sin pantalla, las entradas
   de los backends existen y `blog_service` simula antes de `--aplicar`; el resto se comprueba abriendo la
   aplicación y leyendo la consola integrada.
 - **No reimplementa ningún backend**: si un script cambia su CLI, cambia el servicio que lo llama; la

@@ -1,20 +1,36 @@
 """
 quarto_app/services/paths.py — Localización de los scripts backend y del directorio Documents.
 
-La raíz (DOCS_ROOT), la carpeta del hub (INDEX_DIR) y la de los backends (SCRIPTS_QUARTO) salen de
-core/env.py a través de comun.rutas, igual que en los scripts Bash (que cargan core/env.sh), de modo que la
-GUI y el backend siempre coincidan. Ninguna ruta es relativa a este archivo salvo los recursos propios.
+La raíz (DOCS_ROOT) y la carpeta del hub (INDEX_DIR) salen de core/env.py a través de gui_comun.rutas, igual que
+en los scripts Bash (que cargan core/env.sh), de modo que la GUI y el backend siempre coincidan. Los backends
+son de este mismo repo: cuelgan de `backend/`, junto a `studio/` (sesión 9, 2026-10-27); si un script se mueve,
+se toca `BACKENDS` y nada más.
 """
 
 from __future__ import annotations
 
 from pathlib import Path
 
-from comun import rutas
+from gui_comun import rutas
+
+REPO = Path(__file__).resolve().parents[3]          # scripts-quarto (studio/quarto_app/services/paths.py)
+BACKEND_DIR = REPO / "backend"
+BACKENDS = {
+    "blogs_manager": "script_blogs_manager",
+    "metadata_manager": "script_metadata_manager",
+    "format_yaml": "script_format_yaml",
+    "pub_index_symlink": "script_pub_index_symlink",
+    "generador_similar": "script_generador_publicacion_similar",
+}
+
+
+def backend(clave: str) -> Path:
+    """Carpeta de un backend: `backend("blogs_manager")` → `scripts-quarto/backend/script_blogs_manager`."""
+    return BACKEND_DIR / BACKENDS[clave]
 
 
 def core_env():
-    """El módulo core/env.py del workspace (lo carga comun.rutas)."""
+    """El módulo core/env.py del workspace (lo carga gui_comun.rutas)."""
     return rutas.core_env()
 
 
@@ -44,31 +60,31 @@ def hub_dir(docs_dir: Path | None = None) -> Path:
 # --- Entradas (entry points) de cada herramienta backend --------------------
 
 def blogs_manager() -> Path:
-    return rutas.backend("quarto", "blogs_manager") / "main.sh"
+    return backend("blogs_manager") / "main.sh"
 
 
 def metadata_manager() -> Path:
-    return rutas.backend("quarto", "metadata_manager") / "main.py"
+    return backend("metadata_manager") / "main.py"
 
 
 def metadata_config() -> Path:
-    return rutas.backend("quarto", "metadata_manager") / "metadata_config.yml"
+    return backend("metadata_manager") / "metadata_config.yml"
 
 
 def yaml_formatter() -> Path:
-    return rutas.backend("quarto", "format_yaml") / "fix_qmd_files.py"
+    return backend("format_yaml") / "fix_qmd_files.py"
 
 
 def pub_index_symlink() -> Path:
-    return rutas.backend("quarto", "pub_index_symlink") / "main.sh"
+    return backend("pub_index_symlink") / "main.sh"
 
 
 def pub_index_logs_dir() -> Path:
-    return rutas.backend("quarto", "pub_index_symlink") / "logs"
+    return backend("pub_index_symlink") / "logs"
 
 
 def generador_similar() -> Path:
-    return rutas.backend("quarto", "generador_similar") / "main.sh"
+    return backend("generador_similar") / "main.sh"
 
 
 def recursos_dir() -> Path:
