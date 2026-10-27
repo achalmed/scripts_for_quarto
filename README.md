@@ -22,7 +22,7 @@ main.py
 <!-- suite:fin -->
 
 <!-- suites:inicio -->
-Suites de esta carpeta (5); índice global en `meta/INDICE_SCRIPTS.md`. Patrón: M main · C config · L lib.
+Suites de esta carpeta (6); índice global en `meta/INDICE_SCRIPTS.md`. Patrón: M main · C config · L lib.
 
 | Suite | Carpeta | Objetivo | Escribe en | Simula | Timer | Estado | Patrón |
 |---|---|---|---|---|---|---|---|
@@ -31,8 +31,9 @@ Suites de esta carpeta (5); índice global en `meta/INDICE_SCRIPTS.md`. Patrón:
 | `generador_publicacion_similar` | [scripts-quarto/backend/script_generador_publicacion_similar](backend/script_generador_publicacion_similar/) | publicacion | web | no |  | activo | `MCL` |
 | `metadata_manager` | [scripts-quarto/backend/script_metadata_manager](backend/script_metadata_manager/) | publicacion | web | no |  | activo | `MCL` |
 | `pub_index_symlink` | [scripts-quarto/backend/script_pub_index_symlink](backend/script_pub_index_symlink/) | publicacion | vault | no |  | activo | `MCL` |
+| `quarto_studio` | [scripts-quarto/studio](studio/) | publicacion | web, vault | sí |  | activo | `M··` |
 
-<sub>Bloque generado desde los `suite.yml` por `core/suites.py generar` (2026-10-06); no se edita a mano.</sub>
+<sub>Bloque generado desde los `suite.yml` por `core/suites.py generar` (2026-10-27); no se edita a mano.</sub>
 <!-- suites:fin -->
 
 ## Qué es
