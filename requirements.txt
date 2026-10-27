@@ -5,4 +5,4 @@ pyyaml
 pandas
 openpyxl
 # GUI (studio/): Quarto Studio
-PySide6>=6.5
+PySide6==6.9.2
