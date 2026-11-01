@@ -29,7 +29,7 @@ def datos_lanzador() -> dict:
     from quarto_app.application import ACENTO, svg_icono
     return dict(app_id=APP_ID, nombre="Quarto Studio", comentario="Render, publicación, metadatos e índices de los blogs Quarto",
                 orden=[sys.executable, str(_AQUI / "main.py")], logo_svg=svg_icono("quarto-studio"), acento=ACENTO,
-                categorias="Development;Office;", palabras="quarto;blogs;publicar;render;metadatos;yaml;")
+                categorias="Office;Publishing;", palabras="quarto;blogs;publicar;render;metadatos;yaml;")
 
 
 def main() -> int:
