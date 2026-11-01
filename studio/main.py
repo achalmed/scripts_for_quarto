@@ -21,7 +21,22 @@ from quarto_app.application import crear_aplicacion
 from quarto_app.ui.main_window import MainWindow
 
 
+APP_ID = "quarto-studio"
+
+
+def datos_lanzador() -> dict:
+    """El acceso directo en el menú de aplicaciones (gui_comun.lanzador)."""
+    from quarto_app.application import ACENTO, svg_icono
+    return dict(app_id=APP_ID, nombre="Quarto Studio", comentario="Render, publicación, metadatos e índices de los blogs Quarto",
+                orden=[sys.executable, str(_AQUI / "main.py")], logo_svg=svg_icono("quarto-studio"), acento=ACENTO,
+                categorias="Development;Office;", palabras="quarto;blogs;publicar;render;metadatos;yaml;")
+
+
 def main() -> int:
+    from gui_comun import lanzador
+    atendido = lanzador.desde_main(sys.argv[1:], **datos_lanzador())   # --instalar-lanzador / --quitar-lanzador
+    if atendido is not None:
+        return atendido
     app = crear_aplicacion(sys.argv)
     ventana = MainWindow()
     ventana.show()

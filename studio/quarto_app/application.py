@@ -32,6 +32,7 @@ ACENTO = "azul"
 def crear_aplicacion(argv: list[str]) -> QApplication:
     preparar_plataforma()                 # sin el plugin de Wayland, XWayland sin aviso
     QApplication.setAttribute(Qt.AA_ShareOpenGLContexts)
+    QApplication.setDesktopFileName("quarto-studio")   # la ventana se agrupa con su acceso directo (Wayland)
     app = QApplication(argv)
     app.setApplicationName(APP_NAME)
     app.setApplicationVersion(APP_VERSION)
