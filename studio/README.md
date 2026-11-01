@@ -26,7 +26,7 @@ main.py --smoke
 
 Una sola ventana para las cinco herramientas de `../backend/`, en este mismo repo (`quarto-studio`, remoto
 `scripts_for_quarto`). Lo que comparte con Filesystem Studio y Git Studio (rutas por `core/env.sh`, workers, tema) es el
-paquete `gui_comun` de `core/py-common/`. Los scripts **no se reescriben**: actúan
+paquete `gui_comun` del repo `gui-comun/`. Los scripts **no se reescriben**: actúan
 como motor y la GUI los invoca como procesos a través de una capa de servicios desacoplada; la consola
 integrada muestra el comando exacto, stdout, stderr, código de salida y duración, nada se oculta. La
 entrada es `main.py`: crea la `QApplication`, aplica el tema persistido y muestra `MainWindow`; toda
@@ -59,7 +59,7 @@ La aplicación funciona sin compilar los recursos: si `resources_rc.py` no exist
 desde disco. Las preferencias (directorio de trabajo, tema) se guardan con `QSettings` y se editan en
 el diálogo de preferencias.
 
-La ventana sigue el diseño común de los studios (`core/py-common/gui_comun`, decisiones §2.11 de `core`): barra lateral
+La ventana sigue el diseño común de los studios (`gui-comun` (paquete `gui_comun`), decisiones §2.11 de `core`): barra lateral
 con la marca, plegable a solo iconos; tema claro, oscuro o el del sistema; la consola, oculta hasta que se pide, y un
 aviso en la esquina cuando una tarea termina o falla.
 
@@ -79,7 +79,7 @@ proyectos.
 
 | carpeta / archivo | qué es | dueño / generador |
 |---|---|---|
-| `main.py` | entrada: pone `studio/` en `sys.path` (el paquete añade `core/py-common`), crea la aplicación y abre la ventana; `--smoke` | a mano |
+| `main.py` | entrada: pone `studio/` en `sys.path` (el paquete encuentra `gui_comun`), crea la aplicación y abre la ventana; `--smoke` | a mano |
 | `suite.yml` | manifiesto de la suite `quarto_studio` (`core/suite.schema.yml`) | a mano |
 | `quarto_app/application.py` | `QApplication`, tema (diseño común de `gui_comun`, acento azul), iconos que siguen al tema | a mano |
 | `quarto_app/settings.py` | `QSettings` centralizado: la única puerta a las preferencias; ningún otro módulo instancia `QSettings` | a mano |

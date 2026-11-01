@@ -2,7 +2,7 @@
 
 Vino de las pruebas del repo que reunía los studios (retirado el 2026-10-31) (la parte de Quarto) cuando la GUI volvió aquí, el 2026-10-27:
 - las entradas de los cinco backends existen y cuelgan de `backend/` de este repo, no de otro;
-- `gui_comun` (lo común de los studios) se importa de `core/py-common`;
+- `gui_comun` (lo común de los studios) se importa del repo `gui-comun/` (o instalado);
 - la ventana principal se abre y se cierra con `QT_QPA_PLATFORM=offscreen` y `studio/main.py --smoke` sale con 0.
 Cada GUI corre en un proceso aparte con `XDG_CONFIG_HOME` temporal: QSettings no toca la configuración del autor.
 """
@@ -46,7 +46,7 @@ def test_backends_en_este_repo(workspace):
                        text=True, timeout=60)
     assert r.returncode == 0, r.stderr
     s = json.loads(r.stdout.strip().splitlines()[-1])
-    assert s.pop("gui_comun").endswith("core/py-common/gui_comun/__init__.py")
+    assert s.pop("gui_comun").endswith("gui-comun/gui_comun/__init__.py")
     for nombre, ruta in s.items():
         p = (RAIZ_REPO / "backend").resolve()
         assert p in Path(ruta).resolve().parents, f"{nombre}: {ruta} no cuelga de {p}"

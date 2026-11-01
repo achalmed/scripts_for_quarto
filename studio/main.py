@@ -13,7 +13,7 @@ Uso:
 import sys
 from pathlib import Path
 
-# El paquete quarto_app importable desde cualquier carpeta (él mismo pone core/py-common, la de gui_comun, en sys.path)
+# El paquete quarto_app importable desde cualquier carpeta (él mismo encuentra gui_comun)
 _AQUI = Path(__file__).resolve().parent
 sys.path.insert(0, str(_AQUI))
 
