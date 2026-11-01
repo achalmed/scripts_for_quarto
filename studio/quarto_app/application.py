@@ -1,24 +1,32 @@
 """
-application.py — Creación de la QApplication y gestión del tema claro/oscuro.
+application.py — Creación de la QApplication, iconos y tema (el diseño común de gui_comun, acento azul).
 """
 
 from __future__ import annotations
 
-from PySide6.QtCore import Qt
+from pathlib import Path
+
+from PySide6.QtCore import QFile, QIODevice, Qt
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication
+
+from gui_comun.diseno import Disenador, icono_svg, logo
+from gui_comun.theming import aplicar_tema as _aplicar_tema_comun
 
 from quarto_app import APP_NAME, APP_VERSION, ORG_DOMAIN, ORG_NAME
 from quarto_app.services import paths
 from quarto_app.settings import settings
 
-# Los recursos compilados (resources_rc) registran :/icons y :/themes.
+# Los recursos compilados (resources_rc) registran :/icons.
 # Si no están compilados, se cargan directamente del sistema de archivos.
 try:
     from quarto_app.resources import resources_rc  # noqa: F401
     _QRC_DISPONIBLE = True
 except ImportError:
     _QRC_DISPONIBLE = False
+
+
+ACENTO = "azul"
 
 
 def crear_aplicacion(argv: list[str]) -> QApplication:
@@ -28,33 +36,31 @@ def crear_aplicacion(argv: list[str]) -> QApplication:
     app.setApplicationVersion(APP_VERSION)
     app.setOrganizationName(ORG_NAME)
     app.setOrganizationDomain(ORG_DOMAIN)
-    app.setWindowIcon(icono_app("quarto-studio"))
     aplicar_tema(settings().get("general/tema"))
+    app.setWindowIcon(QIcon(logo(svg_icono("quarto-studio"), 64)))
     return app
 
 
-def icono_app(nombre: str) -> QIcon:
-    """Icono SVG desde recursos Qt (:/icons) o desde disco como fallback."""
+def svg_icono(nombre: str) -> str:
+    """El texto SVG de un icono: de los recursos Qt (:/icons) o del disco."""
     if _QRC_DISPONIBLE:
-        icono = QIcon(f":/icons/{nombre}.svg")
-        if not icono.isNull():
-            return icono
-    return QIcon(paths.icono(nombre))
-
-
-def aplicar_tema(nombre: str) -> None:
-    """Aplica la hoja de estilos claro/oscuro a toda la aplicación."""
-    nombre = nombre if nombre in ("claro", "oscuro") else "oscuro"
-    qss = ""
-    if _QRC_DISPONIBLE:
-        from PySide6.QtCore import QFile, QIODevice
-        f = QFile(f":/themes/{nombre}.qss")
+        f = QFile(f":/icons/{nombre}.svg")
         if f.open(QIODevice.ReadOnly):
-            qss = bytes(f.readAll()).decode()
+            texto = bytes(f.readAll()).decode()
             f.close()
-    if not qss:
-        archivo = paths.tema_qss(nombre)
-        if archivo.is_file():
-            qss = archivo.read_text(encoding="utf-8")
-    QApplication.instance().setStyleSheet(qss)
-    settings().set("general/tema", nombre)
+            return texto
+    ruta = Path(paths.icono(nombre))
+    return ruta.read_text(encoding="utf-8") if ruta.is_file() else ""
+
+
+def icono_app(nombre: str) -> QIcon:
+    """Icono SVG que se repinta con el tema (gui_comun.diseno)."""
+    texto = svg_icono(nombre)
+    return icono_svg(texto) if texto else QIcon()
+
+
+def aplicar_tema(nombre: str) -> Disenador:
+    """El diseño común de los studios (gui_comun.diseno) con el acento de Quarto Studio: sistema · claro · oscuro."""
+    disenador = _aplicar_tema_comun(QApplication.instance(), nombre, acento=ACENTO)
+    settings().set("general/tema", disenador.modo)
+    return disenador

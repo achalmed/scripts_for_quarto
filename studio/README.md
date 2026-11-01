@@ -55,9 +55,25 @@ python3 studio/main.py --smoke     # construye la interfaz y sale (prueba de hum
 studio/build_resources.sh          # opcional: compila resources.qrc a resources_rc.py (requiere pyside6-rcc)
 ```
 
-La aplicación funciona sin compilar los recursos: si `resources_rc.py` no existe, carga iconos y temas
+La aplicación funciona sin compilar los recursos: si `resources_rc.py` no existe, carga los iconos
 desde disco. Las preferencias (directorio de trabajo, tema) se guardan con `QSettings` y se editan en
 el diálogo de preferencias.
+
+La ventana sigue el diseño común de los studios (`core/py-common/gui_comun`, decisiones §2.11 de `core`): barra lateral
+con la marca, plegable a solo iconos; tema claro, oscuro o el del sistema; la consola, oculta hasta que se pide, y un
+aviso en la esquina cuando una tarea termina o falla.
+
+| atajo | qué hace |
+|---|---|
+| Ctrl+K | paleta de comandos: escribir el nombre de una página o una acción y pulsar Intro |
+| Ctrl+1 … Ctrl+9 | ir a la página de ese número de la barra lateral |
+| Ctrl+J | mostrar u ocultar la consola (también el botón «Consola» de la barra de estado) |
+| Ctrl+B | plegar o desplegar la barra lateral |
+| Ctrl+Mayús+L | pasar de tema claro a oscuro y al revés |
+| Ctrl+, | preferencias |
+
+Además: F5 reescanea los proyectos, Ctrl+. detiene la operación en curso y Ctrl+Mayús+E abre el explorador de
+proyectos.
 
 ## Estructura
 
@@ -65,7 +81,7 @@ el diálogo de preferencias.
 |---|---|---|
 | `main.py` | entrada: pone `studio/` en `sys.path` (el paquete añade `core/py-common`), crea la aplicación y abre la ventana; `--smoke` | a mano |
 | `suite.yml` | manifiesto de la suite `quarto_studio` (`core/suite.schema.yml`) | a mano |
-| `quarto_app/application.py` | `QApplication`, tema claro/oscuro (QSS), icono de la app | a mano |
+| `quarto_app/application.py` | `QApplication`, tema (diseño común de `gui_comun`, acento azul), iconos que siguen al tema | a mano |
 | `quarto_app/settings.py` | `QSettings` centralizado: la única puerta a las preferencias; ningún otro módulo instancia `QSettings` | a mano |
 | `quarto_app/models/` | dominio puro (`blog.py`, `operation.py`): no importan nada de Qt | a mano |
 | `quarto_app/services/` | construyen `Command` (programa + args + cwd + stdin) por herramienta: `command.py`; `paths.py` (localiza los backends en `../backend/` y la raíz del workspace por `gui_comun.rutas`, es decir, por `core/env.py`); `blog_service.py` → `quarto-studio/backend/script_blogs_manager/main.sh`; `metadata_service.py` → `quarto-studio/backend/script_metadata_manager/main.py`; `yaml_service.py` → `quarto-studio/backend/script_format_yaml/fix_qmd_files.py` (alias de `main.py`); `index_service.py` → `quarto-studio/backend/script_pub_index_symlink/main.sh`; `similar_service.py` → `quarto-studio/backend/script_generador_publicacion_similar/main.sh`; `post_service.py` (posts APAQuarto, portado); `project_scanner.py` (escaneo de blogs y posts, Python puro) | a mano |
@@ -75,7 +91,7 @@ el diálogo de preferencias.
 | `quarto_app/widgets/` | consola, panel de logs, sidebar (`SECCIONES`), explorador de proyectos (dock), cabecera de página | a mano |
 | `quarto_app/dialogs/` | preferencias, nuevo post, nuevo blog | a mano |
 | `quarto_app/utils/` | limpieza de secuencias ANSI de la salida de los scripts | a mano |
-| `quarto_app/resources/` | `resources.qrc`, `icons/` (SVG), `themes/` (`claro.qss`, `oscuro.qss`), `ui/` (`.ui`); `resources_rc.py` se genera y está ignorado | `build_resources.sh` |
+| `quarto_app/resources/` | `resources.qrc`, `icons/` (SVG), `ui/` (`.ui`); `resources_rc.py` se genera y está ignorado | `build_resources.sh` |
 
 **Regla de dependencias:** `ui → controllers → services → workers`. La UI nunca conoce rutas de
 scripts (las resuelve `quarto_app/services/paths.py`; si un script se mueve, se toca solo ese archivo); los

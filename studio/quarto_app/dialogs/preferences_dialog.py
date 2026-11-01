@@ -48,7 +48,7 @@ class PreferencesDialog(QDialog):
         self._docs = _SelectorRuta(st.get("general/docs_dir"))
         self._editor = _SelectorRuta(st.get("general/editor"), directorio=False)
         self._tema = QComboBox()
-        self._tema.addItems(["oscuro", "claro"])
+        self._tema.addItems(["sistema", "oscuro", "claro"])
         self._tema.setCurrentText(st.get("general/tema"))
         form_general.addRow("Directorio de trabajo (Documents):", self._docs)
         form_general.addRow("Editor favorito:", self._editor)

@@ -1,7 +1,7 @@
 ---
 tipo: estado
 estado: activo
-actualizado: 2026-10-27
+actualizado: 2026-10-31
 ---
 # estado.md — quarto-studio (repo `scripts_for_quarto`)
 
@@ -16,6 +16,7 @@ en disco con un remoto «bare» local.
 
 | fecha | qué | dónde se ve |
 |---|---|---|
+| 2026-10-31 | **El repo pasa a llamarse `quarto-studio`** (antes `scripts-quarto`; remoto `scripts_for_quarto` intacto) con `core/renombrar.py`, y **Quarto Studio se renueva** con el diseño común de `gui_comun` (acento azul): barra lateral plegable, paleta Ctrl+K, avisos, consola oculta, portada «Inicio» con cifras y mosaicos, botones sin emojis; las hojas `.qss`, retiradas | `UNDO.sh` en `$RESPALDOS_DIR/renombres/2026-10-31-scripts-quarto-a-quarto-studio/`; `studio/README.md` §Uso |
 | 2026-10-27 | **Quarto Studio vuelve** (sesión 9 de la cola de la auditoría posterior): la GUI en `studio/` con su historia, sus backends por ruta del repo, `gui_comun` desde `core`; `gui-suites` retirado | `docs/decisiones.md`; `tests/test_studio*.py` (5); `meta/programa/08-mantenimiento/studios-independientes-2026-10-27.md` |
 | 2026-10-10 | **Los blogs por el registro** (ola 6, 6f): `metadata_manager` (`resolve_blog_dir`, `discover_blog_dirs`, `blog_label`, `path_sync.blog_dir_from_ruta`, `create_default_config`), `blogs_manager` (`utils_list_projects`, `utils_resolve_project_path`) y `pub_index_symlink` (`scanner_find_all_publications`) leen `core` (`pubs.py` / `pubs.sh`), no el prefijo `pub_`; `QBLOG_FUENTES` sin `THEME_VERSION` (igual que la puerta R6) | `tests/` (29); `main.sh list` = 12 |
 | 2026-10-06 | ola 4, fase A (agente «quarto»): Q1 y Q2, un commit por ítem | la bitácora de abajo; `meta/programa/06-olas/ola-04-reingenieria.md` §2 |

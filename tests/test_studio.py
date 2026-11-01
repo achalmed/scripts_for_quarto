@@ -1,6 +1,6 @@
 """test_studio.py — Quarto Studio abre su ventana sin pantalla y encuentra sus backends en este mismo repo (sesión 9).
 
-Vino de gui-suites/tests/test_studios.py (la parte de Quarto) cuando la GUI volvió aquí, el 2026-10-27:
+Vino de las pruebas del repo que reunía los studios (retirado el 2026-10-31) (la parte de Quarto) cuando la GUI volvió aquí, el 2026-10-27:
 - las entradas de los cinco backends existen y cuelgan de `backend/` de este repo, no de otro;
 - `gui_comun` (lo común de los studios) se importa de `core/py-common`;
 - la ventana principal se abre y se cierra con `QT_QPA_PLATFORM=offscreen` y `studio/main.py --smoke` sale con 0.

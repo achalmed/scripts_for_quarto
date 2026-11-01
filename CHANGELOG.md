@@ -16,6 +16,15 @@ Vigentes: `blogs_manager` 4.0.0 · `metadata_manager` 2.3.0 · `generador_public
 `format_yaml` 2.0 · `pub_index_symlink` (sin número) · Quarto Studio 1.0.0 (`APP_VERSION` en
 `studio/quarto_app/__init__.py`; del 2026-10-06 al 2026-10-27 vivió en el repo `gui-suites`).
 
+## Cambiado — 2026-10-31
+
+- Quarto Studio adopta el diseño común de los studios (`core/py-common/gui_comun`, decisiones §2.11 de `core`): tema
+  claro, oscuro o del sistema con acento azul, barra lateral plegable con marca, paleta de comandos (Ctrl+K), avisos
+  al terminar cada operación, consola oculta hasta que se pide (Ctrl+J), portada «Inicio» con cifras y mosaicos; los
+  botones de las páginas pierden el emoji y cada página marca su acción principal. Se retiran `themes/claro.qss` y
+  `themes/oscuro.qss`.
+- El repo se llama `quarto-studio` (antes `scripts-quarto`; el remoto sigue siendo `scripts_for_quarto`).
+
 ## Añadido — 2026-10-27
 
 - Quarto Studio vuelve de `gui-suites` a `studio/` con su historia, y su prueba como `tests/test_studio*.py`: la GUI

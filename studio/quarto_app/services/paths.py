@@ -95,6 +95,3 @@ def icono(nombre: str) -> str:
     """Ruta a un icono SVG del tema de recursos."""
     return str(recursos_dir() / "icons" / f"{nombre}.svg")
 
-
-def tema_qss(nombre: str) -> Path:
-    return recursos_dir() / "themes" / f"{nombre}.qss"

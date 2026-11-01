@@ -11,7 +11,7 @@ from quarto_app.application import icono_app
 
 # (id, etiqueta, icono)
 SECCIONES = [
-    ("dashboard", "Dashboard", "dashboard"),
+    ("dashboard", "Inicio", "dashboard"),
     ("blogs", "Blogs", "blogs"),
     ("metadata", "Metadata", "metadata"),
     ("yaml", "YAML", "yaml"),

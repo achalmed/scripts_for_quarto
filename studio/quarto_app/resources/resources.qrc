@@ -15,8 +15,4 @@
     <file alias="carpeta.svg">icons/carpeta.svg</file>
     <file alias="quarto-studio.svg">icons/quarto-studio.svg</file>
   </qresource>
-  <qresource prefix="/themes">
-    <file alias="oscuro.qss">themes/oscuro.qss</file>
-    <file alias="claro.qss">themes/claro.qss</file>
-  </qresource>
 </RCC>

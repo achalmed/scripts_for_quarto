@@ -7,7 +7,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from PySide6.QtWidgets import (
-    QGroupBox, QHBoxLayout, QHeaderView, QInputDialog, QMessageBox,
+    QGridLayout, QGroupBox, QHBoxLayout, QHeaderView, QInputDialog, QMessageBox,
     QPushButton, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget,
 )
 
@@ -39,6 +39,7 @@ class BlogsPage(QWidget):
         self._tabla = QTableWidget(0, len(_COLUMNAS))
         self._tabla.setHorizontalHeaderLabels(_COLUMNAS)
         self._tabla.horizontalHeader().setSectionResizeMode(4, QHeaderView.Stretch)
+        self._tabla.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeToContents)   # el nombre se lee entero
         self._tabla.verticalHeader().setVisible(False)
         self._tabla.setEditTriggers(QTableWidget.NoEditTriggers)
         self._tabla.setSelectionBehavior(QTableWidget.SelectRows)
@@ -47,8 +48,10 @@ class BlogsPage(QWidget):
 
         # --- Acciones sobre el blog seleccionado -----------------------------------
         caja_blog = QGroupBox("Blog seleccionado")
-        fila_blog = QHBoxLayout(caja_blog)
-        for texto, manejador in [
+        fila_blog = QGridLayout(caja_blog)   # dos filas de cinco: diez botones no caben en una
+        fila_blog.setHorizontalSpacing(8)
+        fila_blog.setVerticalSpacing(8)
+        for indice, (texto, manejador) in enumerate([
             ("▶ Render", lambda: self._con_blog(self._ctl.render)),
             ("👁 Preview", lambda: self._con_blog(self._ctl.preview)),
             ("■ Detener preview", self._ctl.detener_preview),
@@ -59,10 +62,10 @@ class BlogsPage(QWidget):
             ("🐙 Git status", lambda: self._con_blog(self._ctl.git_status)),
             ("🐙 Commit+push", self._commit),
             ("＋ Nueva publicación", self._nuevo_post),
-        ]:
+        ]):
             boton = QPushButton(texto)
             boton.clicked.connect(manejador)
-            fila_blog.addWidget(boton)
+            fila_blog.addWidget(boton, indice // 5, indice % 5)
         layout.addWidget(caja_blog)
 
         # --- Operaciones por lotes ---------------------------------------------------

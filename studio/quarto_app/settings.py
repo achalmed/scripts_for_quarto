@@ -23,7 +23,7 @@ class AppSettings:
     _DEFAULTS = {
         "general/docs_dir": "",              # vacío → autodetección
         "general/editor": "",                # vacío → aplicación por defecto del sistema
-        "general/tema": "oscuro",            # "claro" | "oscuro"
+        "general/tema": "sistema",           # "sistema" | "claro" | "oscuro"
         "general/iconos": "estandar",
         "rutas/quarto": "quarto",
         "rutas/python": "python3",

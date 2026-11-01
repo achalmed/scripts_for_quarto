@@ -1,7 +1,7 @@
 """test_studio_blog_service.py — Quarto Studio simula antes y pasa `--aplicar` solo al confirmar (ola 4, Q2).
 
-Nació aquí como tests/test_gui_blog_service.py, fue a gui-suites con la GUI (ola 4, fase B) y volvió con ella
-(sesión 9, 2026-10-27; en gui-suites, tests/test_quarto_blog_service.py).
+Nació aquí como tests/test_gui_blog_service.py, fue con la GUI al repo que reunía los studios (ola 4, fase B) y volvió con ella
+(sesión 9, 2026-10-27; allí, tests/test_quarto_blog_service.py).
 
 Corre en un proceso aparte con `QT_QPA_PLATFORM=offscreen` y `XDG_CONFIG_HOME` temporal (QSettings no toca la
 configuración del autor). No abre ventanas ni lanza procesos: un `MainController` falso recoge los `Command`.

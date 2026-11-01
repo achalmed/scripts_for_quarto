@@ -11,15 +11,22 @@ Estructura (estilo Qt Creator / VS Code):
 
 from __future__ import annotations
 
+import re
+
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QAction, QKeySequence
 from PySide6.QtWidgets import (
-    QLabel, QMainWindow, QMessageBox, QProgressBar, QSplitter, QStackedWidget,
+    QApplication, QLabel, QMainWindow, QMessageBox, QProgressBar, QPushButton, QSplitter, QStackedWidget,
     QStatusBar, QTabWidget, QToolBar, QWidget, QHBoxLayout, QDockWidget,
 )
 
+from gui_comun.diseno import variante
+from gui_comun.theming import disenador_de
+from gui_comun.widgets.marco import Marco, boton_tarea, pagina_con_margenes
+from gui_comun.widgets.paleta import Comando
+
 from quarto_app import APP_NAME, APP_VERSION
-from quarto_app.application import aplicar_tema, icono_app
+from quarto_app.application import aplicar_tema, icono_app, svg_icono
 from quarto_app.controllers.blogs_controller import BlogsController
 from quarto_app.controllers.main_controller import MainController
 from quarto_app.controllers.metadata_controller import MetadataController
@@ -36,6 +43,11 @@ from quarto_app.widgets.console_widget import ConsoleWidget
 from quarto_app.widgets.file_explorer import FileExplorer
 from quarto_app.widgets.log_panel import LogPanel
 from quarto_app.widgets.sidebar import Sidebar
+
+# Los botones de las páginas traían un emoji delante; el diseño común los quiere limpios y con un solo primario
+_SIMBOLO_INICIAL = re.compile(r"^[^\w…¿¡(]+")
+_PRIMARIOS = {"Render", "Sincronizar", "Aplicar Excel → .qmd", "Generar índices", "Formatear directorio"}
+_PELIGRO = {"Eliminar rotos", "Eliminar…", "Limpiar todos"}
 
 
 class MainWindow(QMainWindow):
@@ -89,6 +101,7 @@ class MainWindow(QMainWindow):
         panel_inferior.addTab(self.consola, icono_app("consola"), "Consola")
         panel_inferior.addTab(self.logs, icono_app("logs"), "Logs")
 
+        self._panel_inferior = panel_inferior
         divisor = QSplitter(Qt.Vertical)
         divisor.addWidget(zona_central)
         divisor.addWidget(panel_inferior)
@@ -111,6 +124,7 @@ class MainWindow(QMainWindow):
         self._crear_toolbar()
         self._crear_statusbar()
         self._conectar_senales()
+        self._montar_marco()
 
         # Primer escaneo de proyectos (QThread)
         self.ctl.escanear_proyectos()
@@ -214,6 +228,59 @@ class MainWindow(QMainWindow):
         self.ctl.blogs_actualizados.connect(self.pagina_metadata.actualizar_blogs)
         self.ctl.blogs_actualizados.connect(self.pagina_similares.actualizar_blogs)
 
+    def _montar_marco(self) -> None:
+        """Barra lateral con marca, paleta (Ctrl+K), avisos y consola plegada hasta que se pida (gui_comun)."""
+        disenador = disenador_de(QApplication.instance()) or aplicar_tema(settings().get("general/tema"))
+        self.setMinimumSize(980, 640)
+        for accion_menu in self.menuBar().actions():         # sin menú ni barra: sus atajos siguen vivos
+            if accion_menu.menu():
+                self.addActions(accion_menu.menu().actions())
+        self.menuBar().hide()
+        for barra in self.findChildren(QToolBar):
+            barra.hide()
+        self._panel_inferior.hide()
+        self.marco = Marco(
+            self, nav=self._sidebar, nombre=APP_NAME, subtitulo="Blogs y publicaciones",
+            icono_app=svg_icono("quarto-studio"), disenador=disenador, al_preferencias=self._abrir_preferencias,
+            al_acerca=self._acerca_de, consola_visible=self._panel_inferior.isVisible,
+            alternar_consola=self._panel_inferior.setVisible,
+            guardar_tema=lambda modo: settings().set("general/tema", modo))
+        self.marco.comandos_extra += [
+            Comando("Reescanear proyectos", self.ctl.escanear_proyectos, grupo="Proyecto", icono=icono_app("refrescar"),
+                    atajo="F5", palabras="actualizar refrescar blogs"),
+            Comando("Detener la operación en curso", self.ctl.detener, grupo="Proyecto", icono=icono_app("detener"),
+                    atajo="Ctrl+.", palabras="parar cancelar"),
+            Comando("Explorador de proyectos", lambda: self._dock_explorador.setVisible(not self._dock_explorador.isVisible()),
+                    grupo="Vista", icono=icono_app("carpeta"), atajo="Ctrl+Mayús+E", palabras="archivos carpetas árbol"),
+        ]
+        self._chip = boton_tarea(self, lambda: self._panel_inferior.setVisible(not self._panel_inferior.isVisible()))
+        self.ctl.runner.iniciado.connect(
+            lambda cmd: self._chip.setText(f"● {cmd.descripcion or cmd.programa}…"))
+        self.ctl.runner.terminado.connect(self._al_terminar_operacion)
+
+        for pagina in (self.pagina_blogs, self.pagina_metadata, self.pagina_yaml, self.pagina_indices,
+                       self.pagina_similares):
+            pagina_con_margenes(pagina)
+            for boton in pagina.findChildren(QPushButton):
+                texto = _SIMBOLO_INICIAL.sub("", boton.text()).strip()
+                if texto and texto != boton.text():
+                    boton.setText(texto)
+                if texto == "…":
+                    boton.setFixedWidth(42)        # el de «examinar»: sin aire no se ve el texto
+                    boton.setToolTip(boton.toolTip() or "Examinar…")
+                if texto in _PRIMARIOS:
+                    variante(boton, "primario")
+                elif texto in _PELIGRO:
+                    variante(boton, "peligro")
+
+    def _al_terminar_operacion(self, op) -> None:
+        self._chip.setText("Consola")
+        if op.exitosa:
+            self.marco.avisar(f"{op.descripcion}: listo", f"Terminó en {op.duracion_seg:.1f} s", "ok")
+        else:
+            self.marco.avisar(f"{op.descripcion}: con errores",
+                              "El detalle está en la consola (Ctrl+J).", "error")
+
     def _cambiar_pagina(self, id_seccion: str) -> None:
         indice = self._indice_paginas.get(id_seccion)
         if indice is not None:
@@ -246,8 +313,7 @@ class MainWindow(QMainWindow):
             self.ctl.escanear_proyectos()
 
     def _alternar_tema(self) -> None:
-        nuevo = "claro" if settings().get("general/tema") == "oscuro" else "oscuro"
-        aplicar_tema(nuevo)
+        self.marco.alternar_tema()
 
     def _acerca_de(self) -> None:
         QMessageBox.about(
