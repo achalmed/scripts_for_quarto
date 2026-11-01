@@ -10,7 +10,7 @@ from PySide6.QtCore import QFile, QIODevice, Qt
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication
 
-from gui_comun.diseno import Disenador, icono_svg, logo
+from gui_comun.diseno import Disenador, icono_svg, logo, preparar_plataforma
 from gui_comun.theming import aplicar_tema as _aplicar_tema_comun
 
 from quarto_app import APP_NAME, APP_VERSION, ORG_DOMAIN, ORG_NAME
@@ -30,6 +30,7 @@ ACENTO = "azul"
 
 
 def crear_aplicacion(argv: list[str]) -> QApplication:
+    preparar_plataforma()                 # sin el plugin de Wayland, XWayland sin aviso
     QApplication.setAttribute(Qt.AA_ShareOpenGLContexts)
     app = QApplication(argv)
     app.setApplicationName(APP_NAME)
