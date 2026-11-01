@@ -6,7 +6,7 @@ Solo orquesta: crea la QApplication, aplica el tema persistido y muestra
 la ventana principal. Toda la lógica vive en quarto_app/; los backends, en ../backend/ (este mismo repo).
 
 Uso:
-    python3 studio/main.py            # desde scripts-quarto/
+    python3 studio/main.py            # desde quarto-studio/
     python3 studio/main.py --smoke    # construye la UI y sale (prueba de humo)
 """
 

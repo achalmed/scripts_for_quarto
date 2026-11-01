@@ -2,7 +2,7 @@
 tipo: guia_ia
 estado: activo
 ---
-# CLAUDE.md — scripts-quarto (repo `scripts_for_quarto`)
+# CLAUDE.md — quarto-studio (repo `scripts_for_quarto`)
 
 Guía para el asistente. En español, como todo el ecosistema. `AGENTS.md` es un enlace a este archivo.
 Léase antes: `estado.md` (dónde está; §Por hacer), `README.md` (qué es, contrato con el hub, uso),

@@ -1,9 +1,9 @@
 ---
 tipo: decision
-titulo: 'Decisiones de scripts-quarto'
+titulo: 'Decisiones de quarto-studio'
 estado: activo
 ---
-# Decisiones de scripts-quarto
+# Decisiones de quarto-studio
 
 Registro único y acumulativo de por qué el repositorio es como es. Cada entrada lleva su fecha; una
 decisión revocada no se borra: se marca «Superada por …». Lo que se hizo en una sesión va al mensaje de

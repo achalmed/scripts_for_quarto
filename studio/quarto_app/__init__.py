@@ -1,6 +1,6 @@
 """quarto_app — Quarto Studio, aplicación de escritorio para gestionar la familia de blogs Quarto.
 
-Frontend Qt (PySide6) desacoplado: los scripts de `backend/` de este mismo repo (scripts-quarto, repo
+Frontend Qt (PySide6) desacoplado: los scripts de `backend/` de este mismo repo (quarto-studio, repo
 scripts_for_quarto) actúan como motor y se invocan a través de la capa de servicios. Al importarse pone
 `core/py-common` en `sys.path` (subiendo carpetas hasta hallar `core/`, como los envoltorios del logger): ahí vive
 `gui_comun`, lo que comparten los tres studios.

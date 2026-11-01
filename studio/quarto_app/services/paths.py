@@ -13,7 +13,7 @@ from pathlib import Path
 
 from gui_comun import rutas
 
-REPO = Path(__file__).resolve().parents[3]          # scripts-quarto (studio/quarto_app/services/paths.py)
+REPO = Path(__file__).resolve().parents[3]          # quarto-studio (studio/quarto_app/services/paths.py)
 BACKEND_DIR = REPO / "backend"
 BACKENDS = {
     "blogs_manager": "script_blogs_manager",
@@ -25,7 +25,7 @@ BACKENDS = {
 
 
 def backend(clave: str) -> Path:
-    """Carpeta de un backend: `backend("blogs_manager")` → `scripts-quarto/backend/script_blogs_manager`."""
+    """Carpeta de un backend: `backend("blogs_manager")` → `quarto-studio/backend/script_blogs_manager`."""
     return BACKEND_DIR / BACKENDS[clave]
 
 

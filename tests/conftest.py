@@ -1,4 +1,4 @@
-"""conftest.py — fixtures comunes de las pruebas de scripts-quarto (ola 4, Q1b y Q2).
+"""conftest.py — fixtures comunes de las pruebas de quarto-studio (ola 4, Q1b y Q2).
 
 Ninguna prueba toca el hub `web` ni los `_pubs` reales (Netlify despliega con cada push): todo ocurre en un
 workspace de fixture bajo el directorio temporal de pytest (en disco, por `--basetemp`), con un `core/` que
