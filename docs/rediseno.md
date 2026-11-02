@@ -220,7 +220,7 @@ intactos (`blog_service`, `metadata_service`, `yaml_service`, `index_service`, `
 estado por la regla de la puerta R6; `render`: progreso y problemas de `quarto render`; `datos`: entradas, Excel,
 índice, fragmentos), el módulo de filas, y `studio/quarto_app/qml/Main.qml` sobre `VentanaStudio` con nueve
 componentes propios (ResumenSitio, EntradasSitio, Problemas, Registro, Metadatos, Elemento, Operacion, Plan, el
-diálogo de la entrada nueva y el de ajustes). `tests/run.sh` con 29 pruebas: el catálogo (cada vista tiene
+diálogo de la entrada nueva y el de ajustes). `tests/run.sh` con 28 pruebas: el catálogo (cada vista tiene
 operaciones, simular nunca aplica, lo que publica lo declara), los planes, el estado de cada sitio de la muestra, la
 lectura del render, las lecturas de la muestra, las filas, los controladores (tabla y filtros, el sitio y la entrada
 actuales, la entrada nueva, el flujo con el Excel, la operación actual y sus órdenes, correr de verdad lo que solo lee
