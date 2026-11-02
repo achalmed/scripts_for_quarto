@@ -1,5 +1,7 @@
 """quarto_app/aplicacion.py — arma Quarto Studio: la aplicación (gui_comun.nucleo), los controladores, el registro de
-acciones (menú, barra, menú contextual, paleta, atajos) y carga `qml/Main.qml`.
+acciones (menú, paleta, atajos, estados de operación) y carga `qml/Main.qml` (VentanaBase; reingeniería del 2026-11-02,
+`docs/reingenieria.md`): Escribir, Metadatos, Publicación y Herramientas (Ctrl+1–4); Ctrl+Mayús+K renderiza el sitio
+como en RStudio; Ctrl+S guarda el documento; publicar confirma con la base nombrando el sitio, el dominio y lo que va.
 
 Toda operación existe una sola vez, aquí, en `Acciones`. Las operaciones de los backends son acciones `op.<id>` que
 eligen la operación actual (y llevan a su vista); correrla es siempre «Simular» (F5: la simulación de la CLI, el plan
@@ -10,19 +12,22 @@ construye interfaz; la ventana no renderiza ni publica por su cuenta: toda corri
 from __future__ import annotations
 
 import os
-import subprocess
 import sys
 from pathlib import Path
 
 from gui_comun.acciones import Acciones, StandardKey
 from gui_comun.consola import Consola
 from gui_comun.nucleo import Aplicacion
-from gui_comun.qt import QObject, Signal, Slot
+from gui_comun.qt import QCoreApplication, QObject, Qt, Signal, Slot
 from gui_comun.tareas import Tareas
 
 from quarto_app import APP_NAME, APP_VERSION, ORG_NAME
 from quarto_app.controladores.ajustes import Ajustes
-from quarto_app.controladores.espacio import Espacio
+from quarto_app.controladores.documentos import Documentos
+from quarto_app.controladores.editor import Editor
+from quarto_app.controladores.metadatos import Metadatos
+from quarto_app.controladores.publicacion import Publicacion
+from quarto_app.controladores.espacio import AREAS, Espacio
 from quarto_app.controladores.flujo import Flujo
 from quarto_app.controladores.operaciones import Operaciones
 from quarto_app.controladores.sitios import Sitios
@@ -41,6 +46,13 @@ DESCRIPCION = ("La familia de blogs Quarto en una ventana de trabajo: el hub y l
                "backend de este repo, que simula con F5 (o muestra su plan) y aplica con Ctrl+Intro tras confirmar; publicar nombra el "
                "sitio y su dominio, porque Netlify despliega con el push.")
 ACENTO = "azul"
+
+# la vista previa (QtWebEngine de QML) pide compartir los contextos de OpenGL ANTES de crear la aplicación: es lo que hace
+# QtWebEngineQuick.initialize(), que el PySide6 del sistema no trae; sin pantalla, Chromium sin GPU
+if QCoreApplication.instance() is None:
+    QCoreApplication.setAttribute(Qt.ApplicationAttribute.AA_ShareOpenGLContexts)
+if os.environ.get("QT_QPA_PLATFORM") == "offscreen":
+    os.environ.setdefault("QTWEBENGINE_CHROMIUM_FLAGS", "--disable-gpu")
 
 
 def datos_lanzador() -> dict:
@@ -68,20 +80,34 @@ def construir(app: Aplicacion, cache: Path | None = None, docs_dir: Path | None 
     sitios = Sitios(espacio, consola, env, cache=cache, docs_dir=docs_dir)
     flujo = Flujo(espacio, sitios, ajustes, consola, hub=hub)
     operaciones = Operaciones(espacio, sitios, flujo, ajustes, consola, tareas, cache=cache)
+    editor = Editor(consola)
+    documentos = Documentos(sitios)
+    publicacion = Publicacion(sitios)
+    metadatos = Metadatos(sitios, flujo)
+    operaciones.guarda_destino = publicacion.motivoDestino     # E9: publicar y empujar solo si el destino es el del sitio
+    escritorio = app.escritorio
     acciones = Acciones()
-    acciones.estandar(NOMBRE)
+    acciones.estandar(NOMBRE, paneles=False)
     pedir = lambda que, **datos: (lambda *_: interfaz.pedir.emit(que, datos))
 
     def objetivo() -> str:
-        if espacio.vista in ("entradas", "indice", "contenido") and flujo.elementoRuta:
+        if espacio.area == "escribir" and documentos.actual:
+            return documentos.actual
+        if espacio.area == "metadatos" and metadatos.rutaActual:
+            return metadatos.rutaActual
+        if espacio.area == "herramientas" and espacio.vista in ("entradas", "indice", "contenido") and flujo.elementoRuta:
             return flujo.elementoRuta
         return sitios.entrada or sitios.ruta
 
     # --- Archivo
-    acciones.registrar("archivo.abrir", "&Abrir", "document-open", None, "Archivo", habilitada=False, al_disparar=lambda *_: espacio.abrir(objetivo()),
-                       descripcion="La entrada, el enlace o el fragmento seleccionado con la aplicación del sistema (también Intro en la tabla)")
-    acciones.registrar("archivo.carpeta", "Abrir su &carpeta", "system-file-manager", "Ctrl+Shift+O", "Archivo", habilitada=False,
-                       al_disparar=lambda *_: espacio.abrirDolphin(objetivo()), descripcion="La carpeta del sitio o del elemento seleccionado en Dolphin")
+    acciones.registrar("archivo.guardar", "&Guardar", "document-save", StandardKey.Save, "Archivo", habilitada=False, al_disparar=pedir("guardar"),
+                       operacion="escritura", descripcion="Guarda el documento del editor (sin pisar un cambio hecho fuera sin preguntar)")
+    acciones.registrar("archivo.ir", "&Ir a un documento…", "go-jump", "Ctrl+P", "Archivo", al_disparar=pedir("ir_documento"),
+                       descripcion="Busca un documento del sitio por su ruta o su título y lo abre en el editor")
+    acciones.registrar("archivo.abrir", "Abrir con su &aplicación", "document-open", None, "Archivo", habilitada=False, operacion="lectura",
+                       al_disparar=lambda *_: escritorio.abrirConAplicacion(objetivo()), descripcion="El documento o el elemento seleccionado con la aplicación del sistema")
+    acciones.registrar("archivo.carpeta", "Mostrar en &Dolphin", "system-file-manager", "Ctrl+Shift+O", "Archivo", habilitada=False, operacion="lectura",
+                       al_disparar=lambda *_: escritorio.mostrarEnDolphin(objetivo()), descripcion="El documento, el elemento o el sitio, señalado en su carpeta")
     acciones.registrar("archivo.terminal", "Abrir &terminal aquí", "utilities-terminal", "Shift+F4", "Archivo", habilitada=False,
                        al_disparar=lambda *_: espacio.abrirTerminal(objetivo()))
     acciones.registrar("archivo.navegador", "Abrir en el &navegador", "internet-web-browser", None, "Archivo", habilitada=False, al_disparar=sitios.abrirNavegador,
@@ -90,19 +116,31 @@ def construir(app: Aplicacion, cache: Path | None = None, docs_dir: Path | None 
     acciones.registrar("archivo.excel", "Abrir el &Excel de metadatos", "x-office-spreadsheet", None, "Archivo", al_disparar=flujo.abrirExcel,
                        descripcion="El Excel de metadatos con la aplicación del sistema (LibreOffice Calc)")
     # --- Editar
-    acciones.registrar("editar.filtrar", "&Filtrar", "edit-find", StandardKey.Find, "Editar", al_disparar=pedir("filtrar"))
+    acciones.registrar("editar.filtrar", "&Buscar", "edit-find", StandardKey.Find, "Editar", al_disparar=pedir("filtrar"),
+                       descripcion="En Escribir, buscar y reemplazar en el documento; en las demás áreas, filtrar su lista")
     acciones.registrar("editar.todo", "Seleccionar &todo", "edit-select-all", StandardKey.SelectAll, "Editar", al_disparar=pedir("seleccionar_todo"))
     # --- Ver
-    for i, (nombre, texto, icono) in enumerate(ops.VISTAS, start=1):
-        acciones.registrar(f"ver.vista.{nombre}", f"&{i} {texto}", icono, f"Ctrl+{i}", "Ver › Vista", marcable=True,
-                           al_disparar=lambda *_, n=nombre: espacio.fijarVista(n))
+    for i, (nombre, texto, icono) in enumerate(AREAS, start=1):
+        acciones.registrar(f"ver.area.{nombre}", f"&{i} {texto}", icono, f"Ctrl+{i}", "Ver › Área", marcable=True,
+                           al_disparar=lambda *_, n=nombre: espacio.fijarArea(n))
+    for nombre, texto, icono in ops.VISTAS:
+        acciones.registrar(f"ver.vista.{nombre}", texto, icono, None, "Ver › Herramientas", marcable=True,
+                           al_disparar=lambda *_, n=nombre: (espacio.fijarVista(n), espacio.fijarArea("herramientas")))
+    acciones.registrar("ver.previa", "Mostrar u ocultar la &vista previa", "view-preview", "F7", "Ver", al_disparar=pedir("previa"))
     acciones.registrar("ver.releer", "&Releer", "view-refresh", "F6", "Ver", al_disparar=lambda *_: releer(),
                        descripcion="Vuelve a leer los sitios y su estado, las entradas, el índice o los fragmentos de la vista")
     # --- Sitio y Flujo: elegir cada operación
     for o in ops.OPERACIONES:
         grupo = "Sitio" if o.vista == "sitios" else "Flujo › " + dict((n, t) for n, t, _i in ops.VISTAS)[o.vista]
         acciones.registrar(f"op.{o.id}", o.titulo, "system-run" if o.vista != "sitios" else "folder-html", None, grupo,
-                           al_disparar=lambda *_, i=o.id: operaciones.fijar(i), descripcion=o.descripcion)
+                           al_disparar=lambda *_, i=o.id: elegir_operacion(i), descripcion=o.descripcion)
+    acciones.registrar("sitio.renderizar", "&Renderizar el sitio", "run-build", "Ctrl+Shift+K", "Sitio", habilitada=False, operacion="escritura",
+                       al_disparar=lambda *_: renderizar(), descripcion="`quarto render` del sitio actual (como Ctrl+Mayús+K en RStudio); escribe solo lo generado (_site/, _freeze/)")
+    acciones.registrar("sitio.publicar", "&Publicar el sitio…", "cloud-upload", None, "Sitio", habilitada=False, operacion="publicacion",
+                       consecuencias=lambda: publicacion.textoConfirmacion + " Netlify despliega con el push; se pasa antes por la puerta R6 del hub.",
+                       al_disparar=lambda *_: publicar(), descripcion="Publica el sitio actual en su dominio tras comprobar que el destino corresponde al sitio")
+    acciones.registrar("sitio.simular_publicar", "&Simular la publicación", "system-run", None, "Sitio", habilitada=False, operacion="simulacion",
+                       al_disparar=lambda *_: (operaciones.fijar("publicar"), operaciones.simular()), descripcion="La simulación de `publish`: qué haría sin empujar nada")
     acciones.registrar("op.simular", "&Simular", "system-run", StandardKey.Refresh, "Sitio", al_disparar=operaciones.simular,
                        descripcion="Corre la simulación de la CLI o muestra el plan de la ventana; la salida queda en el panel inferior y en la pestaña Plan")
     acciones.registrar("op.aplicar", "&Aplicar…", "dialog-ok-apply", "Ctrl+Return", "Sitio", habilitada=False, al_disparar=pedir("aplicar"),
@@ -111,40 +149,68 @@ def construir(app: Aplicacion, cache: Path | None = None, docs_dir: Path | None 
                        descripcion="Detiene la corrida en curso (también el preview)")
     acciones.registrar("sitio.nueva_entrada", "&Nueva entrada…", "document-new", StandardKey.New, "Sitio", habilitada=False, al_disparar=pedir("nueva_entrada"),
                        descripcion="Una entrada nueva en el sitio actual con los campos del asistente (APAQuarto)")
-    acciones.registrar("sitio.entradas", "Ver sus &entradas", "text-markdown", None, "Sitio", habilitada=False, al_disparar=pedir("pestana", indice=1))
-    acciones.registrar("sitio.problemas", "Ver los &problemas del render", "data-warning", None, "Sitio", habilitada=False, al_disparar=pedir("pestana", indice=2))
+    acciones.registrar("sitio.problemas", "Ver los &problemas del render", "data-warning", None, "Sitio", habilitada=False,
+                       al_disparar=lambda *_: (espacio.fijarVista("sitios"), espacio.fijarArea("herramientas"), interfaz.pedir.emit("pestana", {"indice": 2})))
     # --- Herramientas
-    acciones.registrar("herr.lanzador", "Instalar el acceso &directo", "application-x-executable", None, "Herramientas", al_disparar=lambda *_: instalar_lanzador())
+    acciones.registrar("herr.lanzador", "Instalar el acceso &directo", "application-x-executable", None, "Herramientas", al_disparar=lambda *_: instalar_lanzador(),
+                       operacion="instalacion", consecuencias="Escribe el lanzador .desktop y el icono de Quarto Studio en el menú de aplicaciones de tu usuario (install.sh).")
     acciones.registrar("herr.venv", "El &entorno del studio…", "python", None, "Herramientas", al_disparar=pedir("venv"),
                        descripcion="Qué intérprete corre los backends de Python y cómo crear el .venv (openpyxl, pandas)")
     # --- Ayuda
     acciones.registrar("ayuda.manual", "&Manual de Quarto Studio", "help-contents", StandardKey.HelpContents, "Ayuda",
-                       al_disparar=lambda *_: subprocess.Popen(["xdg-open", str(REPO / "studio" / "README.md")]))
+                       operacion="lectura", al_disparar=lambda *_: escritorio.abrirConAplicacion(str(REPO / "studio" / "README.md")))
     acciones.registrar("ayuda.backend", "Manual del &backend de la operación", "help-hint", None, "Ayuda", al_disparar=lambda *_: abrir_readme_backend(),
                        descripcion="El README del backend al que pertenece la operación elegida")
 
     acciones.definir_menus([
-        ("&Archivo", ["archivo.abrir", "archivo.carpeta", "archivo.terminal", "archivo.navegador", "archivo.copiar", "|", "archivo.excel", "|", "app.salir"]),
+        ("&Archivo", ["archivo.guardar", "archivo.ir", "|", "archivo.abrir", "archivo.carpeta", "archivo.terminal", "archivo.navegador", "archivo.copiar", "|",
+                      "archivo.excel", "|", "app.salir"]),
         ("&Editar", ["editar.filtrar", "editar.todo"]),
-        ("&Ver", ["ventana.navegacion", "ventana.detalles", "ventana.inferior", "|", ("&Vista", [f"ver.vista.{n}" for n, *_r in ops.VISTAS]), "|",
+        ("&Ver", [f"ver.area.{n}" for n, _t, _i in AREAS] + ["|", "ver.previa", ("&Herramientas", [f"ver.vista.{n}" for n, *_r in ops.VISTAS]), "|",
                   "ver.releer", "|", "ventana.pantalla_completa"]),
-        ("&Sitio", ["op.simular", "op.aplicar", "op.cancelar", "|", "sitio.nueva_entrada", "sitio.entradas", "sitio.problemas", "|"]
-                   + [f"op.{o.id}" for o in ops.de_vista("sitios")]),
+        ("&Sitio", ["sitio.renderizar", "sitio.simular_publicar", "sitio.publicar", "|", "op.simular", "op.aplicar", "op.cancelar", "|",
+                    "sitio.nueva_entrada", "sitio.problemas", "|"] + [f"op.{o.id}" for o in ops.de_vista("sitios")]),
         ("&Flujo", [(f"&{t}", [f"op.{o.id}" for o in ops.de_vista(n)]) for n, t, _i in ops.VISTAS if n != "sitios"]),
         ("&Herramientas", ["herr.lanzador", "herr.venv", "|", "ventana.paleta"]),
         ("A&justes", ["app.ajustes"]),
         ("Ay&uda", ["ayuda.manual", "ayuda.backend", "app.acerca"]),
     ])
-    acciones.definir_barra(["op.simular", "op.aplicar", "|", "sitio.nueva_entrada"])
     acciones.anadir_fuente(espacio.entradas_paleta)
     acciones.anadir_fuente(operaciones.entradas_paleta)
     acciones.anadir_fuente(sitios.entradas_paleta)
 
     def releer() -> None:
-        if espacio.vista == "sitios":
-            sitios.recargar()
-        else:
+        if espacio.area == "herramientas" and espacio.vista != "sitios":
             flujo.recargar(espacio.vista)
+        else:
+            sitios.recargar()
+            documentos.recargar()
+            metadatos.recargar()
+            publicacion.recargar()
+
+    def elegir_operacion(id_: str) -> None:
+        """Una operación del menú o de la paleta: se elige y, salvo que su área ya la muestre, se va a Herramientas."""
+        operaciones.fijar(id_)
+        o = ops.operacion(id_)
+        en_su_area = (espacio.area == "metadatos" and o is not None and o.vista == "entradas") or \
+                     (espacio.area == "publicacion" and id_ in ("render", "publicar", "commit"))
+        if not en_su_area:
+            espacio.fijarArea("herramientas")
+
+    def renderizar() -> None:
+        """Ctrl+Mayús+K: `quarto render` del sitio actual por el gestor de blogs (escribe solo lo generado)."""
+        if tareas.activa or not sitios.hayActual:
+            return
+        operaciones.fijar("render")
+        operaciones.aplicar()
+
+    def publicar() -> None:
+        """Tras la confirmación de la base (estado «publicación»): publish con --aplicar, si el destino corresponde."""
+        operaciones.fijar("publicar")
+        if not operaciones.puedeAplicar:
+            espacio.aviso.emit(operaciones.motivoNoAplicar, "aviso")
+            return
+        operaciones.aplicar()
 
     def instalar_lanzador() -> None:
         if not tareas.activa:
@@ -158,24 +224,30 @@ def construir(app: Aplicacion, cache: Path | None = None, docs_dir: Path | None 
                    "contenido": "script_generador_publicacion_similar"}[o.vista]
         if o.id.startswith("yaml_"):
             carpeta = "script_format_yaml"
-        subprocess.Popen(["xdg-open", str(REPO / "backend" / carpeta / "README.md")])
+        escritorio.abrirConAplicacion(str(REPO / "backend" / carpeta / "README.md"))
 
     def vista_cambiada():
         for nombre in acciones.nombres():
             if nombre.startswith("ver.vista."):
-                acciones.marcar(nombre, nombre == f"ver.vista.{espacio.vista}")
+                acciones.marcar(nombre, nombre == f"ver.vista.{espacio.vista}" and espacio.area == "herramientas")
+            elif nombre.startswith("ver.area."):
+                acciones.marcar(nombre, nombre == f"ver.area.{espacio.area}")
         disponibilidad()
 
     def disponibilidad():
         activa = tareas.activa
         hay_sitio = sitios.hayActual
         hay_elemento = espacio.vista != "sitios" and bool(flujo.elementoRuta)
-        acciones.habilitar("archivo.abrir", hay_elemento or sitios.hayEntrada)
+        acciones.habilitar("archivo.abrir", hay_elemento or sitios.hayEntrada or bool(documentos.actual))
+        acciones.habilitar("archivo.guardar", espacio.area == "escribir" and bool(editor.actual))
+        acciones.habilitar("sitio.renderizar", hay_sitio and not activa)
+        publicable = hay_sitio and not activa and publicacion.coincide and sitios.estadoClave != "problemas"
+        acciones.habilitar("sitio.publicar", publicable)
+        acciones.habilitar("sitio.simular_publicar", hay_sitio and not activa)
         for nombre in ("archivo.carpeta", "archivo.terminal", "archivo.copiar"):
             acciones.habilitar(nombre, hay_sitio or hay_elemento)
         acciones.habilitar("archivo.navegador", hay_sitio and bool(sitios.dominio))
         acciones.habilitar("sitio.nueva_entrada", hay_sitio and not activa)
-        acciones.habilitar("sitio.entradas", hay_sitio)
         acciones.habilitar("sitio.problemas", hay_sitio and sitios.nProblemas > 0)
         a = acciones.accion("op.simular")
         a.texto = f"&{operaciones.verbo}"
@@ -198,6 +270,19 @@ def construir(app: Aplicacion, cache: Path | None = None, docs_dir: Path | None 
         espacio.fijarContexto(" · ".join(partes))
 
     espacio.vistaCambiada.connect(vista_cambiada)
+    espacio.areaCambiada.connect(vista_cambiada)
+    editor.actualCambiado.connect(lambda: (documentos.fijarActual(editor.actual), disponibilidad()))
+    documentos.actualCambiado.connect(disponibilidad)
+    publicacion.cambiado.connect(disponibilidad)
+
+    def terminada(id_: str, aplicar: bool, codigo: int) -> None:
+        if id_ in ("render", "render_entrada", "render_todos") and aplicar:
+            documentos.renderTerminado()
+        if aplicar or id_ in ("render", "publicar", "commit"):
+            publicacion.recargar()
+        if aplicar and id_ in ("aplicar_excel", "sync_fechas", "sync_pdf", "normalizar_tags", "yaml_carpeta", "yaml_archivo"):
+            metadatos.recargar()
+    operaciones.terminada.connect(terminada)
     sitios.cambiado.connect(lambda: (disponibilidad(), barra_estado()))
     sitios.actualCambiado.connect(lambda: (disponibilidad(), barra_estado()))
     sitios.entradaCambiada.connect(disponibilidad)
@@ -208,7 +293,7 @@ def construir(app: Aplicacion, cache: Path | None = None, docs_dir: Path | None 
     barra_estado()
 
     piezas = dict(env=env, consola=consola, tareas=tareas, interfaz=interfaz, ajustes=ajustes, espacio=espacio, sitios=sitios, flujo=flujo,
-                  operaciones=operaciones, acciones=acciones)
+                  operaciones=operaciones, acciones=acciones, editor=editor, documentos=documentos, publicacion=publicacion, metadatos=metadatos)
     for nombre, objeto in piezas.items():
         if nombre != "env":
             app.exponer(nombre, objeto)

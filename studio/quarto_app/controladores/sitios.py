@@ -102,6 +102,18 @@ class Sitios(QObject):
         f = self.espacio.filtro
         return f == "todos" or self._tabla.fila(fila_origen).get("clave") == f
 
+    @Property("QVariantList", notify=cambiado)
+    def proyectos(self) -> list:
+        """El panel de proyectos (reingeniería E2): el hub primero y luego los pubs, con su estado R6 y su dominio."""
+        salida = []
+        for n in sorted(self._orden, key=lambda n: (not self._blogs[n].es_website, n)):
+            e, pub = self._estados[n], self._pubs.get(n)
+            salida.append({"nombre": n, "esHub": self._blogs[n].es_website, "estado": e["texto_estado"], "clave": e["estado"], "nivel": e["nivel"],
+                           "motivo": e["motivo"], "entradas": self._blogs[n].num_posts,
+                           "dominio": (getattr(pub, "url", "") or "").replace("https://", "").rstrip("/"),
+                           "tema": getattr(pub, "tema", "") or ("el hub" if self._blogs[n].es_website else "")})
+        return salida
+
     @Property(int, notify=cambiado)
     def total(self) -> int:
         return len(self._orden)

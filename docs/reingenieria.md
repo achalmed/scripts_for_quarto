@@ -24,7 +24,7 @@ Capturas de antes: `docs/figuras/antes/quarto-studio-{oscuro,claro,paleta}.png`.
 
 | pieza | dónde | qué hace de verdad |
 |---|---|---|
-| los sitios | `studio/quarto_app/services/sitios.py`, `studio/quarto_app/controladores/sitios.py` | el hub y los pubs del registro `_pubs/pubs.yml` con su estado por la regla de la puerta R6 (fuentes frente a `_site/`, sin confirmar, sin empujar). **Correcto** |
+| los sitios | `studio/quarto_app/services/sitios.py`, `studio/quarto_app/controladores/sitios.py` | el hub y los pubs del registro (`pubs.yml` de `_pubs` en el hub) con su estado por la regla de la puerta R6 (fuentes frente a `_site/`, sin confirmar, sin empujar). **Correcto** |
 | las entradas y el Excel | `studio/quarto_app/services/datos.py`, `studio/quarto_app/controladores/flujo.py` | cada `index.qmd` con su frontmatter frente a su fila del Excel, campo a campo. **Correcto**, pero solo para la entrada elegida: no hay un diagnóstico de todo el sitio |
 | las operaciones | `studio/quarto_app/services/operaciones.py`, `studio/quarto_app/controladores/operaciones.py` | cada una es la CLI de un backend (F5 simula o muestra el plan, Ctrl+Intro aplica tras confirmar); publicar y commit+push nombran el sitio y su dominio. **Correcto** |
 | los problemas del render | `studio/quarto_app/services/render.py` | errores y avisos de `quarto render` con su archivo. Correcto |
@@ -95,3 +95,38 @@ Capturas de antes: `docs/figuras/antes/quarto-studio-{oscuro,claro,paleta}.png`.
 - **E11. KDE**: abrir y mostrar en Dolphin con `escritorio` de la base; estados de operación en las acciones.
 - **E12. Atajos de RStudio**: Ctrl+Mayús+K renderizar, Ctrl+S guardar, Ctrl+F buscar en el documento, Ctrl+P ir a un
   documento, Ctrl+1–4 las áreas, F5 simular la operación, Ctrl+Intro aplicar tras confirmar, Ctrl+K la paleta.
+
+## 4. Lo construido y cómo se verificó
+
+![Escribir: el documento y su página renderizada](figuras/quarto-studio-claro.png)
+
+| pieza | dónde |
+|---|---|
+| la ventana y las áreas (E1, E11, E12) | `studio/quarto_app/qml/Main.qml` sobre `VentanaBase`; `studio/quarto_app/controladores/espacio.py`; `studio/quarto_app/aplicacion.py` (Ctrl+1–4, Ctrl+Mayús+K, Ctrl+S, Ctrl+P, F7, `escritorio`, estados de operación) |
+| proyectos (E2) | `Sitios.proyectos` (`studio/quarto_app/controladores/sitios.py`); `studio/quarto_app/qml/componentes/PanelProyectos.qml` |
+| documentos (E3) | `studio/quarto_app/services/documentos.py`, `studio/quarto_app/controladores/documentos.py` |
+| editor (E4) | `studio/quarto_app/controladores/editor.py`, `EditorArchivo.qml`, `BarraBusqueda.qml`, `ResaltadoEditor.qml`, `EspacioEscritura.qml` (copiados de LaTeX Studio y adaptados) |
+| vista previa (E5) | `studio/quarto_app/qml/componentes/VistaPrevia.qml` y `VistaWeb.qml` (QtWebEngine en un `Loader`) |
+| renderizar (E6) | la acción `sitio.renderizar` sobre la operación `render` de siempre |
+| metadatos (E7) | `datos.diagnostico`; `studio/quarto_app/controladores/metadatos.py`; `EspacioMetadatos.qml` |
+| publicación (E8–E10) | `studio/quarto_app/services/publicacion.py`, `studio/quarto_app/controladores/publicacion.py` (la guarda `motivoDestino` que consulta `Operaciones`), `EspacioPublicacion.qml`, la acción `sitio.publicar` (estado «publicación») |
+
+Verificación (2026-11-02, rama `wip/2026-11-02-reingenieria`):
+
+- `tests/run.sh`: 46 pruebas sobre la familia de muestra (las 28 de antes, adaptadas, y los documentos y su página, el
+  destino con un `site-url` ajeno, otro repositorio o sin dominio, lo que va al push, el historial, el diagnóstico, la
+  vista previa, el editor que guarda en el mismo inodo con un hardlink y no pisa un cambio externo, la guarda que
+  bloquea publicar y empujar pero no renderizar, la ventana entera y cada QML con un proyecto y un documento abiertos).
+  Ninguna publica; el render real sigue en `/var/tmp`.
+- Las pruebas de los backends (`tests` sin `tests/studio`): en verde salvo `test_fuentes_iguales_a_las_de_la_puerta`,
+  que falla igual en `main` (`estado.md` §Por hacer, 2026-10-27). Recoger `tests/` entero choca por los dos `conftest.py`
+  (también en `main`).
+- Capturas sobre la muestra: `docs/figuras/quarto-studio-{claro,oscuro,publicacion,metadatos,herramientas,paleta}.png`;
+  las de antes, en `docs/figuras/antes/`. La vista previa con QtWebEngine se ve en ellas.
+
+## 5. Lo que quedó fuera
+
+- **Renderizar solo el documento abierto**: Ctrl+Mayús+K renderiza el sitio; «Renderizar la entrada» sigue en Herramientas.
+- **Autocompletado de Quarto** (atajos `{{< >}}`, referencias cruzadas `@fig-`): el editor no completa.
+- **El editor y la vista previa en `gui-comun`**: copiados de LaTeX Studio; promoverlos es del carril A.
+- **Comprobar el destino contra Netlify**: las comprobaciones son locales (registro, `_quarto.yml`, git).

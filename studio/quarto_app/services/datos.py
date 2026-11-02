@@ -117,6 +117,32 @@ def comparar(fm: dict, fila_excel: dict) -> list[dict]:
     return salida
 
 
+
+def diagnostico(blog: Blog, excel: dict[str, dict]) -> dict:
+    """El Excel frente a los `.qmd` de un sitio, sin escribir nada (reingeniería E7): {filas: [{ruta, ruta_relativa,
+    titulo, fecha, estado, diferencias, campos}], solo_excel: [ruta], resumen}. `estado`: «igual», «difiere», «sin fila»."""
+    filas, vistas = [], set()
+    for p in blog.posts:
+        rel = ruta_relativa(blog, p)
+        fm = frontmatter(p.ruta / "index.qmd")
+        fila = excel.get(rel)
+        if fila is None:
+            estado, campos = "sin fila", []
+        else:
+            vistas.add(rel)
+            campos = comparar(fm, fila)
+            estado = "difiere" if any(c["difiere"] for c in campos) else "igual"
+        filas.append({"ruta": str(p.ruta / "index.qmd"), "ruta_relativa": rel, "titulo": p.titulo or str(fm.get("title") or p.nombre),
+                      "fecha": p.fecha, "estado": estado, "diferencias": sum(c["difiere"] for c in campos), "campos": campos})
+    filas.sort(key=lambda f: f["fecha"], reverse=True)                       # la más reciente primero…
+    filas.sort(key=lambda f: {"difiere": 0, "sin fila": 1, "igual": 2}[f["estado"]])   # …dentro de cada estado
+    prefijo = f"{blog.nombre}/"
+    solo_excel = sorted(r for r in excel if r.startswith(prefijo) and r not in vistas)
+    n = {e: sum(f["estado"] == e for f in filas) for e in ("igual", "difiere", "sin fila")}
+    resumen = (f"{len(filas)} entradas · {n['difiere']} difieren del Excel · {n['sin fila']} sin fila en el Excel · "
+               f"{len(solo_excel)} filas del Excel sin documento") if excel else "sin Excel (o sin openpyxl): nada que comparar"
+    return {"filas": filas, "solo_excel": solo_excel, "resumen": resumen, "cuentas": n}
+
 # ------------------------------------------------------------------------------------------- el índice del vault
 def enlaces_indice(carpeta: Path | None = None, docs: Path | None = None) -> list[dict]:
     """Los enlaces de `web/_indice/<año>/`: año, nombre, destino (relativo a la raíz del espacio de trabajo si cae

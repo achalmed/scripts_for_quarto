@@ -28,14 +28,14 @@ lanza la GUI, `studio/README.md`.
   Lo que hiciste en esta sesión va al mensaje de commit, no a un archivo.
 
 - **Cinco herramientas independientes y su GUI en el mismo repo.** Cada `backend/script_*/` es autónomo
-  (`main.*` + config + `lib/`, `suite.yml`, README). Quarto Studio (`studio/`, QML + Kirigami sobre `gui-comun` 2.x;
-  `studio/README.md`) nunca importa su código: construye un `Command` y lo corre como proceso (`gui_comun.tareas`), y
+  (`main.*` + config + `lib/`, `suite.yml`, README). Quarto Studio (`studio/`, `VentanaBase` de `gui-comun` 3.0;
+  `docs/reingenieria.md`) nunca importa su código: construye un `Command` y lo corre como proceso (`gui_comun.tareas`), y
   encuentra cada entrada en `backend/` (`studio/quarto_app/services/paths.py`, `BACKENDS`). Lo común de los studios es
   del repo `gui-comun`; aquí no se copia.
 - **Python no construye interfaz y QML no ejecuta procesos**: los controladores (`studio/quarto_app/controladores/`)
   exponen modelos y `@Slot`; el QML pinta y pide. Cada operación existe una sola vez en `studio/quarto_app/aplicacion.py`
   y su catálogo es `studio/quarto_app/services/operaciones.py`: **F5 simula** (la CLI o el plan de la ventana) y
-  **Ctrl+Intro aplica** tras confirmar; publicar nombra el sitio y su dominio. Cero colores propios; sin marca dentro.
+  **Ctrl+Intro aplica** tras confirmar; publicar nombra sitio y dominio y exige que el destino sea el del sitio. Sin colores.
 - **Corre con `/usr/bin/python3`** y se relanza con el `.venv` del repo si existe (`--system-site-packages`: el PySide6
   del sistema más `openpyxl` y `pandas`; `requirements.txt`); nunca se instala PySide6 en él. Nada de QtWidgets.
 - **Las pruebas y las capturas del studio usan la familia de muestra** (`studio/muestra.py`), nunca `web` ni los pubs, y

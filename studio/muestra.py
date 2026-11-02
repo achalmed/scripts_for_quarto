@@ -77,6 +77,14 @@ def _entrada(sitio: Path, carpeta: str, titulo: str, tags: str, seccion: str = "
     return d
 
 
+def _html(titulo: str, cuerpo: str, lista: bool = False) -> str:
+    """Una página como las que deja `quarto render`, mínima y sin recursos externos."""
+    contenido = f"<ul>{cuerpo}</ul>" if lista else cuerpo
+    return (f'<!DOCTYPE html>\n<html lang="es"><head><meta charset="utf-8"><title>{titulo}</title>'
+            '<style>body{font-family:sans-serif;max-width:42em;margin:2em auto;line-height:1.5;padding:0 1em}</style></head>'
+            f"<body><h1>{titulo}</h1>{contenido}</body></html>\n")
+
+
 def _sitio(ruta: Path, nombre: str, titulo: str, con_site: bool = True) -> None:
     ruta.mkdir(parents=True, exist_ok=True)
     (ruta / "_quarto.yml").write_text(f'project:\n  type: website\n  output-dir: _site\nwebsite:\n  title: "{titulo}"\n  site-url: https://{nombre}.netlify.app/\nformat:\n  html:\n    theme: cosmo\n', encoding="utf-8")
@@ -129,7 +137,14 @@ def crear(raiz: Path) -> Muestra:
         _git(env, sitio, "init", "-q", "-b", "main")
         _git(env, sitio, "add", "-A")
         _git(env, sitio, "commit", "-q", "-m", "fuentes", fecha=FECHA_PASADA)
-        (sitio / "_site" / "index.html").write_text(f"<html><body>{tema} v2</body></html>\n", encoding="utf-8")
+        (sitio / "_site" / "index.html").write_text(_html(f"{tema} (muestra)", "".join(
+            f'<li><a href="posts/{c}/index.html">{t}</a> · {c[:10]}</li>' for c, t, _ in ENTRADAS[nombre]), lista=True), encoding="utf-8")
+        for carpeta, titulo, tags in ENTRADAS[nombre]:      # una página por entrada: lo que la vista previa muestra
+            pagina = sitio / "_site" / "posts" / carpeta / "index.html"
+            pagina.parent.mkdir(parents=True, exist_ok=True)
+            pagina.write_text(_html(titulo, f"<p><em>{carpeta[:10]} · {tags}</em></p><p>Una entrada de muestra de {tema.lower()}: "
+                                            "el texto que Quarto renderiza a partir de su <code>index.qmd</code>.</p>"
+                                            '<p><a href="../../index.html">← Volver a la portada</a></p>'), encoding="utf-8")
         _git(env, sitio, "add", "-A")
         _git(env, sitio, "commit", "-q", "-m", "render", fecha=FECHA_RENDER)
         remoto = remotos / f"{nombre}.git"

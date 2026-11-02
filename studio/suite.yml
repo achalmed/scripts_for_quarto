@@ -1,8 +1,8 @@
-# studio/suite.yml — suite quarto_studio: Quarto Studio, la ventana (QML + Kirigami sobre gui-comun 2.x) de los backends de la familia de blogs.
+# studio/suite.yml — suite quarto_studio: Quarto Studio, el entorno de escritura y publicación (QML + Kirigami sobre gui-comun 3.0) de la familia de blogs.
 # Contrato: core/suite.schema.yml; core/suites.py validar lo comprueba y generar escribe los índices y README.
 id: quarto_studio
 objetivo: publicacion
-resumen: 'Ventana de la familia de blogs Quarto (QML + Kirigami sobre gui-comun 2.x): el hub y los doce sitios con su estado por la regla de la puerta R6, las entradas con su frontmatter y su fila del Excel, el índice del vault y los índices de contenido; cada operación es la CLI de un backend: F5 simula (o muestra el plan), Ctrl+Intro aplica tras confirmar y publicar nombra el sitio y su dominio.'
+resumen: 'Entorno de escritura y publicación de la familia de sitios Quarto (QML + Kirigami sobre gui-comun 3.0): los proyectos con su estado de construcción por la regla de la puerta R6, los documentos del sitio, el editor Markdown y Quarto con la vista previa del _site renderizado, el diagnóstico del Excel frente a los .qmd sin sobrescribir nada, el renderizado (Ctrl+Mayús+K) y la vista de publicación (destino comprobado, archivos que cambiarán, última publicación, historial); las operaciones de siempre son la CLI de un backend.'
 escribe_en:
 - web
 - vault
@@ -16,11 +16,12 @@ estado: activo
 interfaz: gui
 depende_de:
 - /usr/bin/python3 con PySide6 del sistema (python3-pyside6.*) y Kirigami (qml6-module-org-kde-kirigami)
-- gui-comun 2.5 (módulo QML GuiComun)
+- gui-comun 3.0 (módulo QML GuiComun: VentanaBase, escritorio, estados de operación)
+- qml6-module-qtwebengine para la vista previa (opcional: sin él, el Markdown)
 - .venv del repo con openpyxl, pandas y pyyaml para los backends de metadatos (requirements.txt; opcional)
 - blogs_manager
 - metadata_manager
 - pub_index_symlink
 - format_yaml
 - generador_publicacion_similar
-nota: 'No renderiza ni publica por su cuenta: corre la CLI de cada backend; publicar y commit+push simulan primero y se aplican tras confirmar con el sitio y su dominio (Netlify despliega con el push).'
+nota: 'No renderiza ni publica por su cuenta: corre la CLI de cada backend; publicar y commit+push simulan primero, se aplican tras confirmar con el sitio y su dominio (Netlify despliega con el push) y no se ofrecen si el dominio del registro, el site-url del _quarto.yml o el remoto no corresponden al sitio. El editor escribe solo con Ctrl+S, en el mismo archivo (conserva los hardlinks del tema).'

@@ -169,3 +169,106 @@ def test_correr_lo_que_solo_lee_sobre_la_muestra(piezas, app):
     _esperar(app, tareas)
     assert terminadas[-1][0] == "yaml_archivo" and Path(s.entrada).read_text(encoding="utf-8") == antes
     assert any("fix_qmd_files.py" in l or "main.py" in l for l in consola.salida.texto.splitlines())
+
+
+# ---------------------------------------------------------------------- reingeniería: editor, documentos, publicación, metadatos
+@pytest.fixture
+def nuevas(piezas):
+    from quarto_app.controladores.documentos import Documentos
+    from quarto_app.controladores.editor import Editor
+    from quarto_app.controladores.metadatos import Metadatos
+    from quarto_app.controladores.publicacion import Publicacion
+    p = dict(piezas)
+    p["editor"] = Editor(p["consola"])
+    p["documentos"] = Documentos(p["sitios"])
+    p["publicacion"] = Publicacion(p["sitios"])
+    p["metadatos"] = Metadatos(p["sitios"], p["flujo"])
+    p["operaciones"].guarda_destino = p["publicacion"].motivoDestino
+    yield p
+    p["editor"].soltar()
+    p["operaciones"].guarda_destino = None
+
+
+@requiere_binding
+def test_areas_del_espacio(piezas):
+    e = piezas["espacio"]
+    assert [a["nombre"] for a in e.areas] == ["escribir", "metadatos", "publicacion", "herramientas"]
+    e.fijarArea("publicacion")
+    assert e.area == "publicacion" and e.indiceArea == 2
+    e.fijarArea("no-existe")
+    assert e.area == "publicacion"
+    e.fijarAreaPorIndice(0)
+    assert e.area == "escribir"
+
+
+@requiere_binding
+def test_documentos_y_vista_previa(nuevas):
+    s, d = nuevas["sitios"], nuevas["documentos"]
+    assert d.total == 0 and d.urlPagina == ""
+    s.irA("axiomata")
+    assert d.total >= 5 and d.urlPagina.endswith("/_site/index.html") and not d.paginaDelDocumento   # sin documento: la portada
+    entrada = next(d._filas.fila(i) for i in range(d.total) if d._filas.fila(i)["entrada"])
+    d.fijarActual(entrada["ruta"])
+    assert d.paginaDelDocumento and d.urlPagina.endswith(entrada["rel"].replace(".qmd", ".html")) and d.textoDocumento.startswith("---")
+    assert d.documentoDePagina(d.urlPagina) == entrada["ruta"] and d.relActual == entrada["rel"]
+    d.filtrar("matrices")
+    assert d.modelo.rowCount() == 1
+    d.filtrar("")
+    v = d.version
+    d.renderTerminado()
+    assert d.version == v + 1 and len(d.paginas) == 4
+
+
+@requiere_binding
+def test_el_editor_guarda_en_su_sitio_y_conserva_los_hardlinks(nuevas, tmp_path):
+    """Guardar escribe en el mismo inodo: un archivo del tema enlazado por hardlink entre sitios sigue enlazado."""
+    e = nuevas["editor"]
+    a = tmp_path / "a" / "tema.scss"
+    a.parent.mkdir()
+    a.write_text("$color: red;\n", encoding="utf-8")
+    b = tmp_path / "b.scss"
+    import os
+    os.link(a, b)
+    assert e.abrir(str(a)) >= 0 and e.leer(str(a)) == "$color: red;\n"
+    assert e.guardar(str(a), "$color: blue;\n", False) == ""
+    assert b.read_text(encoding="utf-8") == "$color: blue;\n" and a.stat().st_ino == b.stat().st_ino
+    b.write_text("$color: green;\n", encoding="utf-8")                                   # un cambio hecho fuera
+    assert e.guardar(str(a), "$color: blue;\n", False) == "externo"                       # no se pisa sin preguntar
+    from quarto_app.controladores.editor import definicion_de
+    assert definicion_de("x/index.qmd") == "Markdown" and definicion_de("_quarto.yml") == "YAML" and definicion_de("r.bib") == "BibTeX"
+
+
+@requiere_binding
+def test_publicacion_y_la_guarda_del_destino(nuevas, monkeypatch):
+    s, p, o = nuevas["sitios"], nuevas["publicacion"], nuevas["operaciones"]
+    s.irA("chaska")
+    assert p.coincide and p.dominio == "chaska.netlify.app" and p.totalArchivos >= 1 and p.ultima["mensaje"] == "render"
+    assert p.historialModelo.filas >= 1 and p.archivosModelo.filas == p.totalArchivos and "chaska" in p.textoConfirmacion
+    o.fijar("publicar")
+    assert o.puedeAplicar, o.motivoNoAplicar
+    from quarto_app.services import publicacion as pub
+    real = pub.destino
+    monkeypatch.setattr(pub, "destino", lambda *a: dict(real(*a), coincide=False, motivo="site-url del _quarto.yml: otro.netlify.app ≠ chaska.netlify.app"))
+    p.recargar()
+    assert not p.coincide and not o.puedeAplicar and o.motivoNoAplicar.startswith("El destino no corresponde al sitio: site-url")
+    o.fijar("commit")
+    assert not o.puedeAplicar                                                             # empujar también despliega
+    o.fijar("render")
+    assert o.puedeAplicar                                                                 # renderizar no publica: se puede
+    monkeypatch.setattr(pub, "destino", real)
+    p.recargar()
+
+
+@requiere_binding
+def test_diagnostico_de_metadatos_del_sitio(nuevas):
+    from quarto_app.services import datos
+    s, m = nuevas["sitios"], nuevas["metadatos"]
+    s.irA("axiomata")
+    if not datos.hay_openpyxl():
+        assert "sin Excel" in m.resumen
+        return
+    assert m.modelo.filas == 3 and "difieren del Excel" in m.resumen and m.cuentas["difiere"] >= 1
+    m.fijarFila(0)
+    assert m.hayActual and m.tituloActual and m.camposModelo.filas >= 1 and m.rutaActual.endswith("index.qmd")
+    m.fijarFila(-1)
+    assert not m.hayActual

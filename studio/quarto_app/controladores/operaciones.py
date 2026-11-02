@@ -45,6 +45,7 @@ class Operaciones(QObject):
         self._usar_excel = str(self._s.value("metadata/usar_excel", "false")).lower() in ("true", "1")
         self._filtro_ruta = str(self._s.value("metadata/filtro_ruta", "") or "")
         self._worker = None
+        self.guarda_destino = None             # callable → "" o por qué el destino no corresponde (controladores/publicacion.py)
         self._id_en_curso = ""
         self._sitio_en_curso = ""
         self._aplicando = False
@@ -289,6 +290,10 @@ class Operaciones(QObject):
             return motivo
         if o.publica and self.sitios.estadoClave == "problemas":
             return "El sitio tiene problemas (" + self.sitios.motivo + "): la puerta R6 no dejaría publicar."
+        if o.publica and self.guarda_destino is not None:          # reingeniería E9: el destino corresponde al sitio elegido
+            motivo = self.guarda_destino()
+            if motivo:
+                return "El destino no corresponde al sitio: " + motivo
         return ""
 
     @Property(bool, notify=cambiado)

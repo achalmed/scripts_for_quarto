@@ -2,11 +2,12 @@
 """studio/capturar.py — una captura de Quarto Studio para la documentación sobre la FAMILIA DE SITIOS DE MUESTRA
 (`muestra.py`: un hub y tres pubs de juguete con git y remotos «bare» locales, nunca `web` ni los pubs reales) creada en
 una carpeta temporal fuera de la carpeta de inicio, con HOME, configuración, caché y estado temporales (ninguna ruta
-de la máquina en pantalla), el esquema de color que se pida, la vista, el filtro, la operación, la fila, la pestaña de
-detalles y, si se pide, la paleta de órdenes. Nada se publica.
+de la máquina en pantalla), el esquema de color que se pida (con el tema de Kvantum a juego), el área, el proyecto, el
+documento abierto, la vista de Herramientas, la operación y, si se pide, la paleta de órdenes. Nada se publica.
 
-    /usr/bin/python3 studio/capturar.py docs/figuras/quarto-studio-oscuro.png --esquema ~/Documents/lliphi/generado/esquema/LliphiOscuro.colors --vista sitios --fila 1 --operacion render --pestana 7
-    /usr/bin/python3 studio/capturar.py docs/figuras/quarto-studio-claro.png --esquema ~/Documents/lliphi/generado/esquema/LliphiClaro.colors --vista entradas --pestana 4
+    /usr/bin/python3 studio/capturar.py docs/figuras/quarto-studio-claro.png --esquema ~/Documents/lliphi/generado/esquema/LliphiClaro.colors --sitio axiomata --documento matrices
+    /usr/bin/python3 studio/capturar.py docs/figuras/quarto-studio-publicacion.png --area publicacion --sitio chaska
+    /usr/bin/python3 studio/capturar.py salida.png --area herramientas --vista sitios --operacion render --pestana 3
     /usr/bin/python3 studio/capturar.py salida.png --paleta "publicar"
 
 Antes de capturar corre de verdad, sobre la muestra, «Verificar» del sitio elegido (`main.sh check`, solo lee) y, con
@@ -30,16 +31,18 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Captura de Quarto Studio sobre la familia de sitios de muestra")
     parser.add_argument("salida")
     parser.add_argument("--esquema", help="archivo .colors de KDE (relanza con XDG_CONFIG_HOME temporal)")
-    parser.add_argument("--vista", default="sitios", help="sitios · entradas · indice · contenido")
-    parser.add_argument("--filtro", default="todos", help="en Sitios: todos · al_dia · sin_render · sin_publicar · problemas")
+    parser.add_argument("--area", default="escribir", help="escribir · metadatos · publicacion · herramientas")
+    parser.add_argument("--sitio", default="axiomata", help="el proyecto elegido (aequilibria · axiomata · chaska · web)")
+    parser.add_argument("--documento", default="", help="abre en el editor el documento del proyecto cuya ruta contenga este texto")
+    parser.add_argument("--vista", default="sitios", help="en Herramientas: sitios · entradas · indice · contenido")
     parser.add_argument("--operacion", default="", help="la operación elegida (id del catálogo)")
-    parser.add_argument("--fila", type=int, default=0, help="la fila seleccionada de la tabla (−1 ninguna)")
-    parser.add_argument("--pestana", type=int, default=-1, help="pestaña de detalles (0 Resumen · 1 Entradas · 2 Problemas · 3 Registro · 4 Metadatos · 5 Elemento · 6 Operación · 7 Plan)")
+    parser.add_argument("--fila", type=int, default=-1, help="en Metadatos, la entrada elegida (−1 ninguna)")
+    parser.add_argument("--pestana", type=int, default=-1, help="en Herramientas, el lado (0 Resumen · 1 Entradas · 2 Problemas · 3 Operación · 4 Plan · 5 Salida)")
     parser.add_argument("--render", action="store_true", help="renderiza de verdad el sitio de la fila (quarto) antes de capturar")
     parser.add_argument("--sin-correr", action="store_true", help="no corre ninguna operación antes de capturar")
     parser.add_argument("--paleta", default=None, help="abre la paleta de órdenes con este texto")
-    parser.add_argument("--ancho", type=int, default=1280)
-    parser.add_argument("--alto", type=int, default=800)
+    parser.add_argument("--ancho", type=int, default=1440)
+    parser.add_argument("--alto", type=int, default=900)
     args = parser.parse_args()
 
     if "QUARTO_STUDIO_CAPTURA" not in os.environ:      # primera pasada: la muestra, el entorno temporal (y esquema), y relanzar
@@ -59,6 +62,11 @@ def main() -> int:
             elif origen.is_file():
                 shutil.copy2(origen, hogar / ".config" / nombre)
         env = entorno_con_esquema(Path(args.esquema).expanduser(), hogar / ".config") if args.esquema else dict(os.environ, XDG_CONFIG_HOME=str(hogar / ".config"))
+        if args.esquema:
+            # con QApplication (gui-comun 3.0) los campos los pinta el QStyle (Kvantum) con la paleta de su tema: a juego
+            tema, kv = Path(args.esquema).stem, hogar / ".config" / "Kvantum"
+            if (kv / tema).is_dir():
+                (kv / "kvantum.kvconfig").write_text(f"[General]\ntheme={tema}\n", encoding="utf-8")
         env.update(m.entorno)
         env.update({"XDG_DATA_HOME": str(Path.home() / ".local" / "share"), "QUARTO_STUDIO_CAPTURA": str(carpeta), "QT_QPA_PLATFORM": "offscreen",
                     "QUARTO_STUDIO_EXCEL": str(m.excel or "")})
@@ -87,8 +95,7 @@ def main() -> int:
 
     espacio.fijarVista("sitios")
     espacio.fijarFiltro("todos")
-    nombres = sitios.nombres
-    sitio = nombres[args.fila] if 0 <= args.fila < len(nombres) else ""
+    sitio = args.sitio if args.sitio in sitios.nombres else ""
     pendientes = []
     if not args.sin_correr and sitio:
         pendientes.append(("verificar", False))
@@ -113,22 +120,23 @@ def main() -> int:
 
     def listo():
         espacio.fijarVista(args.vista)
-        if args.vista == "sitios":
-            espacio.fijarFiltro(args.filtro)
+        if sitio:
+            sitios.irA(sitio)
         if args.operacion:
             operaciones.fijar(args.operacion)
-        raiz.setProperty("mostrarDetalles", True)
-        raiz.setProperty("mostrarInferior", True)
-        inferior = raiz.property("inferior")
-        if inferior is not None:
-            inferior.setProperty("pestanaActual", 0)
+        espacio.fijarArea(args.area)
+        if args.documento:
+            d = piezas["documentos"]
+            ruta = next((d._filas.fila(i)["ruta"] for i in range(d._filas.filas) if args.documento in d._filas.fila(i)["rel"]), "")
+            if ruta:
+                interfaz.pedir.emit("editar", {"ruta": ruta})
         if args.fila >= 0:
-            QTimer.singleShot(300, lambda: interfaz.pedir.emit("seleccionar_fila", {"fila": args.fila}))
+            piezas["metadatos"].fijarFila(args.fila)
         if args.pestana >= 0:
             QTimer.singleShot(600, lambda: interfaz.pedir.emit("pestana", {"indice": args.pestana}))
         if args.paleta is not None:
             QTimer.singleShot(900, lambda: interfaz.pedir.emit("paleta", {"texto": args.paleta}))
-        app.capturar(args.salida, espera_ms=2200)
+        app.capturar(args.salida, espera_ms=3500)
 
     QTimer.singleShot(400, correr_siguiente)
     codigo = app.app.exec()

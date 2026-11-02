@@ -135,3 +135,49 @@ def test_filas_de_las_tablas(muestra):
     campos = mod.campos_elemento({"anio": "2026", "enlace": "x", "estado": "roto", "destino": "y", "nivel": "negativo", "ruta": "/r"}, mod.COLUMNAS["indice"])
     assert campos[0] == {"etiqueta": "Año", "valor": "2026"} and all(c["etiqueta"] != "Nivel" for c in campos)
     assert [x[0] for x in mod.FILTROS] == ["todos", "al_dia", "sin_render", "sin_publicar", "problemas"]
+
+
+# ---------------------------------------------------------------------- reingeniería: documentos, publicación y diagnóstico
+from quarto_app.services import documentos as docs_svc  # noqa: E402
+from quarto_app.services import publicacion as pub  # noqa: E402
+
+
+def test_documentos_y_su_pagina(muestra):
+    s = muestra.pubs / "axiomata"
+    filas = docs_svc.listar(s)
+    rels = [f["rel"] for f in filas]
+    assert rels[:2] == ["_quarto.yml", "index.qmd"] and not any(r.startswith("_site/") for r in rels)
+    entrada = next(f for f in filas if f["entrada"])
+    assert entrada["fecha"] and entrada["titulo"] and entrada["carpeta"] == "posts/" + entrada["rel"].split("/")[1]
+    pagina = docs_svc.pagina_de(s, entrada["ruta"])
+    assert pagina is not None and pagina.name == "index.html" and "_site/posts/" in str(pagina)
+    assert docs_svc.pagina_de(s, s / "_quarto.yml") is None
+    assert [p["rel"] for p in docs_svc.paginas(s)][0] == "index.html" and len(docs_svc.paginas(s)) == 4
+    assert docs_svc.carpeta_salida(s).name == "_site"
+
+
+def test_destino_por_publicar_e_historial(muestra):
+    s = muestra.pubs / "chaska"
+    d = pub.destino(s, "https://chaska.netlify.app/", "achalmed/chaska")
+    assert d["coincide"] and d["dominio"] == "chaska.netlify.app" and [c["ok"] for c in d["comprobaciones"]] == [True, True, True, True]
+    assert not pub.destino(s, "https://chaska.netlify.app/", "otro-repo")["coincide"]               # el push iría a otro repositorio
+    assert "otro dominio" in pub.destino(s, "https://axiomata.netlify.app/", "chaska")["motivo"]
+    assert not pub.destino(s, "", "chaska")["coincide"]                                               # sin dominio, no hay a dónde
+    (s / "_quarto.yml").write_text((s / "_quarto.yml").read_text().replace("chaska.netlify.app", "otro.netlify.app"))
+    d = pub.destino(s, "https://chaska.netlify.app/", "chaska")
+    assert not d["coincide"] and d["motivo"].startswith("site-url del _quarto.yml: otro.netlify.app")
+    pp = pub.por_publicar(s)
+    assert pp["por_empujar"] == 1 and pp["commits"] == 1 and pp["archivos"][-1]["archivo"].startswith("_site/")
+    h = pub.historial(s)
+    assert h and h[0]["mensaje"] == "render" and h[0]["archivos"] >= 1 and pub.ultima(s)["commit"] == h[0]["commit"]
+    assert pub.host("https://www.Ejemplo.org/x") == "ejemplo.org" and pub._repo_de("git@github.com:u/x.git") == "x"
+
+
+@pytest.mark.skipif(not datos.hay_openpyxl(), reason="sin openpyxl no hay Excel que comparar")
+def test_diagnostico_de_metadatos(muestra):
+    blogs = {b.nombre: b for b in _blogs(muestra)}
+    excel = datos.leer_excel(muestra.excel)
+    d = datos.diagnostico(blogs["axiomata"], excel)
+    assert d["filas"][0]["estado"] == "difiere" and d["filas"][0]["diferencias"] >= 1
+    assert {f["estado"] for f in d["filas"]} <= {"difiere", "sin fila", "igual"} and "difieren del Excel" in d["resumen"]
+    assert datos.diagnostico(blogs["axiomata"], {})["resumen"].startswith("sin Excel")

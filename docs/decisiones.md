@@ -11,6 +11,18 @@ commit, no aquí; lo pendiente, a [`estado.md`](../estado.md) §Por hacer (ola 4
 
 ## Arquitectura
 
+- **2026-11-02 · Quarto Studio es un entorno de escritura y publicación sobre `VentanaBase` de `gui-comun` 3.0
+  (reingeniería de los diez studios, §3.7).** El diagnóstico, la distribución y las decisiones E1–E12 están en
+  [`reingenieria.md`](reingenieria.md): proyectos a la izquierda; Escribir (documentos, editor y vista previa),
+  Metadatos (el Excel frente a todas las entradas, sin escribir), Publicación y Herramientas (lo de 2.0). Tres reglas
+  nuevas: **el editor escribe solo con Ctrl+S y en el mismo archivo** (los hardlinks del tema se conservan; es el de LaTeX
+  Studio, copiado y adaptado hasta que pase a `gui-comun`); **la vista previa es el `_site` real en QtWebEngine del
+  sistema** (`qml6-module-qtwebengine`; la aplicación fija `AA_ShareOpenGLContexts`, que es lo que hace
+  `QtWebEngineQuick.initialize()`, ausente en el PySide6 del sistema), con el Markdown como respaldo; y **publicar y empujar
+  exigen que el destino corresponda al sitio** (el dominio del registro de pubs, el `site-url` del `_quarto.yml` y el
+  remoto `origin` frente al repositorio del registro): si algo no coincide, no se ofrecen. La confirmación de publicar es
+  la de la base (estado «publicación»), con el sitio, el dominio y cuántos archivos van.
+
 - **2026-10-27 · La GUI vuelve: Quarto Studio y sus backends en un mismo repo.** Pedido del autor (2026-10-25): cada
   studio es un proyecto independiente, con su interfaz y su lógica juntas. Quarto Studio vuelve de `gui-suites` a
   `studio/` con su historia (`git filter-repo` de un clon de `gui-suites` y merge sin historia común; la anterior a la

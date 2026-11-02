@@ -16,8 +16,14 @@ from quarto_app.services import operaciones as ops
 NOMBRES_VISTAS = ops.NOMBRES_VISTAS
 
 
+AREAS = (("escribir", "Escribir", "document-edit"), ("metadatos", "Metadatos", "view-list-details"),
+         ("publicacion", "Publicación", "cloud-upload"), ("herramientas", "Herramientas", "tools"))
+NOMBRES_AREAS = tuple(n for n, _t, _i in AREAS)
+
+
 class Espacio(QObject):
     vistaCambiada = Signal()
+    areaCambiada = Signal()
     filtroCambiado = Signal()
     resumenCambiado = Signal()
     contextoCambiado = Signal()
@@ -34,6 +40,34 @@ class Espacio(QObject):
         if self._filtro not in dict(mod.FILTROS):
             self._filtro = "todos"
         self._resumen = self._contexto = ""
+        self._area = str(self._s.value("ventana/area", "escribir") or "escribir")
+        if self._area not in NOMBRES_AREAS:
+            self._area = "escribir"
+
+    # ------------------------------------------------------------- el área (reingeniería E1)
+    @Property("QVariantList", constant=True)
+    def areas(self) -> list:
+        return [{"nombre": n, "texto": t, "icono": i} for n, t, i in AREAS]
+
+    @Property(str, notify=areaCambiada)
+    def area(self) -> str:
+        return self._area
+
+    @Property(int, notify=areaCambiada)
+    def indiceArea(self) -> int:
+        return NOMBRES_AREAS.index(self._area)
+
+    @Slot(str)
+    def fijarArea(self, area: str) -> None:
+        if area in NOMBRES_AREAS and area != self._area:
+            self._area = area
+            self._s.setValue("ventana/area", area)
+            self.areaCambiada.emit()
+
+    @Slot(int)
+    def fijarAreaPorIndice(self, i: int) -> None:
+        if 0 <= i < len(NOMBRES_AREAS):
+            self.fijarArea(NOMBRES_AREAS[i])
 
     @Property("QVariantList", constant=True)
     def vistas(self) -> list:

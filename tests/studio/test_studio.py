@@ -1,6 +1,7 @@
-"""tests/studio/test_studio.py — Quarto Studio (QML + Kirigami sobre gui-comun 2.x) abre su ventana sin pantalla con el
-Python del sistema (o el .venv del studio) sobre la familia de muestra: la ventana entera (acciones, menús, barra,
-resumen, el estado de los sitios), cada componente QML, `--smoke`, y las reglas de la familia (sin colores propios, sin
+"""tests/studio/test_studio.py — Quarto Studio (QML + Kirigami sobre gui-comun 3.0, VentanaBase) abre su ventana sin pantalla
+con el Python del sistema (o el .venv del studio) sobre la familia de muestra: la ventana entera (acciones, menús, áreas,
+el editor con un documento, la vista previa, la publicación con su destino, el estado de los sitios), cada componente QML
+con un proyecto y un documento abiertos, `--smoke`, y las reglas de la familia (sin colores propios, sin
 marca dentro, sin QtWidgets, el Python del sistema en main.py e install.sh; ninguna prueba publica)."""
 from __future__ import annotations
 
@@ -37,10 +38,21 @@ s.irA("web")
 publicar_web = a.accion("op.aplicar").habilitada
 o.fijar("verificar")
 leer = (a.accion("op.aplicar").visible, a.accion("op.simular").textoPlano)
-QTimer.singleShot(800, app.app.quit); app.app.exec(); app.cerrar()
+areas = []
+for n in ("escribir", "metadatos", "publicacion", "herramientas"):
+    a.accion("ver.area." + n).disparar(); app.app.processEvents(); areas.append(piezas["espacio"].area)
+s.irA("chaska"); app.app.processEvents()
+p = piezas["publicacion"]
+publicacion = (p.coincide, p.dominio, p.totalArchivos, bool(p.ultima.get("commit")), a.accion("sitio.publicar").habilitada, a.accion("sitio.renderizar").habilitada)
+d, e = piezas["documentos"], piezas["editor"]
+entrada = next(f for f in [d._filas.fila(i) for i in range(d._filas.filas)] if f["entrada"]) if d.total else {}
+e.abrir(entrada.get("ruta", "")); app.app.processEvents()
+documento = (d.total, bool(e.actual), d.actual == e.actual, d.urlPagina.endswith("/index.html"), d.paginaDelDocumento, len(d.paginas) > 1, d.hayWebEngine)
+QTimer.singleShot(1500, app.app.quit); app.app.exec(); app.cerrar()
 print(json.dumps({"ok": ok, "titulo": titulo, "errores": errores, "acciones": a.nombres(), "menus": [m["titulo"] for m in a.menus], "barra": a.barra,
                   "sin_sitio": sin_sitio, "con_sitio": con_sitio, "publicar": publicar, "publicar_web": publicar_web, "leer": leer,
-                  "resumen": piezas["espacio"].resumen, "contexto": piezas["espacio"].contexto, "vista": piezas["espacio"].vista, "sitios": s.nombres}))
+                  "resumen": piezas["espacio"].resumen, "contexto": piezas["espacio"].contexto, "vista": piezas["espacio"].vista, "sitios": s.nombres,
+                  "areas": areas, "publicacion": publicacion, "documento": documento, "conflictos": a.conflictos()}))
 """
 
 COMPONENTE = """
@@ -56,9 +68,18 @@ app.motor.warnings.connect(lambda avisos: errores.extend(a.toString() for a in a
 nombre, carpeta = sys.argv[2], sys.argv[3]
 ruta = os.path.join(os.environ["XDG_CACHE_HOME"], "Prueba_" + nombre + ".qml")
 os.makedirs(os.path.dirname(ruta), exist_ok=True)
-open(ruta, "w").write('import QtQuick\\nimport GuiComun\\nimport "file://%s/%s"\\nVentanaStudio { id: ventana; acciones: studio.acciones; visible: false; %s { id: objeto } }\\n' % (str(aplicacion.QML_DIR), carpeta, nombre))
+extra = "" if nombre.startswith("Dialogo") or nombre == "ResaltadoEditor" else "; anchors.fill: parent"
+open(ruta, "w").write('import QtQuick\\nimport GuiComun\\nimport "file://%s/%s"\\nVentanaBase { id: ventana; acciones: studio.acciones; visible: false; %s { id: objeto%s } }\\n' % (str(aplicacion.QML_DIR), carpeta, nombre, extra))
 ok = app.cargar(ruta)
-QTimer.singleShot(400, app.app.quit); app.app.exec(); app.cerrar()
+app.app.processEvents()
+p = app._piezas
+p["sitios"].irA("axiomata")                          # las ligaduras con un proyecto y un documento abiertos
+docs = [p["documentos"]._filas.fila(i) for i in range(p["documentos"].total)]
+if docs:
+    p["editor"].abrir(next((d["ruta"] for d in docs if d["entrada"]), docs[0]["ruta"]))
+p["metadatos"].fijarFila(0)
+app.app.processEvents()
+QTimer.singleShot(600, app.app.quit); app.app.exec(); app.cerrar()
 print(json.dumps({"ok": ok, "errores": errores}))
 """
 
@@ -95,21 +116,26 @@ def test_abre_y_cierra_su_ventana(tmp_path, muestra):
     assert datos["ok"], r.stderr[-3000:]
     assert not _graves(datos["errores"]), "\n".join(_graves(datos["errores"]))
     assert datos["sitios"] == ["aequilibria", "axiomata", "chaska", "web"]
-    for n in ("archivo.abrir", "archivo.carpeta", "archivo.terminal", "archivo.navegador", "archivo.copiar", "archivo.excel", "editar.filtrar", "editar.todo",
+    for n in ("archivo.guardar", "archivo.ir", "archivo.abrir", "archivo.carpeta", "archivo.terminal", "archivo.navegador", "archivo.copiar", "archivo.excel",
+              "editar.filtrar", "editar.todo", "ver.area.escribir", "ver.area.metadatos", "ver.area.publicacion", "ver.area.herramientas", "ver.previa",
               "ver.vista.sitios", "ver.vista.entradas", "ver.vista.indice", "ver.vista.contenido", "ver.releer",
-              "op.simular", "op.aplicar", "op.cancelar", "op.render", "op.publicar", "op.commit", "op.preview", "op.aplicar_excel", "op.indice_sincronizar", "op.contenido_generar",
-              "sitio.nueva_entrada", "sitio.entradas", "sitio.problemas", "herr.lanzador", "herr.venv", "ayuda.manual", "ayuda.backend",
-              "ventana.navegacion", "ventana.detalles", "ventana.inferior", "ventana.paleta", "app.ajustes", "app.acerca", "app.salir"):
+              "op.simular", "op.aplicar", "op.cancelar", "op.render", "op.publicar", "op.commit", "op.preview", "op.aplicar_excel", "op.indice_sincronizar",
+              "op.contenido_generar", "sitio.renderizar", "sitio.publicar", "sitio.simular_publicar", "sitio.nueva_entrada", "sitio.problemas",
+              "herr.lanzador", "herr.venv", "ayuda.manual", "ayuda.backend", "ventana.paleta", "app.ajustes", "app.acerca", "app.salir"):
         assert n in datos["acciones"], n
+    assert not any(n in datos["acciones"] for n in ("ventana.navegacion", "ventana.detalles", "ventana.inferior"))   # VentanaBase
+    assert not datos["conflictos"], datos["conflictos"]
     assert datos["menus"] == ["&Archivo", "&Editar", "&Ver", "&Sitio", "&Flujo", "&Herramientas", "A&justes", "Ay&uda"]
-    assert datos["barra"] == ["op.simular", "op.aplicar", "|", "sitio.nueva_entrada"]
     assert datos["sin_sitio"] == [False, False, False]
     assert datos["con_sitio"] == [True, True, True, True, True, "Simular"]          # render: F5 = plan, Ctrl+Intro renderiza
     assert datos["publicar"] == [True, "Simular"]                                    # axiomata: la CLI simula, aplicar confirma
     assert datos["publicar_web"] is False                                            # web tiene problemas: no se publica
     assert datos["leer"] == [False, "Ejecutar"]
+    assert datos["areas"] == ["escribir", "metadatos", "publicacion", "herramientas"]
+    assert datos["publicacion"] == [True, "chaska.netlify.app", 1, True, True, True]  # chaska: _site por empujar, destino correcto
+    total, abierto, mismo, url, propia, paginas, _web = datos["documento"]
+    assert total >= 3 and abierto and mismo and url and propia and paginas           # la página renderizada de la entrada
     assert datos["resumen"] == "4 sitios · 1 al día · 1 sin render · 1 sin publicar · 1 con problemas"
-    assert datos["contexto"].startswith("web · Con problemas") and datos["vista"] == "sitios"
 
 
 @requiere_sistema

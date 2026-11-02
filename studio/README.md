@@ -2,15 +2,15 @@
 tipo: readme
 estado: activo
 ---
-# studio/ — Quarto Studio, la ventana (QML + Kirigami sobre gui-comun 2.x) de los backends de la familia de blogs
+# studio/ — Quarto Studio, el entorno de escritura y publicación (QML + Kirigami sobre gui-comun 3.0) de la familia de blogs
 <!-- suite:inicio -->
 **Suite `quarto_studio`** · objetivo *publicacion* · estado *activo* · python · interfaz gui
 
-Ventana de la familia de blogs Quarto (QML + Kirigami sobre gui-comun 2.x): el hub y los doce sitios con su estado por la regla de la puerta R6, las entradas con su frontmatter y su fila del Excel, el índice del vault y los índices de contenido; cada operación es la CLI de un backend: F5 simula (o muestra el plan), Ctrl+Intro aplica tras confirmar y publicar nombra el sitio y su dominio.
+Entorno de escritura y publicación de la familia de sitios Quarto (QML + Kirigami sobre gui-comun 3.0): los proyectos con su estado de construcción por la regla de la puerta R6, los documentos del sitio, el editor Markdown y Quarto con la vista previa del _site renderizado, el diagnóstico del Excel frente a los .qmd sin sobrescribir nada, el renderizado (Ctrl+Mayús+K) y la vista de publicación (destino comprobado, archivos que cambiarán, última publicación, historial); las operaciones de siempre son la CLI de un backend.
 
 - Escribe en: web, vault · simula por defecto: sí
-- Depende de: /usr/bin/python3 con PySide6 del sistema (python3-pyside6.*) y Kirigami (qml6-module-org-kde-kirigami), gui-comun 2.5 (módulo QML GuiComun), .venv del repo con openpyxl, pandas y pyyaml para los backends de metadatos (requirements.txt; opcional), blogs_manager, metadata_manager, pub_index_symlink, format_yaml, generador_publicacion_similar
-- Nota: No renderiza ni publica por su cuenta: corre la CLI de cada backend; publicar y commit+push simulan primero y se aplican tras confirmar con el sitio y su dominio (Netlify despliega con el push).
+- Depende de: /usr/bin/python3 con PySide6 del sistema (python3-pyside6.*) y Kirigami (qml6-module-org-kde-kirigami), {'gui-comun 3.0 (módulo QML GuiComun': 'VentanaBase, escritorio, estados de operación)'}, {'qml6-module-qtwebengine para la vista previa (opcional': 'sin él, el Markdown)'}, .venv del repo con openpyxl, pandas y pyyaml para los backends de metadatos (requirements.txt; opcional), blogs_manager, metadata_manager, pub_index_symlink, format_yaml, generador_publicacion_similar
+- Nota: No renderiza ni publica por su cuenta: corre la CLI de cada backend; publicar y commit+push simulan primero, se aplican tras confirmar con el sitio y su dominio (Netlify despliega con el push) y no se ofrecen si el dominio del registro, el site-url del _quarto.yml o el remoto no corresponden al sitio. El editor escribe solo con Ctrl+S, en el mismo archivo (conserva los hardlinks del tema).
 
 Comandos:
 
@@ -25,25 +25,33 @@ main.py --smoke
 
 ## Qué es
 
-La ventana de los cinco backends de `../backend/` con el espacio de trabajo de la familia de studios (`gui-comun` 2.x; el
-diseño, en [../docs/rediseno.md](../docs/rediseno.md)): menú, barra corta, navegación, centro, detalles, panel inferior,
-barra de estado y paleta de órdenes (Ctrl+Alt+I · Ctrl+K). Cuatro vistas (Ctrl+1 … Ctrl+4), un **sitio actual** y una
-**operación actual** por vista, elegida en la lista de la barra, en el menú Sitio o Flujo, en el menú contextual o en la
-paleta: **Simular (F5)** corre la simulación de la CLI (`publish`, `git-commit`, `--dry-run`) o muestra el **plan** que
-la ventana calcula sin correr nada (render, limpiar, respaldar, crear sitio); **Aplicar (Ctrl+Intro)** corre de verdad
-tras un diálogo con la orden exacta y lo que toca; publicar y commit+push nombran el sitio y su dominio.
+Un entorno de escritura y publicación de sitios Quarto, al modo de RStudio y VS Code con Quarto
+([../docs/reingenieria.md](../docs/reingenieria.md)), en `VentanaBase` de `gui-comun` 3.0. A la izquierda, siempre, los
+**proyectos** (el hub y los pubs del registro, con su estado de construcción por la regla de la puerta R6 y su dominio);
+en el centro, cuatro áreas (Ctrl+1–4):
 
-| vista | centro | operaciones | detalles |
-|---|---|---|---|
-| **Sitios** (filtros Todos · Al día · Cambios sin render · Render sin publicar · Con problemas; en Flujo, Render y Publicar llevan al filtro con la operación elegida) | el hub y los doce sitios del registro de pubs del hub con su estado por la regla de la puerta R6 (fecha del último commit de fuentes frente a la del último index.html de _site confirmado, fuentes sin confirmar, commits sin empujar), entradas, rama, tema, dominio | Renderizar · Publicar · Commit y push · Preview · Limpiar · Verificar · Inspeccionar · Git status · Listar entradas · Renderizar la entrada · Renderizar todos · Limpiar todos · Verificar estructura · Respaldar todos · Crear sitio… · Nueva entrada… (Ctrl+N, el formulario del asistente APAQuarto) | Resumen (estado y por qué, git, fechas) · Entradas · Problemas (los errores y avisos del último render con su archivo; Intro abre) · Registro (la última corrida sobre el sitio) · Operación · Plan |
-| **Entradas y metadatos** | todas las entradas con fecha, título, sitio, tags y si están en el Excel | las del gestor de metadatos (plantilla, diferencias, aplicar el Excel, tags, fechas, pdf-url) y el formateador YAML; el sitio actual filtra (`--blog`) | Metadatos (la fila del Excel frente al frontmatter, campo a campo) · Operación · Plan |
-| **Índice del vault** | los enlaces de `web/_indice/<año>/` y si están rotos | sincronizar, detectar rotos, eliminar rotos, resumen | Elemento · Operación · Plan |
-| **Índices de contenido** | los `_contenido_*.qmd` de cada sitio | generar los del sitio actual | Resumen del sitio · Elemento (el fragmento) · Operación · Plan |
+![Escribir: el documento y su página renderizada](../docs/figuras/quarto-studio-claro.png)
 
-**La ventana no renderiza ni publica por su cuenta**: cada operación es la CLI de su backend (las órdenes de
-`quarto_app/services/*_service.py`, las mismas de la terminal); la salida corre en el panel inferior (F4), Esc cancela
-(también el preview), y el plan y el registro de cada operación y de cada sitio quedan en la caché del studio. El tema
-compartido por hardlinks no se toca.
+- **Escribir**: los documentos del proyecto por carpetas (las entradas con su título y su fecha; Ctrl+P busca uno), el
+  editor Markdown y Quarto en pestañas (KSyntaxHighlighting, números de línea, buscar y reemplazar, Ctrl+S guarda sin
+  pisar un cambio hecho fuera) y la **vista previa** (F7): la página del documento en `_site/`, en QtWebEngine del
+  sistema, con atrás, adelante y las páginas del sitio para navegar; desde una página se edita su documento. Sin
+  `_site` o sin QtWebEngine, el Markdown. **Ctrl+Mayús+K renderiza** el sitio y la vista previa se recarga.
+- **Metadatos**: el Excel frente a los `.qmd` de todas las entradas del sitio (las que difieren, las que no tienen fila,
+  las filas sin documento) y, de la elegida, campo a campo. Nada se sobrescribe: «Llevar el Excel a los documentos…» es
+  la operación de siempre, que muestra la orden y confirma.
+- **Publicación**: el proyecto y su **dominio de destino**, las **comprobaciones de que el destino es el del sitio** (el
+  dominio del registro, el `site-url` del `_quarto.yml`, el remoto `origin` frente al repositorio del registro, la rama
+  con su remoto), el estado de construcción, **los archivos que cambiarán**, la **última publicación**, el **historial**
+  (los commits del remoto que tocaron `_site/`) y la salida de la última corrida. Publicar confirma con la base nombrando
+  el sitio, el dominio y cuántos archivos van, y **no se ofrece si el destino no corresponde** (tampoco «Commit y push»).
+- **Herramientas**: las vistas de 2.0 (sitios, entradas y metadatos, índice del vault, índices de contenido) con sus
+  operaciones: F5 simula (la CLI o el plan de la ventana), Ctrl+Intro aplica tras confirmar.
+
+![Publicación: el destino comprobado y lo que va](../docs/figuras/quarto-studio-publicacion.png)
+
+**La ventana no renderiza ni publica por su cuenta**: cada operación es la CLI de su backend. El editor escribe solo con
+Ctrl+S y en el mismo archivo, así que los hardlinks del tema compartido de los 12 sitios no se rompen.
 
 ## El entorno del studio
 
@@ -64,14 +72,11 @@ instala en el `.venv`: el de pip no carga Kirigami.
 | archivo | qué es |
 |---|---|
 | `main.py` | el punto de entrada, sin lógica (`/usr/bin/python3`; se relanza con `.venv/bin/python` si existe) |
-| `quarto_app/aplicacion.py` | arma la aplicación: controladores, el registro de acciones (menú, barra, menú contextual, paleta, atajos: cada operación una sola vez) y `quarto_app/qml/Main.qml` |
-| `quarto_app/controladores/` | lo que QML ve: `espacio` (vista, filtro, barra de estado, rutas), `sitios` (la tabla con su estado, el sitio y la entrada actuales, la entrada nueva), `flujo` (entradas con el Excel, índice, fragmentos), `operaciones` (la actual, Simular y Aplicar por `gui_comun.tareas`, plan y registro), `ajustes` |
-| `quarto_app/services/` | sin Qt: los `Command` de cada backend (`blog_service`, `metadata_service`, `yaml_service`, `index_service`, `similar_service`, intactos), `operaciones` (el catálogo: simular, aplicar, plan, qué pide), `sitios` (el estado por la regla de la puerta R6), `render` (progreso y problemas de `quarto render`), `datos` (entradas, Excel, índice, fragmentos), `project_scanner`, `post_service`, `paths` |
-| `quarto_app/models/` | `blog.py`, `operation.py`, `filas.py` (las filas de las tablas, sin Qt) |
-| `quarto_app/qml/` | `Main.qml` sobre `GuiComun.VentanaStudio` y los componentes propios (`componentes/`) |
-| `quarto_app/settings.py` | las preferencias de 1.x (`QSettings`), que se conservan |
-| `quarto_app/recursos/marca.svg` | el icono del lanzador: la única marca del studio |
-| `muestra.py` | la familia de sitios de muestra (un hub y tres pubs con git y remotos bare, cada uno en un estado; `_indice/`; un fragmento; un Excel) de las pruebas y las capturas; nunca `web` ni los pubs |
+| `quarto_app/aplicacion.py` | arma la aplicación: controladores, el registro de acciones (menú, paleta, atajos, estados de operación) y `quarto_app/qml/Main.qml`; fija `AA_ShareOpenGLContexts` para QtWebEngine |
+| `quarto_app/controladores/` | `espacio` (áreas, vista, barra de estado), `sitios` (los proyectos con su estado, el sitio actual), `documentos` (los del sitio, la página de la vista previa), `editor` (el de LaTeX Studio adaptado), `metadatos` (el diagnóstico), `publicacion` (destino, archivos, historial; la guarda de publicar), `flujo`, `operaciones`, `ajustes` |
+| `quarto_app/services/` | sin Qt: `documentos`, `publicacion`, `sitios` (la regla R6), `datos` (entradas, Excel, `diagnostico`), `operaciones` (el catálogo), `render`, los `*_service.py` de cada backend, `project_scanner`, `post_service`, `paths` |
+| `quarto_app/qml/` | `Main.qml` sobre `GuiComun.VentanaBase` y `componentes/` (PanelProyectos, EspacioEscritura, EditorArchivo, BarraBusqueda, VistaPrevia, VistaWeb, EspacioMetadatos, EspacioPublicacion, EspacioHerramientas y los de 2.0) |
+| `muestra.py` | la familia de sitios de muestra (un hub y tres pubs con git y remotos bare, cada uno en un estado, con páginas renderizadas; un Excel); nunca `web` ni los pubs |
 | `capturar.py` | las capturas de la documentación sobre la muestra, con `HOME` temporal fuera de la carpeta de inicio |
 
 ## Uso
@@ -80,16 +85,17 @@ instala en el `.venv`: el de pip no carga Kirigami.
 /usr/bin/python3 studio/main.py                      # desde quarto-studio/, en la sesión real (se relanza con .venv si existe)
 QT_QPA_PLATFORM=offscreen /usr/bin/python3 studio/main.py --smoke     # construye la interfaz y sale
 ./install.sh                                         # acceso directo en el menú (con -n, simula)
-/usr/bin/python3 studio/capturar.py docs/figuras/quarto-studio-oscuro.png --esquema <LliphiOscuro.colors> --vista sitios --fila 1 --pestana 7
+/usr/bin/python3 studio/capturar.py docs/figuras/quarto-studio-oscuro.png --esquema <LliphiOscuro.colors> --sitio aequilibria --documento phillips
+/usr/bin/python3 studio/capturar.py salida.png --area publicacion --sitio chaska
 tests/run.sh                                         # desde quarto-studio/: la muestra en un temporal, cada QML y --smoke; nada publica
 ```
 
 ## Límite honesto
 
 - **El estado se lee de git y del disco cada vez** (F6 relee): lo que se renderice o publique desde la terminal se refleja igual.
+- **La vista previa muestra el `_site` como está**: un documento sin renderizar enseña la portada (lo dice); Ctrl+Mayús+K
+  renderiza el sitio entero, no solo el documento.
+- **QtWebEngine carga las páginas locales con lo que ellas pidan** (fuentes o MathJax de una CDN): sin red, algo puede faltar.
+- **Las comprobaciones del destino son las que se pueden hacer sin red**: el registro, el `_quarto.yml` y git; no
+  consultan Netlify.
 - **Los problemas del render salen de la salida de Quarto** (ERROR, WARN, `archivo:línea`): un error que Quarto no anuncie así no aparece.
-- **Render y limpiar no simulan en la CLI**: F5 muestra el plan de la ventana (qué sitios, en qué orden, por qué; qué borraría) y Ctrl+Intro corre la CLI.
-- **Las operaciones de metadatos corren sobre todos los sitios salvo que haya un sitio actual** (`--blog`); el filtro de ruta vive en la pestaña Operación.
-- **El Excel se lee con `openpyxl`** (del `.venv`): sin él, la columna «Excel» y la pestaña Metadatos quedan vacías.
-- **Una operación a la vez**, sin cola; el preview se detiene con Esc.
-- **`sync-article` y `sync-batch`** (interactivos) no se ofrecen: su flujo es Ver diferencias → Aplicar el Excel con el sitio y el filtro de ruta.
