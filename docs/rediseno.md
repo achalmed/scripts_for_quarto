@@ -14,8 +14,9 @@ familia». Biblioteca Studio mostró cómo se aplica a un studio que orquesta su
 que cada etapa maneja, una operación actual por vista, F5 simula y Ctrl+Intro aplica tras confirmar. Este documento
 aplica ese diseño a este studio: la auditoría de lo que hay (§1), las ocho preguntas de producto (§2), la
 arquitectura de información (§3), la ventana (§4), lo construido (§5), los componentes (§6), lo que el marco
-necesitó (§7) y las decisiones (§8). **Es un borrador** hasta que la reescritura esté hecha y las capturas de §5
-sean reales; pasa a `hecho` cuando el autor valide el studio en la sesión real sobre `web` (`../estado.md`).
+necesitó (§7) y las decisiones (§8). **Está construido** (rama
+`wip/2026-11-02-qml`, 2026-11-02): las capturas de §5 son reales; pasa a `hecho` cuando el autor valide el studio en la
+sesión real sobre `web` (`../estado.md`).
 
 Tres reglas condicionan todo lo demás. **Netlify despliega con cada `git push`** (`../CLAUDE.md`, `decisiones.md`
 2026-10-06): publicar es irreversible hacia fuera, así que `publish` y `git-commit` simulan siempre primero y se
@@ -23,16 +24,16 @@ aplican tras una confirmación que nombra el sitio y su dominio, detrás de la p
 doce sitios se comparte por hardlinks** (decisión del autor del 2026-10-08): la ventana no copia, mueve ni reescribe
 nada del tema; solo lo renderiza con la CLI. **Un sitio se verifica renderizando** (N 5.16): el estado de un sitio se
 lee del disco y de git con la misma regla que la puerta R6 (fecha del último commit de las fuentes frente a la de
-`_site/index.html`), y «Problemas del render» sale de la salida de `quarto render`.
+index.html de _site), y «Problemas del render» sale de la salida de `quarto render`.
 
 ## 1. Auditoría de la GUI actual (Widgets, `gui-comun` 1.1)
 
-Seis páginas en una barra lateral con la marca «Quarto Studio · Blogs y publicaciones» (`studio/quarto_app/ui/`,
+Seis páginas en una barra lateral con la marca «Quarto Studio · Blogs y publicaciones» (la carpeta ui,
 1.x, retirado en esta fase; se lee en la historia de git), construidas a mano con `gui_comun.widgets` y
 `QtWidgets`: tarjetas, cifras, mosaicos, tablas, grupos de botones, consola como cajón, paleta Ctrl+K. La lógica
 está separada en `studio/quarto_app/services/` (sin Qt: un `Command` por subcomando de cada backend; `paths.py`
 localiza los cinco backends y el hub por `core/env.py`; `project_scanner.py` descubre los sitios por el registro
-`_pubs/pubs.yml` de `core/pubs.py` y sus entradas; `post_service.py` genera el `index.qmd` de una entrada nueva,
+pubs.yml del hub de el módulo pubs de core y sus entradas; `post_service.py` genera el `index.qmd` de una entrada nueva,
 la única lógica portada del asistente de terminal), que esta fase conserva como servicios y amplía con consultas.
 
 | página | qué hace hoy | entidades y operaciones | lógica separada | mezclado en la ventana |
@@ -75,8 +76,7 @@ apunta al Python de Anaconda, que no carga Kirigami; el Python del sistema no tr
    Entradas · Metadatos · Problemas · Registro; Operación y Plan) y las vistas del flujo.
 7. **Una sesión completa**: abrir → la barra de estado dice «13 sitios · 2 con cambios sin render · 1 con render sin
    publicar» → Sitios › Sin render: la tabla lista los dos → se elige uno → Resumen dice qué fuentes cambiaron después
-   del último render → «Renderizar» en la lista de la barra, F5: el plan dice «axiomata: 3 entradas cambiadas desde
-   el render del 2026-10-31» → Ctrl+Intro: `main.sh render axiomata` corre en el panel inferior → al terminar,
+   del último render → «Renderizar» en la lista de la barra, F5: el plan dice qué fuentes cambiaron desde el último render y cuándo fue → Ctrl+Intro: `main.sh render axiomata` corre en el panel inferior → al terminar,
    Problemas lista los avisos de Quarto con su archivo, la fila pasa a «Render sin publicar» → «Publicar», F5: la
    simulación de la CLI (puerta R6 y lo que se empujaría) → Ctrl+Intro: el diálogo dice «Publicar axiomata en
    https://axiomata.netlify.app/: Netlify despliega con el push; no se deshace» → Publicar → la fila pasa a «Al día».
@@ -97,7 +97,7 @@ simula con F5 y se aplica con Ctrl+Intro.
 
 | vista | centro (`TablaDatos`) | operaciones (la misma CLI de hoy) | detalles |
 |---|---|---|---|
-| **Sitios** (filtros: Todos · Al día · Sin render · Sin publicar · Con problemas; Render = Sin render + «Renderizar»; Publicar = Sin publicar + «Publicar») | los sitios del registro (`_pubs/pubs.yml`) y el hub: Sitio, Estado (color semántico), Entradas, Rama, Cambios (fuentes sin confirmar), ↑ (commits sin empujar), Render (fecha del último `_site/index.html` confirmado), Tema, Dominio | Renderizar · Preview · Detener preview · Limpiar · Verificar · Inspeccionar · Git status · Publicar · Commit y push · Renderizar una entrada · Renderizar todos · Limpiar todos · Verificar estructura · Respaldar todos · Crear sitio… · Nueva entrada… (diálogo) | **Resumen** (carpeta, repo, dominio, tema, `_quarto.yml`, rama, cambios, por empujar, último render, último commit de fuentes, por qué está en ese estado) · **Entradas** (las del sitio: fecha, título, carpeta) · **Problemas** (n) (los errores y avisos del último render del sitio, con archivo y línea) · **Registro** (la salida íntegra de la última corrida sobre el sitio) · **Operación** · **Plan** |
+| **Sitios** (filtros: Todos · Al día · Sin render · Sin publicar · Con problemas; Render = Sin render + «Renderizar»; Publicar = Sin publicar + «Publicar») | los sitios del registro de pubs del hub y el hub: Sitio, Estado (color semántico), Entradas, Rama, Cambios (fuentes sin confirmar), ↑ (commits sin empujar), Render (fecha del último index.html de _site confirmado), Tema, Dominio | Renderizar · Preview · Detener preview · Limpiar · Verificar · Inspeccionar · Git status · Publicar · Commit y push · Renderizar una entrada · Renderizar todos · Limpiar todos · Verificar estructura · Respaldar todos · Crear sitio… · Nueva entrada… (diálogo) | **Resumen** (carpeta, repo, dominio, tema, `_quarto.yml`, rama, cambios, por empujar, último render, último commit de fuentes, por qué está en ese estado) · **Entradas** (las del sitio: fecha, título, carpeta) · **Problemas** (n) (los errores y avisos del último render del sitio, con archivo y línea) · **Registro** (la salida íntegra de la última corrida sobre el sitio) · **Operación** · **Plan** |
 | **Entradas y metadatos** | todas las entradas de todos los sitios (filtrables por sitio desde la navegación y por texto): Fecha, Título, Sitio, Carpeta, Tags, en el Excel (sí/no) | Plantilla del Excel · Plantilla incremental · Ver diferencias · Aplicar el Excel · Detectar campos nuevos · Crear configuración · Normalizar tags · Reemplazar tags… · Eliminar tags… · Agregar tags… · Estadísticas de tags · Auditoría de tags · Sincronizar fechas · Sincronizar `pdf-url` · Formatear YAML (carpeta) · Formatear YAML (archivo); con el sitio actual como filtro `--blog` y un filtro de ruta | **Metadatos** (el frontmatter de la entrada y su fila del Excel, campo a campo; en qué difieren) · Resumen del sitio · Operación · Plan · Registro |
 | **Índice del vault** | los enlaces de `web/_indice/<año>/`: Año, Enlace, Destino, Estado (bien · roto) | Sincronizar el índice · Detectar rotos · Eliminar rotos · Resumen por año | Resumen (el enlace y su destino) · Operación · Plan · Registro |
 | **Índices de contenido** | los fragmentos `_contenido_*.qmd` de cada sitio: Sitio, Subblog, Fragmento, Entradas que enlaza, Modificado | Generar los índices del sitio (URL base y estructura como entrada) | Resumen (el fragmento en texto) · Operación · Plan · Registro |
@@ -114,14 +114,14 @@ aplicarla y la confirmación que **nombra el sitio y su dominio** al publicar.
 
 | entidad | datos | dónde |
 |---|---|---|
-| Sitio (`project_scanner.descubrir_blogs` sobre `core/pubs.py`; `servicios/sitios.py` para el estado) | carpeta, nombre, repo, dominio, tema; `_quarto.yml`, `.git`, `_site/index.html`; rama, fuentes sin confirmar (`git status` sobre los pathspecs de fuentes de la puerta R6), commits sin empujar (`rev-list @{u}..HEAD`), fecha del último commit de fuentes y del último de `_site/index.html` (`git log -1 --format=%ct`), estado derivado | tabla Sitios; detalles › Resumen; contadores de la navegación y de la barra de estado |
-| Estado de un sitio | `problemas` (sin `_quarto.yml`, sin git o sin `_site/index.html`), `sin_render` (fuentes sin confirmar o confirmadas después del último render), `sin_publicar` (`_site/` sin confirmar o commits sin empujar), `al_dia` | columna Estado (negativo · neutro · activo · positivo); filtros; la explicación en Resumen |
+| Sitio (`project_scanner.descubrir_blogs` sobre el módulo pubs de core; `studio/quarto_app/services/sitios.py` para el estado) | carpeta, nombre, repo, dominio, tema; `_quarto.yml`, `.git`, index.html de _site; rama, fuentes sin confirmar (`git status` sobre los pathspecs de fuentes de la puerta R6), commits sin empujar (`rev-list @{u}..HEAD`), fecha del último commit de fuentes y del último de index.html de _site (`git log -1 --format=%ct`), estado derivado | tabla Sitios; detalles › Resumen; contadores de la navegación y de la barra de estado |
+| Estado de un sitio | `problemas` (sin `_quarto.yml`, sin git o sin index.html de _site), `sin_render` (fuentes sin confirmar o confirmadas después del último render), `sin_publicar` (`_site/` sin confirmar o commits sin empujar), `al_dia` | columna Estado (negativo · neutro · activo · positivo); filtros; la explicación en Resumen |
 | Entrada (`project_scanner.listar_posts`: carpetas `AAAA-MM-DD-*` con `index.qmd`) | fecha, título, carpeta, sitio, tags (frontmatter), si tiene fila en el Excel | tabla Entradas; detalles › Entradas (del sitio) y Metadatos (de la entrada) |
 | Excel de metadatos (`backend/script_metadata_manager/excel_databases/quarto_metadata.xlsx`, leído con `openpyxl` del `.venv`) | una fila por entrada (`ruta`, `title`, `date`, `tags`, …) | columna «en el Excel»; detalles › Metadatos (la fila junto al frontmatter) |
-| Operación (`servicios/operaciones.py`: id, título, descripción, la orden de simular y la de aplicar, si pide el sitio, qué entrada pide, qué confirma) | la orden exacta; `simula` (dry-run de la CLI o plan de la ventana), `aplica`; si publica | lista de la barra; menú Sitio y Flujo; detalles › Operación; contexto de la barra de estado |
+| Operación (`studio/quarto_app/services/operaciones.py`: id, título, descripción, la orden de simular y la de aplicar, si pide el sitio, qué entrada pide, qué confirma) | la orden exacta; `simula` (dry-run de la CLI o plan de la ventana), `aplica`; si publica | lista de la barra; menú Sitio y Flujo; detalles › Operación; contexto de la barra de estado |
 | Corrida (`gui_comun.tareas.proceso`; una a la vez) | la orden, su salida línea a línea, el código, la duración; en render, el progreso por entrada | panel inferior (Salida); barra de estado; al terminar, el sitio se relee |
 | Plan y Registro (caché del studio: por operación y por sitio) | la salida íntegra de la última simulación (Plan) y de la última aplicación (Registro) | detalles › Plan y Registro (`VistaTexto`) |
-| Problema del render (`servicios/render.py`: `ERROR`, `WARN`, `WARNING`, `Error in`, `archivo:línea` de la salida de Quarto) | nivel, mensaje, archivo, línea | detalles › Problemas (`ListaDiagnosticos`); contador en la pestaña; Intro abre el archivo |
+| Problema del render (`studio/quarto_app/services/render.py`: `ERROR`, `WARN`, `WARNING`, `Error in`, `archivo:línea` de la salida de Quarto) | nivel, mensaje, archivo, línea | detalles › Problemas (`ListaDiagnosticos`); contador en la pestaña; Intro abre el archivo |
 | Enlace del índice (`web/_indice/<año>/*`) | año, nombre, destino, roto | tabla Índice del vault |
 | Fragmento de contenido (`_contenido_*.qmd` de cada sitio) | sitio, subblog, cuántas entradas enlaza, modificado | tabla Índices de contenido; Resumen (el texto) |
 | Preferencias (`QSettings`, las claves de 1.x) | el puerto del preview, el destino de publicación, el Excel, la terminal | «Configurar Quarto Studio…» |
@@ -194,8 +194,39 @@ pide 13 unidades; los detalles, 26; el panel inferior, 9 de alto. Los tres divis
 
 ## 5. Lo construido
 
-*(Se completa con la reescritura: tres capturas reales, `docs/figuras/quarto-studio-{oscuro,claro,paleta}.png`,
-1280 × 800, sobre una familia de sitios de muestra en una carpeta temporal y con `HOME` temporal.)*
+Tres capturas reales (`studio/capturar.py`, 1280 × 800, el Qt del sistema con Kirigami 6.24, sin tocar el escritorio ni
+las preferencias) sobre la **familia de sitios de muestra** de `studio/muestra.py`: un hub y tres pubs de juguete con
+git y remotos «bare» locales, cada uno en un estado (al día, con cambios sin render, con render sin publicar, con
+problemas), un índice del vault con un enlace roto, un fragmento de contenido y un Excel de metadatos, creados en `/tmp`
+fuera de la carpeta de inicio con `HOME`, configuración, caché y estado temporales (ninguna ruta de la máquina en
+pantalla). Antes de capturar corre de verdad «Verificar» del sitio elegido (`main.sh check`) y, en la oscura, un
+`quarto render` real del sitio: la salida del panel inferior es la de la CLI. En Lliphi Oscuro, la vista Sitios con el
+Resumen de un sitio recién renderizado y los mensajes de las dos corridas; en Lliphi Claro, la vista Entradas con la
+pestaña Metadatos de una entrada (su frontmatter y su fila del Excel, campo a campo); y la paleta de órdenes
+filtrando «publicar» sobre la pestaña Operación de Publicar (la orden de simular y la de aplicar, y que Netlify
+despliega con el push).
+
+| | |
+|---|---|
+| ![Lliphi Oscuro: Sitios, el Resumen tras un render real](figuras/quarto-studio-oscuro.png) | ![Lliphi Claro: Entradas, los metadatos de una entrada](figuras/quarto-studio-claro.png) |
+
+![Paleta de órdenes (Ctrl+Alt+I) filtrando «publicar»](figuras/quarto-studio-paleta.png)
+
+Qué hay detrás: `studio/quarto_app/aplicacion.py` (el registro de acciones: §3.3 íntegro; Simular se habilita con
+operación, sitio si lo pide y sin tarea en curso; Aplicar solo si la operación escribe y, al publicar, si el sitio no
+tiene problemas), cinco controladores (`espacio`, `sitios`, `flujo`, `operaciones`, `ajustes`), los servicios de 1.x
+intactos (`blog_service`, `metadata_service`, `yaml_service`, `index_service`, `similar_service`, `project_scanner`,
+`post_service`, `paths`) más los nuevos sin Qt (`operaciones`: el catálogo con simular, aplicar y plan; `sitios`: el
+estado por la regla de la puerta R6; `render`: progreso y problemas de `quarto render`; `datos`: entradas, Excel,
+índice, fragmentos), el módulo de filas, y `studio/quarto_app/qml/Main.qml` sobre `VentanaStudio` con nueve
+componentes propios (ResumenSitio, EntradasSitio, Problemas, Registro, Metadatos, Elemento, Operacion, Plan, el
+diálogo de la entrada nueva y el de ajustes). `tests/run.sh` con 29 pruebas: el catálogo (cada vista tiene
+operaciones, simular nunca aplica, lo que publica lo declara), los planes, el estado de cada sitio de la muestra, la
+lectura del render, las lecturas de la muestra, las filas, los controladores (tabla y filtros, el sitio y la entrada
+actuales, la entrada nueva, el flujo con el Excel, la operación actual y sus órdenes, correr de verdad lo que solo lee
+sobre la muestra), un `quarto render` real en `/var/tmp` (Quarto omite los archivos bajo una carpeta oculta), la
+ventana entera, cada QML y `--smoke` con el Python del sistema o el `.venv`, y las reglas de la familia. **Ninguna
+prueba publica.** Lo que quedó fuera está en `../estado.md` §Por hacer.
 
 ## 6. Componentes
 
@@ -208,18 +239,23 @@ pide 13 unidades; los detalles, 26; el panel inferior, 9 de alto. Los tres divis
 | Panel inferior | `GuiComun.PanelInferior` | la salida de la CLI (Salida) y los eventos (Registro) |
 | Diálogos | `Kirigami.PromptDialog` (Aplicar; Publicar y Commit con el sitio y su dominio), `Kirigami.Dialog` con `FormCard` (Nueva entrada…: Básico, APA, Resumen; Crear sitio…), `GuiComun.DialogoAjustes` (General) | lo que se pide y se cierra |
 
-## 7. Lo que el marco necesitó
+## 7. Lo que el marco necesitó (`gui-comun` 2.5.0)
 
-*(Se completa con la reescritura.)* Previsto: nada que no esté en `gui-comun` 2.4 (`ListaDiagnosticos` para los
-problemas del render, `Tareas.proceso(progreso_de=)` para el progreso por entrada de `quarto render`, `VistaTexto`,
-`CampoRuta`, `ModeloTabla`). Si algo hace falta, va a 2.5.0 en la rama `wip/2026-11-02-qml-quarto`.
+- **`Tareas.proceso(entrada=, entorno=)`**: la entrada estándar del proceso (las respuestas a las confirmaciones de un
+  guion que la ventana ya confirmó: el respaldo, `clean-all`, `--clean-broken`) y variables de entorno; sin `entrada`,
+  la entrada está cerrada y un guion que pregunta no se cuelga.
+- **La consola limpia las secuencias ANSI** de la salida de un proceso: el gestor de blogs colorea su salida y el panel
+  inferior la mostraba con los códigos.
+
+Nada de `widgets/` se toca. La versión subió a 2.5.0 con CHANGELOG, la referencia de componentes y dos pruebas; la
+etiqueta `v2.5.0` queda local hasta el visto bueno del autor (rama `wip/2026-11-02-qml-quarto`).
 
 ## 8. Decisiones
 
 | id | decisión | por qué |
 |---|---|---|
 | Q1 | Cuatro vistas (Sitios con filtros por estado, Entradas y metadatos, Índice del vault, Índices de contenido) y un sitio actual, en lugar de seis páginas de botones | el diseño aprobado de la familia: se opera viendo el objeto (qué sitio pide render o publicación, qué entradas hay) |
-| Q2 | El estado de un sitio se calcula con la regla de la puerta R6 (fecha del último commit de las fuentes frente a la del último `_site/index.html` confirmado) más `git status` de las fuentes y `rev-list @{u}..HEAD` | es la regla que decide si un push pasa; así la ventana dice lo mismo que la puerta antes de intentar publicar |
+| Q2 | El estado de un sitio se calcula con la regla de la puerta R6 (fecha del último commit de las fuentes frente a la del último index.html de _site confirmado) más `git status` de las fuentes y `rev-list @{u}..HEAD` | es la regla que decide si un push pasa; así la ventana dice lo mismo que la puerta antes de intentar publicar |
 | Q3 | F5 simula: la simulación de la CLI donde la hay (`publish`, `git-commit`, `--dry-run`), y el plan de la ventana donde no (render, clean, backup, init-blog: qué sitios, en qué orden, por qué, qué se borraría); Ctrl+Intro aplica tras un diálogo con la orden exacta | regla 3 del workspace; `render` y `clean` de la CLI no simulan y la ventana no los modifica |
 | Q4 | Publicar y commit+push confirman nombrando el sitio y su dominio, con la advertencia de que Netlify despliega con el push y no se deshace; nunca sobre todos los sitios a la vez | publicar es irreversible hacia fuera (`decisiones.md` 2026-10-06); una confirmación por sitio |
 | Q5 | Los problemas del render salen de la salida de `quarto render` (ERROR, WARN, `archivo:línea`) guardada por sitio en la caché del studio | un sitio se verifica renderizando (N 5.16); la CLI no deja registro y la consola lo perdía |
