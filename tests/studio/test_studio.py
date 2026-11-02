@@ -173,5 +173,6 @@ def test_sin_qtwidgets_y_con_el_python_del_sistema():
     assert (STUDIO / "main.py").read_text(encoding="utf-8").startswith("#!/usr/bin/python3")
     instalador = (REPO / "install.sh").read_text(encoding="utf-8")
     assert "/usr/bin/python3" in instalador and ".venv" in instalador
-    assert "PySide6" not in (REPO / "requirements.txt").read_text(encoding="utf-8").replace("# ", "#")
+    paquetes = [l.strip() for l in (REPO / "requirements.txt").read_text(encoding="utf-8").splitlines() if l.strip() and not l.startswith("#")]
+    assert not any("pyside" in p.lower() for p in paquetes), paquetes               # el PySide6 es el del sistema
     assert "ninguna prueba publica" in (REPO / "tests" / "studio" / "test_studio.py").read_text(encoding="utf-8")

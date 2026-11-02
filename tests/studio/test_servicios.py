@@ -11,7 +11,15 @@ import pytest
 from conftest import requiere_binding
 
 from quarto_app.models import filas as mod  # noqa: E402
+from quarto_app.models.blog import Blog  # noqa: E402
 from quarto_app.services import datos, operaciones as ops, project_scanner, render, sitios  # noqa: E402
+
+
+def _blogs(m) -> list[Blog]:
+    """Los sitios de una muestra sin pasar por core/env (la muestra de la sesión la cambian los controladores)."""
+    import muestra as muestra_mod
+    rutas = [m.pubs / n for n, _t, _d in muestra_mod.PUBS] + [m.hub]
+    return [Blog(ruta=r, posts=project_scanner.listar_posts(r), tiene_git=(r / ".git").exists(), tiene_quarto_yml=(r / "_quarto.yml").is_file()) for r in rutas]
 
 
 def test_el_catalogo_cubre_las_cuatro_vistas():
@@ -66,8 +74,8 @@ def test_planes_de_la_ventana(muestra_sesion):
     assert "Crear el sitio nuevo («Un título»)" in ops.plan_crear_sitio(ops.Contexto(valor='nuevo "Un título"'))
 
 
-def test_estado_de_cada_sitio_de_la_muestra(muestra_sesion):
-    m = muestra_sesion
+def test_estado_de_cada_sitio_de_la_muestra(muestra):
+    m = muestra
     estados = {n: sitios.estado_sitio(m.pubs / n) for n in ("aequilibria", "axiomata", "chaska")}
     estados["web"] = sitios.estado_sitio(m.hub)
     assert estados["aequilibria"]["estado"] == "al_dia" and estados["aequilibria"]["por_empujar"] == 0
@@ -94,9 +102,9 @@ def test_progreso_y_problemas_del_render():
     assert render.resumen_problemas(p) == "1 error · 1 aviso" and render.resumen_problemas([]) == "sin problemas"
 
 
-def test_entradas_excel_indice_y_fragmentos(muestra_sesion):
-    m = muestra_sesion
-    blogs = project_scanner.descubrir_blogs(m.raiz)
+def test_entradas_excel_indice_y_fragmentos(muestra):
+    m = muestra
+    blogs = _blogs(m)
     assert sorted(b.nombre for b in blogs) == ["aequilibria", "axiomata", "chaska", "web"]
     assert {b.nombre: b.num_posts for b in blogs}["web"] == 1            # el hub no cuenta las entradas de sus pubs
     excel = datos.leer_excel(m.excel) if m.excel else {}
@@ -119,9 +127,9 @@ def test_entradas_excel_indice_y_fragmentos(muestra_sesion):
     assert datos.frontmatter(Path(filas[0]["ruta"]))["title"]
 
 
-def test_filas_de_las_tablas(muestra_sesion):
-    m = muestra_sesion
-    b = next(x for x in project_scanner.descubrir_blogs(m.raiz) if x.nombre == "chaska")
+def test_filas_de_las_tablas(muestra):
+    m = muestra
+    b = next(x for x in _blogs(m) if x.nombre == "chaska")
     f = mod.fila_sitio(b, sitios.estado_sitio(b.ruta), None)
     assert f["sitio"] == "chaska" and f["estado"] == "Render sin publicar" and f["nivel"] == "activo" and f["por_empujar"] == "1" and f["crudo"]["estado"] == 2
     campos = mod.campos_elemento({"anio": "2026", "enlace": "x", "estado": "roto", "destino": "y", "nivel": "negativo", "ruta": "/r"}, mod.COLUMNAS["indice"])
