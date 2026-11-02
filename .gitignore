@@ -23,3 +23,6 @@ estructura.txt
 resources_rc.py
 # informes de ejecución de la GUI
 reports/
+
+# ===== Entorno del studio: creado con /usr/bin/python3 -m venv --system-site-packages .venv (studio/README.md) =====
+.venv/
