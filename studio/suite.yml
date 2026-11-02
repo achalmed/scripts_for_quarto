@@ -1,20 +1,26 @@
-# studio/suite.yml — suite quarto_studio: Interfaz de escritorio (PySide6) sobre los backends de la familia de blogs Quarto: render, publicación, metadatos, índices.
+# studio/suite.yml — suite quarto_studio: Quarto Studio, la ventana (QML + Kirigami sobre gui-comun 2.x) de los backends de la familia de blogs.
 # Contrato: core/suite.schema.yml; core/suites.py validar lo comprueba y generar escribe los índices y README.
 id: quarto_studio
 objetivo: publicacion
-resumen: 'Interfaz de escritorio (PySide6) sobre los backends de la familia de blogs Quarto: render, publicación, metadatos, índices.'
+resumen: 'Ventana de la familia de blogs Quarto (QML + Kirigami sobre gui-comun 2.x): el hub y los doce sitios con su estado por la regla de la puerta R6, las entradas con su frontmatter y su fila del Excel, el índice del vault y los índices de contenido; cada operación es la CLI de un backend: F5 simula (o muestra el plan), Ctrl+Intro aplica tras confirmar y publicar nombra el sitio y su dominio.'
 escribe_en:
 - web
 - vault
 simula_por_defecto: true
-pruebas: python3 -m pytest -q tests -k studio -p no:cacheprovider --basetemp ~/.cache/pytest/quarto-ola4   # desde la raíz del repo: abre la ventana sin pantalla y encuentra sus backends en backend/ (sesión 9, 2026-10-27)
+pruebas: quarto-studio/tests/run.sh   # desde ~/Documents; la familia de sitios de muestra en un temporal (git y remotos bare locales; quarto render real si está), cada QML y --smoke con el Python del sistema o el .venv del studio; nada publica
 comandos:
-- main.py
+- main.py   # ejecutable; su intérprete es /usr/bin/python3 (se relanza con .venv/bin/python si existe)
 - main.py --smoke
+- ../install.sh
 estado: activo
 interfaz: gui
 depende_de:
-- PySide6
+- /usr/bin/python3 con PySide6 del sistema (python3-pyside6.*) y Kirigami (qml6-module-org-kde-kirigami)
+- gui-comun 2.5 (módulo QML GuiComun)
+- .venv del repo con openpyxl, pandas y pyyaml para los backends de metadatos (requirements.txt; opcional)
 - blogs_manager
 - metadata_manager
 - pub_index_symlink
+- format_yaml
+- generador_publicacion_similar
+nota: 'No renderiza ni publica por su cuenta: corre la CLI de cada backend; publicar y commit+push simulan primero y se aplican tras confirmar con el sitio y su dominio (Netlify despliega con el push).'

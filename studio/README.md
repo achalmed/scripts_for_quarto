@@ -2,135 +2,94 @@
 tipo: readme
 estado: activo
 ---
-# studio/ — Quarto Studio, la aplicación de escritorio (PySide6 / Qt6) que unifica los backends de Quarto
-
+# studio/ — Quarto Studio, la ventana (QML + Kirigami sobre gui-comun 2.x) de los backends de la familia de blogs
 <!-- suite:inicio -->
 **Suite `quarto_studio`** · objetivo *publicacion* · estado *activo* · python · interfaz gui
 
-Interfaz de escritorio (PySide6) sobre los backends de la familia de blogs Quarto: render, publicación, metadatos, índices.
+Ventana de la familia de blogs Quarto (QML + Kirigami sobre gui-comun 2.x): el hub y los doce sitios con su estado por la regla de la puerta R6, las entradas con su frontmatter y su fila del Excel, el índice del vault y los índices de contenido; cada operación es la CLI de un backend: F5 simula (o muestra el plan), Ctrl+Intro aplica tras confirmar y publicar nombra el sitio y su dominio.
 
 - Escribe en: web, vault · simula por defecto: sí
-- Depende de: PySide6, blogs_manager, metadata_manager, pub_index_symlink
+- Depende de: /usr/bin/python3 con PySide6 del sistema (python3-pyside6.*) y Kirigami (qml6-module-org-kde-kirigami), gui-comun 2.5 (módulo QML GuiComun), .venv del repo con openpyxl, pandas y pyyaml para los backends de metadatos (requirements.txt; opcional), blogs_manager, metadata_manager, pub_index_symlink, format_yaml, generador_publicacion_similar
+- Nota: No renderiza ni publica por su cuenta: corre la CLI de cada backend; publicar y commit+push simulan primero y se aplican tras confirmar con el sitio y su dominio (Netlify despliega con el push).
 
 Comandos:
 
 ```bash
 main.py
 main.py --smoke
+../install.sh
 ```
 
-<sub>Bloque generado desde `suite.yml` por `core/suites.py generar` (2026-10-06); no se edita a mano.</sub>
+<sub>Bloque generado desde `suite.yml` por `core/suites.py generar` (2026-11-02); no se edita a mano.</sub>
 <!-- suite:fin -->
 
 ## Qué es
 
-Una sola ventana para las cinco herramientas de `../backend/`, en este mismo repo (`quarto-studio`, remoto
-`scripts_for_quarto`). Lo que comparte con Filesystem Studio y Git Studio (rutas por `core/env.sh`, workers, tema) es el
-paquete `gui_comun` del repo `gui-comun/`. Los scripts **no se reescriben**: actúan
-como motor y la GUI los invoca como procesos a través de una capa de servicios desacoplada; la consola
-integrada muestra el comando exacto, stdout, stderr, código de salida y duración, nada se oculta. La
-entrada es `main.py`: crea la `QApplication`, aplica el tema persistido y muestra `MainWindow`; toda
-la lógica vive en `quarto_app/`. Nombre y versión (`Quarto Studio`, `1.0.0`) se declaran una sola vez en `__init__.py`.
+La ventana de los cinco backends de `../backend/` con el espacio de trabajo de la familia de studios (`gui-comun` 2.x; el
+diseño, en [../docs/rediseno.md](../docs/rediseno.md)): menú, barra corta, navegación, centro, detalles, panel inferior,
+barra de estado y paleta de órdenes (Ctrl+Alt+I · Ctrl+K). Cuatro vistas (Ctrl+1 … Ctrl+4), un **sitio actual** y una
+**operación actual** por vista, elegida en la lista de la barra, en el menú Sitio o Flujo, en el menú contextual o en la
+paleta: **Simular (F5)** corre la simulación de la CLI (`publish`, `git-commit`, `--dry-run`) o muestra el **plan** que
+la ventana calcula sin correr nada (render, limpiar, respaldar, crear sitio); **Aplicar (Ctrl+Intro)** corre de verdad
+tras un diálogo con la orden exacta y lo que toca; publicar y commit+push nombran el sitio y su dominio.
 
+| vista | centro | operaciones | detalles |
+|---|---|---|---|
+| **Sitios** (filtros Todos · Al día · Cambios sin render · Render sin publicar · Con problemas; en Flujo, Render y Publicar llevan al filtro con la operación elegida) | el hub y los doce sitios del registro de pubs del hub con su estado por la regla de la puerta R6 (fecha del último commit de fuentes frente a la del último index.html de _site confirmado, fuentes sin confirmar, commits sin empujar), entradas, rama, tema, dominio | Renderizar · Publicar · Commit y push · Preview · Limpiar · Verificar · Inspeccionar · Git status · Listar entradas · Renderizar la entrada · Renderizar todos · Limpiar todos · Verificar estructura · Respaldar todos · Crear sitio… · Nueva entrada… (Ctrl+N, el formulario del asistente APAQuarto) | Resumen (estado y por qué, git, fechas) · Entradas · Problemas (los errores y avisos del último render con su archivo; Intro abre) · Registro (la última corrida sobre el sitio) · Operación · Plan |
+| **Entradas y metadatos** | todas las entradas con fecha, título, sitio, tags y si están en el Excel | las del gestor de metadatos (plantilla, diferencias, aplicar el Excel, tags, fechas, pdf-url) y el formateador YAML; el sitio actual filtra (`--blog`) | Metadatos (la fila del Excel frente al frontmatter, campo a campo) · Operación · Plan |
+| **Índice del vault** | los enlaces de `web/_indice/<año>/` y si están rotos | sincronizar, detectar rotos, eliminar rotos, resumen | Elemento · Operación · Plan |
+| **Índices de contenido** | los `_contenido_*.qmd` de cada sitio | generar los del sitio actual | Resumen del sitio · Elemento (el fragmento) · Operación · Plan |
+
+**La ventana no renderiza ni publica por su cuenta**: cada operación es la CLI de su backend (las órdenes de
+`quarto_app/services/*_service.py`, las mismas de la terminal); la salida corre en el panel inferior (F4), Esc cancela
+(también el preview), y el plan y el registro de cada operación y de cada sitio quedan en la caché del studio. El tema
+compartido por hardlinks no se toca.
+
+## El entorno del studio
+
+La ventana corre con el Python del sistema (`/usr/bin/python3`), cuyo Qt es el que trae Kirigami. Los backends de
+metadatos necesitan `openpyxl` y `pandas`, que el sistema no trae: viven en `.venv/` del repo, creado sobre el Python
+del sistema para que vea su PySide6 (rediseño Q7), y `main.py` se relanza con él si existe:
+
+```bash
+/usr/bin/python3 -m venv --system-site-packages .venv && .venv/bin/pip install -r requirements.txt   # sin sudo ni apt
 ```
-┌────────────────────────────────────────────────────────────┐
-│  Menú · Toolbar                                            │
-├──────────┬─────────────────────────────────┬───────────────┤
-│ Sidebar  │  Páginas (QStackedWidget)       │  Explorador   │
-│ Dashboard│  Dashboard / Blogs / Metadata   │  de proyectos │
-│ Blogs    │  YAML / Índices / Contenido     │  (dock)       │
-│ Metadata ├─────────────────────────────────┴───────────────┤
-│ YAML     │  Consola integrada  |  Logs (historial)         │
-│ Índices  ├─────────────────────────────────────────────────┤
-│ Contenido│  Barra de estado · progreso · directorio        │
-└──────────┴─────────────────────────────────────────────────┘
-```
+
+Sin el `.venv`, la ventana avisa qué crear (también Herramientas › El entorno del studio…), la columna «Excel» y la
+pestaña Metadatos quedan vacías y las operaciones de metadatos fallan con el mensaje del backend. PySide6 no se
+instala en el `.venv`: el de pip no carga Kirigami.
+
+## Estructura
+
+| archivo | qué es |
+|---|---|
+| `main.py` | el punto de entrada, sin lógica (`/usr/bin/python3`; se relanza con `.venv/bin/python` si existe) |
+| `quarto_app/aplicacion.py` | arma la aplicación: controladores, el registro de acciones (menú, barra, menú contextual, paleta, atajos: cada operación una sola vez) y `quarto_app/qml/Main.qml` |
+| `quarto_app/controladores/` | lo que QML ve: `espacio` (vista, filtro, barra de estado, rutas), `sitios` (la tabla con su estado, el sitio y la entrada actuales, la entrada nueva), `flujo` (entradas con el Excel, índice, fragmentos), `operaciones` (la actual, Simular y Aplicar por `gui_comun.tareas`, plan y registro), `ajustes` |
+| `quarto_app/services/` | sin Qt: los `Command` de cada backend (`blog_service`, `metadata_service`, `yaml_service`, `index_service`, `similar_service`, intactos), `operaciones` (el catálogo: simular, aplicar, plan, qué pide), `sitios` (el estado por la regla de la puerta R6), `render` (progreso y problemas de `quarto render`), `datos` (entradas, Excel, índice, fragmentos), `project_scanner`, `post_service`, `paths` |
+| `quarto_app/models/` | `blog.py`, `operation.py`, `filas.py` (las filas de las tablas, sin Qt) |
+| `quarto_app/qml/` | `Main.qml` sobre `GuiComun.VentanaStudio` y los componentes propios (`componentes/`) |
+| `quarto_app/settings.py` | las preferencias de 1.x (`QSettings`), que se conservan |
+| `quarto_app/recursos/marca.svg` | el icono del lanzador: la única marca del studio |
+| `muestra.py` | la familia de sitios de muestra (un hub y tres pubs con git y remotos bare, cada uno en un estado; `_indice/`; un fragmento; un Excel) de las pruebas y las capturas; nunca `web` ni los pubs |
+| `capturar.py` | las capturas de la documentación sobre la muestra, con `HOME` temporal fuera de la carpeta de inicio |
 
 ## Uso
 
 ```bash
-pip install -r requirements.txt    # desde quarto-studio/: PySide6 y lo de los backends
-python3 studio/main.py             # desde quarto-studio/
-python3 studio/main.py --smoke     # construye la interfaz y sale (prueba de humo)
-studio/build_resources.sh          # opcional: compila resources.qrc a resources_rc.py (requiere pyside6-rcc)
+/usr/bin/python3 studio/main.py                      # desde quarto-studio/, en la sesión real (se relanza con .venv si existe)
+QT_QPA_PLATFORM=offscreen /usr/bin/python3 studio/main.py --smoke     # construye la interfaz y sale
+./install.sh                                         # acceso directo en el menú (con -n, simula)
+/usr/bin/python3 studio/capturar.py docs/figuras/quarto-studio-oscuro.png --esquema <LliphiOscuro.colors> --vista sitios --fila 1 --pestana 7
+tests/run.sh                                         # desde quarto-studio/: la muestra en un temporal, cada QML y --smoke; nada publica
 ```
-
-La aplicación funciona sin compilar los recursos: si `resources_rc.py` no existe, carga los iconos
-desde disco. Las preferencias (directorio de trabajo, tema) se guardan con `QSettings` y se editan en
-el diálogo de preferencias.
-
-La ventana sigue el diseño común de los studios (`gui-comun` (paquete `gui_comun`), decisiones §2.11 de `core`): barra lateral
-con la marca, plegable a solo iconos; tema claro, oscuro o el del sistema; la consola, oculta hasta que se pide, y un
-aviso en la esquina cuando una tarea termina o falla.
-
-| atajo | qué hace |
-|---|---|
-| Ctrl+K | paleta de comandos: escribir el nombre de una página o una acción y pulsar Intro |
-| Ctrl+1 … Ctrl+9 | ir a la página de ese número de la barra lateral |
-| Ctrl+J | mostrar u ocultar la consola (también el botón «Consola» de la barra de estado) |
-| Ctrl+B | plegar o desplegar la barra lateral |
-| Ctrl+Mayús+L | pasar de tema claro a oscuro y al revés |
-| Ctrl+, | preferencias |
-
-Además: F5 reescanea los proyectos, Ctrl+. detiene la operación en curso y Ctrl+Mayús+E abre el explorador de
-proyectos.
-
-## Estructura
-
-| carpeta / archivo | qué es | dueño / generador |
-|---|---|---|
-| `main.py` | entrada: pone `studio/` en `sys.path` (el paquete encuentra `gui_comun`), crea la aplicación y abre la ventana; `--smoke` | a mano |
-| `suite.yml` | manifiesto de la suite `quarto_studio` (`core/suite.schema.yml`) | a mano |
-| `quarto_app/application.py` | `QApplication`, tema (diseño común de `gui_comun`, acento azul), iconos que siguen al tema | a mano |
-| `quarto_app/settings.py` | `QSettings` centralizado: la única puerta a las preferencias; ningún otro módulo instancia `QSettings` | a mano |
-| `quarto_app/models/` | dominio puro (`blog.py`, `operation.py`): no importan nada de Qt | a mano |
-| `quarto_app/services/` | construyen `Command` (programa + args + cwd + stdin) por herramienta: `command.py`; `paths.py` (localiza los backends en `../backend/` y la raíz del workspace por `gui_comun.rutas`, es decir, por `core/env.py`); `blog_service.py` → `quarto-studio/backend/script_blogs_manager/main.sh`; `metadata_service.py` → `quarto-studio/backend/script_metadata_manager/main.py`; `yaml_service.py` → `quarto-studio/backend/script_format_yaml/fix_qmd_files.py` (alias de `main.py`); `index_service.py` → `quarto-studio/backend/script_pub_index_symlink/main.sh`; `similar_service.py` → `quarto-studio/backend/script_generador_publicacion_similar/main.sh`; `post_service.py` (posts APAQuarto, portado); `project_scanner.py` (escaneo de blogs y posts, Python puro) | a mano |
-| `quarto_app/workers/` | `process_runner.py` (`QProcess` asíncrono con señales de salida y progreso; una operación a la vez), `scan_worker.py` (`QThread` para el escaneo) | a mano |
-| `quarto_app/controllers/` | vista → servicio → worker (MVC): `main_controller.py`, `blogs_controller.py`, `metadata_controller.py`, `tools_controller.py` | a mano |
-| `quarto_app/ui/` | `main_window.py` y `quarto_app/ui/pages/`: una página por funcionalidad (dashboard, blogs, metadata, yaml, índices, similares) | a mano |
-| `quarto_app/widgets/` | consola, panel de logs, sidebar (`SECCIONES`), explorador de proyectos (dock), cabecera de página | a mano |
-| `quarto_app/dialogs/` | preferencias, nuevo post, nuevo blog | a mano |
-| `quarto_app/utils/` | limpieza de secuencias ANSI de la salida de los scripts | a mano |
-| `quarto_app/resources/` | `resources.qrc`, `icons/` (SVG), `ui/` (`.ui`); `resources_rc.py` se genera y está ignorado | `build_resources.sh` |
-
-**Regla de dependencias:** `ui → controllers → services → workers`. La UI nunca conoce rutas de
-scripts (las resuelve `quarto_app/services/paths.py`; si un script se mueve, se toca solo ese archivo); los
-servicios nunca importan Qt Widgets; los modelos no importan nada de Qt.
-
-## Decisiones de diseño
-
-- **Reutilización primero.** Todos los subcomandos no interactivos de los scripts se invocan tal cual
-  (`QProcess`). La consola muestra el comando exacto, stdout, stderr, código de salida y duración.
-- **Una sola excepción portada a Python:** el asistente de posts APAQuarto
-  (`quarto-studio/backend/script_blogs_manager/lib/07-post-creator.sh`, unas 50 preguntas encadenadas de terminal)
-  no puede automatizarse de forma fiable; `quarto_app/services/post_service.py` genera el mismo `index.qmd` (mismo
-  orden de campos y misma plantilla de contenido) desde el diálogo Qt.
-- **Confirmaciones de los scripts** (`--clean-broken`, respaldo) se responden por stdin después de que
-  la GUI ya confirmó con el usuario.
-- **`sync-article` y `sync-batch`** (interactivos en terminal) se cubren con el flujo equivalente de la
-  GUI: *Ver diferencias* → *Aplicar Excel → .qmd* con filtros de blog y ruta.
-- **Simulación marcada por defecto** en las páginas de metadatos e índices («Dry-run»); las operaciones
-  sobre todos los blogs piden confirmación. Los backends en terminal no simulan por defecto.
-- **Una operación a la vez**: el runner rechaza ejecuciones concurrentes porque los scripts mutan los
-  mismos árboles de archivos y no son seguros en paralelo. El preview (proceso largo) se detiene con el
-  botón ■.
-
-## Extender la aplicación
-
-Para añadir una herramienta nueva: crear su `*_service.py` (funciones que devuelven `Command`), añadir
-métodos al controlador correspondiente (o uno nuevo), crear la página en `quarto_app/ui/pages/` y registrarla en
-`SECCIONES` de `quarto_app/widgets/sidebar.py` y en `quarto_app/ui/main_window.py`. Ni la consola, ni los logs, ni el progreso
-necesitan cambios.
 
 ## Límite honesto
 
-- **La prueba automática es corta** (`python3 -m pytest -q tests -k studio …`, desde `quarto-studio/`): la ventana abre y cierra sin pantalla, las entradas
-  de los backends existen y `blog_service` simula antes de `--aplicar`; el resto se comprueba abriendo la
-  aplicación y leyendo la consola integrada.
-- **No reimplementa ningún backend**: si un script cambia su CLI, cambia el servicio que lo llama; la
-  GUI no valida argumentos que el script no valide.
-- **Los flujos interactivos de terminal** (asistente de posts, `sync-article`, `sync-batch`, menú de
-  respaldos) no se lanzan desde aquí: se sustituyen por diálogos o por el flujo equivalente.
-- **Una operación a la vez**, sin cola: mientras una corre, las demás esperan al usuario.
-- **Requiere PySide6 ≥ 6.5 y un escritorio**: no hay línea de comandos propia (solo `--smoke`); para eso están
-  los backends.
+- **El estado se lee de git y del disco cada vez** (F6 relee): lo que se renderice o publique desde la terminal se refleja igual.
+- **Los problemas del render salen de la salida de Quarto** (ERROR, WARN, `archivo:línea`): un error que Quarto no anuncie así no aparece.
+- **Render y limpiar no simulan en la CLI**: F5 muestra el plan de la ventana (qué sitios, en qué orden, por qué; qué borraría) y Ctrl+Intro corre la CLI.
+- **Las operaciones de metadatos corren sobre todos los sitios salvo que haya un sitio actual** (`--blog`); el filtro de ruta vive en la pestaña Operación.
+- **El Excel se lee con `openpyxl`** (del `.venv`): sin él, la columna «Excel» y la pestaña Metadatos quedan vacías.
+- **Una operación a la vez**, sin cola; el preview se detiene con Esc.
+- **`sync-article` y `sync-batch`** (interactivos) no se ofrecen: su flujo es Ver diferencias → Aplicar el Excel con el sitio y el filtro de ruta.

@@ -1,8 +1,7 @@
-# quarto-studio — dependencias de los backends y de su GUI, Quarto Studio (studio/)
-# Backend (script_metadata_manager); normalmente ya presentes en el
-# entorno conda scripts_quarto
+# quarto-studio — dependencias de los backends de Python (script_metadata_manager, script_format_yaml).
+# Van en el entorno del studio, creado sobre el Python del sistema para que vea su PySide6 y su Kirigami (rediseño Q7):
+#   /usr/bin/python3 -m venv --system-site-packages .venv && .venv/bin/pip install -r requirements.txt
+# PySide6 NO se instala aquí: la ventana usa el del sistema (python3-pyside6.*), el único que carga Kirigami.
 pyyaml
 pandas
 openpyxl
-# GUI (studio/): Quarto Studio
-PySide6==6.9.2

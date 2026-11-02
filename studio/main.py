@@ -1,50 +1,25 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 """
-main.py — Punto de entrada de Quarto Studio.
+main.py — Punto de entrada de Quarto Studio. Sin lógica: la aplicación se arma en quarto_app/aplicacion.py.
 
-Solo orquesta: crea la QApplication, aplica el tema persistido y muestra
-la ventana principal. Toda la lógica vive en quarto_app/; los backends, en ../backend/ (este mismo repo).
+Corre con el Python del sistema (/usr/bin/python3), cuyo Qt es el que trae Kirigami; si existe el entorno del studio
+(`<repo>/.venv`, creado con `/usr/bin/python3 -m venv --system-site-packages .venv` más `pip install openpyxl pandas pyyaml`),
+se relanza con él: ve el mismo PySide6 del sistema y además lo que los backends de metadatos necesitan. Sin el .venv
+avisa qué crear y sigue. Cada operación es la CLI de un backend de este repo; la ventana no renderiza ni publica por su
+cuenta.
 
 Uso:
-    python3 studio/main.py            # desde quarto-studio/
-    python3 studio/main.py --smoke    # construye la UI y sale (prueba de humo)
+    /usr/bin/python3 studio/main.py                       # desde quarto-studio/
+    /usr/bin/python3 studio/main.py --smoke               # construye la interfaz y sale (prueba de humo)
+    /usr/bin/python3 studio/main.py --instalar-lanzador   # el acceso directo del menú (-n simula)
 """
 
 import sys
 from pathlib import Path
 
-# El paquete quarto_app importable desde cualquier carpeta (él mismo encuentra gui_comun)
-_AQUI = Path(__file__).resolve().parent
-sys.path.insert(0, str(_AQUI))
+sys.path.insert(0, str(Path(__file__).resolve().parent))      # el paquete del studio
 
-from quarto_app.application import crear_aplicacion
-from quarto_app.ui.main_window import MainWindow
-
-
-APP_ID = "quarto-studio"
-
-
-def datos_lanzador() -> dict:
-    """El acceso directo en el menú de aplicaciones (gui_comun.lanzador)."""
-    from quarto_app.application import ACENTO, svg_icono
-    return dict(app_id=APP_ID, nombre="Quarto Studio", comentario="Render, publicación, metadatos e índices de los blogs Quarto",
-                orden=[sys.executable, str(_AQUI / "main.py")], logo_svg=svg_icono("quarto-studio"), acento=ACENTO,
-                categorias="Office;Publishing;", palabras="quarto;blogs;publicar;render;metadatos;yaml;")
-
-
-def main() -> int:
-    from gui_comun import lanzador
-    atendido = lanzador.desde_main(sys.argv[1:], **datos_lanzador())   # --instalar-lanzador / --quitar-lanzador
-    if atendido is not None:
-        return atendido
-    app = crear_aplicacion(sys.argv)
-    ventana = MainWindow()
-    ventana.show()
-    if "--smoke" in sys.argv:
-        from PySide6.QtCore import QTimer
-        QTimer.singleShot(0, ventana.close)   # closeEvent espera al escaneo; la app sale con la última ventana
-    return app.exec()
-
+from quarto_app.aplicacion import main                          # noqa: E402  (quarto_app localiza gui_comun al importarse)
 
 if __name__ == "__main__":
-    sys.exit(main())
+    sys.exit(main(sys.argv[1:]))

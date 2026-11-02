@@ -1,7 +1,7 @@
 """quarto_app — Quarto Studio, aplicación de escritorio para gestionar la familia de blogs Quarto.
 
-Frontend Qt (PySide6) desacoplado: los scripts de `backend/` de este mismo repo (quarto-studio, repo
-scripts_for_quarto) actúan como motor y se invocan a través de la capa de servicios. Al importarse encuentra
+La ventana (QML + Kirigami sobre gui-comun 2.x) está desacoplada: los scripts de `backend/` de este mismo repo
+(quarto-studio, repo scripts_for_quarto) actúan como motor y se invocan como procesos a través de la capa de servicios. Al importarse encuentra
 `gui_comun`, el marco común de los studios: instalado o el repo `gui-comun/` del espacio de trabajo.
 """
 
@@ -22,6 +22,6 @@ except ImportError:
     del _d
 
 APP_NAME = "Quarto Studio"
-APP_VERSION = "1.0.0"
+APP_VERSION = "2.0.0"
 ORG_NAME = "achalma"
 ORG_DOMAIN = "achalmaedison.netlify.app"

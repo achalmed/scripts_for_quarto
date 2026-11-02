@@ -19,6 +19,7 @@ from quarto_app.services import paths
 IGNORAR_DIRS = {
     "_freeze", "_partials", "_site", "_extensions", ".quarto",
     ".git", "site_libs", "node_modules", "assets",
+    "_pubs", "_indice", "_vitrina", "_ediciones",     # del hub: los pubs son sitios aparte, el índice son enlaces (2026-11-02)
 }
 
 _FECHA_RE = re.compile(r"^(\d{4}-\d{2}-\d{2})-")

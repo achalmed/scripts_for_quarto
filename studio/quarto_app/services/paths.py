@@ -88,10 +88,32 @@ def generador_similar() -> Path:
 
 
 def recursos_dir() -> Path:
-    return Path(__file__).resolve().parents[1] / "resources"
+    return Path(__file__).resolve().parents[1] / "recursos"
 
 
-def icono(nombre: str) -> str:
-    """Ruta a un icono SVG del tema de recursos."""
-    return str(recursos_dir() / "icons" / f"{nombre}.svg")
+def venv_dir() -> Path:
+    """El entorno del studio (`<repo>/.venv`, creado con `/usr/bin/python3 -m venv --system-site-packages`): ahí viven
+    `openpyxl` y `pandas`, que el Python del sistema no trae (rediseño Q7)."""
+    return REPO / ".venv"
+
+
+def interprete() -> str:
+    """El Python con el que corren los backends de Python y el propio studio: el del `.venv` si existe; si no, el
+    del sistema (los backends que necesiten `pandas` u `openpyxl` fallarán y la ventana dice qué crear)."""
+    candidato = venv_dir() / "bin" / "python"
+    return str(candidato) if candidato.is_file() else "/usr/bin/python3"
+
+
+def orden_crear_venv() -> str:
+    """La orden que crea el entorno del studio (se muestra, no se corre sola)."""
+    return f"/usr/bin/python3 -m venv --system-site-packages {venv_dir()} && {venv_dir()}/bin/pip install openpyxl pandas pyyaml"
+
+
+def excel_por_defecto() -> Path:
+    return metadata_manager().parent / "excel_databases" / "quarto_metadata.xlsx"
+
+
+def indice_dir(hub: Path | None = None) -> Path:
+    """`web/_indice/`: los enlaces por año del vault que mantiene pub_index_symlink."""
+    return (hub or hub_dir()) / "_indice"
 

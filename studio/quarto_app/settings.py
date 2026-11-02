@@ -26,7 +26,7 @@ class AppSettings:
         "general/tema": "sistema",           # "sistema" | "claro" | "oscuro"
         "general/iconos": "estandar",
         "rutas/quarto": "quarto",
-        "rutas/python": "python3",
+        "rutas/python": "",                  # vacío → el intérprete del .venv del studio o el del sistema (paths.interprete)
         "rutas/backup_dir": "",              # vacío → default del blog manager
         "ejecucion/max_procesos": 1,
         "blogs/preview_port": 4200,
@@ -41,7 +41,10 @@ class AppSettings:
 
     # ------------------------------------------------------------------ base
     def get(self, clave: str) -> str:
-        return str(self._qs.value(clave, self._DEFAULTS.get(clave, "")))
+        valor = str(self._qs.value(clave, self._DEFAULTS.get(clave, "")) or "")
+        if clave == "rutas/python" and not valor:
+            return paths.interprete()
+        return valor
 
     def get_int(self, clave: str) -> int:
         try:
