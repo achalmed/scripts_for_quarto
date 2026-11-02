@@ -49,7 +49,7 @@ nada en curso
   caché); las operaciones de metadatos no muestran el plan de la ventana (la CLI simula con `--dry-run`); «Configurar
   atajos…» y «Configurar barras…» no existen (como en toda la familia).
 - 2026-11-02 · dueño: director · el validador avisa en `docs/rediseno.md` (RQ-DOC-06: rutas de ejemplo como index.html de _site) y
-  el `CLAUDE.md` sigue cerca de las 150 líneas; RQ-COD-01 de los tres `main.sh` de Bash es el pendiente del 2026-10-06.
+  el `CLAUDE.md` sigue en el máximo de líneas de la normativa (`wc -l CLAUDE.md`); RQ-COD-01 de los tres `main.sh` de Bash es el pendiente del 2026-10-06.
 
 - 2026-10-27 · dueño: la sesión del hub · `tests/test_blogs_manager_git.py::test_fuentes_iguales_a_las_de_la_puerta` falla: la puerta R6 del hub ya excluye `_vitrina/` y `_ediciones/` y `QBLOG_FUENTES` (`backend/script_blogs_manager/lib/00-config.sh`) no; no viene de la sesión 9.
 - 2026-10-06 · dueño: director · `core/suites.py probar --repo quarto-studio`: RQ-MAN-05 en `pub_index_symlink` y en `quarto_studio` (escriben en `vault`, pero el manifiesto no declara ese `escribe_en` para el proyecto); se corrige en `meta/workspace.yml`.
