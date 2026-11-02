@@ -27,7 +27,7 @@ commit, no aquí; lo pendiente, a [`estado.md`](../estado.md) §Por hacer (ola 4
   `antes-ola-04-studios-2026-10-06`).
 
 - **2026-07-13 · La GUI lanza procesos; no importa el código de los backends.** Quarto Studio construye un
-  `Command` y lo ejecuta con `QProcess` (`studio/quarto_app/services/`, `studio/quarto_app/workers/process_runner.py`). Así un backend
+  `Command` y lo ejecuta con `QProcess` (`studio/quarto_app/services/`, el runner de la GUI (hoy las tareas de gui-comun)). Así un backend
   puede cambiar de lenguaje sin tocar la GUI y la consola muestra el comando exacto. La capa de servicios
   vive en `studio/quarto_app/services/` y no en un `core/` propio del repo, para no confundirse con el `core/` del
   espacio de trabajo.
@@ -46,6 +46,21 @@ commit, no aquí; lo pendiente, a [`estado.md`](../estado.md) §Por hacer (ola 4
 - **2026-09-07 · Patrón `main` + `config` + `lib` en las cinco herramientas, raíz y logger desde `core/`.**
   Ninguna suite escribe la ruta de `~/Documents` ni define su logger; `format_yaml` conserva
   `fix_qmd_files.py` como alias de `main.py` porque la GUI lo invoca (`studio/quarto_app/services/paths.py`).
+
+- **2026-11-02 · Quarto Studio pasa a QML + Kirigami como espacio de trabajo (fase 5 de la familia).** La ventana de
+  Widgets (seis páginas de botones) se reescribe sobre `gui-comun` 2.x con el diseño aprobado para toda la familia
+  (`rediseno.md`): cuatro vistas (Sitios por estado, Entradas y metadatos, Índice del vault, Índices de contenido), un
+  sitio actual y una operación actual; F5 simula con la simulación de la CLI o con el plan que calcula la ventana
+  (render y limpiar no simulan en la CLI), Ctrl+Intro aplica tras un diálogo con la orden exacta, y publicar y commit+push
+  nombran el sitio y su dominio (Netlify despliega con el push). El estado de cada sitio se calcula con la misma regla
+  que la puerta R6; los problemas del render salen de la salida de Quarto; el tema por hardlinks no se toca. Los
+  servicios (`*_service.py`, `project_scanner`, `post_service`) se conservan; se añaden consultas (`sitios`, `render`,
+  `datos`) y el catálogo (`operaciones`). `project_scanner` deja de contar como entradas del hub las de sus pubs
+  (`_pubs/`, `_indice/`, `_vitrina/`, `_ediciones/` se omiten). Las dependencias que el Python del sistema no trae
+  (`openpyxl`, `pandas`) viven en `.venv/` del repo, creado con `/usr/bin/python3 -m venv --system-site-packages`
+  (ve el PySide6 y el Kirigami del sistema); `main.py` se relanza con él si existe y `requirements.txt` deja de pinear
+  PySide6. Las pruebas y las capturas corren sobre una familia de sitios de muestra en un temporal (`studio/muestra.py`),
+  nunca sobre `web` ni los pubs, y ninguna publica.
 
 ## Metadatos y blogs
 

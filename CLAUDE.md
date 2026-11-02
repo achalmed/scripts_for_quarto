@@ -25,15 +25,22 @@ lanza la GUI, `studio/README.md`.
   | un pendiente | `estado.md` §Por hacer, con fecha y dueño | un `TODO.md` |
   | un bloque generado desactualizado | `core/suites.py generar --aplicar` o `core/docs.py indice --aplicar` | la edición a mano |
 
-  Lo que hiciste en esta sesión va al mensaje de commit, no a un archivo. Si nada encaja, pregunta antes
-  de crear un documento.
+  Lo que hiciste en esta sesión va al mensaje de commit, no a un archivo.
 
 - **Cinco herramientas independientes y su GUI en el mismo repo.** Cada `backend/script_*/` es autónomo
-  (`main.*` + config + `lib/`, `suite.yml`, README). Quarto Studio (`studio/`, de vuelta de `gui-suites` el
-  2026-10-27) nunca importa su código: construye un `Command` y lo ejecuta con `QProcess`, y encuentra cada
-  entrada en `backend/` de este repo (`studio/quarto_app/services/paths.py`, `BACKENDS`). Si un script se mueve o
-  cambia de nombre, se toca allí. Lo común de los tres studios (`gui_comun`: rutas por `core/env.sh`, workers, tema) es
-  de `core/py-common/`; aquí no se copia.
+  (`main.*` + config + `lib/`, `suite.yml`, README). Quarto Studio (`studio/`, QML + Kirigami sobre `gui-comun` 2.x;
+  `studio/README.md`) nunca importa su código: construye un `Command` y lo corre como proceso (`gui_comun.tareas`), y
+  encuentra cada entrada en `backend/` (`studio/quarto_app/services/paths.py`, `BACKENDS`). Lo común de los studios es
+  del repo `gui-comun`; aquí no se copia.
+- **Python no construye interfaz y QML no ejecuta procesos**: los controladores (`studio/quarto_app/controladores/`)
+  exponen modelos y `@Slot`; el QML pinta y pide. Cada operación existe una sola vez en `studio/quarto_app/aplicacion.py`
+  y su catálogo es `studio/quarto_app/services/operaciones.py`: **F5 simula** (la CLI o el plan de la ventana) y
+  **Ctrl+Intro aplica** tras confirmar; publicar nombra el sitio y su dominio. Cero colores propios; sin marca dentro.
+- **Corre con `/usr/bin/python3`** y se relanza con el `.venv` del repo si existe (`--system-site-packages`: el PySide6
+  del sistema más `openpyxl` y `pandas`; `requirements.txt`); nunca se instala PySide6 en él. Nada de QtWidgets.
+- **Las pruebas y las capturas del studio usan la familia de muestra** (`studio/muestra.py`), nunca `web` ni los pubs, y
+  **ninguna prueba publica** (`tests/run.sh`). Quarto omite los archivos de un proyecto bajo una carpeta oculta
+  (`~/.cache/…`): el render real de las pruebas va a `/var/tmp`.
 - **Los blogs viven en el hub.** Hub `web` (repo `website-achalma`) y 11 `pub_*` como submódulos
   en `web/_pubs/` (el guion bajo evita que Quarto los renderice como parte del
   hub). Cada herramienta los localiza por una sola variable (`QBLOG_PUBS_SUBDIR`, `PUBINDEX_PUBS_SUBDIR`,
@@ -69,8 +76,8 @@ lanza la GUI, `studio/README.md`.
   README salen de los `suite.yml` con `core/suites.py generar --aplicar`; `_site/` y `_freeze/`
   los regenera su herramienta.
 - **Español con tildes** en código, mensajes, comentarios y docs; nada del despacho en este repo.
-- **Un solo camino de instalación documentado**: `pip install -r requirements.txt`; `install.sh` (conda)
-  del metadata manager es alternativa.
+- **Un solo camino de instalación documentado**: el `.venv` del repo con `pip install -r requirements.txt`
+  (`studio/README.md`); `install.sh` (conda) del metadata manager es alternativa.
 
 ## Cómo se verifica un cambio
 
@@ -89,17 +96,14 @@ Desde la raíz del repo:
 ```bash
 bash -n backend/script_blogs_manager/main.sh                     # sintaxis; un archivo por invocación
 python3 -m py_compile backend/*/main.py                        # sintaxis Python
-cd backend/script_metadata_manager                              # el gestor de metadatos, desde su carpeta
-python3 main.py find-differences ~/Documents excel_databases/quarto_metadata.xlsx  # Excel vs .qmd
-python3 main.py update ~/Documents excel_databases/quarto_metadata.xlsx --dry-run  # simular antes de aplicar
-cd ../..
+( cd backend/script_metadata_manager && python3 main.py update ~/Documents excel_databases/quarto_metadata.xlsx --dry-run )  # simular antes de aplicar
 backend/script_pub_index_symlink/main.sh --dry-run               # y --check-broken
 backend/script_generador_publicacion_similar/main.sh "../web/_pubs/axiomata" --dry-run
-python3 backend/script_format_yaml/main.py --directory "../web/_pubs/axiomata" --recursive --dry-run
 ```
 
 Pruebas: `python3 -m pytest -q tests -p no:cacheprovider --basetemp ~/.cache/pytest/quarto-ola4` (nunca
-`/tmp`; fixtures y remoto bare en temporal, jamás el hub ni los pubs: Netlify despliega con cada push).
+`/tmp`; fixtures y remoto bare en temporal, jamás el hub ni los pubs: Netlify despliega con cada push) y, para la
+ventana, `tests/run.sh` (`tests/studio/`, la familia de muestra, cada QML y `--smoke` con `/usr/bin/python3`).
 Lo aplicado de verdad se confirma dentro del pub y luego el puntero del submódulo en el hub.
 
 ## Detalles que cuesta redescubrir
@@ -108,35 +112,31 @@ Lo aplicado de verdad se confirma dentro del pub y luego el puntero del submódu
   cada blog se resuelve por voto mayoritario entre los `pdf-url` existentes (una URL mal pegada no
   envenena la detección) y `blog_base_urls` de `metadata_config.yml` tiene prioridad
   (`backend/script_metadata_manager/lib/path_sync.py`).
-- **Nombres que ya no existen:** `script_tag_manager/` y `qmd_tag_manager.py` (los comandos de tags
-  viven en el metadata manager); `1_sincronizar_fecha_carpeta_en_index_qmd.py` y
-  `3_actualizar_enlace_pdf_en_qmd.py` (hoy `sync-dates` y `sync-pdf-urls`); el prefijo `quarto_studio/`
-  en una ruta nunca existió: las herramientas son `backend/` y la GUI, `studio/` (antes `app/`; de la ola 4 al
-  2026-10-27, la carpeta quarto/ de gui-suites).
-- **`fix_qmd_files.py` es un alias** de `backend/script_format_yaml/main.py`; la lógica
-  está en `config.py` y `lib/` de esa carpeta. Quarto Studio todavía invoca el alias (`studio/quarto_app/services/paths.py`, `yaml_formatter`).
+- **Nombres que ya no existen:** `script_tag_manager/` (los comandos de tags viven en el metadata manager), los
+  scripts sueltos de fechas y `pdf-url` (hoy `sync-dates` y `sync-pdf-urls`); las herramientas son `backend/` y la
+  GUI, `studio/` (antes `app/` y, de la ola 4 al 2026-10-27, la carpeta quarto/ de gui-suites).
+- **`fix_qmd_files.py` es un alias** de `backend/script_format_yaml/main.py` (la lógica está en su `lib/`); Quarto Studio invoca el alias.
 - **El asistente de posts no se automatiza** (`backend/script_blogs_manager/lib/07-post-creator.sh`, unas
   50 preguntas encadenadas): es la única lógica portada a Python (`studio/quarto_app/services/post_service.py`), que
-  genera el mismo `index.qmd`. Las confirmaciones de los scripts (`--clean-broken`, respaldo) se
-  responden por stdin después de que la GUI confirmó con el usuario.
-- **El runner de Quarto Studio rechaza ejecuciones concurrentes**: los backends no son seguros en paralelo.
+  genera el mismo `index.qmd` desde «Nueva entrada…». Las confirmaciones de los scripts (`--clean-broken`, `clean-all`,
+  el respaldo) se responden por la entrada estándar después de que la ventana confirmó con el usuario.
+- **Una operación a la vez en Quarto Studio** (los backends no son seguros en paralelo) y el estado de cada sitio sigue
+  la regla de la puerta R6 (`studio/quarto_app/services/sitios.py`): «con problemas» no deja publicar.
 - **El Excel guarda `date` como texto**, no como fórmula: openpyxl no calcula y una fórmula sin valor
   guardado llega vacía y borra el campo. `backend/script_metadata_manager/excel_databases/quarto_metadata.xlsx` está versionado a
   propósito (`docs/decisiones.md`); `respaldos/` y `logs/` están ignorados.
-- **`web/_indice/` es del vault**, ignorado en el hub: `pub_index_symlink` solo crea enlaces por
-  año ahí; nunca se borra `web` para reindexar, solo el contenido de `_indice/`.
+- **`web/_indice/` es del vault**, ignorado en el hub: `pub_index_symlink` solo crea enlaces por año ahí; nunca se borra `web`.
 - **`generador_publicacion_similar` escribe un fragmento (identidad en un comentario de la línea 1, sin frontmatter) en la carpeta de cada subblog**
   para `{{< include >}}`; ordena por el glob (con prefijo de fecha equivale a cronológico) y
   **borra** el índice de un subblog que se queda sin posts; la capitalización usa `sed` GNU.
-- **`excel_output_dir` relativo se resuelve contra la carpeta del metadata manager** (y sin la clave
-  es su `excel_databases/`): desde la ola 4 ya no nace la carpeta fantasma en la raíz que el doctor vigila.
+- **`excel_output_dir` relativo se resuelve contra la carpeta del metadata manager** (sin la clave, su `excel_databases/`).
 
 ## Dónde está cada cosa
 
 | pregunta | documento |
 |---|---|
 | qué escribe cada herramienta en el hub y los pubs | `README.md` §«Contrato con el hub» |
-| la GUI: arquitectura, decisiones, cómo añadir una herramienta | `studio/README.md` |
+| la GUI: diseño, arquitectura, el .venv, cómo añadir una operación | `studio/README.md` |
 | comandos y filtros del metadata manager | `backend/script_metadata_manager/README.md` |
 | render, preview, publicar, posts APA, git, respaldos | `backend/script_blogs_manager/README.md` |
 | qué es una publicación, conflictos, logs del índice | `backend/script_pub_index_symlink/README.md` |

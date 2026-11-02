@@ -13,8 +13,20 @@ Cada herramienta declara su versión una sola vez en el código: `QBLOG_VERSION`
 `pub_index_symlink` no llevan número en el código. Los porqués están en [`docs/decisiones.md`](docs/decisiones.md).
 
 Vigentes: `blogs_manager` 4.0.0 · `metadata_manager` 2.3.0 · `generador_publicacion_similar` 4.0.0 ·
-`format_yaml` 2.0 · `pub_index_symlink` (sin número) · Quarto Studio 1.0.0 (`APP_VERSION` en
+`format_yaml` 2.0 · `pub_index_symlink` (sin número) · Quarto Studio 2.0.0 (`APP_VERSION` en
 `studio/quarto_app/__init__.py`; del 2026-10-06 al 2026-10-27 vivió en el repo `gui-suites`).
+
+## Cambiado — 2026-11-02
+
+- Quarto Studio 2.0.0: la ventana pasa a QML + Qt Quick + Kirigami sobre `gui-comun` 2.x (fase 5 de la modernización de la
+  familia; `docs/rediseno.md`): cuatro vistas con la tabla de lo que manejan (los sitios con su estado por la regla de la
+  puerta R6, las entradas con su fila del Excel, el índice del vault, los índices de contenido), un sitio actual y una
+  operación actual por vista; F5 simula (la CLI o el plan de la ventana) y Ctrl+Intro aplica tras confirmar; publicar y
+  commit+push confirman con el sitio y su dominio; los problemas del render con su archivo; plan y registro por operación
+  y por sitio. Corre con `/usr/bin/python3` y se relanza con el `.venv` del repo (openpyxl, pandas); `requirements.txt`
+  deja de pinear PySide6. `project_scanner` omite `_pubs/`, `_indice/`, `_vitrina/` y `_ediciones/` del hub. Pruebas en
+  `tests/run.sh` sobre la familia de muestra (`studio/muestra.py`); se retiran `tests/test_studio.py` y
+  `tests/test_studio_blog_service.py` de 1.x.
 
 ## Cambiado — 2026-10-31
 

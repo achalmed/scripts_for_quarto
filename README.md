@@ -71,7 +71,7 @@ Excel es la mesa de trabajo, y lo que se edite a mano en un `.qmd` prevalece has
 | `generador_publicacion_similar` | `_contenido_<subblog>.qmd`, fragmentos para `{{< include >}}` con su identidad en un comentario de la línea 1 (sin frontmatter) | la carpeta de cada subblog del blog que se le pase | `--dry-run`; si un subblog queda sin posts, borra su índice |
 | `pub_index_symlink` | enlaces simbólicos por año, nunca copias | `web/_indice/` (ignorado en git; del vault) | omite lo que ya apunta bien; no toca archivos reales; `--dry-run` |
 | `blogs_manager` | `_site/`, `_freeze/`, posts nuevos, commits, respaldos | hub y pubs; `$DOCS_ROOT/archivo/backups-publicaciones/`; el remoto git (Netlify) o `quarto publish <destino>` | `publish` y `git-commit` simulan salvo `--aplicar`, empujan solo tras la puerta R6 y no hacen `git add .`; `clean-all` pide confirmación |
-| Quarto Studio (`studio/`) | nada propio: lanza las cinco anteriores | — | una operación a la vez; «Dry-run» marcado por defecto en metadatos e índices |
+| Quarto Studio (`studio/`) | nada propio: lanza las cinco anteriores; guarda el plan y el registro de cada operación en la caché del studio | — | una operación a la vez; F5 simula (la CLI o el plan de la ventana) y Ctrl+Intro aplica tras confirmar; publicar nombra el sitio y su dominio |
 
 Cómo están montados los pubs y por qué se confirma dentro del pub antes que en el hub:
 `web/docs/pubs-submodulos.md`.
@@ -79,8 +79,8 @@ Cómo están montados los pubs y por qué se confirma dentro del pub antes que e
 ## Uso
 
 ```bash
-pip install -r requirements.txt                       # pyyaml, pandas, openpyxl, PySide6 (un entorno conda es opcional)
-python3 studio/main.py                                # Quarto Studio, la GUI; --smoke la abre y la cierra
+/usr/bin/python3 -m venv --system-site-packages .venv && .venv/bin/pip install -r requirements.txt   # pyyaml, pandas, openpyxl (PySide6 es el del sistema)
+/usr/bin/python3 studio/main.py                       # Quarto Studio, la ventana (se relanza con .venv si existe); --smoke la abre y la cierra
 backend/script_blogs_manager/main.sh                  # menú interactivo; `main.sh help` lista los comandos
 backend/script_blogs_manager/main.sh list             # los sitios que ve el gestor
 backend/script_blogs_manager/main.sh render axiomata  # nombre corto o axiomata; también preview, publish, clean, git-*
@@ -95,8 +95,8 @@ backend/script_pub_index_symlink/main.sh --dry-run    # sin --dry-run escribe we
 ```
 
 Regla de oro: `--dry-run` antes de cualquier cambio masivo. En la terminal ninguna herramienta simula
-por defecto, salvo `publish` y `git-commit` de `blogs_manager`, que simulan sin `--aplicar`. La GUI
-marca la simulación por defecto en metadatos e índices, y publica y confirma solo tras mostrar la simulación.
+por defecto, salvo `publish` y `git-commit` de `blogs_manager`, que simulan sin `--aplicar`. En la ventana F5
+siempre simula (la CLI o el plan de la ventana) y Ctrl+Intro aplica tras confirmar; publicar nombra el sitio y su dominio.
 
 ## Estructura
 
@@ -107,10 +107,10 @@ marca la simulación por defecto en metadatos e índices, y publica y confirma s
 | `backend/script_pub_index_symlink/` | Bash, `main.sh` + `lib/`: enlaces por año en `web/_indice/`; `logs/` ignorado | a mano |
 | `backend/script_format_yaml/` | Python, `main.py` + `config.py` + `lib/`; `fix_qmd_files.py` es un alias | a mano |
 | `backend/script_generador_publicacion_similar/` | Bash, `main.sh` + `lib/`: índices `_contenido_*.qmd` | a mano |
-| `studio/` | Quarto Studio, la GUI (PySide6): `main.py`, paquete `quarto_app`, `suite.yml`, README | a mano; `resources_rc.py` lo genera `studio/build_resources.sh` (ignorado) |
+| `studio/` | Quarto Studio, la ventana (QML + Kirigami sobre `gui-comun` 2.x): `main.py`, paquete `quarto_app`, `muestra.py`, `capturar.py`, `suite.yml`, README; `docs/rediseno.md` es su diseño | a mano |
 | `suite.yml` (uno por backend y el de `studio/`) | manifiesto de cada suite (`core/suite.schema.yml`) | a mano; los bloques de README los genera `core/suites.py generar --aplicar` |
-| `requirements.txt` | dependencias Python de los backends | a mano |
-| `tests/` | pytest: cada suite en simulación no escribe nada; el flujo de `publish`/`git-commit` con un remoto bare local; la GUI sin pantalla (`test_studio*.py`) | a mano |
+| `requirements.txt` · `.venv/` | dependencias Python de los backends de metadatos; el entorno del studio sobre el Python del sistema (ignorado) | a mano; `/usr/bin/python3 -m venv --system-site-packages .venv` |
+| `tests/` | pytest: cada suite en simulación no escribe nada; el flujo de `publish`/`git-commit` con un remoto bare local; la ventana sobre la familia de muestra (`tests/studio/`, `tests/run.sh`) | a mano |
 | `docs/` | referencia del Excel de metadatos y registro de decisiones; índice generado | a mano; `docs/README.md` por `core/docs.py indice` |
 | `CHANGELOG.md` · `LICENSE` | versiones de cada herramienta con fecha ISO; MIT | a mano |
 
@@ -122,7 +122,7 @@ solo lo que no cabe en una puerta.
 | documento | para qué leerlo |
 |---|---|
 | `CLAUDE.md` | reglas para el asistente: invariantes de diseño, cómo verificar, trampas |
-| `studio/README.md` | la GUI: arquitectura, regla de dependencias, cómo añadir una herramienta |
+| `docs/rediseno.md` · `studio/README.md` | la ventana: el diseño aprobado, la arquitectura, el `.venv`, las vistas y las operaciones |
 | `backend/script_blogs_manager/README.md` | manual del gestor de blogs v3.0 |
 | `backend/script_metadata_manager/README.md` | manual del gestor de metadatos y tags (Excel, filtros, fórmulas, columnas) |
 | `backend/script_pub_index_symlink/README.md` | qué cuenta como publicación, conflictos, logs |
