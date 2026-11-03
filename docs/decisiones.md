@@ -2,6 +2,7 @@
 tipo: decision
 titulo: 'Decisiones de quarto-studio'
 estado: activo
+genero: explicacion
 ---
 # Decisiones de quarto-studio
 
@@ -86,6 +87,14 @@ commit, no aquí; lo pendiente, a [`estado.md`](../estado.md) §Por hacer (ola 4
   pathspecs de fuentes son una copia de los `FUENTES` de `web/scripts/puerta-r6.sh` (la puerta, al
   ejecutarse, comprueba; no se puede cargar como biblioteca); `tests/test_blogs_manager_git.py` falla si
   divergen. Sin la puerta en disco no se empuja; no hay variable de entorno que la sustituya.
+- **2026-11-03 · `sync-article` y `sync-batch` entran en la ventana con `--direccion`, y encuentran la fila de un pub.**
+  La CLI gana `--direccion al-excel|a-documentos` (sin ella pregunta, como siempre) y la ventana la usa: en Metadatos,
+  «Llevar los documentos al Excel…» (sync-batch con el sitio y el filtro de ruta; lo contrario sigue siendo `update`)
+  y, de la entrada elegida, «Excel → documento» y «Documento → Excel» (sync-article con su `index.qmd`); todo simula
+  con `--dry-run` y aplica tras confirmar. Defecto arreglado: desde que los pubs viven en `<hub>/_pubs/`
+  (2026-09-06) las dos órdenes recalculaban la clave del Excel con `relative_to(base)` y no casaba con las filas
+  `pub_x/…`; la clave (`ruta_archivo`) viaja ahora con cada artículo, y el Excel se escribe por el nombre de cada
+  columna, no por su posición (`tests/test_sync.py`).
 - **2026-09-20 · El frontmatter del `.qmd` es la verdad; el Excel es la mesa de trabajo.** `update` solo
   escribe donde la fila difiere del archivo y una celda vacía elimina el campo. El Excel
   `backend/script_metadata_manager/excel_databases/quarto_metadata.xlsx` se versiona a propósito: es el estado

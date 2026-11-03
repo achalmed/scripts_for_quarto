@@ -5,8 +5,9 @@ Envuelve los comandos no interactivos del CLI Python existente. Se invoca
 como subproceso (no import) para: 1) mantener el desacoplamiento, 2) mostrar
 en consola exactamente la misma salida que en terminal, 3) no bloquear la UI.
 
-Los comandos interactivos del script (sync-article, sync-batch) NO se
-exponen: su flujo se cubre en la GUI con find-differences + update filtrado.
+sync-article y sync-batch se usan con `--direccion` (al-excel: los .qmd → el
+Excel; a-documentos: el Excel → los .qmd), que no pregunta; Excel → todos los
+.qmd del sitio sigue siendo `update` (2026-11-03).
 """
 
 from __future__ import annotations
@@ -66,6 +67,23 @@ def update(excel: str, blog: str = "", filtro_ruta: str = "", dry_run: bool = Fa
     args = ["update", str(settings().docs_dir()), excel, *_config_args(),
             *_filtros(blog, filtro_ruta, dry_run)]
     return _cmd(args, "Aplicar Excel → archivos .qmd" + (" (simulación)" if dry_run else ""))
+
+
+def sync_article(excel: str, articulo: str, direccion: str, dry_run: bool = False) -> Command:
+    """Una entrada (su index.qmd, ruta absoluta) en la dirección dada; el gestor busca su fila del Excel."""
+    args = ["sync-article", str(settings().docs_dir()), excel, articulo, *_config_args(), "--direccion", direccion]
+    if dry_run:
+        args.append("--dry-run")
+    destino = "Excel" if direccion == "al-excel" else "documento"
+    return _cmd(args, f"Llevar la entrada al {destino}" + (" (simulación)" if dry_run else ""))
+
+
+def sync_batch(excel: str, direccion: str, blog: str = "", filtro_ruta: str = "", dry_run: bool = False) -> Command:
+    """Las entradas que difieren (del sitio y con el filtro de ruta) en la dirección dada."""
+    args = ["sync-batch", str(settings().docs_dir()), excel, *_config_args(), *_filtros(blog, filtro_ruta, dry_run),
+            "--direccion", direccion]
+    destino = "el Excel" if direccion == "al-excel" else "los documentos"
+    return _cmd(args, f"Llevar a {destino} lo que difiere" + (" (simulación)" if dry_run else ""))
 
 
 def find_differences(excel: str, blog: str = "", filtro_ruta: str = "", max_show: int = 10) -> Command:

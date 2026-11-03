@@ -2,6 +2,7 @@
 tipo: doc
 titulo: 'Referencia del Excel de metadatos: columnas, formatos y fórmulas'
 estado: activo
+genero: referencia
 ---
 # Referencia del Excel de metadatos
 

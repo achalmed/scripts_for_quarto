@@ -55,6 +55,8 @@ from lib.excel_writer import (
 )
 from lib.qmd_updater import update_from_excel
 from lib.sync import (
+    DIRECCIONES,
+    articulo_de,
     find_differences,
     sync_single_interactive,
     sync_batch_interactive,
@@ -306,14 +308,24 @@ def cmd_find_differences(args):
 # =============================================================================
 
 def cmd_sync_article(args):
+    import pandas as pd
+
     bp, *_ = _make_manager_config(
         args.base_path, getattr(args, "config", None)
     )
-    file_path = bp / args.article_path
-    if not file_path.exists():
-        print(f"❌ Artículo no encontrado: {file_path}")
+    # el artículo: su clave del Excel (pub_x/posts/…/index.qmd), su ruta relativa a la base o la absoluta
+    try:
+        df = pd.read_excel(args.excel_file, sheet_name="METADATOS")
+    except Exception as e:
+        print(f"❌ Error leyendo Excel: {e}")
         sys.exit(1)
-    sync_single_interactive(bp, file_path, args.excel_file, args.dry_run)
+    file_path, clave = articulo_de(bp, df, args.article_path)
+    if file_path is None or not file_path.exists():
+        print(f"❌ Artículo no encontrado en el Excel ni en disco: {args.article_path}")
+        sys.exit(1)
+    if not sync_single_interactive(bp, file_path, args.excel_file, args.dry_run,
+                                   direccion=getattr(args, "direccion", None), clave=clave):
+        sys.exit(1)
 
 
 # =============================================================================
@@ -330,6 +342,7 @@ def cmd_sync_batch(args):
         blog_filter=getattr(args, "blog", None),
         path_filter=getattr(args, "filter_path", None),
         dry_run=args.dry_run,
+        direccion=getattr(args, "direccion", None),
     )
 
 
@@ -581,17 +594,21 @@ Email:   {EMAIL}
     p = sub.add_parser("sync-article", help="Sincronizar un artículo (interactivo)")
     p.add_argument("base_path")
     p.add_argument("excel_file")
-    p.add_argument("article_path", help="Ruta relativa del index.qmd")
+    p.add_argument("article_path", help="El index.qmd: su clave del Excel (ruta_archivo), su ruta relativa o la absoluta")
     p.add_argument("-c", "--config")
+    p.add_argument("--direccion", choices=DIRECCIONES,
+                   help="al-excel (index.qmd → Excel) o a-documentos (Excel → index.qmd); sin ella, pregunta")
     p.add_argument("--dry-run", action="store_true")
 
     # sync-batch
-    p = sub.add_parser("sync-batch", help="Sincronización masiva interactiva")
+    p = sub.add_parser("sync-batch", help="Sincronización masiva (interactiva o con --direccion)")
     p.add_argument("base_path")
     p.add_argument("excel_file")
     p.add_argument("-b", "--blog")
     p.add_argument("-p", "--filter-path")
     p.add_argument("-c", "--config")
+    p.add_argument("--direccion", choices=DIRECCIONES,
+                   help="al-excel (todos los index.qmd → Excel) o a-documentos (Excel → todos los index.qmd); sin ella, pregunta")
     p.add_argument("--dry-run", action="store_true")
 
     # --- Comandos de tags ----------------------------------------------------

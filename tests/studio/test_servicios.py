@@ -59,6 +59,25 @@ def test_simular_nunca_aplica_y_aplicar_escribe(muestra_sesion):
 
 
 @requiere_binding
+def test_sincronizar_desde_la_ventana_no_pregunta(muestra_sesion):
+    """sync-article y sync-batch (2026-11-03): siempre con --direccion (la CLI no pregunta), simulan con --dry-run y
+    llevan el sitio, el filtro de ruta y la entrada (su index.qmd, ruta absoluta) de la ventana."""
+    qmd = str(muestra_sesion.pubs / "axiomata" / "posts" / "x" / "index.qmd")
+    ctx = ops.Contexto(sitio="axiomata", ruta=str(muestra_sesion.pubs / "axiomata"), entrada=qmd, excel="m.xlsx", filtro_ruta="2026")
+    lote = ops.operacion("sync_al_excel")
+    assert lote.vista == "entradas" and lote.escribe and not lote.sobre_entrada
+    s, a = lote.simular(ctx).args, lote.aplicar(ctx).args
+    assert s[1:2] == ["sync-batch"] and s[s.index("--direccion") + 1] == "al-excel" and "--dry-run" in s
+    assert s[s.index("--blog") + 1] == "axiomata" and s[s.index("--filter-path") + 1] == "2026" and "--dry-run" not in a
+    for id_, direccion in (("sync_entrada_al_excel", "al-excel"), ("sync_entrada_a_documento", "a-documentos")):
+        o = ops.operacion(id_)
+        assert o.sobre_entrada and o.escribe
+        s, a = o.simular(ctx).args, o.aplicar(ctx).args
+        assert s[1] == "sync-article" and s[3:5] == ["m.xlsx", qmd] and s[s.index("--direccion") + 1] == direccion
+        assert "--dry-run" in s and "--dry-run" not in a
+
+
+@requiere_binding
 def test_planes_de_la_ventana(muestra_sesion):
     m = muestra_sesion
     ruta = m.pubs / "axiomata"

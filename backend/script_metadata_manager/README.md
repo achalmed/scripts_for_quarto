@@ -60,7 +60,7 @@ una carpeta excel_databases **bajo la ruta base** (en la raíz de `~/Documents`)
 | `find-differences RUTA EXCEL [--max-show N]` | lista los artículos desincronizados | nada |
 | `detect-new-fields RUTA` | campos YAML sin columna en el Excel, con la orden para añadirlos | nada |
 | `add-columns RUTA EXCEL CAMPO…` | añade columnas al Excel | el Excel |
-| `sync-article RUTA EXCEL ARTÍCULO` · `sync-batch RUTA EXCEL` | sincronización interactiva, de uno o de varios | los `.qmd` |
+| `sync-article RUTA EXCEL ARTÍCULO` · `sync-batch RUTA EXCEL` `[--direccion al-excel\|a-documentos]` | sincronización de uno (por su clave del Excel, su ruta relativa o la absoluta) o de varios (con `--blog` y `--filter-path`); sin `--direccion`, pregunta | el Excel o los `.qmd` |
 | `normalize-tags DESTINO` | minúsculas, sin tildes, espacios a `_`, sin duplicados | destino |
 | `replace-tags DESTINO VIEJO:NUEVO…` · `remove-tags DESTINO TAG…` · `add-tags DESTINO TAG…` | reemplazos, bajas y altas masivas (`remove-tag` es alias) | destino |
 | `tag-stats DESTINO [--top N]` · `audit-tags DESTINO [--threshold X]` | estadísticas · variantes y erratas de la taxonomía | nada |

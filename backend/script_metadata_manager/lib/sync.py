@@ -5,8 +5,12 @@ Sincronización bidireccional entre index.qmd y Excel.
 
 Comandos cubiertos:
   find-differences  → detecta artículos con valores distintos
-  sync-article      → sincroniza un artículo de forma interactiva
-  sync-batch        → sincroniza múltiples artículos de forma interactiva
+  sync-article      → sincroniza un artículo (pregunta la dirección, o `--direccion`)
+  sync-batch        → sincroniza múltiples artículos (pregunta, o `--direccion`)
+
+La fila del Excel se busca por su clave (`ruta_archivo`, p. ej. `pub_x/posts/…/index.qmd`), que no es la ruta en
+disco desde que los pubs viven en `web/_pubs/` (2026-09-06): la clave viaja con cada artículo y nunca se recalcula
+con `relative_to(base)` (2026-11-03; antes, sync-article y sync-batch no encontraban ninguna fila de un pub).
 
 También contiene detect_new_fields para detectar campos YAML no
 declarados en ALL_FIELDS.
@@ -26,6 +30,11 @@ from .qmd_updater import update_single_qmd
 from .collector import resolve_blog_dir
 
 
+# las dos direcciones de una sincronización (la CLI: `--direccion`; sin ella, pregunta)
+AL_EXCEL, A_DOCUMENTOS = "al-excel", "a-documentos"
+DIRECCIONES = (AL_EXCEL, A_DOCUMENTOS)
+
+
 # =============================================================================
 # COMPARACIÓN DE UN ARTÍCULO
 # =============================================================================
@@ -36,6 +45,25 @@ def _ruta_real(base: Path, ruta) -> Path:
     head, _, rest = str(ruta).replace("\\", "/").partition("/")
     d = resolve_blog_dir(base, head)
     return (d / rest) if (d and rest) else base / ruta
+
+
+def clave_de(base: Path, df: pd.DataFrame, file_path: Path) -> Optional[str]:
+    """La clave (`ruta_archivo`) de la fila del Excel cuyo artículo es `file_path`, o None."""
+    destino = Path(file_path).resolve()
+    for ruta in df["ruta_archivo"].dropna():
+        if _ruta_real(base, ruta).resolve() == destino:
+            return str(ruta)
+    return None
+
+
+def articulo_de(base: Path, df: pd.DataFrame, articulo: str) -> tuple:
+    """(ruta en disco, clave del Excel) de un artículo dado por su clave (`pub_x/posts/…/index.qmd`), por su ruta
+    relativa a la base o por su ruta absoluta; (None, None) si no está en el Excel."""
+    if articulo in set(df["ruta_archivo"].dropna().astype(str)):
+        return _ruta_real(base, articulo), articulo
+    candidato = Path(articulo) if Path(articulo).is_absolute() else base / articulo
+    clave = clave_de(base, df, candidato) if candidato.exists() else None
+    return (candidato, clave) if clave else (None, None)
 
 def compare_article(file_path: Path, excel_row: pd.Series) -> Optional[Dict]:
     """
@@ -86,6 +114,7 @@ def compare_article(file_path: Path, excel_row: pd.Series) -> Optional[Dict]:
 
     return {
         "ruta": str(file_path),
+        "clave": str(excel_row.get("ruta_archivo") or ""),
         "differences": differences,
         "only_in_index": only_in_index,
         "only_in_excel": only_in_excel,
@@ -180,25 +209,29 @@ def sync_single_interactive(
     file_path: Path,
     excel_path: str,
     dry_run: bool = False,
-):
-    """Sincroniza un solo artículo, preguntando la dirección al usuario."""
+    direccion: Optional[str] = None,
+    clave: Optional[str] = None,
+) -> bool:
+    """Sincroniza un solo artículo en la `direccion` dada (al-excel: index.qmd → Excel; a-documentos: Excel →
+    index.qmd) o preguntándola. `clave` es su `ruta_archivo` en el Excel (si falta, se busca por la ruta en disco).
+    Devuelve False si no se pudo (Excel ilegible, artículo sin fila)."""
     try:
         df = pd.read_excel(excel_path, sheet_name="METADATOS")
     except Exception as e:
         print(f"❌ Error leyendo Excel: {e}")
-        return
+        return False
 
-    ruta_rel = str(file_path.relative_to(base_path))
-    matches = df[df["ruta_archivo"] == ruta_rel]
+    ruta_rel = clave or clave_de(base_path, df, file_path)
+    matches = df[df["ruta_archivo"] == ruta_rel] if ruta_rel else df.iloc[0:0]
     if matches.empty:
-        print(f"❌ Artículo no encontrado en Excel: {ruta_rel}")
-        return
+        print(f"❌ Artículo no encontrado en Excel: {ruta_rel or file_path}")
+        return False
 
     row = matches.iloc[0]
     comp = compare_article(file_path, row)
     if not comp:
         print(f"⚠️  No se pudo analizar: {ruta_rel}")
-        return
+        return False
 
     print(f"\n📄 ANÁLISIS: {ruta_rel}\n")
     print("=" * 70)
@@ -212,7 +245,7 @@ def sync_single_interactive(
     if total == 0:
         print("✅ Artículo sincronizado (sin diferencias)")
         print("=" * 70 + "\n")
-        return
+        return True
 
     print(f"⚠️  DIFERENCIAS ENCONTRADAS: {total}\n")
     if comp["differences"]:
@@ -227,16 +260,18 @@ def sync_single_interactive(
         print(f"📊 Solo en Excel: {', '.join(comp['only_in_excel'])}\n")
 
     print("=" * 70)
-    print("\n💡 ¿Qué desea hacer?\n")
-    print("   1. Actualizar Excel desde index.qmd (index.qmd → Excel)")
-    print("   2. Actualizar index.qmd desde Excel (Excel → index.qmd)")
-    print("   3. Cancelar (no hacer nada)")
-
-    choice = "1" if dry_run else input("\n👉 Seleccione opción (1/2/3): ").strip()
+    if direccion:
+        choice = "1" if direccion == AL_EXCEL else "2"
+    else:
+        print("\n💡 ¿Qué desea hacer?\n")
+        print("   1. Actualizar Excel desde index.qmd (index.qmd → Excel)")
+        print("   2. Actualizar index.qmd desde Excel (Excel → index.qmd)")
+        print("   3. Cancelar (no hacer nada)")
+        choice = "1" if dry_run else input("\n👉 Seleccione opción (1/2/3): ").strip()
 
     if choice == "1":
         print(f"\n{'🔍 SIMULANDO' if dry_run else '✅ ACTUALIZANDO'} Excel...\n")
-        _sync_index_to_excel(file_path, base_path, excel_path, dry_run)
+        _sync_index_to_excel(file_path, base_path, excel_path, dry_run, clave=ruta_rel)
     elif choice == "2":
         print(f"\n{'🔍 SIMULANDO' if dry_run else '✅ ACTUALIZANDO'} index.qmd...\n")
         update_single_qmd(file_path, row, dry_run, 1, 1)
@@ -244,6 +279,7 @@ def sync_single_interactive(
         print("\n⏭️  Cancelado (sin cambios)")
 
     print()
+    return True
 
 
 def _sync_index_to_excel(
@@ -251,6 +287,7 @@ def _sync_index_to_excel(
     base_path: Path,
     excel_path: str,
     dry_run: bool,
+    clave: Optional[str] = None,
 ):
     """
     Copia los valores del index.qmd a la fila correspondiente del Excel.
@@ -265,11 +302,14 @@ def _sync_index_to_excel(
 
     wb = load_workbook(excel_path)
     ws = wb["METADATOS"]
-    ruta_rel = str(file_path.relative_to(base_path))
+    ruta_rel = clave or str(file_path.relative_to(base_path))
 
+    # cada campo en la columna que lleva su nombre (no por posición: una columna movida o añadida a mano no desplaza nada)
+    columnas = {ws.cell(1, c).value: c for c in range(1, ws.max_column + 1) if ws.cell(1, c).value}
+    col_ruta = columnas.get("ruta_archivo", 1)
     row_idx = None
     for idx in range(2, ws.max_row + 1):
-        if ws.cell(idx, 1).value == ruta_rel:
+        if ws.cell(idx, col_ruta).value == ruta_rel:
             row_idx = idx
             break
 
@@ -278,8 +318,9 @@ def _sync_index_to_excel(
         return
 
     changes = []
-    for col_idx, field in enumerate(ALL_FIELDS, 1):
-        if field in ("ruta_archivo", "blog_nombre"):
+    for field in ALL_FIELDS:
+        col_idx = columnas.get(field)
+        if field in ("ruta_archivo", "blog_nombre") or col_idx is None:
             continue
         new_val = extract_value(yaml_data, field)
         old_val = ws.cell(row_idx, col_idx).value
@@ -311,9 +352,11 @@ def sync_batch_interactive(
     blog_filter: Optional[str] = None,
     path_filter: Optional[str] = None,
     dry_run: bool = False,
+    direccion: Optional[str] = None,
 ):
     """
-    Muestra artículos con diferencias y pregunta cómo sincronizarlos.
+    Muestra artículos con diferencias y los sincroniza en la `direccion` dada (todos al Excel o todos a los
+    documentos) o pregunta cómo.
     """
     articles = find_differences(
         base_path, excel_path, blog_filter, path_filter, max_show=20
@@ -323,20 +366,22 @@ def sync_batch_interactive(
         print("✅ Todos los artículos están sincronizados")
         return
 
-    print(f"\n💡 OPCIONES DE SINCRONIZACIÓN MASIVA:\n")
-    print("   1. Actualizar TODO desde index.qmd → Excel")
-    print("   2. Actualizar TODO desde Excel → index.qmd")
-    print("   3. Decidir UNO POR UNO")
-    print("   4. Cancelar")
-
-    choice = "1" if dry_run else input("\n👉 Seleccione opción (1/2/3/4): ").strip()
+    if direccion:
+        choice = "1" if direccion == AL_EXCEL else "2"
+    else:
+        print(f"\n💡 OPCIONES DE SINCRONIZACIÓN MASIVA:\n")
+        print("   1. Actualizar TODO desde index.qmd → Excel")
+        print("   2. Actualizar TODO desde Excel → index.qmd")
+        print("   3. Decidir UNO POR UNO")
+        print("   4. Cancelar")
+        choice = "1" if dry_run else input("\n👉 Seleccione opción (1/2/3/4): ").strip()
 
     if choice == "1":
         print(f"\n{'🔍 SIMULANDO' if dry_run else '✅ ACTUALIZANDO'} TODO → Excel\n")
         for art in articles:
             fp = Path(art["ruta"])
-            print(f"📄 {fp.name}")
-            _sync_index_to_excel(fp, base_path, excel_path, dry_run)
+            print(f"📄 {art['clave'] or fp}")
+            _sync_index_to_excel(fp, base_path, excel_path, dry_run, clave=art["clave"])
 
     elif choice == "2":
         print(f"\n{'🔍 SIMULANDO' if dry_run else '✅ ACTUALIZANDO'} TODO → index.qmd\n")
@@ -347,10 +392,12 @@ def sync_batch_interactive(
             return
         for art in articles:
             fp = Path(art["ruta"])
-            ruta_rel = str(fp.relative_to(base_path))
-            row = df[df["ruta_archivo"] == ruta_rel].iloc[0]
-            print(f"📄 {fp.name}")
-            update_single_qmd(fp, row, dry_run, 1, 1)
+            filas = df[df["ruta_archivo"] == art["clave"]]
+            if filas.empty:
+                print(f"⚠️  {art['clave']}: sin fila en el Excel")
+                continue
+            print(f"📄 {art['clave']}")
+            update_single_qmd(fp, filas.iloc[0], dry_run, 1, 1)
 
     elif choice == "3":
         for i, art in enumerate(articles, 1):
@@ -358,7 +405,7 @@ def sync_batch_interactive(
             print(f"ARTÍCULO {i}/{len(articles)}")
             print(f"{'=' * 70}")
             fp = Path(art["ruta"])
-            sync_single_interactive(base_path, fp, excel_path, dry_run)
+            sync_single_interactive(base_path, fp, excel_path, dry_run, clave=art["clave"])
             if i < len(articles):
                 cont = "s" if dry_run else input("\n👉 Continuar? (s/n): ").strip().lower()
                 if cont != "s":

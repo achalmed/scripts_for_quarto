@@ -142,8 +142,7 @@ Lo aplicado de verdad se confirma dentro del pub y luego el puntero del submódu
 | qué es una publicación, conflictos, logs del índice | `backend/script_pub_index_symlink/README.md` |
 | reparar bloques YAML y `---` pegados | `backend/script_format_yaml/README.md` |
 | estructuras `website`/`blog`, URL base | `backend/script_generador_publicacion_similar/README.md` |
-| columnas, formatos y fórmulas del Excel | `docs/excel-de-metadatos.md` |
-| por qué se decidió algo; dónde está el repo y qué falta | `docs/decisiones.md`; `estado.md` |
+| lo demás de `docs/` (Excel, decisiones, diseño de la ventana) y qué falta | `docs/README.md`; `estado.md` |
 | versiones y desde cuándo | `CHANGELOG.md` |
 | el hub, los submódulos y el tema compartido | `web/docs/pubs-submodulos.md`, `web/CLAUDE.md` |
 | el contrato de suite y los bloques generados | `core/suite.schema.yml`, `core/README.md` |

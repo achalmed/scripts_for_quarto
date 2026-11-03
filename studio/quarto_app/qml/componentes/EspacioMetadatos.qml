@@ -1,7 +1,9 @@
 // EspacioMetadatos — el área Metadatos (reingeniería E7): el Excel frente a los .qmd de TODAS las entradas del sitio
 // (las que difieren, las que no tienen fila en el Excel, las filas del Excel sin documento) y, de la elegida, la
-// comparación campo a campo. Nada se sobrescribe aquí: «Ver diferencias» corre el gestor de metadatos sin escribir y
-// «Llevar el Excel a los documentos…» es la operación que simula primero y aplica tras confirmar.
+// comparación campo a campo. Nada se sobrescribe sin pasar por la operación: «Ver diferencias» corre el gestor sin
+// escribir; «Llevar el Excel a los documentos…» y «Llevar los documentos al Excel…» (sync-batch, con el sitio y el
+// filtro de ruta) y, de la entrada elegida, «Excel → documento» y «Documento → Excel» (sync-article) simulan primero y
+// aplican tras confirmar.
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls as QQC2
@@ -13,6 +15,12 @@ ColumnLayout {
     readonly property var m: studio.metadatos
     readonly property var ops: studio.operaciones
     function tabla() { return lista }
+    // sync-article de la entrada elegida aquí: pasa a ser la entrada actual y la operación se simula y confirma
+    function sincronizarEntrada(id) {
+        studio.sitios.fijarEntradaRuta(raiz.m.rutaActual)
+        raiz.ops.fijar(id)
+        studio.interfaz.pedir("aplicar", {})
+    }
     spacing: 0
 
     RowLayout {
@@ -40,6 +48,14 @@ ColumnLayout {
             enabled: studio.sitios.hayActual && !studio.tareas.activa
             onClicked: { raiz.ops.fijar("aplicar_excel"); studio.interfaz.pedir("aplicar", {}) }
             QQC2.ToolTip.text: "Aplica las celdas del Excel donde difieren (una celda vacía borra el campo): primero se ve la orden y lo que toca"
+            QQC2.ToolTip.visible: hovered
+        }
+        QQC2.Button {
+            text: "Llevar los documentos al Excel…"
+            icon.name: "document-export"
+            enabled: studio.sitios.hayActual && !studio.tareas.activa
+            onClicked: { raiz.ops.fijar("sync_al_excel"); studio.interfaz.pedir("aplicar", {}) }
+            QQC2.ToolTip.text: "Escribe en el Excel lo que los documentos tienen distinto (el sitio y el filtro de ruta de Herramientas): primero se ve la orden y lo que toca"
             QQC2.ToolTip.visible: hovered
         }
         BotonAccion { accion: studio.acciones.accion("archivo.excel"); conTexto: false }
@@ -74,6 +90,24 @@ ColumnLayout {
                 Layout.fillWidth: true
                 Layout.margins: Kirigami.Units.smallSpacing
                 Kirigami.Heading { level: 4; text: raiz.m.hayActual ? raiz.m.tituloActual : "Campo a campo"; Layout.fillWidth: true; elide: Text.ElideRight }
+                QQC2.ToolButton {
+                    visible: raiz.m.hayActual && raiz.m.diferenciasActual > 0
+                    icon.name: "document-import"
+                    text: "Excel → documento"
+                    enabled: !studio.tareas.activa
+                    onClicked: raiz.sincronizarEntrada("sync_entrada_a_documento")
+                    QQC2.ToolTip.text: "Escribe en este .qmd lo que su fila del Excel tiene distinto (simula primero)"
+                    QQC2.ToolTip.visible: hovered
+                }
+                QQC2.ToolButton {
+                    visible: raiz.m.hayActual && raiz.m.diferenciasActual > 0
+                    icon.name: "document-export"
+                    text: "Documento → Excel"
+                    enabled: !studio.tareas.activa
+                    onClicked: raiz.sincronizarEntrada("sync_entrada_al_excel")
+                    QQC2.ToolTip.text: "Escribe en su fila del Excel lo que este .qmd tiene distinto (simula primero)"
+                    QQC2.ToolTip.visible: hovered
+                }
                 QQC2.ToolButton {
                     visible: raiz.m.hayActual
                     icon.name: "document-edit"

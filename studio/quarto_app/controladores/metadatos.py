@@ -76,6 +76,11 @@ class Metadatos(QObject):
     def tituloActual(self) -> str:
         return self._diag["filas"][self._actual]["titulo"] if self._actual >= 0 else ""
 
+    @Property(int, notify=actualCambiado)
+    def diferenciasActual(self) -> int:
+        """Los campos que difieren en la entrada elegida (0 sin fila en el Excel: no hay nada que sincronizar)."""
+        return self._diag["filas"][self._actual]["diferencias"] if self._actual >= 0 else 0
+
     @Property(str, notify=actualCambiado)
     def rutaActual(self) -> str:
         return self._diag["filas"][self._actual]["ruta"] if self._actual >= 0 else ""

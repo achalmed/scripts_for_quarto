@@ -1,7 +1,7 @@
 ---
 tipo: estado
 estado: activo
-actualizado: 2026-11-02
+actualizado: 2026-11-03
 ---
 # estado.md — quarto-studio (repo `scripts_for_quarto`)
 
@@ -16,6 +16,8 @@ en disco con un remoto «bare» local.
 
 | fecha | qué | dónde se ve |
 |---|---|---|
+| 2026-11-03 | `sync-article` y `sync-batch` desde la ventana (Metadatos: «Llevar los documentos al Excel…» con el sitio y el filtro de ruta; de la entrada, «Excel → documento» y «Documento → Excel»), con `--direccion` en la CLI (sin ella sigue preguntando); arreglado que no encontraran la fila de un pub desde la mudanza a `_pubs/` y que escribieran el Excel por posición | `docs/decisiones.md` (2026-11-03); `tests/test_sync.py` |
+| 2026-11-03 | avisos del validador: `genero:` en `docs/decisiones.md` y `docs/excel-de-metadatos.md`; `CLAUDE.md` a 149 líneas; el RQ-DOC-06 de `docs/rediseno.md` ya no sale | `python3 core/archivos.py validar quarto-studio` |
 | 2026-11-02 | **Reingeniería de Quarto Studio: un entorno de escritura y publicación sobre `VentanaBase` de `gui-comun` 3.0** (carril B de la reingeniería de los diez studios; rama `wip/2026-11-02-reingenieria`, sin fusionar): proyectos con su estado R6 a la izquierda; Escribir (documentos del sitio, editor Markdown/Quarto con resaltado, buscar y guardar sin pisar cambios externos, vista previa del `_site` en QtWebEngine con navegación entre páginas), Metadatos (el Excel frente a todas las entradas del sitio, sin escribir), Publicación (dominio de destino comprobado contra el registro, el `site-url` y el remoto; archivos que cambiarán; última publicación; historial; la confirmación nombra sitio y dominio) y Herramientas (las vistas y operaciones de 2.0); Ctrl+Mayús+K renderiza; la muestra gana páginas renderizadas | `docs/reingenieria.md`; `docs/figuras/quarto-studio-*.png` (antes en `docs/figuras/antes/`); `tests/run.sh` |
 | 2026-11-02 | Fase 5 dada por buena (el autor delegó la decisión al director con las pruebas en verde y las capturas sobre la muestra): `wip/2026-11-02-qml` fusionada en `main` y retirada; `docs/rediseno.md` a `hecho`; `gui-comun` 2.5.0 en `main` y en su remoto con `v2.5.0` | `git log` |
 | 2026-11-02 | **Quarto Studio en QML + Kirigami sobre `gui-comun` 2.5** (fase 5 de la modernización de la familia; rama `wip/2026-11-02-qml`, sin fusionar): `docs/rediseno.md` (auditoría, ocho preguntas, arquitectura de información, decisiones Q1–Q11, lo construido con capturas), `studio/` reescrito (cuatro vistas: los sitios con su estado por la regla de la puerta R6 y filtros, las entradas con su fila del Excel, el índice del vault, los índices de contenido; un sitio y una operación actuales; F5 simula con la CLI o el plan de la ventana y Ctrl+Intro aplica tras confirmar; publicar y commit+push nombran el sitio y su dominio; problemas del render con su archivo; plan y registro por operación y por sitio; la entrada nueva en un diálogo; `/usr/bin/python3` relanzado al `.venv` del repo con openpyxl y pandas), `studio/muestra.py` (la familia de muestra con git y remotos bare) y `studio/capturar.py`, 28 pruebas en `tests/run.sh` (ninguna publica; el render real en `/var/tmp`), tres capturas reales sin rutas de la máquina, documentos al día. En `gui-comun`, 2.5.0 (`Tareas.proceso(entrada=, entorno=)`; la consola limpia ANSI; rama `wip/2026-11-02-qml-quarto`, etiqueta local). `project_scanner` deja de contar en el hub las entradas de sus pubs | `tests/run.sh`; `docs/figuras/quarto-studio-*.png`; `/usr/bin/python3 studio/main.py` |
@@ -42,14 +44,17 @@ nada en curso
 - 2026-11-02 · dueño: **el autor** · usar Quarto Studio en la sesión real sobre `web` (`/usr/bin/python3 ~/Documents/quarto-studio/studio/main.py`):
   escribir y guardar una entrada con su vista previa, Ctrl+Mayús+K, el diagnóstico de metadatos de un pub, la vista de
   publicación de un pub (destino, archivos, historial) y una publicación de verdad; lo que no convenza se anota aquí.
-- 2026-11-02 · dueño: director · lo que quedó fuera de la ventana: `sync-article` y `sync-batch` (interactivos; su flujo es
-  Ver diferencias → Aplicar el Excel con el sitio y el filtro de ruta), `convert`, `git-init`, `preview-browser` y
+- 2026-11-02 · dueño: director · lo que quedó fuera de la ventana: `convert`, `git-init`, `preview-browser` y
   `add-columns` (no estaban en 1.x; se corren en la terminal); los problemas del render se leen de la salida de Quarto
   (ERROR, WARN, `archivo:línea`), no de un registro propio; el Excel se lee entero en cada relectura (unas 600 filas, sin
   caché); las operaciones de metadatos no muestran el plan de la ventana (la CLI simula con `--dry-run`); «Configurar
   atajos…» y «Configurar barras…» no existen (como en toda la familia).
-- 2026-11-02 · dueño: director · el validador avisa en `docs/rediseno.md` (RQ-DOC-06: rutas de ejemplo como index.html de _site) y
-  el `CLAUDE.md` sigue en el máximo de líneas de la normativa (`wc -l CLAUDE.md`); RQ-COD-01 de los tres `main.sh` de Bash es el pendiente del 2026-10-06.
+- 2026-11-03 · dueño: **el autor** · el validador sigue avisando: `CLAUDE.md` de 149 líneas (la normativa documental pide
+  ≤ 100; bajarla es reescribir la guía: lo recomendable es llevar «Trampas» y «Verificar» a `studio/README.md` y
+  `docs/`), `CHANGELOG.md` fuera de Keep a Changelog (cambiar su formato toca toda su historia), RQ-IDN-03 de las
+  carpetas `script_*` (renombrar es un cambio estructural, N 3.13) y RQ-COD-01 de los tres `main.sh` de Bash (el
+  pendiente del 2026-10-06, abajo). Con un worktree fuera de `~/Documents` sale además RQ-DOC-06 por `.venv/` (no existe
+  en el worktree; en el checkout principal, sí).
 
 - 2026-10-27 · dueño: la sesión del hub · `tests/test_blogs_manager_git.py::test_fuentes_iguales_a_las_de_la_puerta` falla: la puerta R6 del hub ya excluye `_vitrina/` y `_ediciones/` y `QBLOG_FUENTES` (`backend/script_blogs_manager/lib/00-config.sh`) no; no viene de la sesión 9.
 - 2026-10-06 · dueño: director · `core/suites.py probar --repo quarto-studio`: RQ-MAN-05 en `pub_index_symlink` y en `quarto_studio` (escriben en `vault`, pero el manifiesto no declara ese `escribe_en` para el proyecto); se corrige en `meta/workspace.yml`.
