@@ -24,7 +24,7 @@ from gui_comun.tareas import Tareas
 from quarto_app import APP_NAME, APP_VERSION, ORG_NAME
 from quarto_app.controladores.ajustes import Ajustes
 from quarto_app.controladores.documentos import Documentos
-from quarto_app.controladores.editor import Editor
+from gui_comun.editor import ControladorEditor
 from quarto_app.controladores.metadatos import Metadatos
 from quarto_app.controladores.publicacion import Publicacion
 from quarto_app.controladores.espacio import AREAS, Espacio
@@ -80,7 +80,7 @@ def construir(app: Aplicacion, cache: Path | None = None, docs_dir: Path | None 
     sitios = Sitios(espacio, consola, env, cache=cache, docs_dir=docs_dir)
     flujo = Flujo(espacio, sitios, ajustes, consola, hub=hub)
     operaciones = Operaciones(espacio, sitios, flujo, ajustes, consola, tareas, cache=cache)
-    editor = Editor(consola)
+    editor = ControladorEditor(consola)
     documentos = Documentos(sitios)
     publicacion = Publicacion(sitios)
     metadatos = Metadatos(sitios, flujo)

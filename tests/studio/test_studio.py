@@ -68,7 +68,7 @@ app.motor.warnings.connect(lambda avisos: errores.extend(a.toString() for a in a
 nombre, carpeta = sys.argv[2], sys.argv[3]
 ruta = os.path.join(os.environ["XDG_CACHE_HOME"], "Prueba_" + nombre + ".qml")
 os.makedirs(os.path.dirname(ruta), exist_ok=True)
-extra = "" if nombre.startswith("Dialogo") or nombre == "ResaltadoEditor" else "; anchors.fill: parent"
+extra = "" if nombre.startswith("Dialogo") else "; anchors.fill: parent"
 open(ruta, "w").write('import QtQuick\\nimport GuiComun\\nimport "file://%s/%s"\\nVentanaBase { id: ventana; acciones: studio.acciones; visible: false; %s { id: objeto%s } }\\n' % (str(aplicacion.QML_DIR), carpeta, nombre, extra))
 ok = app.cargar(ruta)
 app.app.processEvents()

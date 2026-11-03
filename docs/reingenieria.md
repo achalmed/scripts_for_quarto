@@ -105,7 +105,7 @@ Capturas de antes: `docs/figuras/antes/quarto-studio-{oscuro,claro,paleta}.png`.
 | la ventana y las áreas (E1, E11, E12) | `studio/quarto_app/qml/Main.qml` sobre `VentanaBase`; `studio/quarto_app/controladores/espacio.py`; `studio/quarto_app/aplicacion.py` (Ctrl+1–4, Ctrl+Mayús+K, Ctrl+S, Ctrl+P, F7, `escritorio`, estados de operación) |
 | proyectos (E2) | `Sitios.proyectos` (`studio/quarto_app/controladores/sitios.py`); `studio/quarto_app/qml/componentes/PanelProyectos.qml` |
 | documentos (E3) | `studio/quarto_app/services/documentos.py`, `studio/quarto_app/controladores/documentos.py` |
-| editor (E4) | `studio/quarto_app/controladores/editor.py`, `EditorArchivo.qml`, `BarraBusqueda.qml`, `ResaltadoEditor.qml`, `EspacioEscritura.qml` (copiados de LaTeX Studio y adaptados) |
+| editor (E4) | `EspacioEscritura.qml` con `EditorTexto` y `BarraBuscarReemplazar` de `gui-comun` 3.1 y `gui_comun.editor.ControladorEditor` (2026-11-03; antes, copias de LaTeX Studio: su controlador, su editor, su barra de búsqueda y su resaltado) |
 | vista previa (E5) | `studio/quarto_app/qml/componentes/VistaPrevia.qml` y `VistaWeb.qml` (QtWebEngine en un `Loader`) |
 | renderizar (E6) | la acción `sitio.renderizar` sobre la operación `render` de siempre |
 | metadatos (E7) | `datos.diagnostico`; `studio/quarto_app/controladores/metadatos.py`; `EspacioMetadatos.qml` |

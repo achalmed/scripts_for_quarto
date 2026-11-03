@@ -1,11 +1,12 @@
 // EspacioEscritura — el área Escribir (reingeniería E4–E5; el de LaTeX Studio adaptado): las pestañas de los documentos
 // abiertos con el editor y la barra de búsqueda; a la derecha la vista previa del sitio (F7 la oculta). Cada documento
-// abierto tiene su EditorArchivo (su texto y su deshacer); el aviso de «cambió fuera» y la confirmación de sobrescribir
+// abierto tiene su EditorTexto de gui-comun (su texto y su deshacer); el aviso de «cambió fuera» y la confirmación de sobrescribir
 // viven aquí. Sin datos propios: studio.editor (abiertos), studio.documentos, studio.sitios.
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls as QQC2
 import org.kde.kirigami as Kirigami
+import GuiComun
 
 QQC2.SplitView {
     id: raiz
@@ -105,8 +106,10 @@ QQC2.SplitView {
             Repeater {
                 id: editores
                 model: studio.editor.abiertos
-                delegate: EditorArchivo {
+                delegate: EditorTexto {
                     required property var model
+                    controlador: studio.editor
+                    ajustarLineas: true                 // la prosa de un .qmd se lee mejor partida
                     ruta: model.ruta
                     definicion: model.definicion
                     soloLectura: model.solo_lectura
@@ -125,7 +128,7 @@ QQC2.SplitView {
                                                  : "El hub y los pubs están a la izquierda, con su estado de construcción."
         }
 
-        BarraBusqueda {
+        BarraBuscarReemplazar {
             id: busqueda
             Layout.fillWidth: true
             editor: raiz.editorActual

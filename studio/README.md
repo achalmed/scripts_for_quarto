@@ -75,7 +75,7 @@ instala en el `.venv`: el de pip no carga Kirigami.
 | `quarto_app/aplicacion.py` | arma la aplicación: controladores, el registro de acciones (menú, paleta, atajos, estados de operación) y `quarto_app/qml/Main.qml`; fija `AA_ShareOpenGLContexts` para QtWebEngine |
 | `quarto_app/controladores/` | `espacio` (áreas, vista, barra de estado), `sitios` (los proyectos con su estado, el sitio actual), `documentos` (los del sitio, la página de la vista previa), `editor` (el de LaTeX Studio adaptado), `metadatos` (el diagnóstico), `publicacion` (destino, archivos, historial; la guarda de publicar), `flujo`, `operaciones`, `ajustes` |
 | `quarto_app/services/` | sin Qt: `documentos`, `publicacion`, `sitios` (la regla R6), `datos` (entradas, Excel, `diagnostico`), `operaciones` (el catálogo), `render`, los `*_service.py` de cada backend, `project_scanner`, `post_service`, `paths` |
-| `quarto_app/qml/` | `Main.qml` sobre `GuiComun.VentanaBase` y `componentes/` (PanelProyectos, EspacioEscritura, EditorArchivo, BarraBusqueda, VistaPrevia, VistaWeb, EspacioMetadatos, EspacioPublicacion, EspacioHerramientas y los de 2.0) |
+| `quarto_app/qml/` | `Main.qml` sobre `GuiComun.VentanaBase` y `componentes/` (PanelProyectos, EspacioEscritura —con `EditorTexto` y `BarraBuscarReemplazar` de gui-comun 3.1—, VistaPrevia, VistaWeb, EspacioMetadatos, EspacioPublicacion, EspacioHerramientas y los de 2.0) |
 | `muestra.py` | la familia de sitios de muestra (un hub y tres pubs con git y remotos bare, cada uno en un estado, con páginas renderizadas; un Excel); nunca `web` ni los pubs |
 | `capturar.py` | las capturas de la documentación sobre la muestra, con `HOME` temporal fuera de la carpeta de inicio |
 

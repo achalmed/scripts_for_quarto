@@ -175,7 +175,7 @@ def test_correr_lo_que_solo_lee_sobre_la_muestra(piezas, app):
 @pytest.fixture
 def nuevas(piezas):
     from quarto_app.controladores.documentos import Documentos
-    from quarto_app.controladores.editor import Editor
+    from gui_comun.editor import ControladorEditor as Editor
     from quarto_app.controladores.metadatos import Metadatos
     from quarto_app.controladores.publicacion import Publicacion
     p = dict(piezas)
@@ -234,7 +234,7 @@ def test_el_editor_guarda_en_su_sitio_y_conserva_los_hardlinks(nuevas, tmp_path)
     assert b.read_text(encoding="utf-8") == "$color: blue;\n" and a.stat().st_ino == b.stat().st_ino
     b.write_text("$color: green;\n", encoding="utf-8")                                   # un cambio hecho fuera
     assert e.guardar(str(a), "$color: blue;\n", False) == "externo"                       # no se pisa sin preguntar
-    from quarto_app.controladores.editor import definicion_de
+    from gui_comun.editor import definicion_de                  # el editor es el de gui-comun 3.1
     assert definicion_de("x/index.qmd") == "Markdown" and definicion_de("_quarto.yml") == "YAML" and definicion_de("r.bib") == "BibTeX"
 
 
