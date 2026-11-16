@@ -62,6 +62,7 @@ EOF
 parse_arguments() {
     GENIDX_BLOG_DIR=""
     GENIDX_BASE_URL="$GENIDX_DEFAULT_BASE_URL"
+    GENIDX_BASE_URL_DADA=0
     GENIDX_BLOG_TYPE="$GENIDX_DEFAULT_BLOG_TYPE"
     GENIDX_DRY_RUN=0
 
@@ -70,6 +71,7 @@ parse_arguments() {
             -u|--base-url)
                 _require_option_value "$1" "${2:-}"
                 GENIDX_BASE_URL="$2"
+                GENIDX_BASE_URL_DADA=1
                 shift 2
                 ;;
             -t|--type)
@@ -117,4 +119,17 @@ _require_option_value() {
         log_error "La opción '$1' requiere un valor"
         exit 2
     fi
+}
+
+# url_del_blog()
+# Sin --base-url, la URL base es la del propio blog: el `site-url` de su _quarto.yml (un pub publica en su dominio, no en
+# el del hub). Antes caía en GENIDX_DEFAULT_BASE_URL y un pub regeneraba sus índices con los enlaces del hub (2026-11-16,
+# prueba en vivo de los posts desde Qillqa: «URL base configurada: https://achalmaedison.netlify.app» para Aequilibria).
+url_del_blog() {
+    [[ "$GENIDX_BASE_URL_DADA" -eq 1 ]] && return 0
+    local yml="$GENIDX_BLOG_DIR/_quarto.yml" url
+    [[ -f "$yml" ]] || return 0
+    url="$(grep -m1 -E '^[[:space:]]*site-url:' "$yml" | sed -E 's/^[[:space:]]*site-url:[[:space:]]*//; s/[[:space:]]+#.*$//; s/^["'\'']//; s/["'\'']$//')"
+    [[ -n "$url" ]] && GENIDX_BASE_URL="${url%/}"
+    return 0
 }

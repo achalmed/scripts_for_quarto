@@ -73,6 +73,7 @@ class DatosPost:
     csl: str = ""                     # csl: el APA de apaquarto, relativo al post (sin él, el HTML cita en Chicago)
     fuentes: list[dict] = field(default_factory=list)   # [{calibre_id, zotero, uso}]
     cuerpo: str = ""                  # el cuerpo; vacío, la plantilla de siempre
+    jupyter: bool = True              # `jupyter: python3`; False si el post no lleva código (desde Qillqa, 2026-11-16)
 
 
 def slug(texto: str) -> str:
@@ -120,7 +121,8 @@ def generar_index_qmd(datos: DatosPost) -> str:
         for f in datos.fuentes:
             y.append("  - {" + ", ".join(f"{k}: {_escalar(str(v)) if not isinstance(v, int) else v}"
                                       for k, v in f.items() if v not in (None, "")) + "}\n")
-    y.append("jupyter: python3\n")
+    if datos.jupyter:
+        y.append("jupyter: python3\n")
 
     if datos.floatsintext:
         y.append("floatsintext: true\n")
