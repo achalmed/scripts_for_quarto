@@ -88,7 +88,7 @@ QBLOG_PUERTA_R6="$INDEX_DIR/scripts/puerta-r6.sh"
 QBLOG_FUENTES=(':(glob)**/*.qmd' ':(glob)**/_quarto.yml' ':(glob)**/_metadata.yml'
                '_extensions/' '_filters/' '_partials/' 'assets/scss/' 'assets/js/' 'assets/css/'
                '_brand.yml'   # THEME_VERSION dejó de ser fuente el 2026-10-10 (sello del conjunto; igual que puerta-r6.sh)
-               ':(exclude)_site/' ':(exclude)_freeze/' ':(exclude,glob)**/README.md')
+               ':(exclude)_site/' ':(exclude)_freeze/' ':(exclude)_vitrina/' ':(exclude)_ediciones/' ':(exclude,glob)**/README.md')
 QBLOG_SITIO_GENERADO="_site/"
 QBLOG_GENERADOS=("_freeze/" "$QBLOG_SITIO_GENERADO" "_documentos.tsv")
 
