@@ -88,3 +88,21 @@ def test_crear_rechaza_lo_que_no_sirve(tmp_path):
     assert _crear(blog, {"titulo": "x", "carpeta_posts": "no-existe"})[0] == 1
     assert _crear(blog, {"titulo": "x", "carpeta_posts": "../posts"})[0] == 1
     assert _crear(tmp_path / "no-es-blog", {"titulo": "x"})[0] == 1
+
+
+def test_sin_jupyter_el_post_no_declara_motor():
+    """Un post sin código no lleva `jupyter: python3` (2026-11-16: desde Qillqa nacía con él y la regla lo marcaba)."""
+    assert _frontmatter(ps.generar_index_qmd(ps.DatosPost(titulo="Mi post")))["jupyter"] == "python3"
+    assert "jupyter" not in _frontmatter(ps.generar_index_qmd(ps.DatosPost(titulo="Mi post", jupyter=False)))
+
+
+def test_el_generador_toma_la_url_del_blog_sin_base_url(tmp_path):
+    """Sin --base-url, los índices enlazan al `site-url` del blog, no al del hub (2026-11-16)."""
+    raiz = Path(__file__).resolve().parents[1] / "backend" / "script_generador_publicacion_similar"
+    blog = tmp_path / "pub"
+    (blog / "posts" / "2026-01-01-uno").mkdir(parents=True)
+    (blog / "_quarto.yml").write_text('project:\n  type: website\nwebsite:\n  site-url: "https://pub.example.app/"\n', encoding="utf-8")
+    (blog / "posts" / "2026-01-01-uno" / "index.qmd").write_text("---\ntitle: Uno\n---\n\nTexto.\n", encoding="utf-8")
+    for extra, url in (([], "https://pub.example.app"), (["-u", "https://otra.example"], "https://otra.example")):
+        r = subprocess.run(["bash", str(raiz / "main.sh"), str(blog), "--dry-run", *extra], capture_output=True, text=True, timeout=60)
+        assert f"URL base configurada: {url}" in r.stdout + r.stderr

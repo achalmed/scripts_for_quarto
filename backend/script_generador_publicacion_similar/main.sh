@@ -42,6 +42,7 @@ source "$GENIDX_LIB_DIR/06-generator.sh"
 main() {
     parse_arguments "$@"
     validate_environment
+    url_del_blog
 
     if [[ "$GENIDX_BLOG_TYPE" == "auto" ]]; then
         GENIDX_BLOG_TYPE="$(detect_blog_structure "$GENIDX_BLOG_DIR")"
