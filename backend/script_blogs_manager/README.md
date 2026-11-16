@@ -61,7 +61,7 @@ Un blog se nombra por su carpeta (`axiomata`) o sin el prefijo (`axiomata`); el 
 | `publish BLOG [DESTINO] [--aplicar]` | sin destino, la puerta R6 y `git push` de la rama a su remota (Netlify despliega con cada push); con destino, `quarto publish` hacia `gh-pages` (también tras la puerta), `netlify`, `quarto-pub` o `confluence`. Simula salvo `--aplicar` |
 | `check BLOG` · `inspect BLOG` | `quarto check` · tipo, motor, formatos y salida del sitio |
 | `list-posts BLOG` | posts agrupados por carpeta temática |
-| `render-post RUTA` | renderiza un solo `index.qmd` |
+| `render-post RUTA [ARGS]` | renderiza un solo `index.qmd`; lo que sigue a la ruta va a `quarto render` (`--to html`: solo la página) |
 | `new-post BLOG` | asistente interactivo de post APA |
 | `git-init BLOG` · `git-status BLOG` | inicia un repositorio (y su `.gitignore`) · muestra su estado |
 | `git-commit BLOG [MENSAJE] [--aplicar]` | confirma lo rastreable (respetando `.gitignore`) de las fuentes del sitio (los pathspecs `FUENTES` de `web/scripts/puerta-r6.sh`), de las carpetas de contenido (las de primer nivel que contienen algún `.qmd`, con sus imágenes y datos), `_freeze/` y `_site/`; avisa de lo que queda fuera, corre la puerta R6 y empuja. Simula salvo `--aplicar` |
