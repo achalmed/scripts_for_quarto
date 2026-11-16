@@ -82,14 +82,15 @@ QBLOG_PUERTA_R6="$INDEX_DIR/scripts/puerta-r6.sh"
 #     tests/test_blogs_manager_git.py comprueba que sigan iguales), todo lo rastreable
 #     de las carpetas de contenido (las de primer nivel, sin `_` ni `.` delante, que
 #     contienen algún .qmd: posts con sus imágenes y datos) y los generados
-#     versionados `_freeze/` y `_site/`. Lo demás (sueltos de la raíz, punteros de
-#     submódulo) se avisa y no se añade. -----------------------------------------
+#     versionados `_freeze/`, `_site/` y `_documentos.tsv` (la caché de PDF y DOCX que anota
+#     `scripts/render.sh --documentos`; `web/docs/publicar-un-post.md` §8 la confirma con `_site/`,
+#     2026-11-17). Lo demás (sueltos de la raíz, punteros de submódulo) se avisa y no se añade. ---
 QBLOG_FUENTES=(':(glob)**/*.qmd' ':(glob)**/_quarto.yml' ':(glob)**/_metadata.yml'
                '_extensions/' '_filters/' '_partials/' 'assets/scss/' 'assets/js/' 'assets/css/'
                '_brand.yml'   # THEME_VERSION dejó de ser fuente el 2026-10-10 (sello del conjunto; igual que puerta-r6.sh)
                ':(exclude)_site/' ':(exclude)_freeze/' ':(exclude,glob)**/README.md')
 QBLOG_SITIO_GENERADO="_site/"
-QBLOG_GENERADOS=("_freeze/" "$QBLOG_SITIO_GENERADO")
+QBLOG_GENERADOS=("_freeze/" "$QBLOG_SITIO_GENERADO" "_documentos.tsv")
 
 # --- Configuración de autor por defecto (usado por init y _metadata.yml) ----
 QBLOG_DEFAULT_AUTHOR="Edison Achalma"

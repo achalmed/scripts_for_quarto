@@ -27,6 +27,9 @@ Vigentes: `blogs_manager` 4.0.0 · `metadata_manager` 2.3.0 · `generador_public
   `index.qmd` es el de siempre. Los textos del frontmatter van escapados (un título con comillas ya no rompe el YAML).
 - `blogs_manager`: `render-post RUTA [ARGS]` pasa lo que sigue a la ruta a `quarto render` (`--to html`: la vista previa
   de un solo formato). Sin ARGS, como siempre.
+- `blogs_manager git-commit` confirma también `_documentos.tsv`, la caché que anota `scripts/render.sh --documentos`:
+  `web/docs/publicar-un-post.md` §8 la confirma con `_site/` y quedaba fuera, como un suelto de la raíz (visto al publicar
+  un post de ensayo desde Yachay contra un remoto de juguete, 2026-11-17).
 
 ## Cambiado — 2026-11-02
 
