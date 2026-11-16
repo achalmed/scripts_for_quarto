@@ -16,6 +16,21 @@ Vigentes: `blogs_manager` 4.0.0 · `metadata_manager` 2.3.0 · `generador_public
 `format_yaml` 2.0 · `pub_index_symlink` (sin número) · Quarto Studio 2.0.0 (`APP_VERSION` en
 `studio/quarto_app/__init__.py`; del 2026-10-06 al 2026-10-27 vivió en el repo `gui-suites`).
 
+## [Unreleased]
+
+- **El post nuevo sin la ventana** (2026-11-17, posts desde Qillqa): `studio/quarto_app/services/post_service.py` se
+  corre como programa, `crear --blog <carpeta> --datos <json>`, y simula salvo `--aplicar` (dice la carpeta y el
+  `index.qmd` que nacerían). Yachay, el módulo de escritura de Qillqa, crea así los posts: el mismo `index.qmd` que el
+  asistente y que «Nueva entrada…», sin otra plantilla. Campos opcionales que la ventana no pide y un post publicado
+  lleva (`docs/publicar-un-post.md` del hub, §3): `descripcion`, `borrador` (`draft`), `pdf_url` y `autor_cita` (el
+  bloque `citation`, que `sync-pdf-urls` no crea), `csl`, `fuentes` (Método Documental) y `cuerpo`; sin ellos el
+  `index.qmd` es el de siempre. Los textos del frontmatter van escapados (un título con comillas ya no rompe el YAML).
+- `blogs_manager`: `render-post RUTA [ARGS]` pasa lo que sigue a la ruta a `quarto render` (`--to html`: la vista previa
+  de un solo formato). Sin ARGS, como siempre.
+- `blogs_manager git-commit` confirma también `_documentos.tsv`, la caché que anota `scripts/render.sh --documentos`:
+  `web/docs/publicar-un-post.md` §8 la confirma con `_site/` y quedaba fuera, como un suelto de la raíz (visto al publicar
+  un post de ensayo desde Yachay contra un remoto de juguete, 2026-11-17).
+
 ## Cambiado — 2026-11-02
 
 - Quarto Studio 2.0.0: la ventana pasa a QML + Qt Quick + Kirigami sobre `gui-comun` 2.x (fase 5 de la modernización de la

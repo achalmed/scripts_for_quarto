@@ -154,7 +154,7 @@ main() {
             ;;
         render-post)
             [[ -z "${2:-}" ]] && { print_error "Especifica la ruta del post"; exit 1; }
-            render_post "$2"
+            render_post "$2" "${@:3}"
             ;;
         new-post)
             [[ -z "${2:-}" ]] && { print_error "Especifica el nombre del blog"; exit 1; }

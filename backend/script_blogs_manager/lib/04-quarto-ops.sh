@@ -152,6 +152,10 @@ publish_blog() {
 # $1 = ruta absoluta del index.qmd del post
 render_post() {
     local post_path="$1"
+    shift
+    # Lo que sigue a la ruta va tal cual a `quarto render` (2026-11-17, posts desde Qillqa): `--to html` para la vista
+    # previa de un solo formato; sin nada, todos los formatos del post, como siempre.
+    local -a extra=("$@")
 
     if [[ ! -f "$post_path" ]]; then
         print_error "Post no encontrado: $post_path"
@@ -164,7 +168,7 @@ render_post() {
 
     cd "$(dirname "$post_path")" || { print_error "No se pudo acceder al post"; return 1; }
 
-    if quarto render "$(basename "$post_path")"; then
+    if quarto render "$(basename "$post_path")" "${extra[@]}"; then
         print_success "Post renderizado exitosamente"
     else
         print_error "Error al renderizar el post"

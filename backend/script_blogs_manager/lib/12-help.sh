@@ -39,7 +39,7 @@ ${QBLOG_YELLOW}COMANDOS PRINCIPALES:${QBLOG_NC}
 
   ${QBLOG_GREEN}Gestión de Posts:${QBLOG_NC}
     list-posts BLOG         Lista todos los posts de un blog
-    render-post POST_PATH   Renderiza un post específico
+    render-post POST_PATH [ARGS]  Renderiza un post (ARGS van a quarto render: --to html)
     new-post BLOG           Crea un nuevo post (asistente interactivo)
 
   ${QBLOG_GREEN}Operaciones Múltiples:${QBLOG_NC}
