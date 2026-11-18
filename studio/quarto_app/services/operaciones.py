@@ -33,6 +33,7 @@ class Contexto:
     estado: dict = field(default_factory=dict)      # su estado (servicios.sitios)
     sitios: list = field(default_factory=list)      # [(nombre, ruta, estado)] de todos, en el orden de la tabla
     entrada: str = ""                 # la ruta del index.qmd de la entrada actual
+    archivo: str = ""                 # el documento abierto en el editor («Renderizar este archivo», N 5.16)
     valor: str = ""                   # lo que pide la operación (texto, carpeta o archivo)
     excel: str = ""                   # el Excel de metadatos
     filtro_ruta: str = ""             # --filter-path de metadatos
@@ -51,6 +52,7 @@ class Operacion:
     plan: Callable[[Contexto], str] | None = None            # el plan de la ventana (F5) cuando la CLI no simula
     sobre_sitio: bool = False         # exige un sitio actual
     sobre_entrada: bool = False       # exige una entrada actual
+    sobre_archivo: bool = False       # exige un documento renderizable abierto en el editor
     publica: bool = False             # el diálogo nombra el sitio y su dominio: Netlify despliega con el push
     larga: bool = False               # un servidor (preview): F5 lo arranca y Esc lo detiene
     borra: str = ""                   # qué borra (va en el diálogo)
@@ -120,6 +122,19 @@ def plan_render_todos(ctx: Contexto) -> str:
         lineas.append(f"  {i:2d}. {nombre}: {e.get('texto_estado', '?')} — {e.get('motivo', '')}")
     lineas.append("Nada se publica: cada sitio escribe su _site/.")
     return "\n".join(lineas)
+
+
+RENDERIZABLES = (".qmd", ".md", ".ipynb")
+
+
+def renderizable(ruta: str) -> bool:
+    """¿Quarto renderiza este archivo por sí solo (un documento, no la configuración ni un estilo)?"""
+    return bool(ruta) and Path(ruta).suffix.lower() in RENDERIZABLES and Path(ruta).is_file()
+
+
+def plan_render_archivo(ctx: Contexto) -> str:
+    return (f"Renderizar solo {ctx.archivo} (`main.sh render-post`, `quarto render` de ese archivo dentro de su proyecto): "
+            f"escribe su página en _site/ del sitio {ctx.sitio} (y su _freeze/ si congela). Nada se publica (N 5.16).")
 
 
 def plan_render_entrada(ctx: Contexto) -> str:
@@ -199,6 +214,9 @@ OPERACIONES = (
     O("git_status", "Git status", "El estado de git del sitio actual (solo lee).", "sitios", simular=lambda c: blog_service.git_status(c.sitio), sobre_sitio=True),
     O("listar_entradas", "Listar entradas (CLI)", "`main.sh list-posts`: las entradas del sitio actual según el gestor (solo lee).", "sitios",
       simular=lambda c: blog_service.listar_posts(c.sitio), sobre_sitio=True),
+    O("render_archivo", "Renderizar este archivo", "`main.sh render-post`: solo el documento abierto en el editor, dentro de su proyecto (N 5.16: se "
+      "renderiza el archivo, nunca el sitio a ciegas); la vista previa se recarga.", "sitios",
+      aplicar=lambda c: blog_service.render_post(c.archivo), plan=plan_render_archivo, sobre_sitio=True, sobre_archivo=True),
     O("render_entrada", "Renderizar la entrada", "`main.sh render-post`: solo la entrada actual (pestaña Entradas o vista Entradas).", "sitios",
       aplicar=lambda c: blog_service.render_post(c.entrada), plan=plan_render_entrada, sobre_entrada=True),
     O("render_todos", "Renderizar todos", "`main.sh render-all`: los trece sitios, uno tras otro.", "sitios", aplicar=lambda c: blog_service.render_all(), plan=plan_render_todos),

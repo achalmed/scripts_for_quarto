@@ -114,6 +114,16 @@ class Sitios(QObject):
                            "tema": getattr(pub, "tema", "") or ("el hub" if self._blogs[n].es_website else "")})
         return salida
 
+    @Property("QVariantList", notify=cambiado)
+    def pendientes(self) -> list:
+        """Los sitios con cambios sin publicar (la franja de abajo, rediseño del 2026-11-18): lo que falta renderizar y lo
+        renderizado que no salió; primero lo que más cerca está de publicarse."""
+        orden = {"sin_publicar": 0, "sin_render": 1}
+        return [{"nombre": n, "clave": e["estado"], "estado": e["texto_estado"], "nivel": e["nivel"], "motivo": e["motivo"],
+                 "esHub": self._blogs[n].es_website}
+                for n, e in sorted(self._estados.items(), key=lambda par: (orden.get(par[1]["estado"], 9), par[0]))
+                if e["estado"] in orden]
+
     @Property(int, notify=cambiado)
     def total(self) -> int:
         return len(self._orden)

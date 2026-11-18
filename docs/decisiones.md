@@ -12,6 +12,25 @@ commit, no aquí; lo pendiente, a [`estado.md`](../estado.md) §Por hacer (ola 4
 
 ## Arquitectura
 
+- **2026-11-18 · La forma de escritor: tres paneles y «Renderizar este archivo» como botón principal** (rediseño visual
+  de los diez studios que el autor aprobó el 2026-11-18; brief común de la coordinadora). A la izquierda, **un solo árbol
+  de sitios y entradas** (`studio/quarto_app/controladores/arbol.py`; antes, dos listas): el sitio actual se despliega con sus documentos por
+  carpeta y cada entrada es una fila con su título y su fecha, no una carpeta con un `index.qmd`. En el centro, el `.qmd`
+  con su YAML resaltado (la definición «Markdown» de KSyntaxHighlighting ya reconoce el frontmatter: no hizo falta otra).
+  A la derecha, la vista previa **tal como saldrá publicada**, con la dirección que tendrá en el dominio del sitio.
+  **El botón principal renderiza el archivo abierto** (`main.sh render-post`, Ctrl+Mayús+K como en RStudio): N 5.16
+  pide renderizar el archivo y nunca el sitio a ciegas; el sitio entero pasa a Ctrl+Mayús+B («Build All» de RStudio) y
+  sigue en Publicación, donde sí toca antes de publicar (N 5.21). Por qué `render-post` y no una orden nueva: ya hace
+  `quarto render <archivo>` desde su carpeta (Quarto encuentra el proyecto) y es la CLI de siempre, así que la ventana no
+  renderiza por su cuenta. Como en RStudio, guarda antes el documento si tiene cambios (el render lee el disco). Un `_quarto.yml`, un `.scss` o un `.bib` no se renderizan solos: el botón queda apagado con su
+  motivo. **Abajo, una franja** con el estado del render (en curso, el último de la sesión con su resultado y su tiempo, o
+  el último confirmado del sitio) y los sitios con cambios sin publicar (sin render o con render sin publicar, la regla
+  R6), que llevan a su vista de publicación. Un render del archivo con problemas no saca al escritor del editor (la franja
+  los cuenta y lleva a ellos); el del sitio, sí, como antes. **Cero colores, radios y tamaños de letra propios**: la
+  «pastilla» del sitio en la cabecera era un `Rectangle` con radio propio y pasa a `EtiquetaNivel` de la base; los
+  `pointSize * 1.4` de Publicación, a `Kirigami.Heading`. Los avisos ya iban todos por `Mensajes` sin acciones (a las
+  notificaciones de KDE desde gui-comun 4.1); en la ventana solo queda «cambió en el disco» del editor, que pide decisión.
+
 - **2026-11-02 · Quarto Studio es un entorno de escritura y publicación sobre `VentanaBase` de `gui-comun` 3.0
   (reingeniería de los diez studios, §3.7).** El diagnóstico, la distribución y las decisiones E1–E12 están en
   [`reingenieria.md`](reingenieria.md): proyectos a la izquierda; Escribir (documentos, editor y vista previa),

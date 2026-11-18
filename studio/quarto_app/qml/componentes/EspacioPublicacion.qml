@@ -3,7 +3,7 @@
 // _quarto.yml, remoto origin, rama con su remoto); el estado de construcción por la regla de la puerta R6; los archivos
 // que cambiarán; la última publicación y el historial (los commits del remoto que tocaron _site/); la salida de la última
 // corrida sobre el sitio. Renderizar
-// (Ctrl+Mayús+K), simular y publicar: publicar confirma con la base nombrando el sitio y el dominio, y no se ofrece si el
+// (el sitio entero, Ctrl+Mayús+B), simular y publicar: publicar confirma con la base nombrando el sitio y el dominio, y no se ofrece si el
 // destino no corresponde. Solo lee: lo que escribe es la CLI del gestor de blogs.
 import QtQuick
 import QtQuick.Layouts
@@ -47,11 +47,10 @@ QQC2.ScrollView {
                 spacing: 0
                 Kirigami.Heading { level: 1; text: raiz.s.nombre; Layout.fillWidth: true; elide: Text.ElideRight }
                 RowLayout {
-                    QQC2.Label { text: "→"; font.pointSize: Kirigami.Theme.defaultFont.pointSize * 1.4 }
-                    QQC2.Label {
+                    Kirigami.Heading { level: 3; text: "→" }
+                    Kirigami.Heading {
+                        level: 3
                         text: raiz.p.dominio || "sin dominio de destino"
-                        font.pointSize: Kirigami.Theme.defaultFont.pointSize * 1.4
-                        font.weight: Font.DemiBold
                         color: raiz.p.coincide ? Kirigami.Theme.textColor : Kirigami.Theme.negativeTextColor
                     }
                     QQC2.ToolButton { icon.name: "internet-web-browser"; text: "Abrir el sitio publicado"; display: QQC2.AbstractButton.IconOnly; enabled: raiz.accion("archivo.navegador").habilitada; onClicked: raiz.accion("archivo.navegador").disparar(); Accessible.name: text }
@@ -60,7 +59,7 @@ QQC2.ScrollView {
             }
             ColumnLayout {
                 spacing: Kirigami.Units.smallSpacing
-                QQC2.Button { readonly property var a: raiz.accion("sitio.renderizar"); text: "Renderizar"; icon.name: a.icono; enabled: a.habilitada; onClicked: a.disparar(); QQC2.ToolTip.text: a.descripcion + " (" + a.atajoTexto + ")"; QQC2.ToolTip.visible: hovered }
+                QQC2.Button { readonly property var a: raiz.accion("sitio.renderizar"); text: "Renderizar el sitio"; icon.name: a.icono; enabled: a.habilitada; onClicked: a.disparar(); QQC2.ToolTip.text: a.descripcion + " (" + a.atajoTexto + ")"; QQC2.ToolTip.visible: hovered }
                 QQC2.Button { readonly property var a: raiz.accion("sitio.simular_publicar"); text: "Simular la publicación"; icon.name: a.icono; enabled: a.habilitada; onClicked: a.disparar() }
                 QQC2.Button {
                     readonly property var a: raiz.accion("sitio.publicar")

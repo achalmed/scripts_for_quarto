@@ -12,7 +12,8 @@ documento abierto, la vista de Herramientas, la operación y, si se pide, la pal
 
 Antes de capturar corre de verdad, sobre la muestra, «Verificar» del sitio elegido (`main.sh check`, solo lee) y, con
 `--render`, un `quarto render` real del sitio (si `quarto` está instalado): la salida del panel inferior y los
-problemas son los de la CLI.
+problemas son los de la CLI. Con `--render-archivo` (y `--documento`), el botón principal sobre ese documento: la franja
+de abajo muestra su resultado.
 """
 
 import argparse
@@ -39,6 +40,7 @@ def main() -> int:
     parser.add_argument("--fila", type=int, default=-1, help="en Metadatos, la entrada elegida (−1 ninguna)")
     parser.add_argument("--pestana", type=int, default=-1, help="en Herramientas, el lado (0 Resumen · 1 Entradas · 2 Problemas · 3 Operación · 4 Plan · 5 Salida)")
     parser.add_argument("--render", action="store_true", help="renderiza de verdad el sitio de la fila (quarto) antes de capturar")
+    parser.add_argument("--render-archivo", action="store_true", help="«Renderizar este archivo» (quarto de verdad) sobre el --documento antes de capturar")
     parser.add_argument("--sin-correr", action="store_true", help="no corre ninguna operación antes de capturar")
     parser.add_argument("--paleta", default=None, help="abre la paleta de órdenes con este texto")
     parser.add_argument("--ancho", type=int, default=1440)
@@ -136,7 +138,17 @@ def main() -> int:
             QTimer.singleShot(600, lambda: interfaz.pedir.emit("pestana", {"indice": args.pestana}))
         if args.paleta is not None:
             QTimer.singleShot(900, lambda: interfaz.pedir.emit("paleta", {"texto": args.paleta}))
+        if args.render_archivo and args.documento and shutil.which("quarto"):
+            QTimer.singleShot(800, lambda: piezas["acciones"].accion("sitio.renderizar_archivo").disparar())
+            QTimer.singleShot(1500, esperar_render)
+            return
         app.capturar(args.salida, espera_ms=3500)
+
+    def esperar_render():
+        if tareas.activa:
+            QTimer.singleShot(200, esperar_render)
+            return
+        app.capturar(args.salida, espera_ms=2500)
 
     QTimer.singleShot(400, correr_siguiente)
     codigo = app.app.exec()

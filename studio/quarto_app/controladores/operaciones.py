@@ -16,8 +16,9 @@ from quarto_app.services import operaciones as ops
 from quarto_app.services import paths, render as svc_render
 from quarto_app.services.command import Command
 
-DE_SITIO = {"render", "publicar", "commit", "limpiar", "preview", "verificar", "inspeccionar", "git_status", "listar_entradas", "render_entrada"}
-DE_RENDER = {"render", "render_entrada"}
+DE_SITIO = {"render", "publicar", "commit", "limpiar", "preview", "verificar", "inspeccionar", "git_status", "listar_entradas", "render_entrada",
+            "render_archivo"}
+DE_RENDER = {"render", "render_entrada", "render_archivo"}
 DE_TODOS = {"render_todos", "limpiar_todos", "respaldar", "estructura", "crear_sitio"}
 
 
@@ -30,6 +31,7 @@ class Operaciones(QObject):
     listaCambiada = Signal()
     corridaCambiada = Signal()
     terminada = Signal(str, bool, int)      # id, aplicar, código
+    renderCambiado = Signal()               # el estado del último render (la franja de abajo, rediseño del 2026-11-18)
     aviso = Signal(str, str)
 
     def __init__(self, espacio, sitios, flujo, ajustes, consola, tareas, cache: Path | None = None, parent=None):
@@ -46,6 +48,8 @@ class Operaciones(QObject):
         self._filtro_ruta = str(self._s.value("metadata/filtro_ruta", "") or "")
         self._worker = None
         self.guarda_destino = None             # callable → "" o por qué el destino no corresponde (controladores/publicacion.py)
+        self.archivo_actual = None             # callable → el documento abierto en el editor («Renderizar este archivo»)
+        self._render: dict = {}                # el último render de la sesión: qué, de qué sitio, código, segundos, a qué hora
         self._id_en_curso = ""
         self._sitio_en_curso = ""
         self._aplicando = False
@@ -158,7 +162,9 @@ class Operaciones(QObject):
             partes.append("publica: Netlify despliega con el push y no se deshace")
         if o.borra:
             partes.append("borra " + o.borra)
-        if o.id in ("render", "render_todos", "render_entrada"):
+        if o.id == "render_archivo":
+            partes.append("escribe la página de ese archivo en _site/ (y su _freeze/)")
+        elif o.id in ("render", "render_todos", "render_entrada"):
             partes.append("escribe _site/ (y _freeze/) del sitio")
         if o.vista == "entradas" and o.id not in ("plantilla", "plantilla_incremental", "crear_config"):
             partes.append("reescribe el frontmatter de los .qmd" if not self._usar_excel else "escribe en el Excel")
@@ -227,8 +233,11 @@ class Operaciones(QObject):
         o = self._op()
         return ops.Contexto(sitio=self.sitios.nombre, ruta=self.sitios.ruta, estado={} if not self.sitios.hayActual else {
                                 "estado": self.sitios.estadoClave, "texto_estado": self.sitios.estadoTexto, "motivo": self.sitios.motivo},
-                            sitios=self.sitios.estados(), entrada=self.sitios.entrada, valor=self._valor_de(o) if o and o.entrada else "",
+                            sitios=self.sitios.estados(), entrada=self.sitios.entrada, archivo=self._archivo_actual(), valor=self._valor_de(o) if o and o.entrada else "",
                             excel=self.ajustes.excel, filtro_ruta=self._filtro_ruta, usar_excel=self._usar_excel)
+
+    def _archivo_actual(self) -> str:
+        return (self.archivo_actual() or "") if self.archivo_actual else ""
 
     @Property(str, notify=cambiado)
     def ordenSimular(self) -> str:
@@ -268,6 +277,12 @@ class Operaciones(QObject):
             return "Elige primero un sitio en la tabla."
         if o.sobre_entrada and not self.sitios.hayEntrada:
             return "Elige primero una entrada (pestaña Entradas o vista Entradas)."
+        if o.sobre_archivo:
+            archivo = self._archivo_actual()
+            if not archivo:
+                return "Abre en el editor el documento que quieres renderizar."
+            if not ops.renderizable(archivo):
+                return f"{Path(archivo).name} no es un documento que Quarto renderice (.qmd, .md o .ipynb)."
         if o.entrada and o.id not in ("commit", "contenido_generar", "crear_sitio") and not self._valor_de(o).strip():
             return f"Falta {o.etiqueta} (pestaña Operación)."
         if o.id == "crear_sitio" and not self._valor_de(o).strip():
@@ -373,6 +388,13 @@ class Operaciones(QObject):
         cabecera = (f"# {time.strftime('%Y-%m-%d %H:%M:%S')} · {'aplicado' if aplicar else 'simulación'} · {titulo}" + (f" · {sitio}" if sitio else "") + "\n"
                     f"# {' '.join(self._argv)}\n# código de salida {codigo} · {segundos:.1f} s\n\n")
         self._escribir(id_, aplicar, cabecera + cuerpo)
+        if aplicar and id_ in DE_RENDER:
+            objeto = Path(self._argv[-1]).parent.name if id_ != "render" and self._argv else sitio
+            if id_ == "render_archivo" and self._argv and Path(self._argv[-1]).name != "index.qmd":
+                objeto = Path(self._argv[-1]).name
+            self._render = {"id": id_, "titulo": titulo, "objeto": objeto, "sitio": sitio, "codigo": codigo,
+                            "segundos": round(segundos, 1), "hora": time.strftime("%H:%M")}
+            self.renderCambiado.emit()
         if sitio and (aplicar or id_ in ("verificar", "inspeccionar", "git_status", "publicar", "commit")):
             self.sitios.guardarCorrida(sitio, cabecera + cuerpo, es_render=aplicar and id_ in DE_RENDER)
         if o and o.larga:
@@ -395,6 +417,16 @@ class Operaciones(QObject):
         self.cambiado.emit()
         self.corridaCambiada.emit()
         self.terminada.emit(id_, aplicar, codigo)
+
+    # ------------------------------------------------------- el estado del render
+    @Property("QVariantMap", notify=renderCambiado)
+    def ultimoRender(self) -> dict:
+        """El último render de la sesión (vacío si no hubo): {id, titulo, objeto, sitio, codigo, segundos, hora}."""
+        return dict(self._render)
+
+    @Property(bool, notify=cambiado)
+    def renderEnCurso(self) -> bool:
+        return self.enCurso and self._id_en_curso in DE_RENDER | {"render_todos"} and self._aplicando
 
     @Slot()
     def cancelar(self) -> None:

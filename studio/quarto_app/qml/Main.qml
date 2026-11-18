@@ -1,9 +1,11 @@
-// Main.qml — Quarto Studio (reingeniería del 2026-11-02, docs/reingenieria.md): un entorno de escritura y publicación de
-// la familia de sitios Quarto sobre GuiComun.VentanaBase, al modo de RStudio y VS Code con Quarto. Arriba, las cuatro
-// áreas (Escribir · Metadatos · Publicación · Herramientas, Ctrl+1–4), el proyecto con su estado de construcción,
-// Renderizar (Ctrl+Mayús+K) y Publicar. A la izquierda, los proyectos y los documentos del proyecto. En el centro, el
-// área: el editor con la vista previa; el diagnóstico de metadatos; la vista de publicación; las tablas y operaciones
-// de siempre. Ninguna llamada al disco ni a un backend aquí: todo lo hacen los controladores de Python (studio.*).
+// Main.qml — Quarto Studio (reingeniería del 2026-11-02, docs/reingenieria.md; la forma de escritor aprobada el
+// 2026-11-18): un entorno de escritura y publicación de la familia de sitios Quarto sobre GuiComun.VentanaBase, en tres
+// paneles de escritor. Arriba, las cuatro áreas (Escribir · Metadatos · Publicación · Herramientas, Ctrl+1–4), el sitio
+// con su estado de construcción, el botón principal «Renderizar este archivo» (Ctrl+Mayús+K, N 5.16), el sitio entero
+// (Ctrl+Mayús+B) y Publicar. A la izquierda, el árbol de sitios y entradas. En el centro, el área: el .qmd con su YAML
+// resaltado y la vista previa tal como saldrá publicada; el diagnóstico de metadatos; la vista de publicación; las tablas
+// y operaciones de siempre. Abajo, el estado del render y los sitios con cambios sin publicar. Ninguna llamada al disco
+// ni a un backend aquí: todo lo hacen los controladores de Python (studio.*). Sin colores propios: Kirigami.Theme.
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls as QQC2
@@ -65,6 +67,7 @@ VentanaBase {
         target: ops
         function onAviso(texto, tipo) { ventana.mensajes.mostrar(texto, tipo) }
         function onTerminada(id, aplicar, codigo) {
+            // un render del sitio con problemas lleva a ellos; el del archivo deja al escritor donde está (la franja de abajo los cuenta)
             if (aplicar && (id === "render" || id === "render_entrada") && sitios.nProblemas > 0) { espacio.fijarArea("herramientas"); herramientas.pestana = 2 }
             else if (ventana.area === "herramientas") herramientas.pestana = 4
         }
@@ -92,29 +95,38 @@ VentanaBase {
                 }
             }
             Item { Layout.fillWidth: true }
-            // el proyecto y su estado de construcción
-            QQC2.Control {
-                id: chip
+            // el sitio y su estado de construcción (EtiquetaNivel de la base: el color es el semántico del tema)
+            QQC2.Label {
                 visible: sitios.hayActual
-                padding: Kirigami.Units.smallSpacing
-                leftPadding: Kirigami.Units.largeSpacing
-                rightPadding: Kirigami.Units.largeSpacing
-                background: Rectangle {
-                    radius: height / 2
-                    color: sitios.estadoClave === "al_dia" ? Kirigami.Theme.positiveBackgroundColor
-                           : (sitios.estadoClave === "problemas" ? Kirigami.Theme.negativeBackgroundColor : Kirigami.Theme.neutralBackgroundColor)
-                }
-                contentItem: RowLayout {
-                    spacing: Kirigami.Units.smallSpacing
-                    Kirigami.Icon { source: sitios.esHub ? "go-home" : "folder-html"; implicitWidth: Kirigami.Units.iconSizes.small; implicitHeight: implicitWidth }
-                    QQC2.Label { text: sitios.nombre + " · " + sitios.estadoTexto; font.weight: Font.DemiBold }
-                }
-                QQC2.ToolTip.text: sitios.motivo
-                QQC2.ToolTip.visible: zonaChip.hovered
-                HoverHandler { id: zonaChip }
-                Accessible.name: "Proyecto " + sitios.nombre + ": " + sitios.estadoTexto
+                text: sitios.nombre
+                font.weight: Font.DemiBold
             }
-            BotonAccion { accion: ventana.accion("sitio.renderizar") }
+            EtiquetaNivel {
+                id: etiquetaEstado
+                visible: sitios.hayActual
+                text: sitios.estadoTexto
+                nivel: sitios.estadoNivel
+                QQC2.ToolTip.text: sitios.motivo
+                QQC2.ToolTip.visible: zonaEstado.hovered
+                HoverHandler { id: zonaEstado }
+                Accessible.name: "Sitio " + sitios.nombre + ": " + sitios.estadoTexto
+            }
+            Kirigami.Separator { Layout.fillHeight: true; Layout.margins: Kirigami.Units.smallSpacing }
+            // el botón principal (N 5.16): se renderiza el archivo, nunca el sitio a ciegas
+            QQC2.Button {
+                id: renderArchivo
+                readonly property var a: ventana.accion("sitio.renderizar_archivo")
+                text: "Renderizar este archivo"
+                icon.name: a.icono
+                highlighted: true
+                enabled: a.habilitada
+                onClicked: a.disparar()
+                QQC2.ToolTip.text: (studio.documentos.actual ? "Renderiza " + studio.documentos.relActual + " y recarga la vista previa"
+                                                             : "Abre un documento del sitio para renderizarlo") + " (" + a.atajoTexto + ")"
+                QQC2.ToolTip.visible: hovered
+                QQC2.ToolTip.delay: Kirigami.Units.toolTipDelay
+            }
+            BotonAccion { accion: ventana.accion("sitio.renderizar"); conTexto: false }
             QQC2.ToolButton {
                 text: "Publicar"
                 icon.name: "cloud-upload"
@@ -127,26 +139,38 @@ VentanaBase {
         }
     }
 
-    // ------------------------------------------------------------------ proyectos · área
-    RowLayout {
+    // ------------------------------------------------------------------ árbol · área · franja del render
+    ColumnLayout {
         anchors.fill: parent
         spacing: 0
-        PanelProyectos {
-            id: proyectos
-            Layout.preferredWidth: Kirigami.Units.gridUnit * 17
-            Layout.fillHeight: true
-            conDocumentos: ventana.area === "escribir"
-            onAbrirDocumento: ruta => ventana.abrirDocumento(ruta)
-        }
-        Kirigami.Separator { Layout.fillHeight: true }
-        StackLayout {
+        RowLayout {
             Layout.fillWidth: true
             Layout.fillHeight: true
-            currentIndex: espacio.indiceArea
-            EspacioEscritura { id: escritura }
-            EspacioMetadatos { id: metadatos }
-            EspacioPublicacion { id: publicacion }
-            EspacioHerramientas { id: herramientas }
+            spacing: 0
+            PanelProyectos {
+                id: proyectos
+                Layout.preferredWidth: Kirigami.Units.gridUnit * 17
+                Layout.minimumWidth: Kirigami.Units.gridUnit * 14
+                Layout.fillHeight: true
+                conDocumentos: ventana.area === "escribir"
+                onAbrirDocumento: ruta => ventana.abrirDocumento(ruta)
+            }
+            Kirigami.Separator { Layout.fillHeight: true }
+            StackLayout {
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                currentIndex: espacio.indiceArea
+                EspacioEscritura { id: escritura }
+                EspacioMetadatos { id: metadatos }
+                EspacioPublicacion { id: publicacion }
+                EspacioHerramientas { id: herramientas }
+            }
+        }
+        BarraRender {
+            id: barraRender
+            Layout.fillWidth: true
+            onIrAPublicacion: nombre => { sitios.fijarPorNombre(nombre); espacio.fijarArea("publicacion") }
+            onVerProblemas: ventana.accion("sitio.problemas").disparar()
         }
     }
 

@@ -1,7 +1,9 @@
 """quarto_app/aplicacion.py — arma Quarto Studio: la aplicación (gui_comun.nucleo), los controladores, el registro de
 acciones (menú, paleta, atajos, estados de operación) y carga `qml/Main.qml` (VentanaBase; reingeniería del 2026-11-02,
-`docs/reingenieria.md`): Escribir, Metadatos, Publicación y Herramientas (Ctrl+1–4); Ctrl+Mayús+K renderiza el sitio
-como en RStudio; Ctrl+S guarda el documento; publicar confirma con la base nombrando el sitio, el dominio y lo que va.
+`docs/reingenieria.md`; la forma de escritor del 2026-11-18): Escribir, Metadatos, Publicación y Herramientas (Ctrl+1–4);
+Ctrl+Mayús+K renderiza el archivo abierto, como en RStudio (N 5.16: se renderiza el archivo, nunca el sitio a ciegas), y
+Ctrl+Mayús+B el sitio entero; Ctrl+S guarda el documento; publicar confirma con la base nombrando el sitio, el dominio y
+lo que va.
 
 Toda operación existe una sola vez, aquí, en `Acciones`. Las operaciones de los backends son acciones `op.<id>` que
 eligen la operación actual (y llevan a su vista); correrla es siempre «Simular» (F5: la simulación de la CLI, el plan
@@ -23,6 +25,7 @@ from gui_comun.tareas import Tareas
 
 from quarto_app import APP_NAME, APP_VERSION, ORG_NAME
 from quarto_app.controladores.ajustes import Ajustes
+from quarto_app.controladores.arbol import Arbol
 from quarto_app.controladores.documentos import Documentos
 from gui_comun.editor import ControladorEditor
 from quarto_app.controladores.metadatos import Metadatos
@@ -84,6 +87,8 @@ def construir(app: Aplicacion, cache: Path | None = None, docs_dir: Path | None 
     documentos = Documentos(sitios)
     publicacion = Publicacion(sitios)
     metadatos = Metadatos(sitios, flujo)
+    arbol = Arbol(sitios, documentos)
+    operaciones.archivo_actual = lambda: documentos.actual       # «Renderizar este archivo» (N 5.16)
     operaciones.guarda_destino = publicacion.motivoDestino     # E9: publicar y empujar solo si el destino es el del sitio
     escritorio = app.escritorio
     acciones = Acciones()
@@ -134,8 +139,11 @@ def construir(app: Aplicacion, cache: Path | None = None, docs_dir: Path | None 
         grupo = "Sitio" if o.vista == "sitios" else "Flujo › " + dict((n, t) for n, t, _i in ops.VISTAS)[o.vista]
         acciones.registrar(f"op.{o.id}", o.titulo, "system-run" if o.vista != "sitios" else "folder-html", None, grupo,
                            al_disparar=lambda *_, i=o.id: elegir_operacion(i), descripcion=o.descripcion)
-    acciones.registrar("sitio.renderizar", "&Renderizar el sitio", "run-build", "Ctrl+Shift+K", "Sitio", habilitada=False, operacion="escritura",
-                       al_disparar=lambda *_: renderizar(), descripcion="`quarto render` del sitio actual (como Ctrl+Mayús+K en RStudio); escribe solo lo generado (_site/, _freeze/)")
+    acciones.registrar("sitio.renderizar_archivo", "Renderizar este &archivo", "run-build-file", "Ctrl+Shift+K", "Sitio", habilitada=False, operacion="escritura",
+                       al_disparar=lambda *_: renderizar_archivo(),
+                       descripcion="`quarto render` del documento abierto dentro de su proyecto (como Ctrl+Mayús+K en RStudio; N 5.16); escribe solo su página en _site/ y la vista previa se recarga")
+    acciones.registrar("sitio.renderizar", "Renderizar el &sitio entero", "run-build", "Ctrl+Shift+B", "Sitio", habilitada=False, operacion="escritura",
+                       al_disparar=lambda *_: renderizar(), descripcion="`quarto render` del sitio actual (como «Build All» en RStudio); escribe solo lo generado (_site/, _freeze/)")
     acciones.registrar("sitio.publicar", "&Publicar el sitio…", "cloud-upload", None, "Sitio", habilitada=False, operacion="publicacion",
                        consecuencias=lambda: publicacion.textoConfirmacion + " Netlify despliega con el push; se pasa antes por la puerta R6 del hub.",
                        al_disparar=lambda *_: publicar(), descripcion="Publica el sitio actual en su dominio tras comprobar que el destino corresponde al sitio")
@@ -168,7 +176,7 @@ def construir(app: Aplicacion, cache: Path | None = None, docs_dir: Path | None 
         ("&Editar", ["editar.filtrar", "editar.todo"]),
         ("&Ver", [f"ver.area.{n}" for n, _t, _i in AREAS] + ["|", "ver.previa", ("&Herramientas", [f"ver.vista.{n}" for n, *_r in ops.VISTAS]), "|",
                   "ver.releer", "|", "ventana.pantalla_completa"]),
-        ("&Sitio", ["sitio.renderizar", "sitio.simular_publicar", "sitio.publicar", "|", "op.simular", "op.aplicar", "op.cancelar", "|",
+        ("&Sitio", ["sitio.renderizar_archivo", "sitio.renderizar", "sitio.simular_publicar", "sitio.publicar", "|", "op.simular", "op.aplicar", "op.cancelar", "|",
                     "sitio.nueva_entrada", "sitio.problemas", "|"] + [f"op.{o.id}" for o in ops.de_vista("sitios")]),
         ("&Flujo", [(f"&{t}", [f"op.{o.id}" for o in ops.de_vista(n)]) for n, t, _i in ops.VISTAS if n != "sitios"]),
         ("&Herramientas", ["herr.lanzador", "herr.venv", "|", "ventana.paleta"]),
@@ -197,8 +205,20 @@ def construir(app: Aplicacion, cache: Path | None = None, docs_dir: Path | None 
         if not en_su_area:
             espacio.fijarArea("herramientas")
 
+    def renderizar_archivo() -> None:
+        """Ctrl+Mayús+K: `quarto render` del documento abierto (`main.sh render-post`), el botón principal (N 5.16)."""
+        if tareas.activa or not sitios.hayActual or not ops.renderizable(documentos.actual):
+            return
+        if documentos.actual in editor.modificados:          # como RStudio: se guarda antes de renderizar (lo hace el QML, Ctrl+S)
+            interfaz.pedir.emit("guardar", {})
+            if documentos.actual in editor.modificados:      # no se pudo (cambió fuera): el QML ya pregunta; no se renderiza lo viejo
+                espacio.aviso.emit("Guarda el documento antes de renderizarlo: el render lee el archivo del disco.", "aviso")
+                return
+        operaciones.fijar("render_archivo")
+        operaciones.aplicar()
+
     def renderizar() -> None:
-        """Ctrl+Mayús+K: `quarto render` del sitio actual por el gestor de blogs (escribe solo lo generado)."""
+        """Ctrl+Mayús+B: `quarto render` del sitio actual por el gestor de blogs (escribe solo lo generado)."""
         if tareas.activa or not sitios.hayActual:
             return
         operaciones.fijar("render")
@@ -241,6 +261,7 @@ def construir(app: Aplicacion, cache: Path | None = None, docs_dir: Path | None 
         acciones.habilitar("archivo.abrir", hay_elemento or sitios.hayEntrada or bool(documentos.actual))
         acciones.habilitar("archivo.guardar", espacio.area == "escribir" and bool(editor.actual))
         acciones.habilitar("sitio.renderizar", hay_sitio and not activa)
+        acciones.habilitar("sitio.renderizar_archivo", hay_sitio and not activa and ops.renderizable(documentos.actual))
         publicable = hay_sitio and not activa and publicacion.coincide and sitios.estadoClave != "problemas"
         acciones.habilitar("sitio.publicar", publicable)
         acciones.habilitar("sitio.simular_publicar", hay_sitio and not activa)
@@ -273,10 +294,11 @@ def construir(app: Aplicacion, cache: Path | None = None, docs_dir: Path | None 
     espacio.areaCambiada.connect(vista_cambiada)
     editor.actualCambiado.connect(lambda: (documentos.fijarActual(editor.actual), disponibilidad()))
     documentos.actualCambiado.connect(disponibilidad)
+    documentos.actualCambiado.connect(operaciones.cambiado)        # el archivo que renderizaría «Renderizar este archivo»
     publicacion.cambiado.connect(disponibilidad)
 
     def terminada(id_: str, aplicar: bool, codigo: int) -> None:
-        if id_ in ("render", "render_entrada", "render_todos") and aplicar:
+        if id_ in ("render", "render_entrada", "render_archivo", "render_todos") and aplicar:
             documentos.renderTerminado()
         if aplicar or id_ in ("render", "publicar", "commit"):
             publicacion.recargar()
@@ -293,7 +315,8 @@ def construir(app: Aplicacion, cache: Path | None = None, docs_dir: Path | None 
     barra_estado()
 
     piezas = dict(env=env, consola=consola, tareas=tareas, interfaz=interfaz, ajustes=ajustes, espacio=espacio, sitios=sitios, flujo=flujo,
-                  operaciones=operaciones, acciones=acciones, editor=editor, documentos=documentos, publicacion=publicacion, metadatos=metadatos)
+                  operaciones=operaciones, acciones=acciones, editor=editor, documentos=documentos, publicacion=publicacion, metadatos=metadatos,
+                  arbol=arbol)
     for nombre, objeto in piezas.items():
         if nombre != "env":
             app.exponer(nombre, objeto)

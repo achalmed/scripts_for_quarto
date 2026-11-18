@@ -135,6 +135,24 @@ class Documentos(QObject):
         return bool(self._actual and sitio and docs.pagina_de(sitio, self._actual))
 
     @Property(str, notify=actualCambiado)
+    def urlPublicada(self) -> str:
+        """Dónde saldrá publicada la página del documento (rediseño del 2026-11-18: la vista previa es «tal como saldrá
+        publicada»): el dominio del sitio en el registro y la ruta de su HTML; "" sin dominio o si no es un documento."""
+        sitio, dominio = self._sitio(), (self.sitios.dominio or "").rstrip("/")
+        if not sitio or not dominio or not self._actual:
+            return ""
+        try:
+            rel = Path(self._actual).resolve().relative_to(sitio.resolve())
+        except ValueError:
+            return ""
+        if rel.suffix.lower() not in (".qmd", ".md", ".ipynb"):
+            return ""
+        html = rel.with_suffix(".html").as_posix()
+        if html == "index.html" or html.endswith("/index.html"):
+            html = html[: -len("index.html")]
+        return f"{dominio}/{html}"
+
+    @Property(str, notify=actualCambiado)
     def textoDocumento(self) -> str:
         """El documento tal cual (la vista previa sin QtWebEngine o sin render)."""
         if not self._actual or Path(self._actual).suffix.lower() not in (".qmd", ".md"):

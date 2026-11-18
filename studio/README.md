@@ -6,7 +6,7 @@ estado: activo
 <!-- suite:inicio -->
 **Suite `quarto_studio`** · objetivo *publicacion* · estado *activo* · python · interfaz gui
 
-Entorno de escritura y publicación de la familia de sitios Quarto (QML + Kirigami sobre gui-comun 3.0): los proyectos con su estado de construcción por la regla de la puerta R6, los documentos del sitio, el editor Markdown y Quarto con la vista previa del _site renderizado, el diagnóstico del Excel frente a los .qmd sin sobrescribir nada, el renderizado (Ctrl+Mayús+K) y la vista de publicación (destino comprobado, archivos que cambiarán, última publicación, historial); las operaciones de siempre son la CLI de un backend.
+Entorno de escritura y publicación de la familia de sitios Quarto (QML + Kirigami sobre gui-comun 3.0) en tres paneles de escritor: el árbol de sitios y entradas con su estado de construcción por la regla de la puerta R6, el .qmd con su YAML resaltado y la vista previa tal como saldrá publicada; «Renderizar este archivo» (Ctrl+Mayús+K, N 5.16) y, abajo, el estado del render y los sitios con cambios sin publicar; el diagnóstico del Excel frente a los .qmd sin sobrescribir nada y la vista de publicación (destino comprobado, archivos que cambiarán, última publicación, historial); las operaciones de siempre son la CLI de un backend.
 
 - Escribe en: web, vault · simula por defecto: sí
 - Depende de: /usr/bin/python3 con PySide6 del sistema (python3-pyside6.*) y Kirigami (qml6-module-org-kde-kirigami), {'gui-comun 3.0 (módulo QML GuiComun': 'VentanaBase, escritorio, estados de operación)'}, {'qml6-module-qtwebengine para la vista previa (opcional': 'sin él, el Markdown)'}, .venv del repo con openpyxl, pandas y pyyaml para los backends de metadatos (requirements.txt; opcional), blogs_manager, metadata_manager, pub_index_symlink, format_yaml, generador_publicacion_similar
@@ -20,23 +20,29 @@ main.py --smoke
 ../install.sh
 ```
 
-<sub>Bloque generado desde `suite.yml` por `core/suites.py generar` (2026-11-02); no se edita a mano.</sub>
+<sub>Bloque generado desde `suite.yml` por `core/suites.py generar` (2026-11-18); no se edita a mano.</sub>
 <!-- suite:fin -->
 
 ## Qué es
 
 Un entorno de escritura y publicación de sitios Quarto, al modo de RStudio y VS Code con Quarto
-([../docs/reingenieria.md](../docs/reingenieria.md)), en `VentanaBase` de `gui-comun` 3.0. A la izquierda, siempre, los
-**proyectos** (el hub y los pubs del registro, con su estado de construcción por la regla de la puerta R6 y su dominio);
-en el centro, cuatro áreas (Ctrl+1–4):
+([../docs/reingenieria.md](../docs/reingenieria.md)), en `VentanaBase` de `gui-comun` 3.0, con la forma de escritor del
+2026-11-18 (`../docs/decisiones.md`): tres paneles. A la izquierda, siempre, **el árbol de sitios y entradas** (el hub y
+los pubs del registro, con su estado de construcción por la regla de la puerta R6 y su dominio; en Escribir, el sitio
+actual desplegado con sus documentos por carpeta, cada entrada con su título y su fecha); en el centro, cuatro áreas
+(Ctrl+1–4); arriba, el botón principal, **«Renderizar este archivo»** (Ctrl+Mayús+K: el documento abierto, nunca el
+sitio a ciegas, N 5.16; el sitio entero es Ctrl+Mayús+B); abajo, **la franja del render** (en curso, el último con su
+resultado y su tiempo, o el último confirmado del sitio; sus problemas) y **los sitios con cambios sin publicar**, que
+llevan a su publicación:
 
 ![Escribir: el documento y su página renderizada](../docs/figuras/quarto-studio-claro.png)
 
-- **Escribir**: los documentos del proyecto por carpetas (las entradas con su título y su fecha; Ctrl+P busca uno), el
-  editor Markdown y Quarto en pestañas (KSyntaxHighlighting, números de línea, buscar y reemplazar, Ctrl+S guarda sin
-  pisar un cambio hecho fuera) y la **vista previa** (F7): la página del documento en `_site/`, en QtWebEngine del
-  sistema, con atrás, adelante y las páginas del sitio para navegar; desde una página se edita su documento. Sin
-  `_site` o sin QtWebEngine, el Markdown. **Ctrl+Mayús+K renderiza** el sitio y la vista previa se recarga.
+- **Escribir**: el `.qmd` en pestañas con su YAML resaltado (KSyntaxHighlighting, números de línea, buscar y
+  reemplazar, Ctrl+S guarda sin pisar un cambio hecho fuera; Ctrl+P busca un documento en el árbol) y la **vista previa**
+  (F7) tal como saldrá publicada: la página del documento en `_site/`, en QtWebEngine del sistema, con la dirección que
+  tendrá en el dominio del sitio, atrás, adelante y las páginas del sitio para navegar; desde una página se edita su
+  documento. Sin `_site` o sin QtWebEngine, el Markdown. **Ctrl+Mayús+K renderiza el archivo** y la vista previa se
+  recarga.
 - **Metadatos**: el Excel frente a los `.qmd` de todas las entradas del sitio (las que difieren, las que no tienen fila,
   las filas sin documento) y, de la elegida, campo a campo. Nada se sobrescribe: «Llevar el Excel a los documentos…» es
   la operación de siempre, que muestra la orden y confirma.
@@ -73,9 +79,9 @@ instala en el `.venv`: el de pip no carga Kirigami.
 |---|---|
 | `main.py` | el punto de entrada, sin lógica (`/usr/bin/python3`; se relanza con `.venv/bin/python` si existe) |
 | `quarto_app/aplicacion.py` | arma la aplicación: controladores, el registro de acciones (menú, paleta, atajos, estados de operación) y `quarto_app/qml/Main.qml`; fija `AA_ShareOpenGLContexts` para QtWebEngine |
-| `quarto_app/controladores/` | `espacio` (áreas, vista, barra de estado), `sitios` (los proyectos con su estado, el sitio actual), `documentos` (los del sitio, la página de la vista previa), `editor` (el de LaTeX Studio adaptado), `metadatos` (el diagnóstico), `publicacion` (destino, archivos, historial; la guarda de publicar), `flujo`, `operaciones`, `ajustes` |
+| `quarto_app/controladores/` | `espacio` (áreas, vista, barra de estado), `arbol` (el árbol de sitios y entradas), `sitios` (los proyectos con su estado, el sitio actual), `documentos` (los del sitio, la página de la vista previa), `editor` (el de LaTeX Studio adaptado), `metadatos` (el diagnóstico), `publicacion` (destino, archivos, historial; la guarda de publicar), `flujo`, `operaciones`, `ajustes` |
 | `quarto_app/services/` | sin Qt: `documentos`, `publicacion`, `sitios` (la regla R6), `datos` (entradas, Excel, `diagnostico`), `operaciones` (el catálogo), `render`, los `*_service.py` de cada backend, `project_scanner`, `post_service`, `paths` |
-| `quarto_app/qml/` | `Main.qml` sobre `GuiComun.VentanaBase` y `componentes/` (PanelProyectos, EspacioEscritura —con `EditorTexto` y `BarraBuscarReemplazar` de gui-comun 3.1—, VistaPrevia, VistaWeb, EspacioMetadatos, EspacioPublicacion, EspacioHerramientas y los de 2.0) |
+| `quarto_app/qml/` | `Main.qml` sobre `GuiComun.VentanaBase` y `componentes/` (PanelProyectos —el árbol—, BarraRender —la franja de abajo—, EspacioEscritura —con `EditorTexto` y `BarraBuscarReemplazar` de gui-comun 3.1—, VistaPrevia, VistaWeb, EspacioMetadatos, EspacioPublicacion, EspacioHerramientas y los de 2.0) |
 | `muestra.py` | la familia de sitios de muestra (un hub y tres pubs con git y remotos bare, cada uno en un estado, con páginas renderizadas; un Excel); nunca `web` ni los pubs |
 | `capturar.py` | las capturas de la documentación sobre la muestra, con `HOME` temporal fuera de la carpeta de inicio |
 
@@ -94,7 +100,9 @@ tests/run.sh                                         # desde quarto-studio/: la 
 
 - **El estado se lee de git y del disco cada vez** (F6 relee): lo que se renderice o publique desde la terminal se refleja igual.
 - **La vista previa muestra el `_site` como está**: un documento sin renderizar enseña la portada (lo dice); Ctrl+Mayús+K
-  renderiza el sitio entero, no solo el documento.
+  renderiza ese documento (todos sus formatos; un post con PDF tarda lo que tarda LuaLaTeX) y Ctrl+Mayús+B, el sitio.
+- **La franja del render recuerda la sesión**: el último render de antes de abrir la ventana se lee de git (la última
+  portada renderizada que se confirmó), no de un registro propio.
 - **QtWebEngine carga las páginas locales con lo que ellas pidan** (fuentes o MathJax de una CDN): sin red, algo puede faltar.
 - **Las comprobaciones del destino son las que se pueden hacer sin red**: el registro, el `_quarto.yml` y git; no
   consultan Netlify.

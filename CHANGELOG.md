@@ -18,6 +18,14 @@ Vigentes: `blogs_manager` 4.0.0 · `metadata_manager` 2.3.0 · `generador_public
 
 ## [Unreleased]
 
+- **Quarto Studio: la forma de escritor** (rediseño aprobado el 2026-11-18; `docs/decisiones.md`): el árbol de sitios y
+  entradas a la izquierda (`studio/quarto_app/controladores/arbol.py`), el `.qmd` con su YAML resaltado y la vista previa tal como saldrá
+  publicada, con su dirección en el dominio; **«Renderizar este archivo»** (operación `render_archivo`, `main.sh
+  render-post` del documento abierto, guardado antes si tiene cambios) es el botón principal y toma Ctrl+Mayús+K (N 5.16); el sitio entero pasa a
+  Ctrl+Mayús+B; abajo, la franja del render (`BarraRender.qml`) y los sitios con cambios sin publicar
+  (`sitios.pendientes`). Sin radios ni tamaños de letra propios (la etiqueta del estado es `EtiquetaNivel` de
+  gui-comun). `capturar.py --render-archivo`; `tests/studio/test_rediseno.py` (con un render real de un archivo de la
+  muestra en `/var/tmp`).
 - **El post nuevo sin la ventana** (2026-11-17, posts desde Qillqa): `studio/quarto_app/services/post_service.py` se
   corre como programa, `crear --blog <carpeta> --datos <json>`, y simula salvo `--aplicar` (dice la carpeta y el
   `index.qmd` que nacerían). Yachay, el módulo de escritura de Qillqa, crea así los posts: el mismo `index.qmd` que el

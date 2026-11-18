@@ -1,6 +1,8 @@
 // VistaPrevia — la página renderizada del documento abierto (reingeniería E5): el HTML de `_site/` en QtWebEngine del
 // sistema, con atrás, adelante, recargar y la lista de páginas del sitio para navegar; desde una página se puede editar
 // su documento. Sin `_site` o sin QtWebEngine, el documento en Markdown (VistaTexto). Se recarga sola tras un render.
+// 2026-11-18 (la forma de escritor): es la página tal como saldrá publicada, y lo dice: debajo de la barra, la dirección
+// que tendrá en el dominio del sitio.
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls as QQC2
@@ -51,6 +53,25 @@ ColumnLayout {
             }
         }
     }
+    RowLayout {
+        Layout.fillWidth: true
+        Layout.leftMargin: Kirigami.Units.smallSpacing
+        Layout.rightMargin: Kirigami.Units.smallSpacing
+        visible: raiz.d.urlPublicada !== ""
+        spacing: Kirigami.Units.smallSpacing
+        Kirigami.Icon { source: "internet-web-browser"; implicitWidth: Kirigami.Units.iconSizes.small; implicitHeight: implicitWidth }
+        QQC2.Label {
+            Layout.fillWidth: true
+            text: "Saldrá publicada en " + raiz.d.urlPublicada.replace(/^https?:\/\//, "")
+            elide: Text.ElideMiddle
+            font: Kirigami.Theme.smallFont
+            color: Kirigami.Theme.disabledTextColor
+            QQC2.ToolTip.text: raiz.d.urlPublicada
+            QQC2.ToolTip.visible: zonaUrl.hovered
+            HoverHandler { id: zonaUrl }
+        }
+    }
+    Kirigami.Separator { Layout.fillWidth: true; visible: raiz.d.urlPublicada !== "" }
     Item {
         Layout.fillWidth: true
         Layout.fillHeight: true
@@ -79,7 +100,7 @@ ColumnLayout {
         Layout.fillWidth: true
         Layout.margins: Kirigami.Units.smallSpacing
         visible: raiz.web && !raiz.d.paginaDelDocumento && raiz.d.actual !== ""
-        text: "Este documento todavía no tiene página en _site: se muestra la portada (Ctrl+Mayús+K renderiza)."
+        text: "Este documento todavía no tiene página en _site: se muestra la portada («Renderizar este archivo», Ctrl+Mayús+K, la crea)."
         wrapMode: Text.WordWrap
         font: Kirigami.Theme.smallFont
         color: Kirigami.Theme.neutralTextColor

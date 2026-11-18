@@ -2,7 +2,7 @@
 # Contrato: core/suite.schema.yml; core/suites.py validar lo comprueba y generar escribe los índices y README.
 id: quarto_studio
 objetivo: publicacion
-resumen: 'Entorno de escritura y publicación de la familia de sitios Quarto (QML + Kirigami sobre gui-comun 3.0): los proyectos con su estado de construcción por la regla de la puerta R6, los documentos del sitio, el editor Markdown y Quarto con la vista previa del _site renderizado, el diagnóstico del Excel frente a los .qmd sin sobrescribir nada, el renderizado (Ctrl+Mayús+K) y la vista de publicación (destino comprobado, archivos que cambiarán, última publicación, historial); las operaciones de siempre son la CLI de un backend.'
+resumen: 'Entorno de escritura y publicación de la familia de sitios Quarto (QML + Kirigami sobre gui-comun 3.0) en tres paneles de escritor: el árbol de sitios y entradas con su estado de construcción por la regla de la puerta R6, el .qmd con su YAML resaltado y la vista previa tal como saldrá publicada; «Renderizar este archivo» (Ctrl+Mayús+K, N 5.16) y, abajo, el estado del render y los sitios con cambios sin publicar; el diagnóstico del Excel frente a los .qmd sin sobrescribir nada y la vista de publicación (destino comprobado, archivos que cambiarán, última publicación, historial); las operaciones de siempre son la CLI de un backend.'
 escribe_en:
 - web
 - vault

@@ -127,6 +127,8 @@ Verificación (2026-11-02, rama `wip/2026-11-02-reingenieria`):
 ## 5. Lo que quedó fuera
 
 - **Renderizar solo el documento abierto**: Ctrl+Mayús+K renderiza el sitio; «Renderizar la entrada» sigue en Herramientas.
+  *Hecho el 2026-11-18* (la forma de escritor, `decisiones.md`): «Renderizar este archivo» es el botón principal y toma
+  Ctrl+Mayús+K; el sitio entero pasa a Ctrl+Mayús+B.
 - **Autocompletado de Quarto** (atajos `{{< >}}`, referencias cruzadas `@fig-`): el editor no completa.
 - **El editor y la vista previa en `gui-comun`**: copiados de LaTeX Studio; promoverlos es del carril A.
 - **Comprobar el destino contra Netlify**: las comprobaciones son locales (registro, `_quarto.yml`, git).
