@@ -46,7 +46,7 @@ QQC2.SplitView {
         function onCambioExterno(ruta) {
             const e = raiz.editorDe(ruta)
             if (!e) return
-            if (!e.modificado) { e.recargarDesdeDisco(); ventana.mensajes.mostrar(ruta.split("/").pop() + " cambió fuera de la ventana: recargado.", "informacion") }
+            if (!e.modificado) { e.recargarDesdeDisco(); ventana.mensajes.mostrar(ruta.split("/").pop() + " cambió fuera de la ventana: recargado.", "pista") }
             else { cambioFuera.ruta = ruta; cambioFuera.visible = true }
         }
     }

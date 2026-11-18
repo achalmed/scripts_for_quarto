@@ -228,7 +228,7 @@ def construir(app: Aplicacion, cache: Path | None = None, docs_dir: Path | None 
         """Tras la confirmación de la base (estado «publicación»): publish con --aplicar, si el destino corresponde."""
         operaciones.fijar("publicar")
         if not operaciones.puedeAplicar:
-            espacio.aviso.emit(operaciones.motivoNoAplicar, "aviso")
+            espacio.aviso.emit(operaciones.motivoNoAplicar, "pista")
             return
         operaciones.aplicar()
 

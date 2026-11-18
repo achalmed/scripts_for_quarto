@@ -16,6 +16,7 @@ en disco con un remoto «bare» local.
 
 | fecha | qué | dónde se ve |
 |---|---|---|
+| 2026-11-18 | **Lo efímero, a la barra de estado** (la pista de `Mensajes` de gui-comun 4.1, que tomó la propuesta de este studio): los motivos de no poder simular ni aplicar («Elige primero un sitio», el destino que no corresponde), «recargado» tras un cambio de fuera y «Plan listo» pasan de notificación de Plasma a pista, 6 s en la barra de estado; lo que es un problema («No existe…») sigue siendo aviso. El enrutado automático según el foco no se hizo: el studio elige el tipo. La forma no cambia | `controladores/operaciones.py`, `aplicacion.py`, `qml/Main.qml`, `DialogoEntrada.qml`, `EspacioEscritura.qml`; `tests/studio/test_rediseno.py::test_ventana_de_escritor` (la pista en la barra) |
 | 2026-11-18 | **La forma de escritor** (rediseño visual aprobado el 2026-11-18): el árbol de sitios y entradas, el `.qmd` con su YAML resaltado, la vista previa tal como saldrá publicada; «Renderizar este archivo» como botón principal (Ctrl+Mayús+K, N 5.16; el sitio entero, Ctrl+Mayús+B); abajo, el estado del render y los sitios con cambios sin publicar; sin radios ni tamaños de letra propios | `docs/decisiones.md` (2026-11-18); `tests/studio/test_rediseno.py`; `docs/figuras/quarto-studio-{claro,oscuro,publicacion}.png` |
 | 2026-11-03 | **gui-comun 3.1 adoptado**: el editor (`EditorTexto`, `ControladorEditor`) y la barra de búsqueda (`BarraBuscarReemplazar`) de la base en lugar de las copias de LaTeX Studio (retiradas con su `ResaltadoEditor`); los enlaces duros del tema se siguen conservando al guardar | `docs/reingenieria.md` (E4); `tests/studio/` |
 | 2026-11-03 | `sync-article` y `sync-batch` desde la ventana (Metadatos: «Llevar los documentos al Excel…» con el sitio y el filtro de ruta; de la entrada, «Excel → documento» y «Documento → Excel»), con `--direccion` en la CLI (sin ella sigue preguntando); arreglado que no encontraran la fila de un pub desde la mudanza a `_pubs/` y que escribieran el Excel por posición | `docs/decisiones.md` (2026-11-03); `tests/test_sync.py` |
@@ -50,8 +51,7 @@ nada en curso
   no cambiaron porque solo cambió `kdeglobals`.
 - 2026-11-18 · dueño: director · propuesta para `gui-comun` (no se tocó): un `ArbolNavegacion` con segunda línea y un
   icono de estado a la derecha por fila (el árbol de Quarto lo pinta a mano sobre `ListView` porque `PanelNavegacion`
-  4.1 no tiene subtítulo ni estado); y `Mensajes` podría mandar a la barra de estado, no a Plasma, lo efímero mientras
-  la ventana tiene el foco («recargado», «plan listo»).
+  4.1 no tiene subtítulo ni estado). (Lo efímero a la barra de estado entró en gui-comun 4.1 como el tipo `pista`.)
 - 2026-11-02 · dueño: **el autor** · usar Quarto Studio en la sesión real sobre `web` (`/usr/bin/python3 ~/Documents/quarto-studio/studio/main.py`):
   escribir y guardar una entrada con su vista previa, Ctrl+Mayús+K, el diagnóstico de metadatos de un pub, la vista de
   publicación de un pub (destino, archivos, historial) y una publicación de verdad; lo que no convenza se anota aquí.

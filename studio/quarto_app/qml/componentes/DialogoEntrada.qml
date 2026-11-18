@@ -29,7 +29,7 @@ Kirigami.Dialog {
         }
     }]
     function abrir() {
-        if (!s.hayActual) { ventana.mensajes.mostrar("Elige primero un sitio.", "aviso"); return }
+        if (!s.hayActual) { ventana.mensajes.mostrar("Elige primero un sitio.", "pista"); return }
         carpeta.model = s.carpetasDeEntradas()
         titulo.text = ""; subtitulo.text = ""; tituloCorto.text = ""; tags.text = ""; categorias.text = ""; abstracto.text = ""; keywords.text = ""; impacto.text = ""
         open()

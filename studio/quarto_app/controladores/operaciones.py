@@ -32,7 +32,7 @@ class Operaciones(QObject):
     corridaCambiada = Signal()
     terminada = Signal(str, bool, int)      # id, aplicar, código
     renderCambiado = Signal()               # el estado del último render (la franja de abajo, rediseño del 2026-11-18)
-    aviso = Signal(str, str)
+    aviso = Signal(str, str)              # texto, tipo: informacion · positivo · aviso · error (Mensajes → Plasma) · pista (la barra de estado, 6 s)
 
     def __init__(self, espacio, sitios, flujo, ajustes, consola, tareas, cache: Path | None = None, parent=None):
         super().__init__(parent)
@@ -333,7 +333,7 @@ class Operaciones(QObject):
         """F5: la simulación de la CLI, el plan de la ventana, la ejecución de lo que solo lee o el arranque del preview."""
         o = self._op()
         if o is None or not self.puedeSimular:
-            self.aviso.emit(self.motivoNoSimular, "aviso")
+            self.aviso.emit(self.motivoNoSimular, "pista")        # «Elige primero un sitio»: efímero, a la barra
             return False
         if o.simular is None:
             if o.plan is None:
@@ -342,7 +342,7 @@ class Operaciones(QObject):
             self._escribir(o.id, False, f"# {time.strftime('%Y-%m-%d %H:%M:%S')} · plan · {o.titulo}\n\n{texto}\n")
             for linea in texto.splitlines():
                 self.consola.escribir(linea, "info")
-            self.aviso.emit(f"Plan de «{o.titulo}» en la pestaña Plan: revísalo y aplica con Ctrl+Intro.", "informacion")
+            self.aviso.emit(f"Plan de «{o.titulo}» en la pestaña Plan: revísalo y aplica con Ctrl+Intro.", "pista")
             self.corridaCambiada.emit()
             return True
         return self._lanzar(o, o.simular(self.contexto()), aplicar=False)
@@ -352,7 +352,7 @@ class Operaciones(QObject):
         """Ctrl+Intro, tras la confirmación en QML."""
         o = self._op()
         if o is None or not self.puedeAplicar:
-            self.aviso.emit(self.motivoNoAplicar, "aviso")
+            self.aviso.emit(self.motivoNoAplicar, "pista")
             return False
         return self._lanzar(o, o.aplicar(self.contexto()), aplicar=True)
 

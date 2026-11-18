@@ -66,6 +66,10 @@ ok = app.cargar(aplicacion.QML_DIR / "Main.qml")
 a, s, d, e, o, arbol = (piezas[k] for k in ("acciones", "sitios", "documentos", "editor", "operaciones", "arbol"))
 atajos = {n: a.accion(n).atajo for n in ("sitio.renderizar_archivo", "sitio.renderizar")}
 sin_doc = a.accion("sitio.renderizar_archivo").habilitada
+o.fijar("render"); puede = o.puedeSimular; motivo = o.motivoNoSimular        # sin sitio: no se puede simular
+if not puede:
+    o.simular(); app.app.processEvents()
+pista = app.motor.rootObjects()[0].property("footer").property("textoDerecha")
 s.fijarPorNombre("axiomata"); app.app.processEvents()
 tipos = [arbol._modelo.fila(i)["tipo"] for i in range(arbol.filas)]
 entrada = next(f["ruta"] for f in d._filas.todas() if f["entrada"])
@@ -78,7 +82,7 @@ o.fijar("render_archivo")
 orden = o.ordenAplicar
 pendientes = [(p["nombre"], p["clave"]) for p in s.pendientes]
 QTimer.singleShot(800, app.app.quit); app.app.exec(); app.cerrar()
-print(json.dumps({"ok": ok, "errores": errores, "atajos": atajos, "sin_doc": sin_doc, "tipos": tipos, "con_yml": con_yml, "con_entrada": con_entrada,
+print(json.dumps({"ok": ok, "errores": errores, "atajos": atajos, "sin_doc": sin_doc, "puede": puede, "motivo": motivo, "pista": pista, "tipos": tipos, "con_yml": con_yml, "con_entrada": con_entrada,
                   "orden": orden, "entrada": entrada, "pendientes": pendientes, "url": d.urlPublicada, "conflictos": a.conflictos(),
                   "menu_sitio": next(m for m in a.menus if m["titulo"] == "&Sitio")}))
 """
@@ -95,6 +99,8 @@ def test_ventana_de_escritor(tmp_path, muestra):
     assert datos["atajos"] == {"sitio.renderizar_archivo": "Ctrl+Shift+K", "sitio.renderizar": "Ctrl+Shift+B"}
     assert not datos["conflictos"], datos["conflictos"]
     assert datos["sin_doc"] is False                                  # sin documento abierto no hay archivo que renderizar
+    # el motivo de no poder simular es una pista (gui-comun 4.1): a la barra de estado, no a las notificaciones
+    assert datos["puede"] is False and "Elige primero un sitio" in datos["motivo"] and datos["pista"] == datos["motivo"]
     assert datos["tipos"][:4].count("sitio") >= 1 and "carpeta" in datos["tipos"] and "documento" in datos["tipos"]
     assert datos["con_yml"] == [False, True]                           # _quarto.yml no se renderiza solo
     assert datos["con_entrada"] is True

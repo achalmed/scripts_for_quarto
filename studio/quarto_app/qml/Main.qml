@@ -189,7 +189,7 @@ VentanaBase {
         standardButtons: Kirigami.Dialog.Cancel
         customFooterActions: [Kirigami.Action { text: ops.publica ? "Publicar" : "Aplicar"; icon.name: ops.publica ? "cloud-upload" : "dialog-ok-apply"; enabled: ops.puedeAplicar; onTriggered: { ops.aplicar(); dialogoAplicar.close() } }]
         function abrir() {
-            if (!ops.puedeAplicar) { ventana.mensajes.mostrar(ops.motivoNoAplicar, "aviso"); return }
+            if (!ops.puedeAplicar) { ventana.mensajes.mostrar(ops.motivoNoAplicar, "pista"); return }   // el motivo, 6 s en la barra de estado
             open()
         }
     }
