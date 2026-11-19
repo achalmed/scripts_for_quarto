@@ -48,6 +48,9 @@ class Operaciones(QObject):
         self._filtro_ruta = str(self._s.value("metadata/filtro_ruta", "") or "")
         self._worker = None
         self.guarda_destino = None             # callable → "" o por qué el destino no corresponde (controladores/publicacion.py)
+        self.firma_publicacion = None          # callable → la firma de lo que se publicaría (controladores/publicacion.py)
+        self._simuladas: dict[tuple[str, str], str] = {}   # (operación que publica, sitio) → firma de su última simulación correcta
+        self._simulada_pendiente: tuple[str, str] | None = None
         self.archivo_actual = None             # callable → el documento abierto en el editor («Renderizar este archivo»)
         self._render: dict = {}                # el último render de la sesión: qué, de qué sitio, código, segundos, a qué hora
         self._id_en_curso = ""
@@ -309,6 +312,24 @@ class Operaciones(QObject):
             motivo = self.guarda_destino()
             if motivo:
                 return "El destino no corresponde al sitio: " + motivo
+        if o.publica:                                              # N 5.10: publicar y empujar solo tras simularlo
+            motivo = self.motivoSinSimular(o.id)
+            if motivo:
+                return motivo
+        return ""
+
+    def _firma(self) -> str:
+        return self.firma_publicacion() if self.firma_publicacion is not None else ""
+
+    def motivoSinSimular(self, id_: str) -> str:
+        """"" si la operación que publica se simuló bien sobre este sitio y nada cambió desde entonces; si no, por qué."""
+        o = ops.operacion(id_)
+        titulo = (o.titulo if o else id_).lower()
+        firma = self._simuladas.get((id_, self.sitios.nombre))
+        if firma is None:
+            return f"Simula antes ({titulo}): F5 o «Simular la publicación», y revisa lo que haría."
+        if firma != self._firma():
+            return f"El sitio cambió desde la última simulación ({titulo}): vuelve a simular antes de aplicar."
         return ""
 
     @Property(bool, notify=cambiado)
@@ -381,6 +402,12 @@ class Operaciones(QObject):
 
     def _fin(self, codigo: int, id_: str, aplicar: bool, sitio: str) -> None:
         self._worker = None
+        o_publica = ops.operacion(id_) is not None and ops.operacion(id_).publica
+        if o_publica:
+            if aplicar or codigo != 0:
+                self._simuladas.pop((id_, sitio), None)            # lo aplicado o lo fallido no vale para otra vez
+            elif sitio:
+                self._simulada_pendiente = (id_, sitio)            # su firma, cuando el sitio se haya releído (abajo)
         segundos = time.monotonic() - self._inicio
         o = ops.operacion(id_)
         titulo = o.titulo if o else id_
@@ -414,6 +441,9 @@ class Operaciones(QObject):
                 self.flujo.recargar(o.vista)
         elif sitio and id_ in ("publicar", "commit"):
             self.sitios.refrescar(sitio)
+        if o_publica and self._simulada_pendiente is not None:
+            self._simuladas[self._simulada_pendiente] = self._firma()   # tras refrescar el sitio: la firma de lo simulado
+            self._simulada_pendiente = None
         self.cambiado.emit()
         self.corridaCambiada.emit()
         self.terminada.emit(id_, aplicar, codigo)

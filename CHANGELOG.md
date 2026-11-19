@@ -18,6 +18,9 @@ Vigentes: `blogs_manager` 4.0.0 · `metadata_manager` 2.3.0 · `generador_public
 
 ## [Unreleased]
 
+- **Quarto Studio: publicar exige simular antes** (`docs/decisiones.md`, 2026-11-18): «Publicar el sitio…», «Aplicar» de
+  Publicar y de Commit y push no se ofrecen sin una simulación correcta del mismo sitio, y piden simular otra vez si
+  cambió lo que se publicaría.
 - **Quarto Studio: la forma de escritor** (rediseño aprobado el 2026-11-18; `docs/decisiones.md`): el árbol de sitios y
   entradas a la izquierda (`studio/quarto_app/controladores/arbol.py`), el `.qmd` con su YAML resaltado y la vista previa tal como saldrá
   publicada, con su dirección en el dominio; **«Renderizar este archivo»** (operación `render_archivo`, `main.sh

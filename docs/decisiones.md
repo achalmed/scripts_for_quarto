@@ -12,6 +12,15 @@ commit, no aquí; lo pendiente, a [`estado.md`](../estado.md) §Por hacer (ola 4
 
 ## Arquitectura
 
+- **2026-11-18 · Publicar y empujar exigen haber simulado lo mismo que se publicará** (la guía del flujo de
+  conocimiento, `prompts/00 metodo/GUIA_FLUJO_DE_CONOCIMIENTO.md` §9, halló que «Publicar el sitio…» confirmaba pero no
+  obligaba a simular; N 5.10). `studio/quarto_app/controladores/operaciones.py` guarda, por operación que publica (`publicar`, `commit`) y
+  sitio, la firma de su última simulación terminada con código 0; `firma()` de `studio/quarto_app/controladores/publicacion.py` resume lo que se
+  publicaría (la ruta, los archivos por publicar, los commits sin empujar y la última publicación). «Aplicar» y
+  «Publicar el sitio…» no se ofrecen sin esa firma o si la de ahora es otra, con el motivo («Simula antes…», «El sitio
+  cambió desde la última simulación…»); lo aplicado o lo fallido borra la firma, así que cada publicación se simula. Se
+  descartó simular sola al pulsar «Publicar»: la simulación es para leerla antes de decidir, no un paso oculto.
+
 - **2026-11-18 · La forma de escritor: tres paneles y «Renderizar este archivo» como botón principal** (rediseño visual
   de los diez studios que el autor aprobó el 2026-11-18; brief común de la coordinadora). A la izquierda, **un solo árbol
   de sitios y entradas** (`studio/quarto_app/controladores/arbol.py`; antes, dos listas): el sitio actual se despliega con sus documentos por

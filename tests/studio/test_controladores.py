@@ -184,9 +184,11 @@ def nuevas(piezas):
     p["publicacion"] = Publicacion(p["sitios"])
     p["metadatos"] = Metadatos(p["sitios"], p["flujo"])
     p["operaciones"].guarda_destino = p["publicacion"].motivoDestino
+    p["operaciones"].firma_publicacion = p["publicacion"].firma
     yield p
     p["editor"].soltar()
     p["operaciones"].guarda_destino = None
+    p["operaciones"].firma_publicacion = None
 
 
 @requiere_binding
@@ -245,6 +247,15 @@ def test_publicacion_y_la_guarda_del_destino(nuevas, monkeypatch):
     assert p.coincide and p.dominio == "chaska.netlify.app" and p.totalArchivos >= 1 and p.ultima["mensaje"] == "render"
     assert p.historialModelo.filas >= 1 and p.archivosModelo.filas == p.totalArchivos and "chaska" in p.textoConfirmacion
     o.fijar("publicar")
+    assert not o.puedeAplicar and o.motivoNoAplicar.startswith("Simula antes (publicar)")      # N 5.10: sin simular, no se publica
+    o._fin(1, "publicar", False, "chaska")                                                   # una simulación fallida no vale
+    assert o.motivoNoAplicar.startswith("Simula antes")
+    o._fin(0, "publicar", False, "chaska")                                                   # la simulación terminó bien
+    assert o.puedeAplicar, o.motivoNoAplicar
+    firma = p.firma()
+    p._pp = dict(p._pp, total=p._pp["total"] + 1)                                            # algo cambió después de simular
+    assert p.firma() != firma and not o.puedeAplicar and "vuelve a simular" in o.motivoNoAplicar
+    p.recargar()
     assert o.puedeAplicar, o.motivoNoAplicar
     from quarto_app.services import publicacion as pub
     real = pub.destino
@@ -253,6 +264,8 @@ def test_publicacion_y_la_guarda_del_destino(nuevas, monkeypatch):
     assert not p.coincide and not o.puedeAplicar and o.motivoNoAplicar.startswith("El destino no corresponde al sitio: site-url")
     o.fijar("commit")
     assert not o.puedeAplicar                                                             # empujar también despliega
+    o._fin(0, "publicar", True, "chaska")                                                 # publicado: la próxima vez, simular otra vez
+    assert ("publicar", "chaska") not in o._simuladas
     o.fijar("render")
     assert o.puedeAplicar                                                                 # renderizar no publica: se puede
     monkeypatch.setattr(pub, "destino", real)

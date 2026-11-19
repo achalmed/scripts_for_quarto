@@ -90,6 +90,7 @@ def construir(app: Aplicacion, cache: Path | None = None, docs_dir: Path | None 
     arbol = Arbol(sitios, documentos)
     operaciones.archivo_actual = lambda: documentos.actual       # «Renderizar este archivo» (N 5.16)
     operaciones.guarda_destino = publicacion.motivoDestino     # E9: publicar y empujar solo si el destino es el del sitio
+    operaciones.firma_publicacion = publicacion.firma          # N 5.10: publicar solo tras simular lo mismo que se publicará
     escritorio = app.escritorio
     acciones = Acciones()
     acciones.estandar(NOMBRE, paneles=False)
@@ -146,7 +147,7 @@ def construir(app: Aplicacion, cache: Path | None = None, docs_dir: Path | None 
                        al_disparar=lambda *_: renderizar(), descripcion="`quarto render` del sitio actual (como «Build All» en RStudio); escribe solo lo generado (_site/, _freeze/)")
     acciones.registrar("sitio.publicar", "&Publicar el sitio…", "cloud-upload", None, "Sitio", habilitada=False, operacion="publicacion",
                        consecuencias=lambda: publicacion.textoConfirmacion + " Netlify despliega con el push; se pasa antes por la puerta R6 del hub.",
-                       al_disparar=lambda *_: publicar(), descripcion="Publica el sitio actual en su dominio tras comprobar que el destino corresponde al sitio")
+                       al_disparar=lambda *_: publicar(), descripcion="Publica el sitio actual en su dominio tras comprobar que el destino corresponde al sitio y que se simuló antes, sin cambios desde entonces")
     acciones.registrar("sitio.simular_publicar", "&Simular la publicación", "system-run", None, "Sitio", habilitada=False, operacion="simulacion",
                        al_disparar=lambda *_: (operaciones.fijar("publicar"), operaciones.simular()), descripcion="La simulación de `publish`: qué haría sin empujar nada")
     acciones.registrar("op.simular", "&Simular", "system-run", StandardKey.Refresh, "Sitio", al_disparar=operaciones.simular,
@@ -262,7 +263,8 @@ def construir(app: Aplicacion, cache: Path | None = None, docs_dir: Path | None 
         acciones.habilitar("archivo.guardar", espacio.area == "escribir" and bool(editor.actual))
         acciones.habilitar("sitio.renderizar", hay_sitio and not activa)
         acciones.habilitar("sitio.renderizar_archivo", hay_sitio and not activa and ops.renderizable(documentos.actual))
-        publicable = hay_sitio and not activa and publicacion.coincide and sitios.estadoClave != "problemas"
+        publicable = hay_sitio and not activa and publicacion.coincide and sitios.estadoClave != "problemas" \
+            and not operaciones.motivoSinSimular("publicar")
         acciones.habilitar("sitio.publicar", publicable)
         acciones.habilitar("sitio.simular_publicar", hay_sitio and not activa)
         for nombre in ("archivo.carpeta", "archivo.terminal", "archivo.copiar"):

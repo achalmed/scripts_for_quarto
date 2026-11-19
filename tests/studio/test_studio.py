@@ -33,7 +33,9 @@ sin_sitio = (a.accion("op.aplicar").habilitada, a.accion("sitio.nueva_entrada").
 s.irA("axiomata")
 con_sitio = (a.accion("op.simular").habilitada, a.accion("op.aplicar").habilitada, a.accion("op.aplicar").visible, a.accion("sitio.nueva_entrada").habilitada, a.accion("archivo.navegador").habilitada, a.accion("op.simular").textoPlano)
 o.fijar("publicar")
-publicar = (a.accion("op.aplicar").habilitada, a.accion("op.simular").textoPlano)
+antes = a.accion("op.aplicar").habilitada
+o._fin(0, "publicar", False, "axiomata")
+publicar = (antes, a.accion("op.simular").textoPlano, a.accion("op.aplicar").habilitada)
 s.irA("web")
 publicar_web = a.accion("op.aplicar").habilitada
 o.fijar("verificar")
@@ -43,7 +45,9 @@ for n in ("escribir", "metadatos", "publicacion", "herramientas"):
     a.accion("ver.area." + n).disparar(); app.app.processEvents(); areas.append(piezas["espacio"].area)
 s.irA("chaska"); app.app.processEvents()
 p = piezas["publicacion"]
-publicacion = (p.coincide, p.dominio, p.totalArchivos, bool(p.ultima.get("commit")), a.accion("sitio.publicar").habilitada, a.accion("sitio.renderizar").habilitada)
+sin_simular = a.accion("sitio.publicar").habilitada
+o._fin(0, "publicar", False, "chaska"); app.app.processEvents()
+publicacion = (sin_simular, p.coincide, p.dominio, p.totalArchivos, bool(p.ultima.get("commit")), a.accion("sitio.publicar").habilitada, a.accion("sitio.renderizar").habilitada)
 d, e = piezas["documentos"], piezas["editor"]
 entrada = next(f for f in [d._filas.fila(i) for i in range(d._filas.filas)] if f["entrada"]) if d.total else {}
 e.abrir(entrada.get("ruta", "")); app.app.processEvents()
@@ -128,11 +132,11 @@ def test_abre_y_cierra_su_ventana(tmp_path, muestra):
     assert datos["menus"] == ["&Archivo", "&Editar", "&Ver", "&Sitio", "&Flujo", "&Herramientas", "A&justes", "Ay&uda"]
     assert datos["sin_sitio"] == [False, False, False]
     assert datos["con_sitio"] == [True, True, True, True, True, "Simular"]          # render: F5 = plan, Ctrl+Intro renderiza
-    assert datos["publicar"] == [True, "Simular"]                                    # axiomata: la CLI simula, aplicar confirma
+    assert datos["publicar"] == [False, "Simular", True]                             # axiomata: sin simular no se publica; tras simular, aplicar confirma
     assert datos["publicar_web"] is False                                            # web tiene problemas: no se publica
     assert datos["leer"] == [False, "Ejecutar"]
     assert datos["areas"] == ["escribir", "metadatos", "publicacion", "herramientas"]
-    assert datos["publicacion"] == [True, "chaska.netlify.app", 1, True, True, True]  # chaska: _site por empujar, destino correcto
+    assert datos["publicacion"] == [False, True, "chaska.netlify.app", 1, True, True, True]  # chaska: _site por empujar, destino correcto; publicar, tras simular
     total, abierto, mismo, url, propia, paginas, _web = datos["documento"]
     assert total >= 3 and abierto and mismo and url and propia and paginas           # la página renderizada de la entrada
     assert datos["resumen"] == "4 sitios · 1 al día · 1 sin render · 1 sin publicar · 1 con problemas"

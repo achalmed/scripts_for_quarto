@@ -50,7 +50,9 @@ llevan a su publicación:
   dominio del registro, el `site-url` del `_quarto.yml`, el remoto `origin` frente al repositorio del registro, la rama
   con su remoto), el estado de construcción, **los archivos que cambiarán**, la **última publicación**, el **historial**
   (los commits del remoto que tocaron `_site/`) y la salida de la última corrida. Publicar confirma con la base nombrando
-  el sitio, el dominio y cuántos archivos van, y **no se ofrece si el destino no corresponde** (tampoco «Commit y push»).
+  el sitio, el dominio y cuántos archivos van, y **no se ofrece si el destino no corresponde** (tampoco «Commit y push»)
+  **ni sin una simulación correcta del mismo sitio** («Simular la publicación» o F5): si después cambia lo que se
+  publicaría (archivos, commits sin empujar, la última publicación), hay que volver a simular (N 5.10).
 - **Herramientas**: las vistas de 2.0 (sitios, entradas y metadatos, índice del vault, índices de contenido) con sus
   operaciones: F5 simula (la CLI o el plan de la ventana), Ctrl+Intro aplica tras confirmar.
 
