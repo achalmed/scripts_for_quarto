@@ -47,7 +47,11 @@ QQC2.SplitView {
             const e = raiz.editorDe(ruta)
             if (!e) return
             if (!e.modificado) { e.recargarDesdeDisco(); ventana.mensajes.mostrar(ruta.split("/").pop() + " cambió fuera de la ventana: recargado.", "pista") }
-            else { cambioFuera.ruta = ruta; cambioFuera.visible = true }
+            // Con cambios sin guardar es una decisión: va a las notificaciones de KDE con sus dos botones, no a una franja en
+            // la ventana (pedido del autor, 2026-11-19: ningún aviso dentro de la ventana en la familia de los studios)
+            else ventana.mensajes.notificarConAcciones(ruta.split("/").pop() + " cambió en el disco y aquí tiene cambios sin guardar.", "aviso", [
+                { texto: "Recargar del disco", icono: "view-refresh", ejecutar: () => { const x = raiz.editorDe(ruta); if (x) x.recargarDesdeDisco() } },
+                { texto: "Mantener lo mío", icono: "dialog-ok", ejecutar: () => {} }])
         }
     }
 
@@ -83,19 +87,6 @@ QQC2.SplitView {
                     }
                 }
             }
-        }
-
-        Kirigami.InlineMessage {
-            id: cambioFuera
-            property string ruta: ""
-            Layout.fillWidth: true
-            type: Kirigami.MessageType.Warning
-            text: ruta.split("/").pop() + " cambió en el disco y aquí tiene cambios sin guardar."
-            visible: false
-            actions: [
-                Kirigami.Action { text: "Recargar del disco"; icon.name: "view-refresh"; onTriggered: { const e = raiz.editorDe(cambioFuera.ruta); if (e) e.recargarDesdeDisco(); cambioFuera.visible = false } },
-                Kirigami.Action { text: "Mantener lo mío"; icon.name: "dialog-ok"; onTriggered: cambioFuera.visible = false }
-            ]
         }
 
         StackLayout {
