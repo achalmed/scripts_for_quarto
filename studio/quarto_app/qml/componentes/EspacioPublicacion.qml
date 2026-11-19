@@ -149,6 +149,26 @@ QQC2.ScrollView {
             columnas: [{ ancho: 0, minimo: 16, mono: true }, { ancho: 4, semantica: true }, { ancho: 9, secundaria: true }]
         }
 
+        // las entradas que la publicación lleva, con su veredicto de «Antes de publicar» (C15.1)
+        Kirigami.Heading { level: 3; visible: raiz.s.hayActual && studio.entrega.entradas.length > 0; text: "Antes de publicar · " + studio.entrega.resumenEntradas }
+        Repeater {
+            model: raiz.s.hayActual ? studio.entrega.entradas : []
+            delegate: RowLayout {
+                required property var modelData
+                Layout.fillWidth: true
+                Kirigami.Icon { source: raiz.iconoNivel(modelData.nivel); implicitWidth: Kirigami.Units.iconSizes.smallMedium; implicitHeight: implicitWidth }
+                QQC2.Label { text: modelData.titulo; font.weight: Font.DemiBold; elide: Text.ElideRight; Layout.maximumWidth: raiz.width * 0.45 }
+                QQC2.Label { text: modelData.veredicto + " · " + modelData.revisado; color: Kirigami.Theme.disabledTextColor; elide: Text.ElideRight; Layout.fillWidth: true }
+                QQC2.Button {
+                    text: "Revisar"
+                    icon.name: "checkmark"
+                    onClicked: { ventana.abrirDocumento(modelData.ruta); Qt.callLater(() => studio.interfaz.abrir("antes_de_publicar")) }
+                    QQC2.ToolTip.text: "Abre la entrada y su «Antes de publicar» (Ctrl+Alt+E)"
+                    QQC2.ToolTip.visible: hovered
+                }
+            }
+        }
+
         // el historial
         Kirigami.Heading { level: 3; visible: raiz.s.hayActual; text: "Historial de publicaciones" }
         TablaDatos {

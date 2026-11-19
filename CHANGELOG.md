@@ -13,11 +13,20 @@ Cada herramienta declara su versión una sola vez en el código: `QBLOG_VERSION`
 `pub_index_symlink` no llevan número en el código. Los porqués están en [`docs/decisiones.md`](docs/decisiones.md).
 
 Vigentes: `blogs_manager` 4.0.0 · `metadata_manager` 2.3.0 · `generador_publicacion_similar` 4.0.0 ·
-`format_yaml` 2.0 · `pub_index_symlink` (sin número) · Quarto Studio 2.0.0 (`APP_VERSION` en
+`format_yaml` 2.0 · `pub_index_symlink` (sin número) · Quarto Studio 2.1.0 (`APP_VERSION` en
 `studio/quarto_app/__init__.py`; del 2026-10-06 al 2026-10-27 vivió en el repo `gui-suites`).
 
 ## [Unreleased]
 
+- **Quarto Studio 2.1.0: «Antes de publicar…»** (Ctrl+Alt+E, menú Sitio; campo 15 «Publicación web» de
+  `prompts/00 metodo/FLUJO_DE_CONOCIMIENTO.md`, C15.1 a C15.8; `docs/decisiones.md`, 2026-11-19): los controles de «Antes
+  de entregar» de escritura sobre la entrada abierta (cifras del paquete por `{{< meta cifras.… >}}`, citas que existen y
+  cotejadas con su ficha, paráfrasis cercana, IA declarada, figuras con `fig-alt`, licencia y enlace permanente, HTML
+  accesible y la lista `post-web`), con el veredicto, los puntos manuales, «Traer las cifras…», «Revisar de nuevo» (mide),
+  «Falso positivo…» y «Dar por revisado…»; en Publicación, el veredicto de cada entrada que la publicación lleva y, en la
+  confirmación de publicar, cuántas tienen faltas. El motor es `escritura/scripts/antes_de_publicar.py`
+  (`studio/quarto_app/services/antes_de_publicar.py`, `controladores/entrega.py`, `qml/componentes/DialogoAntesDePublicar.qml`;
+  `tests/studio/test_antes_de_publicar.py`).
 - **Quarto Studio: publicar exige simular antes** (`docs/decisiones.md`, 2026-11-18): «Publicar el sitio…», «Aplicar» de
   Publicar y de Commit y push no se ofrecen sin una simulación correcta del mismo sitio, y piden simular otra vez si
   cambió lo que se publicaría.

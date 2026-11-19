@@ -12,6 +12,18 @@ commit, no aquí; lo pendiente, a [`estado.md`](../estado.md) §Por hacer (ola 4
 
 ## Arquitectura
 
+- **2026-11-19 · «Antes de publicar»: el motor de controles de escritura, no uno propio** (campo 15 de la norma del
+  flujo de conocimiento, aprobado por el autor el 2026-11-19). La ventana no revisa un post por su cuenta: corre
+  `escritura/scripts/antes_de_publicar.py` como proceso (`studio/quarto_app/services/antes_de_publicar.py`), que adapta el `.qmd`
+  (`escritura/scripts/entrega/quarto.py`, `PostQuarto` hereda de `Proyecto`) y reutiliza los controles de «Antes de entregar» de
+  LaTeX Studio: un solo motor para el PDF y la web. Lo que guarda va a la carpeta del post con guion bajo (_registro/,
+  _ia/, _fuentes/fichas/, _cifras.yml) porque Quarto no renderiza ni copia a `_site/` lo que empieza por `_`
+  (comprobado con Quarto 1.9.38). Las cifras van por `{{< meta cifras.<clave> >}}` con `metadata-files: [_cifras.yml]` y
+  no por `_variables.yml`, que es del sitio entero y mezclaría los paquetes de todos los posts. El motor nunca edita el
+  `index.qmd` (el escritor de YAML es uno solo, el del metadata manager): si falta `metadata-files`, lo dice. Publicar no
+  se bloquea por el veredicto: la vista de publicación y su confirmación dicen cuántas entradas tienen faltas o no se
+  revisaron desde su último cambio; la constancia con motivo queda en el post.
+
 - **2026-11-18 · Publicar y empujar exigen haber simulado lo mismo que se publicará** (la guía del flujo de
   conocimiento, `prompts/00 metodo/GUIA_FLUJO_DE_CONOCIMIENTO.md` §9, halló que «Publicar el sitio…» confirmaba pero no
   obligaba a simular; N 5.10). `studio/quarto_app/controladores/operaciones.py` guarda, por operación que publica (`publicar`, `commit`) y

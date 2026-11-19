@@ -62,6 +62,11 @@ class Publicacion(QObject):
         return repr((self.sitios.ruta, self._pp.get("total"), self._pp.get("sin_confirmar"), self._pp.get("por_empujar"),
                      self._pp.get("commits"), archivos, self._ultima.get("commit", "")))
 
+    def archivosPorPublicar(self) -> list[dict]:
+        """Los archivos que lleva la próxima publicación ({archivo, estado, donde}): de ellos salen las entradas que
+        «Antes de publicar» revisa (C15.1)."""
+        return list(self._pp.get("archivos") or [])
+
     def motivoDestino(self) -> str:
         """"" si el destino corresponde al sitio actual; si no, por qué (la guarda de publicar y de commit y push)."""
         if not self._destino:

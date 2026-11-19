@@ -1,21 +1,21 @@
 ---
 tipo: estado
 estado: activo
-actualizado: 2026-11-18
+actualizado: 2026-11-19
 ---
 # estado.md — quarto-studio (repo `scripts_for_quarto`)
 
 Lo primero que se lee y lo último que se escribe en cada sesión (regla 10 de la guía raíz). Lo decidido vive en
 `docs/decisiones.md`; lo pendiente, aquí, en §Por hacer, con fecha y dueño.
 
-**Repositorio público y blogs que despliegan solos.** Netlify publica cada `pub_*` y el hub `web` con cada
-`git push`: ninguna prueba empuja ni confirma en ellos; las pruebas usan repos de fixture en un directorio temporal
-en disco con un remoto «bare» local.
+**Repositorio público y blogs que despliegan solos.** Netlify publica cada pub y el hub `web` con cada `git push`:
+ninguna prueba empuja ni confirma en ellos; las pruebas usan repos de fixture en disco con un remoto «bare» local.
 
 ## Hecho
 
 | fecha | qué | dónde se ve |
 |---|---|---|
+| 2026-11-19 | **«Antes de publicar…» (Ctrl+Alt+E): Quarto Studio entra al flujo de conocimiento** (campo 15 de la norma, aprobado por el autor; C15.1 a C15.8): los controles de «Antes de entregar» de escritura sobre la entrada abierta, con su veredicto, los puntos manuales, «Traer las cifras…» del paquete de datafw, la constancia y la medición; en Publicación, el veredicto de cada entrada que se publica | `docs/decisiones.md` (2026-11-19); `tests/studio/test_antes_de_publicar.py`; `escritura/scripts/antes_de_publicar.py` |
 | 2026-11-18 | **Lo efímero, a la barra de estado** (la pista de `Mensajes` de gui-comun 4.1, que tomó la propuesta de este studio): los motivos de no poder simular ni aplicar («Elige primero un sitio», el destino que no corresponde), «recargado» tras un cambio de fuera y «Plan listo» pasan de notificación de Plasma a pista, 6 s en la barra de estado; lo que es un problema («No existe…») sigue siendo aviso. El enrutado automático según el foco no se hizo: el studio elige el tipo. La forma no cambia | `controladores/operaciones.py`, `aplicacion.py`, `qml/Main.qml`, `DialogoEntrada.qml`, `EspacioEscritura.qml`; `tests/studio/test_rediseno.py::test_ventana_de_escritor` (la pista en la barra) |
 | 2026-11-18 | **La forma de escritor** (rediseño visual aprobado el 2026-11-18): el árbol de sitios y entradas, el `.qmd` con su YAML resaltado, la vista previa tal como saldrá publicada; «Renderizar este archivo» como botón principal (Ctrl+Mayús+K, N 5.16; el sitio entero, Ctrl+Mayús+B); abajo, el estado del render y los sitios con cambios sin publicar; sin radios ni tamaños de letra propios | `docs/decisiones.md` (2026-11-18); `tests/studio/test_rediseno.py`; `docs/figuras/quarto-studio-{claro,oscuro,publicacion}.png` |
 | 2026-11-03 | **gui-comun 3.1 adoptado**: el editor (`EditorTexto`, `ControladorEditor`) y la barra de búsqueda (`BarraBuscarReemplazar`) de la base en lugar de las copias de LaTeX Studio (retiradas con su `ResaltadoEditor`); los enlaces duros del tema se siguen conservando al guardar | `docs/reingenieria.md` (E4); `tests/studio/` |
@@ -54,7 +54,7 @@ nada en curso
   4.1 no tiene subtítulo ni estado). (Lo efímero a la barra de estado entró en gui-comun 4.1 como el tipo `pista`.)
 - 2026-11-02 · dueño: **el autor** · usar Quarto Studio en la sesión real sobre `web` (`/usr/bin/python3 ~/Documents/quarto-studio/studio/main.py`):
   escribir y guardar una entrada con su vista previa, Ctrl+Mayús+K, el diagnóstico de metadatos de un pub, la vista de
-  publicación de un pub (destino, archivos, historial) y una publicación de verdad; lo que no convenza se anota aquí.
+  publicación de un pub (destino, archivos, historial, el veredicto de sus entradas), «Antes de publicar…» (Ctrl+Alt+E, desde el 2026-11-19; probado solo sobre la muestra) y una publicación de verdad; lo que no convenza se anota aquí.
 - 2026-11-02 · dueño: director · lo que quedó fuera de la ventana: `convert`, `git-init`, `preview-browser` y
   `add-columns` (no estaban en 1.x; se corren en la terminal); los problemas del render se leen de la salida de Quarto
   (ERROR, WARN, `archivo:línea`), no de un registro propio; el Excel se lee entero en cada relectura (unas 600 filas, sin

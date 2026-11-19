@@ -27,6 +27,7 @@ from quarto_app import APP_NAME, APP_VERSION, ORG_NAME
 from quarto_app.controladores.ajustes import Ajustes
 from quarto_app.controladores.arbol import Arbol
 from quarto_app.controladores.documentos import Documentos
+from quarto_app.controladores.entrega import AntesDePublicar
 from gui_comun.editor import ControladorEditor
 from quarto_app.controladores.metadatos import Metadatos
 from quarto_app.controladores.publicacion import Publicacion
@@ -34,6 +35,7 @@ from quarto_app.controladores.espacio import AREAS, Espacio
 from quarto_app.controladores.flujo import Flujo
 from quarto_app.controladores.operaciones import Operaciones
 from quarto_app.controladores.sitios import Sitios
+from quarto_app.services import antes_de_publicar as svc_adp
 from quarto_app.services import operaciones as ops
 from quarto_app.services import paths
 
@@ -88,6 +90,7 @@ def construir(app: Aplicacion, cache: Path | None = None, docs_dir: Path | None 
     publicacion = Publicacion(sitios)
     metadatos = Metadatos(sitios, flujo)
     arbol = Arbol(sitios, documentos)
+    entrega = AntesDePublicar(documentos, tareas, consola)        # «Antes de publicar»: los controles del flujo (C15)
     operaciones.archivo_actual = lambda: documentos.actual       # «Renderizar este archivo» (N 5.16)
     operaciones.guarda_destino = publicacion.motivoDestino     # E9: publicar y empujar solo si el destino es el del sitio
     operaciones.firma_publicacion = publicacion.firma          # N 5.10: publicar solo tras simular lo mismo que se publicará
@@ -148,6 +151,10 @@ def construir(app: Aplicacion, cache: Path | None = None, docs_dir: Path | None 
     acciones.registrar("sitio.publicar", "&Publicar el sitio…", "cloud-upload", None, "Sitio", habilitada=False, operacion="publicacion",
                        consecuencias=lambda: publicacion.textoConfirmacion + " Netlify despliega con el push; se pasa antes por la puerta R6 del hub.",
                        al_disparar=lambda *_: publicar(), descripcion="Publica el sitio actual en su dominio tras comprobar que el destino corresponde al sitio y que se simuló antes, sin cambios desde entonces")
+    acciones.registrar("sitio.antes_de_publicar", "Antes de p&ublicar…", "checkmark", "Ctrl+Alt+E", "Sitio", habilitada=False, operacion="lectura",
+                       al_disparar=pedir("antes_de_publicar"),
+                       descripcion="Los controles del flujo de conocimiento sobre la entrada abierta: cifras del paquete, citas verificables y "
+                                   "cotejadas, paráfrasis, IA declarada, figuras con texto alternativo, licencia y enlace, HTML accesible (C15)")
     acciones.registrar("sitio.simular_publicar", "&Simular la publicación", "system-run", None, "Sitio", habilitada=False, operacion="simulacion",
                        al_disparar=lambda *_: (operaciones.fijar("publicar"), operaciones.simular()), descripcion="La simulación de `publish`: qué haría sin empujar nada")
     acciones.registrar("op.simular", "&Simular", "system-run", StandardKey.Refresh, "Sitio", al_disparar=operaciones.simular,
@@ -177,7 +184,7 @@ def construir(app: Aplicacion, cache: Path | None = None, docs_dir: Path | None 
         ("&Editar", ["editar.filtrar", "editar.todo"]),
         ("&Ver", [f"ver.area.{n}" for n, _t, _i in AREAS] + ["|", "ver.previa", ("&Herramientas", [f"ver.vista.{n}" for n, *_r in ops.VISTAS]), "|",
                   "ver.releer", "|", "ventana.pantalla_completa"]),
-        ("&Sitio", ["sitio.renderizar_archivo", "sitio.renderizar", "sitio.simular_publicar", "sitio.publicar", "|", "op.simular", "op.aplicar", "op.cancelar", "|",
+        ("&Sitio", ["sitio.renderizar_archivo", "sitio.renderizar", "sitio.antes_de_publicar", "sitio.simular_publicar", "sitio.publicar", "|", "op.simular", "op.aplicar", "op.cancelar", "|",
                     "sitio.nueva_entrada", "sitio.problemas", "|"] + [f"op.{o.id}" for o in ops.de_vista("sitios")]),
         ("&Flujo", [(f"&{t}", [f"op.{o.id}" for o in ops.de_vista(n)]) for n, t, _i in ops.VISTAS if n != "sitios"]),
         ("&Herramientas", ["herr.lanzador", "herr.venv", "|", "ventana.paleta"]),
@@ -267,6 +274,7 @@ def construir(app: Aplicacion, cache: Path | None = None, docs_dir: Path | None 
             and not operaciones.motivoSinSimular("publicar")
         acciones.habilitar("sitio.publicar", publicable)
         acciones.habilitar("sitio.simular_publicar", hay_sitio and not activa)
+        acciones.habilitar("sitio.antes_de_publicar", entrega.disponible)
         for nombre in ("archivo.carpeta", "archivo.terminal", "archivo.copiar"):
             acciones.habilitar(nombre, hay_sitio or hay_elemento)
         acciones.habilitar("archivo.navegador", hay_sitio and bool(sitios.dominio))
@@ -298,6 +306,9 @@ def construir(app: Aplicacion, cache: Path | None = None, docs_dir: Path | None 
     documentos.actualCambiado.connect(disponibilidad)
     documentos.actualCambiado.connect(operaciones.cambiado)        # el archivo que renderizaría «Renderizar este archivo»
     publicacion.cambiado.connect(disponibilidad)
+    publicacion.cambiado.connect(lambda: entrega.revisarEntradas(
+        svc_adp.entradas(Path(sitios.ruta), publicacion.archivosPorPublicar()) if sitios.hayActual and sitios.ruta else []))
+    entrega.cambiado.connect(disponibilidad)
 
     def terminada(id_: str, aplicar: bool, codigo: int) -> None:
         if id_ in ("render", "render_entrada", "render_archivo", "render_todos") and aplicar:
@@ -318,7 +329,7 @@ def construir(app: Aplicacion, cache: Path | None = None, docs_dir: Path | None 
 
     piezas = dict(env=env, consola=consola, tareas=tareas, interfaz=interfaz, ajustes=ajustes, espacio=espacio, sitios=sitios, flujo=flujo,
                   operaciones=operaciones, acciones=acciones, editor=editor, documentos=documentos, publicacion=publicacion, metadatos=metadatos,
-                  arbol=arbol)
+                  arbol=arbol, entrega=entrega)
     for nombre, objeto in piezas.items():
         if nombre != "env":
             app.exponer(nombre, objeto)

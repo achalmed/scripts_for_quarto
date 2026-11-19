@@ -22,6 +22,6 @@ except ImportError:
     del _d
 
 APP_NAME = "Quarto Studio"
-APP_VERSION = "2.0.0"
+APP_VERSION = "2.1.0"
 ORG_NAME = "achalma"
 ORG_DOMAIN = "achalmaedison.netlify.app"

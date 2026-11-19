@@ -96,6 +96,7 @@ QT_QPA_PLATFORM=offscreen /usr/bin/python3 studio/main.py --smoke     # construy
 /usr/bin/python3 studio/capturar.py docs/figuras/quarto-studio-oscuro.png --esquema <LliphiOscuro.colors> --sitio aequilibria --documento phillips
 /usr/bin/python3 studio/capturar.py salida.png --area publicacion --sitio chaska
 tests/run.sh                                         # desde quarto-studio/: la muestra en un temporal, cada QML y --smoke; nada publica
+# «Antes de publicar…» (Ctrl+Alt+E) corre escritura/scripts/antes_de_publicar.py revisar <post> (el motor de «Antes de entregar»)
 ```
 
 ## Límite honesto

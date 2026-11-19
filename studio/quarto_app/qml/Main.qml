@@ -37,6 +37,7 @@ VentanaBase {
     function accion(nombre) { return registro.accion(nombre) }
     function espacioActual() { return [escritura, metadatos, publicacion, herramientas][espacio.indiceArea] }
     function abrirDocumento(ruta) { if (!ruta) return; espacio.fijarArea("escribir"); escritura.abrir(ruta, 0) }
+    function abrirEnLinea(ruta, linea) { if (!ruta) return; espacio.fijarArea("escribir"); escritura.abrir(ruta, linea || 0) }
 
     Connections {
         target: studio.interfaz
@@ -53,6 +54,7 @@ VentanaBase {
             case "seleccionar_todo": { const e = espacioActual(); const t = e.tabla ? e.tabla() : null; if (t && t.seleccionarTodo) t.seleccionarTodo(); break }
             case "aplicar": dialogoAplicar.abrir(); break
             case "nueva_entrada": dialogoEntrada.abrir(); break
+            case "antes_de_publicar": dialogoPublicar.abrir(); break
             case "venv": dialogoVenv.open(); break
             case "pestana": espacio.fijarArea("herramientas"); herramientas.pestana = datos.indice; break
             case "paleta": ventana.paleta.abrir(datos.texto || ""); break
@@ -185,7 +187,8 @@ VentanaBase {
     Kirigami.PromptDialog {
         id: dialogoAplicar
         title: (ops.publica ? "Publicar: " : "Aplicar: ") + ops.titulo + (sitios.hayActual && ops.sobreSitio ? " · " + sitios.nombre : "")
-        subtitle: ops.textoConfirmacion + (ops.publica ? "\n\n" + studio.publicacion.textoConfirmacion : "")
+        subtitle: ops.textoConfirmacion + (ops.publica ? "\n\n" + studio.publicacion.textoConfirmacion
+                  + (studio.entrega.resumenEntradas ? "\n\nAntes de publicar: " + studio.entrega.resumenEntradas + "." : "") : "")
         standardButtons: Kirigami.Dialog.Cancel
         customFooterActions: [Kirigami.Action { text: ops.publica ? "Publicar" : "Aplicar"; icon.name: ops.publica ? "cloud-upload" : "dialog-ok-apply"; enabled: ops.puedeAplicar; onTriggered: { ops.aplicar(); dialogoAplicar.close() } }]
         function abrir() {
@@ -203,5 +206,6 @@ VentanaBase {
         customFooterActions: [Kirigami.Action { text: "Copiar la orden"; icon.name: "edit-copy"; onTriggered: { espacio.copiar(studio.ajustes.ordenVenv); dialogoVenv.close() } }]
     }
     DialogoEntrada { id: dialogoEntrada }
+    DialogoAntesDePublicar { id: dialogoPublicar }
     dialogoAjustes: DialogoAjustesStudio {}
 }
