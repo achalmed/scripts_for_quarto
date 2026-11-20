@@ -59,7 +59,7 @@ ColumnLayout {
         Layout.rightMargin: Kirigami.Units.smallSpacing
         visible: raiz.d.urlPublicada !== ""
         spacing: Kirigami.Units.smallSpacing
-        Kirigami.Icon { source: "internet-web-browser"; implicitWidth: Kirigami.Units.iconSizes.small; implicitHeight: implicitWidth }
+        Kirigami.Icon { source: "globe-symbolic"; implicitWidth: Kirigami.Units.iconSizes.small; implicitHeight: implicitWidth; isMask: true; color: Kirigami.Theme.disabledTextColor }
         QQC2.Label {
             Layout.fillWidth: true
             text: "Saldrá publicada en " + raiz.d.urlPublicada.replace(/^https?:\/\//, "")

@@ -16,7 +16,7 @@ QQC2.ScrollView {
         x: Kirigami.Units.largeSpacing
         y: Kirigami.Units.largeSpacing
         spacing: Kirigami.Units.largeSpacing
-        Kirigami.PlaceholderMessage { Layout.fillWidth: true; visible: !pagina.o.hayOperacion; text: "Esta vista no tiene operaciones"; icon.name: "system-run" }
+        Kirigami.PlaceholderMessage { Layout.fillWidth: true; visible: !pagina.o.hayOperacion; text: "Esta vista no tiene operaciones"; icon.name: "system-run-symbolic" }
         Kirigami.FormLayout {
             Layout.fillWidth: true
             visible: pagina.o.hayOperacion
@@ -66,21 +66,12 @@ QQC2.ScrollView {
             QQC2.Label { Kirigami.FormData.label: "Ahora:"; visible: !pagina.o.puedeSimular; text: pagina.o.motivoNoSimular; wrapMode: Text.WordWrap; Layout.fillWidth: true; color: Kirigami.Theme.neutralTextColor }
             QQC2.Label { Kirigami.FormData.label: "Ahora:"; visible: pagina.o.puedeSimular && pagina.o.escribe && !pagina.o.puedeAplicar; text: pagina.o.motivoNoAplicar; wrapMode: Text.WordWrap; Layout.fillWidth: true; color: Kirigami.Theme.neutralTextColor }
         }
+        // Simular y Aplicar viven arriba, junto al selector de la operación (antes, también aquí: dos veces)
         RowLayout {
-            visible: pagina.o.hayOperacion
+            visible: pagina.o.enCurso
             Layout.fillWidth: true
-            spacing: Kirigami.Units.smallSpacing
             Item { Layout.fillWidth: true }
-            BotonAccion { accion: studio.acciones.accion("op.cancelar"); conTexto: false; visible: pagina.o.enCurso }
-            BotonAccion { accion: studio.acciones.accion("op.simular") }
-            QQC2.Button {
-                readonly property var a: studio.acciones.accion("op.aplicar")
-                visible: pagina.o.escribe
-                highlighted: true
-                text: a.textoPlano; icon.name: a.icono; enabled: a.habilitada
-                onClicked: a.disparar()
-                QQC2.ToolTip.text: a.descripcion + " (" + a.atajoTexto + ")"; QQC2.ToolTip.visible: hovered
-            }
+            BotonAccion { accion: studio.acciones.accion("op.cancelar"); plano: false }
         }
         Item { Layout.preferredHeight: Kirigami.Units.largeSpacing }
     }

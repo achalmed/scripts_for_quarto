@@ -16,7 +16,14 @@ QQC2.ScrollView {
     readonly property var s: studio.sitios
     readonly property var p: studio.publicacion
     function accion(n) { return studio.acciones.accion(n) }
-    function iconoNivel(n) { return n === "positivo" ? "data-success" : (n === "negativo" ? "data-error" : "data-information") }
+    // los niveles con iconos simbólicos en su color semántico (no los emblemas a color, que en Oscuro pintan
+    // «información» con el acento rojo)
+    // (signos de texto, no iconos: Kirigami.Icon no recolorea los simbólicos de Colloid)
+    function signoNivel(n) { return n === "positivo" ? "✓" : (n === "negativo" ? "✕" : (n === "neutro" ? "!" : "·")) }
+    function colorNivel(n) {
+        return n === "positivo" ? Kirigami.Theme.positiveTextColor : n === "negativo" ? Kirigami.Theme.negativeTextColor
+             : n === "neutro" ? Kirigami.Theme.neutralTextColor : Kirigami.Theme.activeTextColor
+    }
 
     contentWidth: availableWidth
     QQC2.ScrollBar.horizontal.policy: QQC2.ScrollBar.AlwaysOff
@@ -30,45 +37,40 @@ QQC2.ScrollView {
             Layout.fillWidth: true
             Layout.topMargin: Kirigami.Units.gridUnit * 4
             visible: !raiz.s.hayActual
-            icon.name: "cloud-upload"
+            icon.name: "cloud-upload-symbolic"
             text: "Elige un proyecto"
             explanation: "A la izquierda: el hub y los pubs con su estado de construcción"
         }
 
-        // el destino
-        RowLayout {
+        // el destino: el sitio, a dónde va y, debajo, las tres acciones en fila (la de publicar, la principal)
+        ColumnLayout {
             Layout.fillWidth: true
             Layout.topMargin: Kirigami.Units.largeSpacing
             visible: raiz.s.hayActual
-            spacing: Kirigami.Units.largeSpacing
-            Kirigami.Icon { source: raiz.s.esHub ? "go-home" : "folder-html"; implicitWidth: Kirigami.Units.iconSizes.large; implicitHeight: implicitWidth }
-            ColumnLayout {
-                Layout.fillWidth: true
-                spacing: 0
-                Kirigami.Heading { level: 1; text: raiz.s.nombre; Layout.fillWidth: true; elide: Text.ElideRight }
-                RowLayout {
-                    Kirigami.Heading { level: 3; text: "→" }
-                    Kirigami.Heading {
-                        level: 3
-                        text: raiz.p.dominio || "sin dominio de destino"
-                        color: raiz.p.coincide ? Kirigami.Theme.textColor : Kirigami.Theme.negativeTextColor
-                    }
-                    QQC2.ToolButton { icon.name: "internet-web-browser"; text: "Abrir el sitio publicado"; display: QQC2.AbstractButton.IconOnly; enabled: raiz.accion("archivo.navegador").habilitada; onClicked: raiz.accion("archivo.navegador").disparar(); Accessible.name: text }
-                }
-                QQC2.Label { text: raiz.s.tema ? "Tema: " + raiz.s.tema + " · rama " + (raiz.s.rama || "—") : "rama " + (raiz.s.rama || "—"); color: Kirigami.Theme.disabledTextColor }
-            }
-            ColumnLayout {
+            spacing: 0
+            Kirigami.Heading { level: 1; text: raiz.s.nombre; Layout.fillWidth: true; elide: Text.ElideRight }
+            RowLayout {
                 spacing: Kirigami.Units.smallSpacing
-                QQC2.Button { readonly property var a: raiz.accion("sitio.renderizar"); text: "Renderizar el sitio"; icon.name: a.icono; enabled: a.habilitada; onClicked: a.disparar(); QQC2.ToolTip.text: a.descripcion + " (" + a.atajoTexto + ")"; QQC2.ToolTip.visible: hovered }
-                QQC2.Button { readonly property var a: raiz.accion("sitio.simular_publicar"); text: "Simular la publicación"; icon.name: a.icono; enabled: a.habilitada; onClicked: a.disparar() }
-                QQC2.Button {
-                    readonly property var a: raiz.accion("sitio.publicar")
+                Kirigami.Icon { source: "go-next-symbolic"; implicitWidth: Kirigami.Units.iconSizes.small; implicitHeight: implicitWidth; isMask: true; color: Kirigami.Theme.disabledTextColor }
+                Kirigami.Heading {
+                    level: 3
+                    text: raiz.p.dominio || "sin dominio de destino"
+                    color: raiz.p.coincide ? Kirigami.Theme.textColor : Kirigami.Theme.negativeTextColor
+                }
+                QQC2.ToolButton { icon.name: "internet-web-browser-symbolic"; text: "Abrir el sitio publicado"; display: QQC2.AbstractButton.IconOnly; enabled: raiz.accion("archivo.navegador").habilitada; onClicked: raiz.accion("archivo.navegador").disparar(); Accessible.name: text; QQC2.ToolTip.text: text; QQC2.ToolTip.visible: hovered }
+            }
+            QQC2.Label { text: raiz.s.tema ? "Tema: " + raiz.s.tema + " · rama " + (raiz.s.rama || "—") : "rama " + (raiz.s.rama || "—"); color: Kirigami.Theme.disabledTextColor }
+            Flow {
+                Layout.fillWidth: true
+                Layout.topMargin: Kirigami.Units.largeSpacing
+                spacing: Kirigami.Units.smallSpacing
+                BotonAccion { accion: raiz.accion("sitio.renderizar"); plano: false; horizontalPadding: Kirigami.Units.largeSpacing }
+                BotonAccion { accion: raiz.accion("sitio.simular_publicar"); plano: false; horizontalPadding: Kirigami.Units.largeSpacing }
+                BotonPrincipal {
+                    accion: raiz.accion("sitio.publicar")
                     text: "Publicar en " + (raiz.p.dominio || "…")
-                    icon.name: "cloud-upload"
-                    highlighted: true
-                    enabled: a.habilitada
-                    onClicked: a.disparar()
-                    QQC2.ToolTip.text: enabled ? "Confirma nombrando el sitio y el dominio; Netlify despliega con el push" : (raiz.p.coincide ? "No disponible ahora (estado del sitio o una operación en curso)" : raiz.p.motivo)
+                    icon.name: "cloud-upload-symbolic"
+                    QQC2.ToolTip.text: enabled ? "Confirma nombrando el sitio y el dominio; Netlify despliega con el push" : (raiz.p.coincide ? "No disponible ahora: simula primero la publicación (F5), o hay una operación en curso" : raiz.p.motivo)
                     QQC2.ToolTip.visible: hovered
                 }
             }
@@ -97,7 +99,7 @@ QQC2.ScrollView {
                     delegate: RowLayout {
                         required property var modelData
                         Layout.fillWidth: true
-                        Kirigami.Icon { source: raiz.iconoNivel(modelData.nivel); implicitWidth: Kirigami.Units.iconSizes.smallMedium; implicitHeight: implicitWidth; Layout.alignment: Qt.AlignTop }
+                        QQC2.Label { text: raiz.signoNivel(modelData.nivel); color: raiz.colorNivel(modelData.nivel); font.weight: Font.Bold; Layout.alignment: Qt.AlignTop; Layout.preferredWidth: Kirigami.Units.iconSizes.small; horizontalAlignment: Text.AlignHCenter; Accessible.ignored: true }
                         ColumnLayout {
                             Layout.fillWidth: true
                             spacing: 0
@@ -113,13 +115,15 @@ QQC2.ScrollView {
                 Layout.alignment: Qt.AlignTop
                 Kirigami.Heading { level: 3; text: "Estado de construcción" }
                 RowLayout {
-                    Kirigami.Icon { source: raiz.s.estadoClave === "al_dia" ? "data-success" : (raiz.s.estadoClave === "problemas" ? "data-error" : "data-warning"); implicitWidth: Kirigami.Units.iconSizes.smallMedium; implicitHeight: implicitWidth }
-                    QQC2.Label { text: raiz.s.estadoTexto; font.weight: Font.DemiBold }
+                    EtiquetaNivel {
+                        text: raiz.s.estadoTexto
+                        nivel: raiz.s.estadoClave === "al_dia" ? "positivo" : (raiz.s.estadoClave === "problemas" ? "negativo" : (raiz.s.estadoClave === "sin_render" ? "neutro" : "activo"))
+                    }
                 }
                 QQC2.Label { text: raiz.s.motivo; wrapMode: Text.WordWrap; Layout.fillWidth: true; color: Kirigami.Theme.disabledTextColor }
                 Kirigami.FormLayout {
                     Layout.fillWidth: true
-                    wideMode: false
+                    wideMode: true
                     QQC2.Label { Kirigami.FormData.label: "Último render confirmado:"; text: raiz.s.fechaRender }
                     QQC2.Label { Kirigami.FormData.label: "Últimas fuentes confirmadas:"; text: raiz.s.fechaFuentes }
                     QQC2.Label {
@@ -139,13 +143,14 @@ QQC2.ScrollView {
         QQC2.Label { visible: raiz.s.hayActual; text: raiz.p.resumenArchivos; color: Kirigami.Theme.disabledTextColor; wrapMode: Text.WordWrap; Layout.fillWidth: true }
         TablaDatos {
             Layout.fillWidth: true
-            Layout.preferredHeight: Kirigami.Units.gridUnit * 11
+            // la altura de lo que lleva (hasta seis filas), no un hueco fijo
+            Layout.preferredHeight: Kirigami.Units.gridUnit * (2.4 + 1.7 * Math.min(Math.max(raiz.p.totalArchivos, 1), 6))
             visible: raiz.s.hayActual && raiz.p.totalArchivos > 0
             modelo: raiz.p.archivosModelo
             claveAjustes: "publicacion-archivos"
             umbralEstrecho: 0
             mensajeVacio: "Nada por publicar"
-            iconoVacio: "checkmark"
+            iconoVacio: "checkmark-symbolic"
             columnas: [{ ancho: 0, minimo: 16, mono: true }, { ancho: 4, semantica: true }, { ancho: 9, secundaria: true }]
         }
 
@@ -156,7 +161,7 @@ QQC2.ScrollView {
             delegate: RowLayout {
                 required property var modelData
                 Layout.fillWidth: true
-                Kirigami.Icon { source: raiz.iconoNivel(modelData.nivel); implicitWidth: Kirigami.Units.iconSizes.smallMedium; implicitHeight: implicitWidth }
+                QQC2.Label { text: raiz.signoNivel(modelData.nivel); color: raiz.colorNivel(modelData.nivel); font.weight: Font.Bold; Layout.preferredWidth: Kirigami.Units.iconSizes.small; horizontalAlignment: Text.AlignHCenter; Accessible.ignored: true }
                 QQC2.Label { text: modelData.titulo; font.weight: Font.DemiBold; elide: Text.ElideRight; Layout.maximumWidth: raiz.width * 0.45 }
                 QQC2.Label { text: modelData.veredicto + " · " + modelData.revisado; color: Kirigami.Theme.disabledTextColor; elide: Text.ElideRight; Layout.fillWidth: true }
                 QQC2.Button {
@@ -179,7 +184,7 @@ QQC2.ScrollView {
             claveAjustes: "publicacion-historial"
             umbralEstrecho: 0
             mensajeVacio: "El remoto no tiene ningún commit que haya tocado _site/"
-            iconoVacio: "view-history"
+            iconoVacio: "view-history-symbolic"
             columnas: [{ ancho: 6, mono: true }, { ancho: 10, secundaria: true }, { ancho: 0, minimo: 14 }, { ancho: 5, alinear: "derecha", secundaria: true }]
         }
         Kirigami.Heading { level: 3; visible: raiz.s.hayActual; text: "La última corrida sobre el sitio" }

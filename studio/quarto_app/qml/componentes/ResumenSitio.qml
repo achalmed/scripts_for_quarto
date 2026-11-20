@@ -30,7 +30,7 @@ QQC2.ScrollView {
             visible: !pagina.s.hayActual
             text: "Ningún sitio"
             explanation: "Elige un sitio en la tabla o en una entrada de la vista Entradas."
-            icon.name: "folder-html"
+            icon.name: "globe-symbolic"
         }
         Kirigami.FormLayout {
             visible: pagina.s.hayActual
@@ -60,13 +60,11 @@ QQC2.ScrollView {
             spacing: Kirigami.Units.smallSpacing
             BotonAccion { accion: studio.acciones.accion("archivo.navegador"); conTexto: false }
             BotonAccion { accion: studio.acciones.accion("sitio.nueva_entrada"); conTexto: false }
-            BotonAccion { accion: studio.acciones.accion("op.preview") }
-            BotonAccion { accion: studio.acciones.accion("op.publicar") }
-            QQC2.Button {
-                readonly property var a: studio.acciones.accion("op.render")
-                highlighted: true
-                text: a.textoPlano; icon.name: "run-build"; enabled: a.habilitada
-                onClicked: a.disparar()
+            BotonAccion { accion: studio.acciones.accion("op.preview"); plano: false; horizontalPadding: Kirigami.Units.largeSpacing }
+            BotonAccion { accion: studio.acciones.accion("op.publicar"); plano: false; horizontalPadding: Kirigami.Units.largeSpacing }
+            BotonPrincipal {
+                accion: studio.acciones.accion("op.render")
+                icon.name: "run-build-symbolic"
                 QQC2.ToolTip.text: "Elige «Renderizar» como operación: F5 muestra el plan, Ctrl+Intro renderiza"; QQC2.ToolTip.visible: hovered
             }
         }

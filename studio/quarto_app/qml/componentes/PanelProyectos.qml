@@ -7,6 +7,7 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls as QQC2
 import org.kde.kirigami as Kirigami
+import GuiComun
 
 ColumnLayout {
     id: raiz
@@ -16,7 +17,14 @@ ColumnLayout {
     property bool conDocumentos: true
     signal abrirDocumento(string ruta)
     function enfocarDocumentos() { filtro.forceActiveFocus(); filtro.selectAll() }
-    function icono(clave) { return clave === "al_dia" ? "data-success" : (clave === "problemas" ? "data-error" : (clave === "sin_render" ? "data-warning" : "data-information")) }
+    // el estado de construcción de un sitio: un punto en su color semántico (no los emblemas a color de Colloid, que en
+    // Oscuro pintan «información» con el acento rojo; y Kirigami.Icon no recolorea los simbólicos de Colloid)
+    function colorEstado(clave) {
+        return clave === "al_dia" ? Kirigami.Theme.positiveTextColor : clave === "problemas" ? Kirigami.Theme.negativeTextColor
+             : clave === "sin_render" ? Kirigami.Theme.neutralTextColor : Kirigami.Theme.activeTextColor
+    }
+    // el documento abierto es del sitio actual: entonces la elegida es su fila y el sitio solo lleva la marca
+    readonly property bool hayDocumento: conDocumentos && d.actual !== "" && s.ruta !== "" && d.actual.indexOf(s.ruta) === 0
 
     spacing: 0
     Kirigami.Theme.colorSet: Kirigami.Theme.View
@@ -58,7 +66,29 @@ ColumnLayout {
                 height: aLaVista ? implicitHeight : 0
                 visible: aLaVista
                 leftPadding: Kirigami.Units.smallSpacing + model.nivel * Kirigami.Units.gridUnit
-                highlighted: esSitio ? model.sitio === raiz.s.nombre : (esDocumento && model.ruta === raiz.d.actual)
+                readonly property bool esActual: esSitio && model.sitio === raiz.s.nombre
+                // una sola fila elegida: el documento abierto o, sin él, el sitio actual
+                highlighted: esSitio ? esActual && !raiz.hayDocumento : (esDocumento && model.ruta === raiz.d.actual)
+                hoverEnabled: true
+                // el acabado de la familia: la elegida teñida del acento con su marca a la izquierda, nunca el bloque
+                // lleno de highlightColor; el sitio del documento abierto conserva solo la marca
+                background: FondoSeleccion {
+                    elegida: fila.highlighted
+                    sobre: fila.hovered
+                    pulsada: fila.pressed
+                    foco: fila.visualFocus
+                    redondeada: false
+                    // el sitio del documento abierto: solo la marca, tenue
+                    Rectangle {
+                        visible: fila.esActual && !fila.highlighted
+                        anchors.left: parent.left
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: Kirigami.Units.smallSpacing * 0.75
+                        height: parent.height - Kirigami.Units.smallSpacing * 2
+                        color: Kirigami.Theme.highlightColor
+                        opacity: 0.6
+                    }
+                }
                 function activar() {
                     if (esSitio) raiz.a.elegirSitio(model.sitio)
                     else if (esCarpeta) raiz.a.alternar(model.clave)
@@ -80,15 +110,19 @@ ColumnLayout {
                         visible: raiz.conDocumentos      // fuera de Escribir no se despliega nada: sin flechas
                         implicitWidth: Kirigami.Units.iconSizes.small; implicitHeight: implicitWidth
                         source: fila.model.plegable ? (fila.model.abierta ? "go-down-symbolic" : "go-next-symbolic") : ""
-                        color: fila.highlighted ? Kirigami.Theme.highlightedTextColor : Kirigami.Theme.disabledTextColor
+                        color: Kirigami.Theme.disabledTextColor
                         isMask: true
                         TapHandler { enabled: fila.model.plegable; onTapped: raiz.a.alternar(fila.model.clave) }
                         Accessible.name: fila.model.plegable ? (fila.model.abierta ? "Plegar " : "Desplegar ") + fila.model.texto : ""
                     }
                     Kirigami.Icon {
+                        // los documentos ya llevan su título y su fecha: sin el icono diminuto de tipo de archivo
+                        visible: !fila.esDocumento
                         source: fila.model.icono
                         implicitWidth: fila.esSitio ? Kirigami.Units.iconSizes.smallMedium : Kirigami.Units.iconSizes.small
                         implicitHeight: implicitWidth
+                        isMask: true
+                        color: fila.esCarpeta ? Kirigami.Theme.disabledTextColor : Kirigami.Theme.textColor
                     }
                     ColumnLayout {
                         Layout.fillWidth: true
@@ -96,9 +130,9 @@ ColumnLayout {
                         QQC2.Label {
                             Layout.fillWidth: true
                             text: fila.model.texto
-                            font.weight: fila.esSitio ? Font.DemiBold : Font.Normal
+                            font.weight: fila.esSitio || fila.highlighted ? Font.DemiBold : Font.Normal
                             elide: Text.ElideRight
-                            color: fila.highlighted ? Kirigami.Theme.highlightedTextColor : (fila.esCarpeta ? Kirigami.Theme.disabledTextColor : Kirigami.Theme.textColor)
+                            color: fila.esCarpeta ? Kirigami.Theme.disabledTextColor : Kirigami.Theme.textColor
                         }
                         QQC2.Label {
                             Layout.fillWidth: true
@@ -106,7 +140,7 @@ ColumnLayout {
                             text: fila.model.detalle
                             font: Kirigami.Theme.smallFont
                             elide: Text.ElideRight
-                            color: fila.highlighted ? Kirigami.Theme.highlightedTextColor : Kirigami.Theme.disabledTextColor
+                            color: Kirigami.Theme.disabledTextColor
                         }
                     }
                     QQC2.Label {                     // cuántos documentos hay en la carpeta
@@ -115,11 +149,14 @@ ColumnLayout {
                         font: Kirigami.Theme.smallFont
                         color: Kirigami.Theme.disabledTextColor
                     }
-                    Kirigami.Icon {                  // el estado de construcción del sitio (R6)
+                    QQC2.Label {                     // el estado de construcción del sitio (R6): un punto de su color
                         visible: fila.esSitio
-                        source: raiz.icono(fila.model.estado)
-                        implicitWidth: Kirigami.Units.iconSizes.small; implicitHeight: implicitWidth
+                        text: "●"
+                        color: raiz.colorEstado(fila.model.estado)
                         Accessible.name: fila.model.estadoTexto
+                        QQC2.ToolTip.text: fila.model.estadoTexto
+                        QQC2.ToolTip.visible: zonaEstado.hovered
+                        HoverHandler { id: zonaEstado }
                     }
                 }
             }

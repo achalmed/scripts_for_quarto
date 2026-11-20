@@ -168,6 +168,7 @@ QQC2.SplitView {
         title: "El archivo cambió en el disco"
         subtitle: (editor ? editor.ruta.split("/").pop() : "") + " se modificó fuera de la ventana desde que lo abriste. Si guardas, lo que hay en el disco se pierde."
         standardButtons: Kirigami.Dialog.Cancel
+        showCloseButton: false            // ya hay botones al pie: sin la × del encabezado
         customFooterActions: [
             Kirigami.Action { text: "Recargar del disco"; icon.name: "view-refresh"; onTriggered: { confirmarSobrescribir.editor.recargarDesdeDisco(); confirmarSobrescribir.close() } },
             Kirigami.Action { text: "Sobrescribir"; icon.name: "document-save"; onTriggered: { raiz.guardar(confirmarSobrescribir.editor, true); confirmarSobrescribir.close() } }
@@ -179,6 +180,7 @@ QQC2.SplitView {
         title: "Cambios sin guardar"
         subtitle: (editor ? editor.ruta.split("/").pop() : "") + " tiene cambios sin guardar. ¿Guardarlos antes de cerrar?"
         standardButtons: Kirigami.Dialog.Cancel
+        showCloseButton: false            // ya hay botones al pie: sin la × del encabezado
         customFooterActions: [
             Kirigami.Action { text: "Descartar"; icon.name: "edit-delete"; onTriggered: { studio.editor.cerrar(confirmarCerrar.editor.ruta); confirmarCerrar.close() } },
             Kirigami.Action { text: "Guardar y cerrar"; icon.name: "document-save"; onTriggered: { const e = confirmarCerrar.editor; if (e.guardar(false) === "") studio.editor.cerrar(e.ruta); confirmarCerrar.close() } }

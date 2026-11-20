@@ -15,24 +15,20 @@ ColumnLayout {
     readonly property var flujo: studio.flujo
     readonly property var ops: studio.operaciones
     readonly property bool enSitios: espacio.vista === "sitios"
-    property alias pestana: lado.currentIndex
+    // el lado de la derecha (0 Resumen · 1 Entradas · 2 Problemas · 3 Operación · 4 Plan · 5 Salida)
+    property int pestana: 3
     function tabla() { return tablas.children[tablas.currentIndex] }
     spacing: 0
 
     RowLayout {
         Layout.fillWidth: true
         Layout.margins: Kirigami.Units.smallSpacing
-        Repeater {
-            model: raiz.espacio.vistas
-            delegate: QQC2.Button {
-                required property var modelData
-                text: modelData.texto.replace(" y metadatos", "")
-                icon.name: modelData.icono
-                checkable: true
-                checked: raiz.espacio.vista === modelData.nombre
-                flat: !checked
-                onClicked: raiz.espacio.fijarVista(modelData.nombre)
-            }
+        // las vistas: el selector segmentado de la base (antes, botones sueltos con el elegido en azul pleno)
+        SelectorSegmentado {
+            titulo: "Vistas"
+            opciones: raiz.espacio.vistas.map(v => ({ clave: v.nombre, texto: v.texto.replace(" y metadatos", ""), icono: v.icono }))
+            actual: raiz.espacio.vista
+            onElegida: clave => raiz.espacio.fijarVista(clave)
         }
         Item { Layout.fillWidth: true }
         QQC2.Label { text: "Operación:"; visible: raiz.ops.lista.length > 0 }
@@ -47,8 +43,8 @@ ColumnLayout {
             Accessible.name: "Operación de la vista"
             Connections { target: raiz.ops; function onListaCambiada() { selector.currentIndex = raiz.ops.indiceActual } }
         }
-        BotonAccion { accion: studio.acciones.accion("op.simular") }
-        BotonAccion { accion: studio.acciones.accion("op.aplicar") }
+        BotonAccion { accion: studio.acciones.accion("op.simular"); plano: false; horizontalPadding: Kirigami.Units.largeSpacing }
+        BotonPrincipal { accion: studio.acciones.accion("op.aplicar"); visible: studio.acciones.accion("op.aplicar").visible }
     }
     Kirigami.Separator { Layout.fillWidth: true }
 
@@ -109,21 +105,29 @@ ColumnLayout {
             QQC2.SplitView.preferredWidth: Kirigami.Units.gridUnit * 28
             QQC2.SplitView.minimumWidth: Kirigami.Units.gridUnit * 18
             spacing: 0
-            QQC2.TabBar {
+            // el lado: también segmentado, ceñido (antes, una TabBar que en Oscuro se salía por la derecha)
+            SelectorSegmentado {
                 id: lado
-                Layout.fillWidth: true
-                currentIndex: 3
-                QQC2.TabButton { text: raiz.enSitios ? "Resumen" : "Elemento"; width: implicitWidth }
-                QQC2.TabButton { text: "Entradas"; width: implicitWidth; enabled: raiz.enSitios }
-                QQC2.TabButton { text: "Problemas" + (raiz.sitios.nProblemas > 0 ? " · " + raiz.sitios.nProblemas : ""); width: implicitWidth; enabled: raiz.enSitios }
-                QQC2.TabButton { text: "Operación"; width: implicitWidth }
-                QQC2.TabButton { text: "Plan"; width: implicitWidth }
-                QQC2.TabButton { text: "Salida"; width: implicitWidth }
+                Layout.alignment: Qt.AlignHCenter
+                Layout.margins: Kirigami.Units.smallSpacing
+                titulo: "Lado"
+                compacto: true
+                opciones: [
+                    { clave: "0", texto: raiz.enSitios ? "Resumen" : "Elemento" },
+                    { clave: "1", texto: "Entradas", visible: raiz.enSitios },
+                    { clave: "2", texto: "Problemas", contador: raiz.sitios.nProblemas > 0 ? raiz.sitios.nProblemas : "", visible: raiz.enSitios },
+                    { clave: "3", texto: "Operación" },
+                    { clave: "4", texto: "Plan" },
+                    { clave: "5", texto: "Salida" }
+                ]
+                actual: String(raiz.pestana)
+                onElegida: clave => raiz.pestana = Number(clave)
             }
+            Kirigami.Separator { Layout.fillWidth: true }
             StackLayout {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                currentIndex: lado.currentIndex
+                currentIndex: raiz.pestana
                 StackLayout {
                     currentIndex: raiz.enSitios ? 0 : (raiz.espacio.vista === "entradas" ? 1 : 2)
                     ResumenSitio {}

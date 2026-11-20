@@ -16,6 +16,7 @@ Kirigami.Dialog {
     preferredWidth: Kirigami.Units.gridUnit * 44
     preferredHeight: Kirigami.Units.gridUnit * 36
     standardButtons: Kirigami.Dialog.Close
+    showCloseButton: false            // ya hay botones al pie: sin la × del encabezado
     customFooterActions: [
         Kirigami.Action { text: "Revisar de nuevo"; icon.name: "view-refresh"; enabled: !dialogo.e.revisando; onTriggered: dialogo.e.revisarMidiendo() },
         Kirigami.Action { text: "Traer las cifras…"; icon.name: "office-chart-line"; enabled: !dialogo.e.revisando; onTriggered: dialogo.e.cifras(false) },
@@ -168,6 +169,7 @@ Kirigami.Dialog {
                                    + (dato.carga_el_archivo ? "" : "\n\nEl post aún no carga el archivo: añada «metadata-files: [_cifras.yml]» a su frontmatter.")
                                    + "\n\nEn el texto, cada número se escribe {{< meta cifras.<clave> >}}.") : ""
         standardButtons: Kirigami.Dialog.Cancel
+        showCloseButton: false            // ya hay botones al pie: sin la × del encabezado
         customFooterActions: [Kirigami.Action { text: "Escribir _cifras.yml"; icon.name: "document-save"; enabled: !(dialogoCifras.dato.choques || []).length
                                                 onTriggered: { dialogo.e.cifras(true); dialogoCifras.close() } }]
     }
@@ -176,6 +178,7 @@ Kirigami.Dialog {
         title: "Faltan " + dialogo.e.faltan + ": ¿publicar igual?"
         subtitle: "La constancia queda en _registro/publicacion.yml con lo que faltaba y este motivo."
         standardButtons: Kirigami.Dialog.Cancel
+        showCloseButton: false            // ya hay botones al pie: sin la × del encabezado
         QQC2.TextField { id: motivo; placeholderText: "Por qué se publica con lo que falta" }
         customFooterActions: [Kirigami.Action { text: "Dar por revisado de todos modos"; icon.name: "checkmark"; enabled: motivo.text.trim() !== ""
                                                 onTriggered: { dialogo.e.darPorRevisado(motivo.text); dialogoMotivo.close() } }]
@@ -187,6 +190,7 @@ Kirigami.Dialog {
         title: "Falso positivo: " + nombre
         subtitle: "Lo que marcó este control no era un defecto. La nota queda en _registro/controles.yml para medir el control (C14.1)."
         standardButtons: Kirigami.Dialog.Cancel
+        showCloseButton: false            // ya hay botones al pie: sin la × del encabezado
         QQC2.TextField { id: notaFalso; placeholderText: "No era error porque…" }
         customFooterActions: [Kirigami.Action { text: "Declarar"; icon.name: "dialog-ok-apply"; enabled: notaFalso.text.trim() !== ""
                                                 onTriggered: { dialogo.e.falso(dialogoFalso.control, notaFalso.text); dialogoFalso.close() } }]

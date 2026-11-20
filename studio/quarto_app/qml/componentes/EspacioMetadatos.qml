@@ -23,42 +23,46 @@ ColumnLayout {
     }
     spacing: 0
 
-    RowLayout {
+    // el título y su resumen a todo lo ancho; las tres operaciones debajo, en fila (antes se comían el resumen)
+    ColumnLayout {
         Layout.fillWidth: true
-        Layout.margins: Kirigami.Units.smallSpacing
-        spacing: Kirigami.Units.largeSpacing
-        Kirigami.Icon { source: "view-list-details"; implicitWidth: Kirigami.Units.iconSizes.medium; implicitHeight: implicitWidth }
+        Layout.margins: Kirigami.Units.largeSpacing
+        spacing: Kirigami.Units.smallSpacing
         ColumnLayout {
             Layout.fillWidth: true
             spacing: 0
             Kirigami.Heading { level: 3; text: "El Excel frente a los documentos" + (studio.sitios.hayActual ? " · " + studio.sitios.nombre : "") }
             QQC2.Label { text: raiz.m.resumen || (studio.flujo.avisoExcel || "Elige un proyecto"); color: Kirigami.Theme.disabledTextColor; wrapMode: Text.WordWrap; Layout.fillWidth: true }
         }
-        QQC2.Button {
-            text: "Ver diferencias (gestor)"
-            icon.name: "system-run"
-            enabled: studio.sitios.hayActual && !studio.tareas.activa
-            onClicked: { raiz.ops.fijar("diferencias"); raiz.ops.simular() }
-            QQC2.ToolTip.text: "El gestor de metadatos compara el Excel con los documentos sin escribir nada (la salida, en Herramientas › Salida)"
-            QQC2.ToolTip.visible: hovered
+        Flow {
+            Layout.fillWidth: true
+            spacing: Kirigami.Units.smallSpacing
+            QQC2.Button {
+                text: "Ver diferencias (gestor)"
+                icon.name: "system-run"
+                enabled: studio.sitios.hayActual && !studio.tareas.activa
+                onClicked: { raiz.ops.fijar("diferencias"); raiz.ops.simular() }
+                QQC2.ToolTip.text: "El gestor de metadatos compara el Excel con los documentos sin escribir nada (la salida, en Herramientas › Salida)"
+                QQC2.ToolTip.visible: hovered
+            }
+            QQC2.Button {
+                text: "Llevar el Excel a los documentos…"
+                icon.name: "document-import"
+                enabled: studio.sitios.hayActual && !studio.tareas.activa
+                onClicked: { raiz.ops.fijar("aplicar_excel"); studio.interfaz.pedir("aplicar", {}) }
+                QQC2.ToolTip.text: "Aplica las celdas del Excel donde difieren (una celda vacía borra el campo): primero se ve la orden y lo que toca"
+                QQC2.ToolTip.visible: hovered
+            }
+            QQC2.Button {
+                text: "Llevar los documentos al Excel…"
+                icon.name: "document-export"
+                enabled: studio.sitios.hayActual && !studio.tareas.activa
+                onClicked: { raiz.ops.fijar("sync_al_excel"); studio.interfaz.pedir("aplicar", {}) }
+                QQC2.ToolTip.text: "Escribe en el Excel lo que los documentos tienen distinto (el sitio y el filtro de ruta de Herramientas): primero se ve la orden y lo que toca"
+                QQC2.ToolTip.visible: hovered
+            }
+            BotonAccion { accion: studio.acciones.accion("archivo.excel"); plano: false; horizontalPadding: Kirigami.Units.largeSpacing }
         }
-        QQC2.Button {
-            text: "Llevar el Excel a los documentos…"
-            icon.name: "document-import"
-            enabled: studio.sitios.hayActual && !studio.tareas.activa
-            onClicked: { raiz.ops.fijar("aplicar_excel"); studio.interfaz.pedir("aplicar", {}) }
-            QQC2.ToolTip.text: "Aplica las celdas del Excel donde difieren (una celda vacía borra el campo): primero se ve la orden y lo que toca"
-            QQC2.ToolTip.visible: hovered
-        }
-        QQC2.Button {
-            text: "Llevar los documentos al Excel…"
-            icon.name: "document-export"
-            enabled: studio.sitios.hayActual && !studio.tareas.activa
-            onClicked: { raiz.ops.fijar("sync_al_excel"); studio.interfaz.pedir("aplicar", {}) }
-            QQC2.ToolTip.text: "Escribe en el Excel lo que los documentos tienen distinto (el sitio y el filtro de ruta de Herramientas): primero se ve la orden y lo que toca"
-            QQC2.ToolTip.visible: hovered
-        }
-        BotonAccion { accion: studio.acciones.accion("archivo.excel"); conTexto: false }
     }
     Kirigami.InlineMessage {
         Layout.fillWidth: true
@@ -86,13 +90,22 @@ ColumnLayout {
             QQC2.SplitView.preferredWidth: Kirigami.Units.gridUnit * 28
             QQC2.SplitView.minimumWidth: Kirigami.Units.gridUnit * 16
             spacing: 0
+            Kirigami.Heading {
+                Layout.fillWidth: true
+                Layout.leftMargin: Kirigami.Units.largeSpacing
+                Layout.rightMargin: Kirigami.Units.largeSpacing
+                Layout.topMargin: Kirigami.Units.smallSpacing
+                level: 4
+                text: raiz.m.hayActual ? raiz.m.tituloActual : "Campo a campo"
+                elide: Text.ElideRight
+            }
             RowLayout {
                 Layout.fillWidth: true
                 Layout.margins: Kirigami.Units.smallSpacing
-                Kirigami.Heading { level: 4; text: raiz.m.hayActual ? raiz.m.tituloActual : "Campo a campo"; Layout.fillWidth: true; elide: Text.ElideRight }
+                spacing: Kirigami.Units.smallSpacing
                 QQC2.ToolButton {
                     visible: raiz.m.hayActual && raiz.m.diferenciasActual > 0
-                    icon.name: "document-import"
+                    icon.name: "document-import-symbolic"
                     text: "Excel → documento"
                     enabled: !studio.tareas.activa
                     onClicked: raiz.sincronizarEntrada("sync_entrada_a_documento")
@@ -101,7 +114,7 @@ ColumnLayout {
                 }
                 QQC2.ToolButton {
                     visible: raiz.m.hayActual && raiz.m.diferenciasActual > 0
-                    icon.name: "document-export"
+                    icon.name: "document-export-symbolic"
                     text: "Documento → Excel"
                     enabled: !studio.tareas.activa
                     onClicked: raiz.sincronizarEntrada("sync_entrada_al_excel")
@@ -110,7 +123,7 @@ ColumnLayout {
                 }
                 QQC2.ToolButton {
                     visible: raiz.m.hayActual
-                    icon.name: "document-edit"
+                    icon.name: "document-edit-symbolic"
                     text: "Editar"
                     onClicked: studio.interfaz.pedir("editar", { ruta: raiz.m.rutaActual })
                 }
@@ -122,7 +135,7 @@ ColumnLayout {
                 claveAjustes: "diagnostico-campos"
                 umbralEstrecho: 0
                 mensajeVacio: raiz.m.hayActual ? "Esta entrada no tiene fila en el Excel" : "Elige una entrada: sus campos en el documento y en el Excel"
-                iconoVacio: "view-list-details"
+                iconoVacio: "view-list-details-symbolic"
                 columnas: [{ ancho: 8, mono: true, semantica: true }, { ancho: 0, minimo: 10 }, { ancho: 0, minimo: 10 }]
             }
         }

@@ -7,8 +7,9 @@ import GuiComun
 ListaDiagnosticos {
     readonly property var s: studio.sitios
     modelo: s.problemasModelo
-    mensajeVacio: !s.hayActual ? "Ningún sitio" : "Sin problemas registrados: «Renderizar» (Ctrl+Intro) deja aquí los errores y avisos de Quarto"
-    iconoVacio: "dialog-ok-apply"
+    // corto (el PlaceholderMessage de la base no lleva explicación aquí): el detalle, en la ayuda de «Renderizar»
+    mensajeVacio: !s.hayActual ? "Ningún sitio" : "Sin problemas registrados"
+    iconoVacio: "checkmark-symbolic"
     nombreAccesible: "Problemas del render de " + (s.nombre || "ningún sitio")
     onActivada: fila => s.abrirProblema(fila)
 }

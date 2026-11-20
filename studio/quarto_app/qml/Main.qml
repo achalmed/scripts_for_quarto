@@ -80,21 +80,12 @@ VentanaBase {
         position: QQC2.ToolBar.Header
         contentItem: RowLayout {
             spacing: Kirigami.Units.smallSpacing
-            QQC2.TabBar {
-                currentIndex: espacio.indiceArea
-                onCurrentIndexChanged: espacio.fijarAreaPorIndice(currentIndex)
-                Repeater {
-                    model: 4                       // fijas: el TabBar del estilo de KDE no admite crearse vacío
-                    delegate: QQC2.TabButton {
-                        required property int index
-                        readonly property var a: espacio.areas[index]
-                        text: a.texto
-                        icon.name: a.icono
-                        width: implicitWidth
-                        QQC2.ToolTip.text: "Ctrl+" + (index + 1)
-                        QQC2.ToolTip.visible: hovered
-                    }
-                }
+            // las cuatro áreas: el selector segmentado de la base (el pozo con sus píldoras; ← → con el teclado)
+            SelectorSegmentado {
+                titulo: "Áreas"
+                opciones: espacio.areas.map((a, i) => ({ clave: a.nombre, texto: a.texto, icono: a.icono, atajo: "Ctrl+" + (i + 1) }))
+                actual: espacio.area
+                onElegida: clave => espacio.fijarArea(clave)
             }
             Item { Layout.fillWidth: true }
             // el sitio y su estado de construcción (EtiquetaNivel de la base: el color es el semántico del tema)
@@ -115,23 +106,19 @@ VentanaBase {
             }
             Kirigami.Separator { Layout.fillHeight: true; Layout.margins: Kirigami.Units.smallSpacing }
             // el botón principal (N 5.16): se renderiza el archivo, nunca el sitio a ciegas
-            QQC2.Button {
+            BotonPrincipal {
                 id: renderArchivo
-                readonly property var a: ventana.accion("sitio.renderizar_archivo")
+                accion: ventana.accion("sitio.renderizar_archivo")
                 text: "Renderizar este archivo"
-                icon.name: a.icono
-                highlighted: true
-                enabled: a.habilitada
-                onClicked: a.disparar()
                 QQC2.ToolTip.text: (studio.documentos.actual ? "Renderiza " + studio.documentos.relActual + " y recarga la vista previa"
-                                                             : "Abre un documento del sitio para renderizarlo") + " (" + a.atajoTexto + ")"
+                                                             : "Abre un documento del sitio para renderizarlo") + " (" + accion.atajoTexto + ")"
                 QQC2.ToolTip.visible: hovered
                 QQC2.ToolTip.delay: Kirigami.Units.toolTipDelay
             }
             BotonAccion { accion: ventana.accion("sitio.renderizar"); conTexto: false }
             QQC2.ToolButton {
                 text: "Publicar"
-                icon.name: "cloud-upload"
+                icon.name: "cloud-upload-symbolic"
                 enabled: sitios.hayActual
                 onClicked: espacio.fijarArea("publicacion")
                 QQC2.ToolTip.text: "La vista de publicación: a dónde va el sitio y qué lleva"
@@ -190,6 +177,7 @@ VentanaBase {
         subtitle: ops.textoConfirmacion + (ops.publica ? "\n\n" + studio.publicacion.textoConfirmacion
                   + (studio.entrega.resumenEntradas ? "\n\nAntes de publicar: " + studio.entrega.resumenEntradas + "." : "") : "")
         standardButtons: Kirigami.Dialog.Cancel
+        showCloseButton: false            // ya hay botones al pie: sin la × del encabezado
         customFooterActions: [Kirigami.Action { text: ops.publica ? "Publicar" : "Aplicar"; icon.name: ops.publica ? "cloud-upload" : "dialog-ok-apply"; enabled: ops.puedeAplicar; onTriggered: { ops.aplicar(); dialogoAplicar.close() } }]
         function abrir() {
             if (!ops.puedeAplicar) { ventana.mensajes.mostrar(ops.motivoNoAplicar, "pista"); return }   // el motivo, 6 s en la barra de estado
@@ -203,6 +191,7 @@ VentanaBase {
                                            : "No existe el .venv del repo: los backends de metadatos no tienen openpyxl ni pandas y el diagnóstico de metadatos queda vacío.")
                   + "\n\nPara crearlo (sin sudo ni apt):\n" + studio.ajustes.ordenVenv
         standardButtons: Kirigami.Dialog.Close
+        showCloseButton: false            // ya hay botones al pie: sin la × del encabezado
         customFooterActions: [Kirigami.Action { text: "Copiar la orden"; icon.name: "edit-copy"; onTriggered: { espacio.copiar(studio.ajustes.ordenVenv); dialogoVenv.close() } }]
     }
     DialogoEntrada { id: dialogoEntrada }

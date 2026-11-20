@@ -122,7 +122,7 @@ def construir(app: Aplicacion, cache: Path | None = None, docs_dir: Path | None 
     acciones.registrar("archivo.navegador", "Abrir en el &navegador", "internet-web-browser", None, "Archivo", habilitada=False, al_disparar=sitios.abrirNavegador,
                        descripcion="El dominio del sitio actual (Netlify)")
     acciones.registrar("archivo.copiar", "Copiar &ruta", "edit-copy", "Ctrl+Shift+C", "Archivo", habilitada=False, al_disparar=lambda *_: espacio.copiar(objetivo()))
-    acciones.registrar("archivo.excel", "Abrir el &Excel de metadatos", "x-office-spreadsheet", None, "Archivo", al_disparar=flujo.abrirExcel,
+    acciones.registrar("archivo.excel", "Abrir el &Excel de metadatos", "x-office-spreadsheet-symbolic", None, "Archivo", al_disparar=flujo.abrirExcel,
                        descripcion="El Excel de metadatos con la aplicación del sistema (LibreOffice Calc)")
     # --- Editar
     acciones.registrar("editar.filtrar", "&Buscar", "edit-find", StandardKey.Find, "Editar", al_disparar=pedir("filtrar"),

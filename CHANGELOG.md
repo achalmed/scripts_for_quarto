@@ -18,6 +18,12 @@ Vigentes: `blogs_manager` 4.0.0 · `metadata_manager` 2.3.0 · `generador_public
 
 ## [Unreleased]
 
+- **Quarto Studio: el acabado de la familia** (gui-comun 4.2; `estado.md`, 2026-11-19): áreas, vistas y lado de
+  Herramientas en el `SelectorSegmentado` de la base; la acción principal con `BotonPrincipal`; una sola fila elegida en el
+  árbol, teñida con su marca; los estados con un punto de su color en lugar de los emblemas `data-*`; los sitios sin
+  publicar como píldoras; Publicación, Metadatos y Operación reordenados; los diálogos sin la × roja
+  (`docs/figuras/quarto-studio-acabado.png`).
+
 - **Quarto Studio 2.1.0: «Antes de publicar…»** (Ctrl+Alt+E, menú Sitio; campo 15 «Publicación web» de
   `prompts/00 metodo/FLUJO_DE_CONOCIMIENTO.md`, C15.1 a C15.8; `docs/decisiones.md`, 2026-11-19): los controles de «Antes
   de entregar» de escritura sobre la entrada abierta (cifras del paquete por `{{< meta cifras.… >}}`, citas que existen y

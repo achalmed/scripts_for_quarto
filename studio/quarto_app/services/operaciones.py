@@ -20,8 +20,9 @@ from quarto_app.services import blog_service, index_service, metadata_service, p
 from quarto_app.services import sitios as svc_sitios
 from quarto_app.services.command import Command
 
-VISTAS = (("sitios", "Sitios", "folder-html"), ("entradas", "Entradas y metadatos", "text-markdown"),
-          ("indice", "Índice del vault", "emblem-symbolic-link"), ("contenido", "Índices de contenido", "view-list-text"))
+# simbólicos (monocromos): van en el selector segmentado de Herramientas
+VISTAS = (("sitios", "Sitios", "globe-symbolic"), ("entradas", "Entradas y metadatos", "text-markdown-symbolic"),
+          ("indice", "Índice del vault", "link-symbolic"), ("contenido", "Índices de contenido", "view-list-text-symbolic"))
 NOMBRES_VISTAS = tuple(v[0] for v in VISTAS)
 
 

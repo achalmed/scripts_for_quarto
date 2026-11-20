@@ -14,6 +14,7 @@ Kirigami.Dialog {
     preferredWidth: Kirigami.Units.gridUnit * 36
     preferredHeight: Kirigami.Units.gridUnit * 30
     standardButtons: Kirigami.Dialog.Cancel
+    showCloseButton: false            // ya hay botones al pie: sin la × del encabezado
     customFooterActions: [Kirigami.Action {
         text: "Crear"; icon.name: "document-new"; enabled: titulo.text.trim() !== ""
         onTriggered: {

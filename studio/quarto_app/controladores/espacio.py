@@ -16,8 +16,9 @@ from quarto_app.services import operaciones as ops
 NOMBRES_VISTAS = ops.NOMBRES_VISTAS
 
 
-AREAS = (("escribir", "Escribir", "document-edit"), ("metadatos", "Metadatos", "view-list-details"),
-         ("publicacion", "Publicación", "cloud-upload"), ("herramientas", "Herramientas", "tools"))
+# simbólicos (monocromos): en el selector de áreas, los iconos a color o de otro estilo desentonaban
+AREAS = (("escribir", "Escribir", "document-edit-symbolic"), ("metadatos", "Metadatos", "view-list-details-symbolic"),
+         ("publicacion", "Publicación", "cloud-upload-symbolic"), ("herramientas", "Herramientas", "tools-symbolic"))
 NOMBRES_AREAS = tuple(n for n, _t, _i in AREAS)
 
 

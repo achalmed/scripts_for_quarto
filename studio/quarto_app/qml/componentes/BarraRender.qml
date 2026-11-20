@@ -6,6 +6,7 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls as QQC2
 import org.kde.kirigami as Kirigami
+import GuiComun
 
 QQC2.ToolBar {
     id: raiz
@@ -36,9 +37,11 @@ QQC2.ToolBar {
         spacing: Kirigami.Units.smallSpacing
 
         // el estado del render
-        Kirigami.Icon {
-            implicitWidth: Kirigami.Units.iconSizes.small; implicitHeight: implicitWidth
-            source: raiz.o.renderEnCurso ? "run-build" : (raiz.fallo ? "data-error" : (raiz.hayRender ? "data-success" : "run-build"))
+        // el estado del render: un punto de su color (Kirigami.Icon no recolorea los simbólicos de Colloid)
+        QQC2.Label {
+            text: "●"
+            color: raiz.fallo ? Kirigami.Theme.negativeTextColor : raiz.o.renderEnCurso ? Kirigami.Theme.activeTextColor
+                 : raiz.hayRender ? Kirigami.Theme.positiveTextColor : Kirigami.Theme.disabledTextColor
             Accessible.name: raiz.fallo ? "El render falló" : "Estado del render"
         }
         QQC2.Label {
@@ -54,7 +57,7 @@ QQC2.ToolBar {
         QQC2.ToolButton {
             visible: raiz.s.hayActual && raiz.s.nProblemas > 0
             text: raiz.s.resumenProblemas
-            icon.name: "data-warning"
+            icon.name: "dialog-warning-symbolic"
             onClicked: raiz.verProblemas()
             QQC2.ToolTip.text: "Los errores y avisos del último render de " + raiz.s.nombre + ", con su archivo y su línea"
             QQC2.ToolTip.visible: hovered
@@ -69,17 +72,16 @@ QQC2.ToolBar {
         }
         Repeater {
             model: raiz.s.pendientes
-            delegate: QQC2.ToolButton {
+            // cada sitio sin publicar, una píldora con el punto de su estado (sin render: neutro; sin publicar: activo)
+            delegate: OpcionColor {
                 required property var modelData
                 text: modelData.nombre
-                icon.name: modelData.clave === "sin_render" ? "data-warning" : "data-information"
-                checkable: false
-                highlighted: modelData.nombre === raiz.s.nombre
+                color: modelData.clave === "sin_render" ? Kirigami.Theme.neutralTextColor : Kirigami.Theme.activeTextColor
+                compacta: true
+                elegida: modelData.nombre === raiz.s.nombre
+                descripcion: modelData.estado + ": " + modelData.motivo + " · un clic lleva a su publicación"
                 onClicked: raiz.irAPublicacion(modelData.nombre)
                 Accessible.name: modelData.nombre + ", " + modelData.estado
-                QQC2.ToolTip.text: modelData.estado + ": " + modelData.motivo
-                QQC2.ToolTip.visible: hovered
-                QQC2.ToolTip.delay: Kirigami.Units.toolTipDelay
             }
         }
     }
