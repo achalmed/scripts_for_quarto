@@ -171,7 +171,7 @@ def plan_limpiar_todos(ctx: Contexto) -> str:
 
 
 def plan_respaldar(ctx: Contexto) -> str:
-    destino = blog_service.settings().get("rutas/backup_dir") or "la carpeta de respaldos del gestor (QBLOG_BACKUP_DIR: archivo/backups-publicaciones)"
+    destino = blog_service.settings().get("rutas/backup_dir") or "la carpeta de respaldos del gestor (QBLOG_BACKUP_DIR: $RESPALDOS_DIR/quarto/publicaciones, en el SSD)"
     lineas = [f"Respaldar los {len(ctx.sitios)} sitios (`main.sh backup`, opción 1; no se borran respaldos antiguos) en {destino}:"]
     lineas += [f"  {nombre} ({ruta})" for nombre, ruta, _e in ctx.sitios]
     return "\n".join(lineas)

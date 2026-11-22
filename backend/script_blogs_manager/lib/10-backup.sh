@@ -57,6 +57,11 @@ backup_blogs_interactive() {
     local date_str
     date_str=$(date +%Y%m%d_%H%M%S)
 
+    # sin el disco de respaldos (su carpeta madre), no se respalda en la laptop en su lugar
+    if [[ ! -d "$(dirname "$backup_dir")" && ! -d "$backup_dir" ]]; then
+        print_error "No está la carpeta de respaldos ($(dirname "$backup_dir")): conecta el SSD; no se respalda en la laptop."
+        return 1
+    fi
     mkdir -p "$backup_dir"
 
     print_header "Backup de Publicaciones"

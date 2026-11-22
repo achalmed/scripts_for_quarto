@@ -22,7 +22,7 @@
 #
 # Variables de entorno opcionales:
 #   DOCS_ROOT          Fuerza la raíz del workspace (por defecto, la de core/env.sh)
-#   QBLOG_BACKUP_DIR   Fuerza la ruta del directorio de backups
+#   QBLOG_BACKUP_DIR   Fuerza la ruta del directorio de backups (por defecto, $RESPALDOS_DIR/quarto/publicaciones)
 # =============================================================================
 
 set -uo pipefail
@@ -77,8 +77,9 @@ DOCS_ROOT="$(utils_detect_docs_dir)" || {
     exit 1
 }
 
-# --- Directorio de backups (autodetectado relativo a Documents, salvo override)
-QBLOG_BACKUP_DIR="${QBLOG_BACKUP_DIR:-$DOCS_ROOT/archivo/backups-publicaciones}"
+# --- Directorio de backups: en el SSD ($RESPALDOS_DIR de core/env.sh), nunca en el disco de la laptop (2026-11-21,
+# pedido del autor); QBLOG_BACKUP_DIR lo fuerza. Si el SSD no está montado, el backup se niega (lib/10-backup.sh).
+QBLOG_BACKUP_DIR="${QBLOG_BACKUP_DIR:-$RESPALDOS_DIR/quarto/publicaciones}"
 
 # Helper interno: resuelve un nombre de blog ingresado por el usuario a su
 # ruta absoluta, dejándola en la variable global QBLOG_RESOLVED_PATH. Si no
