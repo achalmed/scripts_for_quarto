@@ -5,6 +5,8 @@
 // frontmatter). Ctrl+Z lo deshace y el archivo se escribe solo con Ctrl+S. Poner en el editor (o, en la auditoría,
 // «Registrar el uso») deja el uso en _ia/registro.yml del post, que pide «Antes de publicar». Antes de copiar, la ventana
 // revisa si el prompt lleva datos de estudiantes o del despacho (C12.3) y, si los lleva, copiar queda a decisión del autor.
+// La lección de un curso (curso: y tema: en el frontmatter) tiene su modo, con el prompt 05/05 y el esqueleto de
+// leccion.py. Si la entrada no incluye todavía _ia/declaracion.md, una casilla ofrece ponerlo al final al aceptar.
 // Ningún modelo se llama desde aquí: todo es studio.ayuda.
 import QtQuick
 import QtQuick.Layouts
@@ -24,6 +26,7 @@ Kirigami.Dialog {
     property var revision: null                 // {sensible, nivel, hallazgos, porque, fuente}
     property bool esperando: false
     property bool revisando: false
+    readonly property var declaracion: editor ? a.incluirDeclaracion(editor.area.text) : null   // {texto, cambiado, linea}
 
     title: "Ayuda de la IA" + (prompt && prompt.nombre ? " — " + prompt.nombre : "")
     preferredWidth: Kirigami.Units.gridUnit * 44
@@ -86,6 +89,10 @@ Kirigami.Dialog {
                     if (r.antes) area.remove(i, i + r.antes.length)
                     area.insert(i, r.despues)
                     dialogo.editor.seleccionar(i, i + r.despues.length)
+                }
+                if (incluir.visible && incluir.checked && !dialogo.editor.soloLectura) {
+                    const ar = dialogo.editor.area, linea = dialogo.declaracion.linea
+                    ar.insert(ar.text.length, (ar.text.endsWith("\n\n") ? "" : ar.text.endsWith("\n") ? "\n" : "\n\n") + linea + "\n")
                 }
                 dialogo.registrar("")
                 ventana.mensajes.mostrar(r.pone === "nada" ? "Uso registrado: corrige la entrada con lo que aceptes."
@@ -211,6 +218,15 @@ Kirigami.Dialog {
                 font: Kirigami.Theme.fixedWidthFont
                 wrapMode: dialogo.pegado && dialogo.pegado.pone === "nada" ? TextEdit.Wrap : TextEdit.NoWrap
                 Accessible.name: "Cambio sugerido"
+            }
+            QQC2.CheckBox {
+                id: incluir
+                Layout.fillWidth: true
+                visible: !!dialogo.pegado && dialogo.pegado.ok === true && !!dialogo.declaracion && dialogo.declaracion.cambiado
+                         && !!dialogo.editor && !dialogo.editor.soloLectura
+                checked: true
+                text: "Incluir al final de la entrada " + (dialogo.declaracion ? dialogo.declaracion.linea : "")
+                      + " (la declaración del uso de la IA que pide «Antes de publicar»)"
             }
         }
     }

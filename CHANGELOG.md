@@ -18,6 +18,10 @@ Vigentes: `blogs_manager` 4.0.0 · `metadata_manager` 2.3.0 · `generador_public
 
 ## [Unreleased]
 
+- **Quarto Studio: la lección del tema y la declaración en «Ayuda de la IA»** (2026-11-24): un quinto modo con el
+  prompt `05 docencia/prompt_05_leccion_del_curso` y el esqueleto de `docencia/scripts/leccion.py proponer`, pedido con
+  el `curso:` y el `tema:` del frontmatter; al aceptar, una casilla pone `{{< include _ia/declaracion.md >}}` al final
+  de la entrada si no lo tiene (`services/ayuda_ia.py`, `DialogoAyudaIA.qml`; `tests/studio/test_ayuda_ia.py`).
 - **Quarto Studio: «Ayuda de la IA para la entrada…»** (Ctrl+Alt+A, Herramientas; plan «aprender y enseñar», fase 4.5,
   2026-11-24): copia el prompt de posts del ecosistema (`07 produccion/contenido_web/prompt_01`) con la entrada abierta y
   el modo (una sección, la introducción, los metadatos o la auditoría editorial), revisa antes de copiar si lleva datos

@@ -86,6 +86,11 @@ class AyudaIA(QObject):
             QGuiApplication.clipboard().setText(texto)
             self.consola.registrar("info", f"Prompt de posts copiado ({len(texto)} caracteres)")
 
+    @Slot(str, result="QVariantMap")
+    def incluirDeclaracion(self, texto: str) -> dict:
+        """{texto, cambiado, linea}: la entrada con `{{< include _ia/declaracion.md >}}` al final, si no lo tiene (no escribe)."""
+        return ayuda_ia.incluir_declaracion(texto)
+
     @Slot(str, str, str, str)
     def comprobar(self, modo: str, pegado: str, texto: str, seleccion: str) -> None:
         """Lo pegado, leído contra el texto del editor; `pegadoListo` trae el cambio sugerido."""

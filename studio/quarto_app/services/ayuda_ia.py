@@ -17,9 +17,12 @@ Método: el ciclo común de `core/py-common/ia_externa.py` (2026-11-23), cargado
   frontmatter) o que se lee (la auditoría editorial); el índice SEO y las metadescripciones se piden en el chat.
 Fundamento: el prompt 07/01 (su §4 y su §7) y su C12.1 (lo que propuso la IA va marcado como suyo y se declara); COPE
   (2023), en `escritura/scripts/entrega/ia.py`.
-Límite: no hay todavía un prompt para la lección de un curso en el pub (`docencia`, fase 4.3): una lección se trabaja con
-  el de posts hasta que exista el suyo (estado.md § Por hacer). No comprueba las cifras ni las citas: eso es de «Antes de
-  publicar».
+  La lección de un curso en el pub (una entrada con `curso:` y `tema:` en su frontmatter) tiene su modo propio con el
+  prompt `05 docencia/prompt_05_leccion_del_curso` (2026-11-24): su entrada lleva el esqueleto que propone
+  `docencia/scripts/leccion.py proponer CURSO TEMA` (resultados, apuntes, módulos del curso tomado, fichas, ejercicios y
+  quiz del banco), que se pide aquí mismo; el material del curso tomado no viaja, solo su obra por número de Calibre.
+  Al registrar el uso, la ventana ofrece incluir `_ia/declaracion.md` en la entrada (`incluir_declaracion`).
+Límite: no comprueba las cifras ni las citas: eso es de «Antes de publicar».
 """
 from __future__ import annotations
 
@@ -34,6 +37,8 @@ from pathlib import Path
 from quarto_app.services import paths
 
 PROMPT_POST = "07 produccion/contenido_web/prompt_01_metadatos_y_seo_del_post.md"
+PROMPT_LECCION = "05 docencia/prompt_05_leccion_del_curso.md"
+DECLARACION = "_ia/declaracion.md"   # la que escribe `registrar_ia`, relativa a la carpeta de la entrada
 LARGO = 60000              # caracteres: por encima, un chat externo puede cortar el mensaje (como en LaTeX Studio)
 MAX_ENTRADA = 40000        # lo que va de la entrada abierta
 INTERPRETE = "/usr/bin/python3"
@@ -50,6 +55,13 @@ MODOS = (
      "descripcion": "El frontmatter completo del index.qmd (título, description, abstract o resumen, autoría…); reemplaza el actual."},
     {"clave": "auditoria", "nombre": "La auditoría editorial", "modo": "auditoría editorial de un post escrito", "lenguas": (),
      "pone": "nada", "descripcion": "Hechos y normas, argumento, estructura, voz y citas, por prioridad; no cambia el post: lo corriges tú."},
+    {"clave": "leccion", "nombre": "La lección del tema", "modo": "", "lenguas": ("markdown", "md", "qmd"), "pone": "cursor",
+     "prompt": PROMPT_LECCION, "leccion": True,
+     "vuelta": ("Devuelve PRIMERO un solo bloque ```markdown con el cuerpo de la lección (Markdown de Quarto, sin frontmatter "
+                "ni `---`, con sus seis secciones y la marca de borrador de la IA) y después, fuera del bloque, «Para decidir "
+                "o comprobar», como pide el «7 Formato de salida»."),
+     "descripcion": "Para la lección de un curso (con curso: y tema: en el frontmatter): el borrador de sus seis secciones desde "
+                    "el esqueleto de leccion.py, tus apuntes y tus fichas; va en el cursor."},
 )
 POR_CLAVE = {m["clave"]: m for m in MODOS}
 
@@ -120,6 +132,65 @@ def modos() -> list[dict]:
     return [{k: m[k] for k in ("clave", "nombre", "descripcion", "pone")} for m in MODOS]
 
 
+def _ruta_prompt(m: dict) -> str:
+    return m.get("prompt") or PROMPT_POST
+
+
+# --- la lección de un curso ------------------------------------------------------------------------------------------
+
+def curso_y_tema(fm: dict) -> tuple[str, str]:
+    """El curso y el tema que declara la entrada en su frontmatter (los que pone `web/scripts/cursos.py`); vacíos si no."""
+    return str(fm.get("curso") or "").strip(), str(fm.get("tema") or "").strip()
+
+
+def esqueleto_leccion(curso: str, tema: str, timeout: int = 60) -> tuple[str, str]:
+    """(el esqueleto en Markdown de `docencia/scripts/leccion.py proponer CURSO TEMA`, el error). Solo lee."""
+    try:
+        docencia = Path(paths.core_env().CLASS_DIR)
+    except Exception:                                        # noqa: BLE001  sin core/env.py
+        return "", "no se encontró core/env.py (CLASS_DIR)"
+    script = docencia / "scripts" / "leccion.py"
+    if not script.is_file():
+        return "", f"no se encontró {script}"
+    try:
+        r = subprocess.run([INTERPRETE, str(script), "proponer", curso, tema, "--formato", "md"], capture_output=True,
+                           text=True, timeout=timeout, cwd=str(docencia))
+    except (OSError, subprocess.TimeoutExpired) as e:
+        return "", f"leccion.py no respondió ({e})"
+    if r.returncode != 0:
+        return "", (r.stderr or r.stdout).strip().splitlines()[-1] if (r.stderr or r.stdout).strip() else f"salida {r.returncode}"
+    return r.stdout.strip(), ""
+
+
+def _entrada_leccion(fm: dict, ruta: str, contenido: str, seleccion: bool) -> list[str]:
+    curso, tema = curso_y_tema(fm)
+    if curso and tema:
+        esq, error = esqueleto_leccion(curso, tema)
+        linea_esq = (f"El esqueleto propuesto de la lección (salida de `leccion.py proponer {curso} {tema}`):\n{esq}" if esq else
+                     f"El esqueleto propuesto de la lección: no se pudo obtener ({error}); pídelo a la persona y detente.")
+    else:
+        linea_esq = ("El esqueleto propuesto de la lección: la entrada no declara `curso:` y `tema:` en su frontmatter; pide a "
+                     "la persona la salida de `leccion.py proponer CURSO TEMA` y detente.")
+    return [
+        linea_esq,
+        "Los apuntes propios del docente sobre el tema y sus fichas, con su página: los pegará la persona en el chat; "
+        "pregúntalos si faltan. " + ("Lo que seleccionó en el editor es su borrador:\n" if seleccion else
+                                     "Lo que la lección ya tiene escrito (sin su frontmatter):\n")
+        + (contenido or "(vacío: la lección todavía no tiene texto)"),
+        f"El público y la extensión: no están declarados en la entrada «{fm.get('title') or Path(ruta).parent.name}»; pregúntalos.",
+    ]
+
+
+def incluir_declaracion(texto: str, declaracion: str = DECLARACION) -> dict:
+    """El texto de la entrada con `{{< include _ia/declaracion.md >}}` al final, si no lo tiene. → {texto, cambiado,
+    linea}. «Antes de publicar» exige que la entrada lo incluya cuando su uso de la IA está registrado (C12.1)."""
+    linea = "{{< include " + declaracion + " >}}"
+    if re.search(r"\{\{<\s*include\s+" + re.escape(declaracion) + r"\s*>\}\}", texto or ""):
+        return {"texto": texto, "cambiado": False, "linea": linea}
+    base = (texto or "").rstrip("\n")
+    return {"texto": base + ("\n\n" if base else "") + linea + "\n", "cambiado": True, "linea": linea}
+
+
 # --- la entrada ----------------------------------------------------------------------------------------------------
 
 def partes_del_post(texto: str) -> tuple[str, dict, str]:
@@ -142,9 +213,9 @@ def _autores(fm: dict) -> str:
     return ", ".join(nombres)
 
 
-def _fuente(texto: str) -> dict:
+def _fuente(texto: str, ruta: str = PROMPT_POST) -> dict:
     _fm, datos, _c = partes_del_post(texto)
-    return {"ruta": PROMPT_POST, "titulo": str(datos.get("titulo") or Path(PROMPT_POST).stem), "version": str(datos.get("version") or "")}
+    return {"ruta": ruta, "titulo": str(datos.get("titulo") or Path(ruta).stem), "version": str(datos.get("version") or "")}
 
 
 def prompt(clave: str, ruta: str, texto: str, seleccion: str = "") -> dict:
@@ -160,16 +231,16 @@ def prompt(clave: str, ruta: str, texto: str, seleccion: str = "") -> dict:
         return {"error": motivo}
     c = comun()
     try:
-        crudo = c.leer_prompt(PROMPT_POST, prompts_dir())
-    except ValueError as e:
-        return {"error": f"No se pudo leer el prompt de posts: {e}"}
+        crudo = c.leer_prompt(_ruta_prompt(m), prompts_dir())
+    except (ValueError, OSError) as e:
+        return {"error": f"No se pudo leer el prompt ({_ruta_prompt(m)}): {e}"}
     fm_texto, fm, cuerpo = partes_del_post(texto)
     seleccion = (seleccion or "").strip()
     titulo = str(fm.get("title") or Path(ruta).parent.name)
     contenido = seleccion if seleccion and m["pone"] == "cursor" else cuerpo.strip()
     recortado = len(contenido) > MAX_ENTRADA
     contenido = contenido[:MAX_ENTRADA].rstrip() + ("\n(… recortado)" if recortado else "")
-    entrada = [
+    entrada = _entrada_leccion(fm, ruta, contenido, bool(seleccion)) if m.get("leccion") else [
         f"Modo: {m['modo']}.",
         f"Tema o palabra clave principal: el de la entrada «{titulo}»" + (f" ({fm['subtitle']})" if fm.get("subtitle") else "")
         + "; si no basta, pregúntalo antes de generar.",
@@ -184,14 +255,14 @@ def prompt(clave: str, ruta: str, texto: str, seleccion: str = "") -> dict:
         ("Borrador de la sección (lo seleccionado):\n" if seleccion and m["pone"] == "cursor" else "Contenido de la entrada (sin su frontmatter):\n")
         + (contenido or "(vacío: la entrada todavía no tiene texto)"),
     ]
-    fuente = _fuente(crudo)
+    fuente = _fuente(crudo, _ruta_prompt(m))
     bloques = [f"# {fuente['titulo']} · {m['nombre'].lower()} de «{titulo}»",
                f"(Versión {fuente['version'] or '—'} de este prompt. Su sección «4 Entrada» la trae, ya rellena, el bloque "
                "«entrada» de abajo: no hace falta abrir nada más.)",
                c.para_ia(crudo, prompts_dir()).strip(),
                "<entrada>\n" + "\n\n".join(entrada) + "\n</entrada>",
                "## Formato de vuelta para el editor (manda sobre el «7 Formato de salida» del prompt en lo que va al editor)\n"
-               + VUELTA[m["pone"]] + "\n\n" + CIERRE]
+               + (m.get("vuelta") or VUELTA[m["pone"]]) + "\n\n" + CIERRE]
     texto_prompt = "\n\n".join(b for b in bloques if b.strip())
     t = c.traductor(prompts_dir())
     return {"prompt": texto_prompt, "entrada": "\n\n".join(entrada), "modo": clave, "nombre": m["nombre"], "pone": m["pone"], "fuente": fuente,
@@ -285,7 +356,8 @@ def uso(clave: str, ruta: str, fuente: dict, texto_prompt: str, parte: str = "")
     (el motor guarda la huella del texto del prompt, no el texto)."""
     m = POR_CLAVE.get(clave) or {"nombre": clave, "pone": "nada"}
     que = m["nombre"].lower()
-    resumen = (f"la IA propuso {que} con el prompt de posts; el autor la revisó y la puso en la entrada" if m["pone"] != "nada"
+    con = "con el prompt de la lección" if m.get("leccion") else "con el prompt de posts"
+    resumen = (f"la IA propuso {que} {con}; el autor la revisó y la puso en la entrada" if m["pone"] != "nada"
                else f"la IA hizo {que} de la entrada; el autor corrigió lo que aceptó")
     return {"archivo": Path(ruta).name, "parte": parte or m["nombre"],
             "prompt": {"titulo": fuente.get("titulo", ""), "ruta": fuente.get("ruta", ""), "version": fuente.get("version", ""),

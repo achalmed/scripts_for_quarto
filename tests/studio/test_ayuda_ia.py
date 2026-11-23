@@ -31,7 +31,7 @@ def servicio(monkeypatch, muestra_sesion):
 
 def test_el_prompt_de_posts_con_la_entrada(servicio):
     assert servicio.disponible(), servicio.motivo_no_disponible()
-    assert [m["clave"] for m in servicio.modos()] == ["seccion", "introduccion", "metadatos", "auditoria"]
+    assert [m["clave"] for m in servicio.modos()] == ["seccion", "introduccion", "metadatos", "auditoria", "leccion"]
     p = servicio.prompt("seccion", "/s/posts/2026-11-20-salario/index.qmd", POST, "## Qué cambió\n\nUn borrador de la sección.")
     assert not p.get("error"), p
     assert p["fuente"]["ruta"] == servicio.PROMPT_POST and p["fuente"]["version"]
@@ -42,6 +42,42 @@ def test_el_prompt_de_posts_con_la_entrada(servicio):
     m = servicio.prompt("metadatos", "/s/posts/x/index.qmd", POST)
     assert "Frontmatter actual" in m["prompt"] and "citation: true" in m["prompt"] and "```yaml" in m["prompt"]
     assert servicio.prompt("otro", "/s/x.qmd", POST)["error"]
+
+
+LECCION = ("---\ntitle: \"Regresión simple\"\ncurso: econometria-i\ntema: \"1.2\"\n---\n\n## Objetivos\n\nPor escribir.\n")
+
+
+def test_la_leccion_con_su_prompt_y_el_esqueleto(servicio, monkeypatch):
+    if not (PROMPTS / servicio.PROMPT_LECCION).is_file():
+        pytest.skip("sin el prompt 05/05")
+    pedidos = []
+
+    def falso(curso, tema, timeout=60):
+        pedidos.append((curso, tema))
+        return "## Objetivos\n- R1: estimar e interpretar la pendiente", ""
+    monkeypatch.setattr(servicio, "esqueleto_leccion", falso)
+    p = servicio.prompt("leccion", "/s/cursos/econometria-i/1-2/index.qmd", LECCION)
+    assert not p.get("error"), p
+    assert pedidos == [("econometria-i", "1.2")], "el curso y el tema salen del frontmatter"
+    assert p["fuente"]["ruta"] == servicio.PROMPT_LECCION and p["fuente"]["version"]
+    assert "leccion.py proponer econometria-i 1.2" in p["prompt"] and "R1: estimar" in p["entrada"]
+    assert "Por escribir." in p["entrada"] and "Modo:" not in p["entrada"]
+    assert "Para decidir o comprobar" in p["prompt"], "el formato de vuelta es el de la lección"
+    sin = servicio.prompt("leccion", "/s/posts/x/index.qmd", POST)
+    assert "no declara `curso:` y `tema:`" in sin["entrada"] and len(pedidos) == 1
+    r = servicio.leer("leccion", "```markdown\n## Objetivos\n\nEstimar la pendiente [VERIFICAR].\n```\n\nPara decidir: la cifra.", LECCION)
+    assert r["ok"] and r["pone"] == "cursor" and any("pendiente" in a for a in r["avisos"])
+    u = servicio.uso("leccion", "/s/x/index.qmd", p["fuente"], p["prompt"])
+    assert "prompt de la lección" in u["resumen"] and u["prompt"]["ruta"] == servicio.PROMPT_LECCION
+
+
+def test_la_declaracion_se_incluye_una_sola_vez(servicio):
+    r = servicio.incluir_declaracion(POST)
+    assert r["cambiado"] and r["texto"].endswith("\n\n{{< include _ia/declaracion.md >}}\n") and r["texto"].startswith(POST.rstrip())
+    otra = servicio.incluir_declaracion(r["texto"])
+    assert not otra["cambiado"] and otra["texto"] == r["texto"]
+    assert not servicio.incluir_declaracion("Texto\n\n{{<include  _ia/declaracion.md>}}\n")["cambiado"]
+    assert servicio.incluir_declaracion("")["texto"] == "{{< include _ia/declaracion.md >}}\n"
 
 
 def test_lo_pegado_como_cambio_sugerido(servicio):
