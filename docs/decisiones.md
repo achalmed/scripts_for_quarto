@@ -12,6 +12,18 @@ commit, no aquí; lo pendiente, a [`estado.md`](../estado.md) §Por hacer (ola 4
 
 ## Arquitectura
 
+- **2026-11-24 · La ayuda de la IA en un post: el ciclo común de copiar y pegar, y el uso declarado por el motor de
+  «Antes de publicar»** (plan «aprender y enseñar», fase 4.5). La ventana no llama a ningún modelo: arma el prompt de
+  posts (`07 produccion/contenido_web/prompt_01`, el único del repo de prompts que escribe un post) con
+  `core/py-common/ia_externa.py` (el traductor, la guarda del repo, el aviso C12.3), lee el bloque pegado con
+  `prompts/scripts/pegado.py` (`bloque`) y, al aceptar, registra el uso con `antes_de_publicar.py registrar_ia`, el
+  mismo registro que mira el control «Uso de la IA declarado»: no hay un cuarto cargador de prompts ni un registro
+  propio. Los modos son los del prompt que dan algo que se pone en la entrada o se lee (sección, introducción,
+  metadatos, auditoría); el índice SEO y las metadescripciones se piden en el chat. Los metadatos se ponen en el
+  editor en lugar del frontmatter, con su diferencia a la vista y el aviso de los campos que se quitarían: es lo que
+  haría el autor a mano y se guarda con Ctrl+S, así que no compite con el escritor de YAML del metadata manager, que
+  es el que escribe archivos. Antes de copiar se corre `escritura/scripts/sensibles.py`, la revisión de LaTeX Studio.
+  Una lección del pub no tiene todavía un prompt propio: va con el de posts hasta que exista (estado.md § Por hacer).
 - **2026-11-19 · «Antes de publicar»: el motor de controles de escritura, no uno propio** (campo 15 de la norma del
   flujo de conocimiento, aprobado por el autor el 2026-11-19). La ventana no revisa un post por su cuenta: corre
   `escritura/scripts/antes_de_publicar.py` como proceso (`studio/quarto_app/services/antes_de_publicar.py`), que adapta el `.qmd`

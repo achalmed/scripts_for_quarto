@@ -97,6 +97,8 @@ QT_QPA_PLATFORM=offscreen /usr/bin/python3 studio/main.py --smoke     # construy
 /usr/bin/python3 studio/capturar.py salida.png --area publicacion --sitio chaska
 tests/run.sh                                         # desde quarto-studio/: la muestra en un temporal, cada QML y --smoke; nada publica
 # «Antes de publicar…» (Ctrl+Alt+E) corre escritura/scripts/antes_de_publicar.py revisar <post> (el motor de «Antes de entregar»)
+# «Ayuda de la IA para la entrada…» (Ctrl+Alt+A) copia el prompt de posts con la entrada, lee lo pegado y, al ponerlo en el
+# editor, registra el uso con antes_de_publicar.py registrar_ia <post> (en _ia/registro.yml; no llama a ningún modelo)
 ```
 
 ## Límite honesto

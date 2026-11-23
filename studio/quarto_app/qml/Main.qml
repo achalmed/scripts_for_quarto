@@ -55,6 +55,7 @@ VentanaBase {
             case "aplicar": dialogoAplicar.abrir(); break
             case "nueva_entrada": dialogoEntrada.abrir(); break
             case "antes_de_publicar": dialogoPublicar.abrir(); break
+            case "ayuda_ia": dialogoAyuda.abrir(escritura.editorActual); break
             case "venv": dialogoVenv.open(); break
             case "pestana": espacio.fijarArea("herramientas"); herramientas.pestana = datos.indice; break
             case "paleta": ventana.paleta.abrir(datos.texto || ""); break
@@ -196,5 +197,6 @@ VentanaBase {
     }
     DialogoEntrada { id: dialogoEntrada }
     DialogoAntesDePublicar { id: dialogoPublicar }
+    DialogoAyudaIA { id: dialogoAyuda }
     dialogoAjustes: DialogoAjustesStudio {}
 }

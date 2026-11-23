@@ -1,7 +1,7 @@
 ---
 tipo: estado
 estado: activo
-actualizado: 2026-11-19
+actualizado: 2026-11-24
 ---
 # estado.md — quarto-studio (repo `scripts_for_quarto`)
 
@@ -15,6 +15,7 @@ ninguna prueba empuja ni confirma en ellos; las pruebas usan repos de fixture en
 
 | fecha | qué | dónde se ve |
 |---|---|---|
+| 2026-11-24 | **«Ayuda de la IA para la entrada…»** (Ctrl+Alt+A, Herramientas; plan «aprender y enseñar», fase 4.5): el prompt de posts del ecosistema (`07 produccion/contenido_web/prompt_01`) con la entrada abierta y el modo (una sección, la introducción, los metadatos, la auditoría editorial), traducido por `core/py-common/ia_externa.py`; la revisión C12.3 antes de copiar (`escritura/scripts/sensibles.py`); lo pegado, leído con `prompts/scripts/pegado.py` y mostrado como diferencia; «Poner en el editor» (en el cursor, en lugar de lo seleccionado o del frontmatter) y el uso en `_ia/registro.yml` con su `_ia/declaracion.md` (`antes_de_publicar.py registrar_ia`), lo que pide «Uso de la IA declarado». Nada escribe la entrada | `services/ayuda_ia.py`, `controladores/ayuda.py`, `qml/componentes/DialogoAyudaIA.qml`; `tests/studio/test_ayuda_ia.py`; `docs/decisiones.md` § Arquitectura |
 | 2026-11-19 | **El acabado de la familia** (gui-comun 4.2, nivel de la barra de Ñawinchay): las cuatro áreas, las vistas de Herramientas y su lado en el `SelectorSegmentado` de la base (antes, tres estilos: regleta, botones con el elegido en azul pleno y pestañas que en Oscuro se salían); «Renderizar este archivo», «Aplicar», «Renderizar» y «Publicar en …» son `BotonPrincipal`; el árbol con una sola fila elegida (el documento abierto; el sitio, solo la marca), teñida y sin el bloque rojo de Oscuro; los estados con un punto o un signo de su color en vez de los emblemas `data-*` (la «información» salía roja); los sitios sin publicar como píldoras (`OpcionColor`); Publicación con las tres acciones en fila, la etiqueta del estado y la tabla a su altura; Metadatos con el resumen a todo lo ancho; Operación sin los botones repetidos; los diálogos sin la × roja | `studio/quarto_app/qml/`, `controladores/espacio.py`, `services/operaciones.py`, `aplicacion.py`; `docs/figuras/quarto-studio-acabado.png` |
 | 2026-11-19 | «Cambió en el disco y aquí tiene cambios sin guardar» ya no es una franja en la ventana: va a las notificaciones de KDE con sus dos botones («Recargar del disco» · «Mantener lo mío»), por `ventana.mensajes.notificarConAcciones` de gui-comun (pedido del autor: ningún aviso dentro de la ventana en la familia) | `studio/*/qml/componentes/EspacioEscritura.qml` |
 | 2026-11-19 | **«Antes de publicar…» (Ctrl+Alt+E): Quarto Studio entra al flujo de conocimiento** (campo 15 de la norma, aprobado por el autor; C15.1 a C15.8): los controles de «Antes de entregar» de escritura sobre la entrada abierta, con su veredicto, los puntos manuales, «Traer las cifras…» del paquete de datafw, la constancia y la medición; en Publicación, el veredicto de cada entrada que se publica | `docs/decisiones.md` (2026-11-19); `tests/studio/test_antes_de_publicar.py`; `escritura/scripts/antes_de_publicar.py` |
@@ -46,6 +47,8 @@ nada en curso
 
 ## Por hacer
 
+- 2026-11-24 · dueño: prompts (director) · **un prompt para la lección de un curso en el pub**: no hay ninguno en el repo de prompts (el de posts, `07 produccion/contenido_web/prompt_01`, es de SEO y metadatos de un post). Propuesta: `05 docencia/prompt_05_leccion_del_curso`, que desde el apunte o las fichas escriba el `index.qmd` de la lección (objetivos, desarrollo con palabras propias, ejemplos, ejercicios y la autoevaluación desde el banco de la sesión, con las fuentes por `calibre_id`; el esqueleto de la fase 4.3). Cuando exista, `services/ayuda_ia.py` lo ofrece en las lecciones (una fila más en `MODOS` o un prompt por tipo de entrada).
+- 2026-11-24 · dueño: **el autor** · usar Ctrl+Alt+A en la sesión real sobre una entrada de un pub (la sesión lo probó solo con la familia de muestra): copiar, pegar en el chat, poner en el editor y ver que «Antes de publicar» pide incluir `{{< include _ia/declaracion.md >}}`; decir si conviene que la ventana lo ofrezca insertar.
 - 2026-11-18 · dueño: **el autor** · ver la forma de escritor en la sesión real: «Renderizar este archivo» sobre una
   entrada de un pub (que la vista previa se recargue y la franja diga el resultado), el árbol con el hub y sus pubs, y el
   cambio de claro a oscuro con la ventana abierta (`plasma-apply-colorscheme LliphiOscuro`; probado solo aislado, con un

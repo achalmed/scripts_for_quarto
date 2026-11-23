@@ -26,6 +26,7 @@ from gui_comun.tareas import Tareas
 from quarto_app import APP_NAME, APP_VERSION, ORG_NAME
 from quarto_app.controladores.ajustes import Ajustes
 from quarto_app.controladores.arbol import Arbol
+from quarto_app.controladores.ayuda import AyudaIA
 from quarto_app.controladores.documentos import Documentos
 from quarto_app.controladores.entrega import AntesDePublicar
 from gui_comun.editor import ControladorEditor
@@ -91,6 +92,7 @@ def construir(app: Aplicacion, cache: Path | None = None, docs_dir: Path | None 
     metadatos = Metadatos(sitios, flujo)
     arbol = Arbol(sitios, documentos)
     entrega = AntesDePublicar(documentos, tareas, consola)        # «Antes de publicar»: los controles del flujo (C15)
+    ayuda = AyudaIA(documentos, tareas, consola)                   # «Ayuda de la IA para la entrada»: copiar y pegar (fase 4.5)
     operaciones.archivo_actual = lambda: documentos.actual       # «Renderizar este archivo» (N 5.16)
     operaciones.guarda_destino = publicacion.motivoDestino     # E9: publicar y empujar solo si el destino es el del sitio
     operaciones.firma_publicacion = publicacion.firma          # N 5.10: publicar solo tras simular lo mismo que se publicará
@@ -168,6 +170,11 @@ def construir(app: Aplicacion, cache: Path | None = None, docs_dir: Path | None 
     acciones.registrar("sitio.problemas", "Ver los &problemas del render", "data-warning", None, "Sitio", habilitada=False,
                        al_disparar=lambda *_: (espacio.fijarVista("sitios"), espacio.fijarArea("herramientas"), interfaz.pedir.emit("pestana", {"indice": 2})))
     # --- Herramientas
+    acciones.registrar("herr.ayuda_ia", "&Ayuda de la IA para la entrada…", "tools-wizard", "Ctrl+Alt+A", "Herramientas", habilitada=False,
+                       operacion="lectura", al_disparar=pedir("ayuda_ia"),
+                       descripcion="Copia el prompt de posts del ecosistema con la entrada abierta (una sección, la introducción, los metadatos "
+                                   "o la auditoría editorial), lee lo que respondió tu chat como cambio sugerido y, al ponerlo en el editor, "
+                                   "deja el uso declarado en _ia/ para «Antes de publicar»; no llama a ningún modelo")
     acciones.registrar("herr.lanzador", "Instalar el acceso &directo", "application-x-executable", None, "Herramientas", al_disparar=lambda *_: instalar_lanzador(),
                        operacion="instalacion", consecuencias="Escribe el lanzador .desktop y el icono de Quarto Studio en el menú de aplicaciones de tu usuario (install.sh).")
     acciones.registrar("herr.venv", "El &entorno del studio…", "python", None, "Herramientas", al_disparar=pedir("venv"),
@@ -187,7 +194,7 @@ def construir(app: Aplicacion, cache: Path | None = None, docs_dir: Path | None 
         ("&Sitio", ["sitio.renderizar_archivo", "sitio.renderizar", "sitio.antes_de_publicar", "sitio.simular_publicar", "sitio.publicar", "|", "op.simular", "op.aplicar", "op.cancelar", "|",
                     "sitio.nueva_entrada", "sitio.problemas", "|"] + [f"op.{o.id}" for o in ops.de_vista("sitios")]),
         ("&Flujo", [(f"&{t}", [f"op.{o.id}" for o in ops.de_vista(n)]) for n, t, _i in ops.VISTAS if n != "sitios"]),
-        ("&Herramientas", ["herr.lanzador", "herr.venv", "|", "ventana.paleta"]),
+        ("&Herramientas", ["herr.ayuda_ia", "|", "herr.lanzador", "herr.venv", "|", "ventana.paleta"]),
         ("A&justes", ["app.ajustes"]),
         ("Ay&uda", ["ayuda.manual", "ayuda.backend", "app.acerca"]),
     ])
@@ -275,6 +282,7 @@ def construir(app: Aplicacion, cache: Path | None = None, docs_dir: Path | None 
         acciones.habilitar("sitio.publicar", publicable)
         acciones.habilitar("sitio.simular_publicar", hay_sitio and not activa)
         acciones.habilitar("sitio.antes_de_publicar", entrega.disponible)
+        acciones.habilitar("herr.ayuda_ia", espacio.area == "escribir" and ayuda.disponible)
         for nombre in ("archivo.carpeta", "archivo.terminal", "archivo.copiar"):
             acciones.habilitar(nombre, hay_sitio or hay_elemento)
         acciones.habilitar("archivo.navegador", hay_sitio and bool(sitios.dominio))
@@ -309,6 +317,7 @@ def construir(app: Aplicacion, cache: Path | None = None, docs_dir: Path | None 
     publicacion.cambiado.connect(lambda: entrega.revisarEntradas(
         svc_adp.entradas(Path(sitios.ruta), publicacion.archivosPorPublicar()) if sitios.hayActual and sitios.ruta else []))
     entrega.cambiado.connect(disponibilidad)
+    ayuda.cambiado.connect(disponibilidad)
 
     def terminada(id_: str, aplicar: bool, codigo: int) -> None:
         if id_ in ("render", "render_entrada", "render_archivo", "render_todos") and aplicar:
@@ -329,7 +338,7 @@ def construir(app: Aplicacion, cache: Path | None = None, docs_dir: Path | None 
 
     piezas = dict(env=env, consola=consola, tareas=tareas, interfaz=interfaz, ajustes=ajustes, espacio=espacio, sitios=sitios, flujo=flujo,
                   operaciones=operaciones, acciones=acciones, editor=editor, documentos=documentos, publicacion=publicacion, metadatos=metadatos,
-                  arbol=arbol, entrega=entrega)
+                  arbol=arbol, entrega=entrega, ayuda=ayuda)
     for nombre, objeto in piezas.items():
         if nombre != "env":
             app.exponer(nombre, objeto)

@@ -18,6 +18,12 @@ Vigentes: `blogs_manager` 4.0.0 · `metadata_manager` 2.3.0 · `generador_public
 
 ## [Unreleased]
 
+- **Quarto Studio: «Ayuda de la IA para la entrada…»** (Ctrl+Alt+A, Herramientas; plan «aprender y enseñar», fase 4.5,
+  2026-11-24): copia el prompt de posts del ecosistema (`07 produccion/contenido_web/prompt_01`) con la entrada abierta y
+  el modo (una sección, la introducción, los metadatos o la auditoría editorial), revisa antes de copiar si lleva datos
+  que no deben salir (C12.3), lee lo que respondió el chat como cambio sugerido y, al ponerlo en el editor, deja el uso
+  en `_ia/registro.yml` del post con su declaración, que exige «Antes de publicar». No llama a ningún modelo ni escribe
+  la entrada (`services/ayuda_ia.py`, `controladores/ayuda.py`, `DialogoAyudaIA.qml`; `tests/studio/test_ayuda_ia.py`).
 - **Quarto Studio: el acabado de la familia** (gui-comun 4.2; `estado.md`, 2026-11-19): áreas, vistas y lado de
   Herramientas en el `SelectorSegmentado` de la base; la acción principal con `BotonPrincipal`; una sola fila elegida en el
   árbol, teñida con su marca; los estados con un punto de su color en lugar de los emblemas `data-*`; los sitios sin
