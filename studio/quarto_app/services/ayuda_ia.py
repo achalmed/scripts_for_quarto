@@ -348,7 +348,15 @@ def leer(clave: str, pegado: str, texto: str, seleccion: str = "") -> dict:
     if pendientes:
         avisos.append(f"La IA dejó {pendientes} marca{'s' if pendientes != 1 else ''} de pendiente: complétalas antes de publicar.")
     return {**vacio, "ok": True, "avisos": avisos, "antes": antes, "despues": despues, "diff": _diff(antes, despues),
-            "resto": pegado.replace(bloque, "").strip()}
+            "resto": _resto(pegado, bloque)}
+
+
+def _resto(pegado: str, bloque: str) -> str:
+    """Lo que el chat dijo fuera del bloque (la tabla de verificación, «Para decidir o comprobar»), sin las cercas que
+    quedan vacías al quitar el bloque (la prueba con un chat real las dejaba al inicio)."""
+    resto = (pegado or "").replace(bloque, "", 1)
+    resto = re.sub(r"^[ \t]*(`{3,}|~{3,})[\w-]*[ \t]*\n\s*\1[ \t]*$", "", resto, count=1, flags=re.M)
+    return resto.strip()
 
 
 def uso(clave: str, ruta: str, fuente: dict, texto_prompt: str, parte: str = "") -> dict:

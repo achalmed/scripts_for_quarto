@@ -67,6 +67,7 @@ def test_la_leccion_con_su_prompt_y_el_esqueleto(servicio, monkeypatch):
     assert "no declara `curso:` y `tema:`" in sin["entrada"] and len(pedidos) == 1
     r = servicio.leer("leccion", "```markdown\n## Objetivos\n\nEstimar la pendiente [VERIFICAR].\n```\n\nPara decidir: la cifra.", LECCION)
     assert r["ok"] and r["pone"] == "cursor" and any("pendiente" in a for a in r["avisos"])
+    assert r["resto"] == "Para decidir: la cifra.", "sin las cercas vacías del bloque"
     u = servicio.uso("leccion", "/s/x/index.qmd", p["fuente"], p["prompt"])
     assert "prompt de la lección" in u["resumen"] and u["prompt"]["ruta"] == servicio.PROMPT_LECCION
 
